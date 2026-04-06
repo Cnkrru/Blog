@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- 首页 -->
+    <url>
+        <loc>https://cnkrru.github.io/</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- 关于页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/indexs/about.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- 归档页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/indexs/archives-index.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- 友链页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/indexs/links-index.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- 工具页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/indexs/tools-index.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- 视频页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/indexs/video-index.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- 项目页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/indexs/projects-index.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- 文章页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/posts/post-0.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://cnkrru.github.io/html/posts/post-1.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- 工具子页面 -->
+    <url>
+        <loc>https://cnkrru.github.io/html/tools/base64.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://cnkrru.github.io/html/tools/color.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://cnkrru.github.io/html/tools/regex.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://cnkrru.github.io/html/tools/chart-generator.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://cnkrru.github.io/html/tools/date-tool.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://cnkrru.github.io/html/tools/pdf-viewer.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://cnkrru.github.io/html/tools/qr-generator.html</loc>
+        <lastmod>2026-04-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+</urlset>

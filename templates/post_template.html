@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - Cnkru</title>
+    <meta name="description" content="{description}">
+    <meta name="keywords" content="{tags}">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/header-css/header.css">
+    <link rel="stylesheet" href="../../css/center-css/main-content.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/posts-css/posts.css">
+    <link rel="stylesheet" href="../../css/footer-css/footer.css">
+    <link rel="stylesheet" href="../../css/header-css/music-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="../../js/header-js/header.js"></script>
+    <script src="../../js/header-js/music-player.js"></script>
+    <script src="../../js/center-js/posts-js/posts.js"></script>
+    <script src="../../js/footer-js/footer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.5.1/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.10.0/notyf.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3.10.0/notyf.min.css">
+</head>
+<body>
+    <div class="header-blank"></div>
+    <div class="header-S">
+        <div class="header-S-B">
+            <a href="../../index.html" class="header-S-B-logo">Cnkru</a>
+            <div class="header-S-B-search">
+                <input type="text" placeholder="搜索..." class="search-input">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="header-S-B-function">
+                <button id="theme-toggle" class="header-S-B-function-btn" title="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="music-toggle" class="header-S-B-function-btn" title="音乐播放器">
+                    <i class="fas fa-music"></i>
+                </button>
+                <button id="video-toggle" class="header-S-B-function-btn" title="视频播放器">
+                    <i class="fas fa-video"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="content-left">
+            <div class="content-left-top">
+                <img src="../../static/imgs/avatar.png" alt="头像" class="content-left-top-img">
+                <p class="content-left-top-text">欢迎来到我的博客</p>
+                <div class="content-left-top-icon">
+                    <a href="https://space.bilibili.com/349892346" target="_blank" class="content-left-top-icon-a"><i class="fab fa-bilibili"></i></a>
+                    <a href="https://github.com/Cnkrru" target="_blank" class="content-left-top-icon-a"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="content-left-bottom">
+                <a href="../../index.html" class="content-left-bottom-btn">首页</a>
+                <a href="../../html/indexs/archives-index.html" class="content-left-bottom-btn">归档</a>
+                <a href="../../html/indexs/projects-index.html" class="content-left-bottom-btn">项目</a>
+                <a href="../../html/indexs/links-index.html" class="content-left-bottom-btn">友链</a>
+                <a href="../../html/indexs/tools-index.html" class="content-left-bottom-btn">工具</a>
+                <a href="../../html/indexs/about.html" class="content-left-bottom-btn">关于</a>
+            </div>
+        </div>
+        <div class="content-right">
+            <div class="content-right-main">
+                <div class="article-content">
+                    <h2 class="article-title">{title}</h2>
+                    <div class="article-meta">
+                        <span class="article-date">{date_str}</span>
+                        <span class="article-category">{category}</span>
+                        <span class="article-tags">{tags}</span>
+                    </div>
+                    <div class="article-body">
+                        <!-- 文章内容 -->
+                    </div>
+                </div>
+                <div class="article-nav">
+                    <div class="article-nav-prev">
+                        <span>上一篇：</span>
+                        <a href="#" class="article-nav-link">无</a>
+                    </div>
+                    <div class="article-nav-next">
+                        <span>下一篇：</span>
+                        <a href="#" class="article-nav-link">无</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-content-left">
+                <p>© 2026 Cnkru. All rights reserved.</p>
+            </div>
+            <div class="footer-content-right">
+                <a href="../../html/indexs/about.html" class="footer-content-right-a">关于</a>
+                <a href="../../html/indexs/archives-index.html" class="footer-content-right-a">归档</a>
+                <a href="../../html/indexs/links-index.html" class="footer-content-right-a">友链</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音乐播放器由JS动态创建 -->
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化代码高亮
+            hljs.highlightAll();
+            
+            // 初始化KaTeX
+            renderMathInElement(document.body, {{
+                delimiters: [
+                    {{left: "$$", right: "$$", display: true}},
+                    {{left: "$", right: "$", display: false}}
+                ]
+            }});
+            
+            // 初始化Mermaid
+            mermaid.initialize({{
+                startOnLoad: true
+            }});
+            
+            // 初始化代码复制功能
+            new ClipboardJS('.copy-btn');
+        });
+    </script>
+</body>
+</html>

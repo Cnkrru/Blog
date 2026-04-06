@@ -1,0 +1,21 @@
+# robots.txt - 搜索引擎爬虫规则
+# 允许所有搜索引擎爬虫访问
+
+User-agent: *
+
+# 允许访问所有页面
+Allow: /
+
+# 禁止访问的目录（如果有）
+# Disallow: /private/
+# Disallow: /admin/
+
+# 禁止访问特定文件类型（可选）
+# Disallow: /*.pdf$
+# Disallow: /*.zip$
+
+# 网站地图位置
+Sitemap: https://cnkrru.github.io/sitemap.xml
+
+# 爬虫抓取延迟（秒）
+# Crawl-delay: 10
