@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 基础SEO -->
+    <title>KaTeX数学公式测试 | Cnkrru的博客</title>
+    <meta name="description" content="测试KaTeX数学公式渲染功能，包含各种数学公式的示例">
+    <meta name="keywords" content="KaTeX,数学公式,LaTeX,测试">
+    <meta name="author" content="Cnkrru">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <link rel="stylesheet" href="../../css/header-css/music-player.css">
+    <link rel="stylesheet" href="../../css/center-css/comment.css">
+    <link rel="stylesheet" href="../../css/public-css/text.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+</head>
+<body>
+    <!--==============================页面头部部分==============================-->
+    <div class="header-blank"></div>
+    <!-- 页眉启用flex -->
+    <header class="header-flex">
+        <!-- 页眉面积分配 -->
+        <div class="header-S">
+            <!-- 页眉部分版心设计 -->
+            <nav class="header-container">
+                <!-- 页眉卡片设计 -->
+                <div class="header-card">
+                    <!-- Logo设计 -->
+                    <div class="logo-card">
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
+                    </div>
+                    <!-- 搜索框设计 -->
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <!-- 功能按钮模块区域设计 -->
+                    <div class="button-class-card">
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- 页眉与主体间空白区域 -->
+    <div class="header-blank"></div>
+    <!--==============================页面中间部分==============================-->
+    <!-- 页面中间部分启用flex布局 -->
+    <main class="mid-flex">
+        <!-- 左侧空白区域 -->
+        <div class="left-blank"></div>
+        <!-- ==========左侧侧边栏设计========== -->
+        <!-- 左侧边栏面积分配 -->
+        <aside class="left-asider-S">
+            <!-- 左侧边栏版心设计 -->
+            <div class="left-asider-container">
+                <!-- 左侧边栏总体卡片布局 -->
+                <div class="left-asider-card">
+                    <!-- 头像设计 -->
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
+                    </div>
+                    <!-- 欢迎语设计 -->
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <!-- 社媒友链卡片设计 -->
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <!-- 页面跳转链接设计 -->
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- 左侧边栏与主体部分的间距区域 -->
+        <div class="left-center-blank"></div>
+        <!-- ==========主体区域设计========== -->
+        <!-- 主体面积分配 -->
+        <section class="center-S">
+            <!-- 主体版心设计 -->
+            <div class="center-container">
+                <!-- 主体部分卡片设计 -->
+                <div class="center-card">
+                    <!-- 中心卡片 -->
+                    <!-- 主体部分卡片标题设计 -->
+                    <div class="center-head-card">
+                        <h2>KaTeX数学公式测试</h2>
+                        <div style="display: flex; align-items: center;">
+                            <button class="back-to-top-btn">
+                                <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
+                            </button>
+                            <div class="toc-btn-container">
+                                <button class="toc-btn">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                        <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
+                                    </svg>
+                                    目录
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文章目录卡片 -->
+                    <div class="toc-card">
+                        <div class="toc-card-header">
+                            <h3>文章目录</h3>
+                            <button class="toc-close-btn">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="toc-card-content">
+                            <ul class="toc-list"></ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 中心卡片顶部间距区域 -->
+                    <div class="center-head-blank"></div>
+                    <div class="center-card-content">
+                        <div class="read-center-card-body">
+                            <!-- 内容区域css选择器专用套 -->
+                            <div class="text-style">
+                                <p>标题：KaTeX数学公式测试</p>
+                                <p>分类：测试</p>
+                                <p>标签：测试,KaTeX</p>
+                                <p>编号：post-test-katex</p>
+                                <p>时间：2026-04-04</p>
+                                <hr>
+                                
+                                <h3>行内公式示例</h3>
+                                <p>这是一个行内公式：$E = mc^2$，它展示了质能方程。</p>
+                                <p>另一个例子：$a^2 + b^2 = c^2$，这是勾股定理。</p>
+                                <p>求根公式：$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$</p>
+                                
+                                <h3>块级公式示例</h3>
+                                <p>二次方程的解：</p>
+                                $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+                                
+                                <p>定积分：</p>
+                                $$\int_{a}^{b} f(x) \, dx = F(b) - F(a)$$
+                                
+                                <p>矩阵示例：</p>
+                                $$\begin{pmatrix} a & b \\ c & d \end{pmatrix}$$
+                                
+                                <h3>复杂公式</h3>
+                                <p>高斯积分：</p>
+                                $$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$
+                                
+                                <p>泰勒展开：</p>
+                                $$e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$$
+                                
+                                <p>麦克斯韦方程组：</p>
+                                $$\begin{aligned}
+                                \nabla \cdot \mathbf{E} &= \frac{\rho}{\varepsilon_0} \\
+                                \nabla \cdot \mathbf{B} &= 0 \\
+                                \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+                                \nabla \times \mathbf{B} &= \mu_0\mathbf{J} + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+                                \end{aligned}$$
+                                
+                                <h3>希腊字母</h3>
+                                <p>$\alpha$, $\beta$, $\gamma$, $\delta$, $\epsilon$, $\pi$, $\theta$, $\lambda$, $\mu$, $\sigma$, $\phi$, $\omega$</p>
+                                
+                                <h3>上下标</h3>
+                                <p>$x^2$, $x_i$, $x_i^j$, $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$</p>
+                                
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <!-- 上下篇导航容器 -->
+                        <div class="post-nav-container">
+                            <a href="post-test-markdown.html" class="post-nav-btn prev">
+                                <div class="post-nav-btn-text">
+                                    <span class="post-nav-btn-label">上一篇</span>
+                                    <span class="post-nav-btn-title">Markdown测试</span>
+                                </div>
+                            </a>
+                            <a href="post-test-mermaid.html" class="post-nav-btn next">
+                                <div class="post-nav-btn-text">
+                                    <span class="post-nav-btn-label">下一篇</span>
+                                    <span class="post-nav-btn-title">Mermaid流程图测试</span>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <hr>
+                        
+                        <!-- 分享按钮容器 -->
+                        <div class="share-container">
+                            <div class="share-btn wechat" title="分享到微信">
+                                <img src="../../static/img/svg/wechat.svg" alt="微信">
+                            </div>
+                            <div class="share-btn qq" title="分享到QQ">
+                                <img src="../../static/img/svg/QQ.svg" alt="QQ">
+                            </div>
+
+                            <div class="share-btn copy" title="复制链接">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="post-qrcode-section">
+                            <h4>手机扫码访问</h4>
+                            <div id="post-qrcode-container" class="post-qrcode-container"></div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="read-center-card-footer">
+                            <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
+                        </div>
+                        <!-- 评论区域 -->
+                        <div class="comment-section">
+                            <h3>评论</h3>
+                            <div class="comment-container"></div>
+                        </div>                        
+                    </div>
+                    <!-- 中心卡片底部间距区域 -->
+                    <div class="center-foot-blank"></div>
+                    <hr>
+                </div>
+            </div>
+        </section>
+        <div class="right-blank"></div>
+    </main>
+        <!--==============================页脚区域==============================-->
+    <!-- 页脚启用felx布局 -->
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <nav class="footer-container">
+                <div class="footer-card">
+                    <div class="footer-element-card website-age"></div>
+                    <div class="footer-element-card article-count"></div>
+
+                    <div class="footer-element-card copyright"></div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    <!-- 音乐播放器 -->
+    <div class="music-player-container" id="music-player-container">
+        <button class="music-player-close">&times;</button>
+        <div class="music-player-left">
+            <div class="music-album-cover-container">
+                <img class="music-album-cover" src="../../static/img/music/album-covers/1.jpg" alt="专辑封面">
+            </div>
+            <div class="music-info-container">
+                <div class="music-title">未播放</div>
+                <div class="music-artist">-</div>
+            </div>
+        </div>
+        <div class="music-player-right">
+            <div class="music-progress-bar-container">
+                <div class="music-progress-bar" id="music-progress-bar">
+                    <div class="music-progress-fill" id="music-progress-fill"></div>
+                </div>
+                <div class="music-time">
+                    <span id="music-current-time">0:00</span>
+                    <span>/</span>
+                    <span id="music-duration">0:00</span>
+                </div>
+            </div>
+            <div class="music-controls-container">
+                <button class="music-player-mode-btn" id="music-player-mode" title="顺序播放">🔁</button>
+                <button class="music-prev-btn" id="music-prev-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
+                <button class="music-play-pause-btn" id="music-play-pause-btn">
+                    <svg class="music-play-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="music-pause-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+                <button class="music-next-btn" id="music-next-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="music-volume-container">
+                <button class="music-volume-btn" id="music-volume-btn">
+                    <svg class="music-volume-high-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    <svg class="music-volume-off-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                    </svg>
+                </button>
+                <div class="music-volume-slider-container">
+                    <input type="range" class="music-volume-slider" id="music-volume-slider" min="0" max="1" step="0.01" value="1">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <script src="../../js/header-js/music-player.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/center-js/posts-js/share.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+    <script src="../../js/center-js/posts-js/toc.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+    <script src="../../js/center-js/posts-js/code-copy.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="../../js/center-js/posts-js/post-qrcode.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="../../js/center-js/public-js/notyf-integration.js"></script>
+    <script src="../../js/center-js/posts-js/katex-render.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+/*==============================评论区域样式==============================*/
+
+/* 评论区域容器 */
+.comment-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* 评论标题 */
+.comment-section h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* 评论容器 */
+.comment-container {
+    width: 100%;
+    min-height: 300px;
+    border-radius: 6px;
+    overflow: hidden;
+}

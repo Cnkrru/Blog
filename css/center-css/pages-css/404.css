@@ -1,0 +1,22 @@
+.lose-center-card-content {
+    width: 100%;
+    height: 200px;
+}
+
+.lose-center-content {
+    width: 100%;
+    height: 200px;
+    line-height: 200px;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.lose-center-content h1 {
+    margin-bottom: 20px;
+}
+
+.lose-center-content p {
+	margin-bottom: 20px;
+}
+

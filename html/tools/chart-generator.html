@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 基础SEO -->
+    <title>图表生成器 | Cnkrru的博客</title>
+    <meta name="description" content="在线图表生成器，支持柱状图、折线图、饼图等多种图表类型">
+    <meta name="keywords" content="图表,Chart.js,数据可视化,工具">
+    <meta name="author" content="Cnkrru">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <link rel="stylesheet" href="../../css/header-css/music-player.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/chart-generator.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!--==============================页面头部部分==============================-->
+    <div class="header-blank"></div>
+    <!-- 页眉启用flex -->
+    <header class="header-flex">
+        <!-- 页眉面积分配 -->
+        <div class="header-S">
+            <!-- 页眉部分版心设计 -->
+            <nav class="header-container">
+                <!-- 页眉卡片设计 -->
+                <div class="header-card">
+                    <!-- Logo设计 -->
+                    <div class="logo-card">
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
+                    </div>
+                    <!-- 搜索框设计 -->
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <!-- 功能按钮模块区域设计 -->
+                    <div class="button-class-card">
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- 页眉与主体间空白区域 -->
+    <div class="header-blank"></div>
+    <!--==============================页面中间部分==============================-->
+    <!-- 页面中间部分启用flex布局 -->
+    <main class="mid-flex">
+        <!-- 左侧空白区域 -->
+        <div class="left-blank"></div>
+        <!-- ==========左侧侧边栏设计========== -->
+        <!-- 左侧边栏面积分配 -->
+        <aside class="left-asider-S">
+            <!-- 左侧边栏版心设计 -->
+            <div class="left-asider-container">
+                <!-- 左侧边栏总体卡片布局 -->
+                <div class="left-asider-card">
+                    <!-- 头像设计 -->
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
+                    </div>
+                    <!-- 欢迎语设计 -->
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <!-- 社媒友链卡片设计 -->
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <!-- 页面跳转链接设计 -->
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- 左侧边栏与主体部分的间距区域 -->
+        <div class="left-center-blank"></div>
+        <!-- ==========主体区域设计========== -->
+        <!-- 主体面积分配 -->
+        <section class="center-S">
+            <!-- 主体版心设计 -->
+            <div class="center-container">
+                <!-- 主体部分卡片设计 -->
+                <div class="center-card">
+                    <!-- 中心卡片 -->
+                    <!-- 主体部分卡片标题设计 -->
+                    <div class="center-head-card">
+                        <h2>图表生成器</h2>
+                        <div style="display: flex; align-items: center;">
+                            <button class="back-to-top-btn">
+                                <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 中心卡片顶部间距区域 -->
+                    <div class="center-head-blank"></div>
+                    <div class="center-card-content">
+                        <div class="read-center-card-body">
+                            <!-- 内容区域css选择器专用套 -->
+                            <div class="text-style">
+                                <p>图表生成器是一个在线数据可视化工具，支持多种图表类型。输入数据即可生成美观的图表。</p>
+                                
+                                <div class="chart-tool-container">
+                                    <!-- 图表配置区域 -->
+                                    <div class="chart-config-section">
+                                        <h3>图表配置</h3>
+                                        
+                                        <div class="config-group">
+                                            <label for="chartType">图表类型：</label>
+                                            <select id="chartType">
+                                                <option value="bar">柱状图</option>
+                                                <option value="line">折线图</option>
+                                                <option value="pie">饼图</option>
+                                                <option value="doughnut">环形图</option>
+                                                <option value="radar">雷达图</option>
+                                                <option value="polarArea">极地区域图</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="config-group">
+                                            <label for="chartTitle">图表标题：</label>
+                                            <input type="text" id="chartTitle" value="示例图表" placeholder="输入图表标题">
+                                        </div>
+                                        
+                                        <div class="config-group">
+                                            <label for="dataLabels">数据标签（用逗号分隔）：</label>
+                                            <input type="text" id="dataLabels" value="一月,二月,三月,四月,五月" placeholder="例如：一月,二月,三月">
+                                        </div>
+                                        
+                                        <div class="config-group">
+                                            <label for="dataValues">数据值（用逗号分隔）：</label>
+                                            <input type="text" id="dataValues" value="12,19,3,5,2" placeholder="例如：10,20,30">
+                                        </div>
+                                        
+                                        <div class="config-group">
+                                            <label for="datasetLabel">数据集名称：</label>
+                                            <input type="text" id="datasetLabel" value="数据集1" placeholder="输入数据集名称">
+                                        </div>
+                                        
+                                        <div class="config-group color-group">
+                                            <label>图表颜色：</label>
+                                            <div class="color-presets">
+                                                <button class="color-btn active" data-colors="default" title="默认配色">默认</button>
+                                                <button class="color-btn" data-colors="warm" title="暖色调">暖色</button>
+                                                <button class="color-btn" data-colors="cool" title="冷色调">冷色</button>
+                                                <button class="color-btn" data-colors="pastel" title=" pastel色调">柔和</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="config-actions">
+                                            <button id="generateChart" class="btn-primary">生成图表</button>
+                                            <button id="downloadChart" class="btn-secondary">下载图表</button>
+                                            <button id="clearData" class="btn-danger">清空数据</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 图表预览区域 -->
+                                    <div class="chart-preview-section">
+                                        <h3>图表预览</h3>
+                                        <div class="chart-container">
+                                            <canvas id="myChart"></canvas>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 示例数据区域 -->
+                                    <div class="chart-examples-section">
+                                        <h3>示例数据</h3>
+                                        <div class="example-buttons">
+                                            <button class="example-btn" data-example="sales">销售数据</button>
+                                            <button class="example-btn" data-example="traffic">网站流量</button>
+                                            <button class="example-btn" data-example="survey">调查结果</button>
+                                            <button class="example-btn" data-example="temperature">温度变化</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class="read-center-card-footer">
+                            <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
+                        </div>
+                    </div>
+                    <!-- 中心卡片底部间距区域 -->
+                    <div class="center-foot-blank"></div>
+                    <hr>
+                </div>
+            </div>
+        </section>
+        <div class="right-blank"></div>
+    </main>
+        <!--==============================页脚区域==============================-->
+    <!-- 页脚启用felx布局 -->
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <nav class="footer-container">
+                <div class="footer-card">
+                    <div class="footer-element-card website-age"></div>
+                    <div class="footer-element-card article-count"></div>
+
+                    <div class="footer-element-card copyright"></div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    <!-- 音乐播放器 -->
+    <div class="music-player-container" id="music-player-container">
+        <button class="music-player-close">&times;</button>
+        <div class="music-player-left">
+            <img class="music-player-cover" id="music-player-cover" src="" alt="专辑封面">
+            <div class="music-player-info">
+                <h3 class="music-player-title" id="music-player-title">未选择音乐</h3>
+                <p class="music-player-artist" id="music-player-artist">-</p>
+            </div>
+        </div>
+        <div class="music-player-center">
+            <div class="music-player-controls">
+                <button class="music-player-mode-btn" id="music-player-mode" title="顺序播放">🔁</button>
+                <button class="music-player-control-btn prev-btn" id="music-player-prev">&#9664;</button>
+                <button class="music-player-control-btn play-pause play-btn" id="music-player-play">&#9658;</button>
+                <button class="music-player-control-btn next-btn" id="music-player-next">&#9654;</button>
+                <button class="music-player-list-btn" id="music-player-list" title="播放列表">&#9776;</button>
+            </div>
+            <div class="music-player-progress">
+                <span class="music-player-time current-time" id="music-player-current-time">0:00</span>
+                <input type="range" class="music-player-progress-bar" id="music-player-progress" min="0" max="100" value="0">
+                <span class="music-player-time total-time" id="music-player-total-time">0:00</span>
+            </div>
+        </div>
+        <div class="music-player-right">
+            <div class="music-player-volume">
+                <span class="music-player-volume-icon" id="music-player-volume-icon">&#128266;</span>
+                <input type="range" class="music-player-volume-bar" id="music-player-volume" min="0" max="100" value="70">
+            </div>
+        </div>
+    </div>
+    
+    <!-- 音乐列表面板 -->
+    <div class="music-list-overlay" id="music-list-overlay">
+        <div class="music-list-modal">
+            <div class="music-list-header">
+                <h3 id="music-list-title">播放列表 (0首)</h3>
+                <button class="music-player-close" id="music-list-close">&times;</button>
+            </div>
+            <div class="music-list-content">
+                <ul id="music-list-items" class="music-list-items">
+                    <!-- 音乐列表项将在这里动态生成 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <script src="../../js/header-js/music-player.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+    <script src="../../js/tools-js/chart-generator.js"></script>
+</body>
+</html>

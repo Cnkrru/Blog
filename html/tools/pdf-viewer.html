@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <link rel="stylesheet" href="../../css/header-css/music-player.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/pdf-viewer.css">
+    
+    <title>PDF预览器 | Cnkrru的博客</title>
+</head>
+<body>
+    <div class="header-blank"></div>
+    <header class="header-flex">
+        <div class="header-S">
+            <nav class="header-container">
+                <div class="header-card">
+                    <div class="logo-card">
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
+                    </div>
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <div class="button-class-card">
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="header-blank"></div>
+    <main class="mid-flex">
+        <div class="left-blank"></div>
+        <aside class="left-asider-S">
+            <div class="left-asider-container">
+                <div class="left-asider-card">
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
+                    </div>
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="left-center-blank"></div>
+        <section class="center-S">
+            <div class="center-container">
+                <div class="center-card">
+                    <div class="center-head-card">
+                        <h2>PDF预览器</h2>
+                        <div style="display: flex; align-items: center;">
+                            <button class="back-to-top-btn">
+                                <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="center-head-blank"></div>
+                    <div class="center-card-content">
+                        <div class="read-center-card-body">
+                            <div class="text-style">
+                                
+                                <div class="tool-container">
+                                    <h3>PDF预览</h3>
+                                    <p>上传或输入PDF文件URL进行在线预览</p>
+                                    
+                                    <div class="tool-section">
+                                        <h4>文件上传</h4>
+                                        <div class="file-upload">
+                                            <input type="file" id="pdfFile" accept=".pdf">
+                                            <label for="pdfFile">选择PDF文件</label>
+                                        </div>
+                                        <p style="margin-top: 10px; font-size: 14px; color: #666;">或</p>
+                                        <div class="input-group">
+                                            <label for="pdfUrl">PDF URL</label>
+                                            <input type="url" id="pdfUrl" placeholder="输入PDF文件URL">
+                                            <button id="loadPdfBtn">加载PDF</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tool-section">
+                                        <h4>预览控制</h4>
+                                        <div class="pdf-controls">
+                                            <button id="prevBtn">上一页</button>
+                                            <span id="pageInfo">第 <span id="currentPage">0</span> 页 / 共 <span id="totalPages">0</span> 页</span>
+                                            <button id="nextBtn">下一页</button>
+                                            <div style="margin-top: 10px;">
+                                                <label for="zoomLevel">缩放:</label>
+                                                <select id="zoomLevel">
+                                                    <option value="0.5">50%</option>
+                                                    <option value="0.75">75%</option>
+                                                    <option value="1" selected>100%</option>
+                                                    <option value="1.25">125%</option>
+                                                    <option value="1.5">150%</option>
+                                                    <option value="2">200%</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tool-section">
+                                        <h4>PDF预览</h4>
+                                        <div class="pdf-container">
+                                            <canvas id="pdfCanvas"></canvas>
+                                            <div id="pdfLoading" style="display: none;">加载中...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="right-center-blank"></div>
+        <div class="right-blank"></div>
+    </main>
+    <div class="footer-blank"></div>
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <div class="footer-container">
+                <div class="footer-card">
+                    <p>本站已运行: <span id="websiteAge"></span></p>
+                    <p>文章总数: <span id="articleCount"></span></p>
+                    <p>© <span id="copyrightYear"></span> Cnkrru. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <script src="../../js/header-js/music-player.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="../../js/tools-js/pdf-viewer.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+
+.archives-flex-row {
+    width: 100%;
+    height: 460px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* 主体部分卡片列表设计 */
+.archives-center-list-card {
+    width: 180px;
+    height: 200px;
+	padding: 10px;
+	margin-bottom: 10px;
+    border-radius: 8px;
+    border: 3px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease;
+}
+
+    /* 主体部分卡片列表悬停设计 */
+.archives-center-list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-width: 4px;
+}
+
+    /* 主体部分卡片列表图标设计 */
+.archives-center-list-card-header {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.archives-center-list-card-header img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+    /* 主体部分卡片列表名称设计 */
+.archives-center-list-card-name {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+

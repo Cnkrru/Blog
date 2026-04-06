@@ -1,0 +1,31 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "个人博客",
+      "description": "这是一个使用纯 HTML/CSS/JavaScript 构建的个人博客",
+      "image": "static/img/archives-img/类别1.jpg",
+      "techStack": ["HTML", "CSS", "JavaScript"],
+      "github": "https://github.com/Cnkrru",
+      "demo": ""
+    },
+    {
+      "id": 2,
+      "name": "视频播放器",
+      "description": "一个简单的网页视频播放器",
+      "image": "static/img/archives-img/类别2.jpg",
+      "techStack": ["HTML", "CSS", "JavaScript"],
+      "github": "https://github.com/Cnkrru",
+      "demo": "html/video-index.html"
+    },
+    {
+      "id": 3,
+      "name": "小工具合集",
+      "description": "一些实用的小工具，包括进制转换、颜色选择等",
+      "image": "static/img/archives-img/类别3.jpg",
+      "techStack": ["HTML", "CSS", "JavaScript"],
+      "github": "https://github.com/Cnkrru",
+      "demo": "html/tools-index.html"
+    }
+  ]
+}

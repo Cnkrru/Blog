@@ -1,0 +1,106 @@
+/* 主体部分卡片列表设计 */
+.links-flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* 主体部分卡片列表设计 */
+.links-center-list-card {
+    width: 250px;
+    height: fit-content;
+	padding: 10px;
+	margin-bottom: 10px;
+    border-radius: 8px;
+    border: 3px solid;
+    transition: border-color 0.3s ease;
+}
+
+/* 主体部分卡片列表悬停设计 */
+.links-center-list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-width: 4px;
+}
+
+/* 主体部分卡片列表标题设计 */
+.links-center-list-card-header {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.links-center-list-card-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.links-center-list-card:hover .links-center-list-card-header img {
+    transform: scale(1.05);
+}
+
+/* 主体部分卡片列表名称设计 */
+.links-center-list-card-name {
+    width: 100%;
+    height: fit-content;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 主体部分卡片列表内容设计 */
+.links-center-list-card-content {
+    width: 100%;
+    height: fit-content;
+    font-size: 15px;
+}
+
+/*==============================links子页面紧凑样式==============================*/
+
+/* links子页面列表卡片 - 更紧凑 */
+.links-subpage .links-center-list-card {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 2px solid var(--links-subpage-item-border);
+}
+
+.links-subpage .links-center-list-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    border-color: var(--links-subpage-item-border-hover);
+}
+
+/* links子页面列表卡片头部 - 更小 */
+.links-subpage .links-center-list-card-header {
+    height: auto;
+    min-height: 30px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* links子页面列表卡片内容 - 更紧凑 */
+.links-subpage .links-center-list-card-content {
+    font-size: 13px;
+    padding: 5px 0;
+}
+
+.links-subpage .links-center-list-card-content a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.links-subpage .links-center-list-card-content a:hover {
+    color: var(--button-border);
+}
+
+

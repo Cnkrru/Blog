@@ -1,0 +1,27 @@
+/*==============================返回顶部按钮==============================*/
+
+/* 返回顶部按钮样式 - 与页眉功能按钮一致 */
+.back-to-top-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+.back-to-top-btn:hover {
+    transform: scale(1.1);
+}
+
+/* 返回顶部按钮图标 */
+.back-to-top-btn img {
+    width: 20px;
+    height: 20px;
+    transition: filter 0.3s ease;
+}
+
+

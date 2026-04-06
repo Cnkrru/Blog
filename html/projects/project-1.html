@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 基础SEO -->
+    <title>个人博客 | Cnkrru的博客</title>
+    <meta name="description" content="个人博客项目介绍，基于原生HTML+CSS+JavaScript开发">
+    <meta name="keywords" content="个人博客,前端项目,开源项目">
+    <meta name="author" content="Cnkrru">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <link rel="stylesheet" href="../../css/header-css/music-player.css">
+    <link rel="stylesheet" href="../../css/center-css/comment.css">
+    <link rel="stylesheet" href="../../css/public-css/text.css">
+    <title>个人博客</title>
+</head>
+<body>
+    <!--==============================页面头部部分==============================-->
+    <div class="header-blank"></div>
+    <!-- 页眉启用flex -->
+    <header class="header-flex">
+        <!-- 页眉面积分配 -->
+        <div class="header-S">
+            <!-- 页眉部分版心设计 -->
+            <nav class="header-container">
+                <!-- 页眉卡片设计 -->
+                <div class="header-card">
+                    <!-- Logo设计 -->
+                    <div class="logo-card">
+                        <!-- <a href="index.html"><img src="./images/hugo.png" alt=""></a> -->
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
+                    </div>
+                    <!-- 搜索框设计 -->
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <!-- 功能按钮模块区域设计 -->
+                    <div class="button-class-card">
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- 页眉与主体间空白区域 -->
+    <div class="header-blank"></div>
+    <!--==============================页面中间部分==============================-->
+    <!-- 页面中间部分启用flex布局 -->
+    <main class="mid-flex">
+        <!-- 左侧空白区域 -->
+        <div class="left-blank"></div>
+        <!-- ==========左侧侧边栏设计========= -->
+        <!-- 左侧边栏面积分配 -->
+        <aside class="left-asider-S">
+            <!-- 左侧边栏版心设计 -->
+            <div class="left-asider-container">
+                <!-- 左侧边栏总体卡片布局 -->
+                <div class="left-asider-card">
+                    <!-- 头像设计 -->
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
+                    </div>
+                    <!-- 返回主页设计 -->
+                    <!-- <div class="back-index-card">
+                        <a href="index.html">Cnkrru'Blog</a>
+                    </div> -->
+                    <!-- 欢迎语设计 -->
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <!-- 社媒友链卡片设计 -->
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <!-- 页面跳转链接设计 -->
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- 左侧边栏与主体部分的间距区域 -->
+        <div class="left-center-blank"></div>
+        <!-- ==========主体区域设计========== -->
+        <!-- 主体面积分配 -->
+        <section class="center-S">
+            <!-- 主体版心设计 -->
+            <div class="center-container">
+                <!-- 主体部分卡片设计 -->
+                <div class="center-card">
+                    <!-- 中心卡片 -->
+                    <!-- 主体部分卡片标题设计 -->
+                    <div class="center-head-card">
+                        <h2>个人博客</h2>
+                        <div style="display: flex; align-items: center;">
+                            <button class="back-to-top-btn">
+                                <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
+                            </button>
+                            <div class="toc-btn-container">
+                                <button class="toc-btn">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                        <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
+                                    </svg>
+                                    目录
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文章目录卡片 -->
+                    <div class="toc-card">
+                        <div class="toc-card-header">
+                            <h3>文章目录</h3>
+                            <button class="toc-close-btn">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="toc-card-content">
+                            <ul class="toc-list"></ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 中心卡片顶部间距区域 -->
+                    <div class="center-head-blank"></div>
+                    <div class="center-card-content">
+                        <div class="read-center-card-body">
+                            <!-- 内容区域css选择器专用套 -->
+                            <div class="text-style">
+                                <h2>项目介绍</h2>
+                                <p>这是一个使用纯 HTML/CSS/JavaScript 开发的个人博客网站，完全响应式设计，支持移动端适配。</p>
+                                
+                                <h2>技术栈</h2>
+                                <ul>
+                                    <li>HTML5 - 页面结构</li>
+                                    <li>CSS3 - 样式设计</li>
+                                    <li>JavaScript - 交互功能</li>
+                                </ul>
+                                
+                                <h2>主要功能</h2>
+                                <ul>
+                                    <li>文章目录与页面跳转</li>
+                                    <li>文章列表展示</li>
+                                    <li>网站运行时间统计</li>
+                                    <li>分享功能（微信、QQ、复制链接等）</li>
+                                    <li>主题切换（亮色/暗色模式）</li>
+                                    <li>沉浸式阅读模式</li>
+                                    <li>音乐播放器</li>
+                                    <li>返回顶部</li>
+                                    <li>评论系统</li>
+                                </ul>
+                                
+                                <h2>项目地址</h2>
+                                <p><a href="https://github.com/Cnkrru" target="_blank">GitHub 仓库</a></p>
+                            </div>
+                        </div>
+                        <hr>                    
+                        <!-- 分享按钮容器 -->
+                        <div class="share-container">
+                            <div class="share-btn wechat" title="分享到微信">
+                                <img src="../../static/img/svg/wechat.svg" alt="微信">
+                            </div>
+                            <div class="share-btn qq" title="分享到QQ">
+                                <img src="../../static/img/svg/QQ.svg" alt="QQ">
+                            </div>
+                            <div class="share-btn copy" title="复制链接">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="read-center-card-footer">
+                            <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
+                        </div>
+                        <!-- 评论区域 -->
+                        <div class="comment-section">
+                            <h3>评论</h3>
+                            <div class="comment-container"></div>
+                        </div>                        
+                    </div>
+                    <!-- 中心卡片底部间距区域 -->
+                    <div class="center-foot-blank"></div>
+                    <hr>
+                </div>
+            </div>
+        </section>
+        <div class="right-blank"></div>
+    </main>
+    <!--==============================页脚区域==============================-->
+    <!-- 页脚启用felx布局 -->
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <div class="footer-container">
+                <div class="footer-card">
+                    <div class="footer-element-card website-age"></div>
+                    <div class="footer-element-card article-count"></div>
+
+                    <div class="footer-element-card copyright"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    <!-- 音乐播放器由JS动态创建 -->
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <script src="../../js/header-js/music-player.js"></script>
+    <script src="../../js/center-js/posts-js/comment.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/center-js/posts-js/share.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+    <script src="../../js/center-js/posts-js/toc.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+</body>
+</html>
+
+

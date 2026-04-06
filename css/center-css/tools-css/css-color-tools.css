@@ -1,0 +1,573 @@
+/*==============================CSS 颜色工具样式==============================*/
+
+/* 工具容器 */
+.color-tools-container {
+    display: flex;
+    gap: 30px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* 工具卡片 */
+.color-tool-card {
+    flex: 1;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: all 0.3s ease;
+}
+
+.color-tool-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--center-card-title-color);
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* RGBA 调色工具样式 */
+.rgba-tool-container {
+    max-width: 100%;
+}
+
+/* 颜色预览区域 */
+.color-preview-section {
+    margin-bottom: 30px;
+}
+
+.color-preview-box {
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    background-color: #ff0000;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.color-value-display {
+    background-color: var(--search-bg);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.color-value-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.color-value-label {
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.color-value-code {
+    flex: 1;
+    background-color: var(--input-bg);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+    overflow-x: auto;
+}
+
+/* 颜色调节区域 */
+.color-control-section {
+    margin-bottom: 20px;
+}
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.control-value {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* 色相滑块 */
+.hue-slider-container {
+    position: relative;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.hue-slider {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+}
+
+.hue-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, 
+        hsl(0, 100%, 50%), 
+        hsl(60, 100%, 50%), 
+        hsl(120, 100%, 50%), 
+        hsl(180, 100%, 50%), 
+        hsl(240, 100%, 50%), 
+        hsl(300, 100%, 50%), 
+        hsl(360, 100%, 50%)
+    );
+    z-index: 1;
+}
+
+/* 控制滑块 */
+.control-slider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 透明度输入 */
+.alpha-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+/* 渐变生成器样式 */
+.gradient-generator-container {
+    max-width: 100%;
+}
+
+/* 渐变预览区域 */
+.gradient-preview-section {
+    margin-bottom: 30px;
+}
+
+.gradient-preview-box {
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    background: linear-gradient(90deg, #ff0000, #00ff00);
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+}
+
+.gradient-value-display {
+    background-color: var(--search-bg);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.gradient-value-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.gradient-value-label {
+    font-weight: bold;
+    min-width: 100px;
+}
+
+.gradient-value-code {
+    flex: 1;
+    background-color: var(--input-bg);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+    overflow-x: auto;
+}
+
+/* 渐变控制区域 */
+.gradient-control-section {
+    margin-bottom: 20px;
+}
+
+.control-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+/* 颜色节点区域 */
+.color-stops-section {
+    margin-top: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.add-color-stop-btn {
+    padding: 8px 16px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.add-color-stop-btn:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+.color-stops-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.color-stop-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background-color: var(--search-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.color-stop-color {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+}
+
+.color-stop-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.color-stop-position {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-stop-position label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.color-stop-position input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.remove-color-stop-btn {
+    padding: 8px 16px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.remove-color-stop-btn:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+/* 线性渐变专用样式 */
+.linear-only {
+    display: block;
+}
+
+/* 径向渐变专用样式 */
+.radial-only {
+    display: none;
+}
+
+/* 自定义颜色选择器 */
+.color-picker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.color-picker-container {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    max-width: 400px;
+    width: 100%;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.color-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.color-picker-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.color-picker-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.color-picker-close:hover {
+    background-color: var(--hover-bg);
+}
+
+.color-picker-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.color-preview {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    margin-bottom: 20px;
+    background-color: #ffffff;
+}
+
+.color-inputs {
+    margin-bottom: 20px;
+}
+
+.color-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.color-input-group label {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.color-input-group input {
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+.color-picker-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.color-picker-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    min-width: 80px;
+    text-align: center;
+}
+
+.color-picker-btn.primary {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+}
+
+.color-picker-btn.primary:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+.color-picker-btn.secondary {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.color-picker-btn.secondary:hover {
+    background-color: var(--hover-bg);
+    transform: scale(1.05);
+}
+
+/* 复制按钮 */
+.copy-btn {
+    padding: 6px 12px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+.copy-btn.copied {
+    background-color: #4CAF50;
+    border-color: #45a049;
+}
+
+/*==============================媒体查询==============================*/
+
+
+
+/* 主题适配 */
+body.dark-theme .color-tool-card {
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+body.dark-theme .color-preview-box,
+body.dark-theme .gradient-preview-box {
+    border-color: var(--border-color);
+}
+
+body.dark-theme .color-value-display,
+body.dark-theme .gradient-value-display {
+    background-color: var(--search-bg);
+}
+
+body.dark-theme .color-value-code,
+body.dark-theme .gradient-value-code {
+    background-color: var(--input-bg);
+}
+
+body.dark-theme .control-select,
+body.dark-theme .alpha-input,
+body.dark-theme .color-stop-position input {
+    border-color: var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+body.dark-theme .color-stop-item {
+    background-color: var(--search-bg);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+body.dark-theme .color-stop-color {
+    border-color: var(--border-color);
+}
+
+body.dark-theme .color-picker-container {
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+body.dark-theme .color-picker-header h3,
+body.dark-theme .color-picker-close {
+    color: var(--text-color);
+}
+
+body.dark-theme .color-picker-close:hover {
+    background-color: var(--hover-bg);
+}
+
+body.dark-theme .color-input-group label {
+    color: var(--text-color);
+}
+
+body.dark-theme .color-input-group input {
+    border-color: var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+body.dark-theme .color-picker-btn.secondary {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+body.dark-theme .color-picker-btn.secondary:hover {
+    background-color: var(--hover-bg);
+}

@@ -1,0 +1,17 @@
+/* 各个页面差别比较小,只有中心内容卡片有区别 */
+hr {
+    margin: 20px 0;
+    height: 1px;
+}
+.about-center-card-head {
+    margin-bottom: 5px;
+}
+
+.about-center-card-body {
+    margin-bottom: 10px;
+}
+
+.about-center-card-footer {
+    margin-bottom: 5px;
+}
+

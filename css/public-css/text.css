@@ -1,0 +1,177 @@
+/*=== 文本样式 ===*/
+
+/* 容器样式 */
+.text-style {
+    width: 100%;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1;
+    color: var(--text-color);
+}
+
+/* 标题样式 */
+.text-style h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+    color: var(--text-color);
+}
+
+.text-style h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+.text-style h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+.text-style h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.2rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.text-style h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.6rem;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.text-style h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+/* 段落样式 */
+.text-style p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    text-indent: 2ch; /* 首行缩进2个字符 */
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+/* 列表样式 */
+.text-style ul {
+    margin-bottom: 1.2rem;
+    padding-left: 2.5rem;
+}
+
+.text-style ol {
+    margin-bottom: 1.2rem;
+    padding-left: 2.5rem;
+}
+
+.text-style li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.text-style ul ul,
+.text-style ul ol,
+.text-style ol ul,
+.text-style ol ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 2rem;
+}
+
+/* 链接样式 */
+.text-style a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.text-style a:hover {
+    color: var(--primary-hover-color);
+    text-decoration: underline;
+}
+
+/* 引用样式 */
+.text-style blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: var(--text-secondary-color);
+    font-style: italic;
+    background-color: var(--secondary-bg-color);
+    padding: 1rem 1.5rem;
+    border-radius: 0 4px 4px 0;
+}
+
+/* 代码样式 */
+.text-style code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    background-color: var(--input-bg-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    color: var(--text-color);
+}
+
+.text-style pre {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    background-color: var(--input-bg-color);
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    color: var(--text-color);
+}
+
+.text-style pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* 图片样式 */
+.text-style img {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+    display: block;
+}
+
+/* 水平分割线 */
+.text-style hr {
+    border: none;
+    border-top: 1px solid var(--center-card-hr-color);
+    margin: 2rem 0;
+}
+
+/* 强调文本 */
+.text-style strong {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.text-style em {
+    font-style: italic;
+    color: var(--text-color);
+}
+

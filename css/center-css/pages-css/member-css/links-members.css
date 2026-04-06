@@ -1,0 +1,34 @@
+    /* 主体部分卡片列表设计 */
+.links-center-list-card {
+    width: 100%;
+    height: fit-content;
+	padding: 10px;
+	margin-bottom: 10px;
+    border-radius: 8px;
+    border: 3px solid;
+    transition: border-color 0.3s ease;
+}
+
+    /* 主体部分卡片列表悬停设计 */
+.links-center-list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-width: 4px;
+}
+
+    /* 主体部分卡片列表标题设计 */
+.links-center-list-card-header {
+    width: 100%;
+    height: fit-content;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+    /* 主体部分卡片列表内容设计 */
+.links-center-list-card-content {
+    width: 100%;
+    height: fit-content;
+    font-size: 15px;
+}
+
+

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <link rel="stylesheet" href="../../css/header-css/music-player.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/qr-generator.css">
+    
+    <title>二维码生成器 | Cnkrru的博客</title>
+</head>
+<body>
+    <div class="header-blank"></div>
+    <header class="header-flex">
+        <div class="header-S">
+            <nav class="header-container">
+                <div class="header-card">
+                    <div class="logo-card">
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
+                    </div>
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <div class="button-class-card">
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="header-blank"></div>
+    <main class="mid-flex">
+        <div class="left-blank"></div>
+        <aside class="left-asider-S">
+            <div class="left-asider-container">
+                <div class="left-asider-card">
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
+                    </div>
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="left-center-blank"></div>
+        <section class="center-S">
+            <div class="center-container">
+                <div class="center-card">
+                    <div class="center-head-card">
+                        <h2>二维码生成器</h2>
+                        <div style="display: flex; align-items: center;">
+                            <button class="back-to-top-btn">
+                                <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="center-head-blank"></div>
+                    <div class="center-card-content">
+                        <div class="read-center-card-body">
+                            <div class="text-style">
+                                
+                                <div class="tool-container">
+                                    <h3>二维码生成</h3>
+                                    <p>输入文本或URL，生成对应的二维码</p>
+                                    
+                                    <div class="tool-section">
+                                        <h4>输入内容</h4>
+                                        <div class="input-group">
+                                            <label for="qrText">文本/URL</label>
+                                            <textarea id="qrText" rows="4" placeholder="请输入要生成二维码的内容，如网址、文本等..."></textarea>
+                                        </div>
+                                        
+                                        <div class="config-row">
+                                            <div class="config-group">
+                                                <label for="qrSize">尺寸</label>
+                                                <select id="qrSize">
+                                                    <option value="128">128 x 128</option>
+                                                    <option value="200">200 x 200</option>
+                                                    <option value="256" selected>256 x 256</option>
+                                                    <option value="300">300 x 300</option>
+                                                    <option value="400">400 x 400</option>
+                                                    <option value="512">512 x 512</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="config-group">
+                                                <label for="qrColor">前景色</label>
+                                                <input type="color" id="qrColor" value="#000000">
+                                            </div>
+                                            
+                                            <div class="config-group">
+                                                <label for="qrBgColor">背景色</label>
+                                                <input type="color" id="qrBgColor" value="#ffffff">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="config-group" style="margin-top: 20px;">
+                                            <label for="qrCorrectLevel">纠错级别</label>
+                                            <select id="qrCorrectLevel">
+                                                <option value="L">低 (L) - 7%</option>
+                                                <option value="M" selected>中 (M) - 15%</option>
+                                                <option value="Q">较高 (Q) - 25%</option>
+                                                <option value="H">高 (H) - 30%</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <button id="generateBtn" class="generate-btn">生成二维码</button>
+                                    </div>
+                                    
+                                    <div class="tool-section">
+                                        <h4>二维码预览</h4>
+                                        <div class="qr-display">
+                                            <div id="qrContainer">
+                                                <div class="qr-placeholder">请输入内容并点击生成</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="qr-actions" id="qrActions" style="display: none;">
+                                            <button id="downloadBtn" class="action-btn">下载二维码</button>
+                                            <button id="clearBtn" class="action-btn">清除</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="right-center-blank"></div>
+        <div class="right-blank"></div>
+    </main>
+    <div class="footer-blank"></div>
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <div class="footer-container">
+                <div class="footer-card">
+                    <p>本站已运行: <span id="websiteAge"></span></p>
+                    <p>文章总数: <span id="articleCount"></span></p>
+                    <p>© <span id="copyrightYear"></span> Cnkrru. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <script src="../../js/header-js/music-player.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="../../js/tools-js/qr-generator.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+/*==============================沉浸阅读模式==============================*/
+
+/* 实现方法 */
+/* 1.display: none;隐藏需要隐藏的组件 */
+/* 2.更改要放大的区域的大小尺寸 */
+
+/* 沉浸阅读模式 - 左侧边栏隐藏 */
+body.immersive-reading .left-blank,
+body.immersive-reading .left-asider-S,
+body.immersive-reading .left-center-blank,
+body.immersive-reading .footer-blank,
+body.immersive-reading .footer-flex,
+body.immersive-reading .footer-S {
+    display: none;
+}
+
+/* 沉浸阅读模式过渡效果 */
+.left-blank,
+.left-asider-S,
+.left-center-blank,
+.center-S,
+.mid-flex,
+.footer-blank,
+.footer-flex,
+.footer-S {
+    transition: all 0.3s ease;
+}
+
+/* 沉浸阅读模式 - 中心内容卡片宽度变大 */
+body.immersive-reading .center-S {
+    width: 1400px;
+    max-width: 1400px;
+}
+
+/* 沉浸阅读模式 - 整体布局调整 */
+body.immersive-reading .mid-flex {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+

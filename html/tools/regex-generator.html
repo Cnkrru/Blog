@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 基础SEO -->
+    <title>正则表达式生成器 | Cnkrru的博客</title>
+    <meta name="description" content="正则表达式生成器，帮助生成和测试正则表达式">
+    <meta name="keywords" content="正则表达式,regex,表达式生成器">
+    <meta name="author" content="Cnkrru">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <!-- <link rel="stylesheet" href="../../css/header-css/music-player.css"> -->
+    <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/regex-generator.css">
+    <title>正则表达式生成器</title>
+</head>
+<body>
+    <!--==============================页面头部部分==============================-->
+    <div class="header-blank"></div>
+    <!-- 页眉启用flex -->
+    <header class="header-flex">
+        <!-- 页眉面积分配 -->
+        <div class="header-S">
+            <!-- 页眉部分版心设计 -->
+            <nav class="header-container">
+                <!-- 页眉卡片设计 -->
+                <div class="header-card">
+                    <!-- Logo设计 -->
+                    <div class="logo-card">
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
+                    </div>
+                    <!-- 搜索框设计 -->
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <!-- 功能按钮模块区域设计 -->
+                    <div class="button-class-card">
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <!-- <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div> -->
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- 页眉与主体间�?-->
+    <div class="header-blank"></div>
+    <!--==============================页面中间部分==============================-->
+    <!-- 页面中间部分启用flex布局 -->
+    <main class="mid-flex">
+        <!-- 左侧空白区域 -->
+        <div class="left-blank"></div>
+        <!-- ==========左侧侧边栏设�?======== -->
+        <!-- 左侧边栏面积分配 -->
+        <aside class="left-asider-S">
+            <!-- 左侧边栏版心设计 -->
+            <div class="left-asider-container">
+                <!-- 左侧边栏总体卡片布局 -->
+                <div class="left-asider-card">
+                    <!-- 头像设计 -->
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头�?>
+                    </div>
+                    <!-- 欢迎语设�?-->
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <!-- 社媒友链卡片设计 -->
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <!-- 页面跳转链接设计 -->
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- 左侧边栏与主体部分的间距区域 -->
+        <div class="left-center-blank"></div>
+        <!-- ==========主体区域设计========== -->
+        <!-- 主体面积分配 -->
+        <section class="center-S">
+            <!-- 主体版心设计 -->
+            <div class="center-container">
+                <!-- 主体部分卡片设计 -->
+                <div class="center-card">
+                    <!-- 中心卡片 -->
+                    <!-- 主体部分卡片标题设计 -->
+                    <div class="center-head-card">
+                        <h2>正则表达式生成器</h2>
+                    </div>
+                    <hr>
+                    <!-- 中心卡片顶部间距区域 -->
+                    <div class="center-head-blank"></div>
+                    <div class="center-card-content tool-content">
+                        <!-- 正则表达式生成器容器 -->
+                        <div class="regex-generator-container">
+                            <!-- 正则表达式预览区�?-->
+                            <div class="regex-preview-section">
+                                <div class="regex-preview-box">
+                                    <code id="regexPreview">^[a-zA-Z0-9]{1,10}$</code>
+                                </div>
+                                <div class="regex-value-display">
+                                    <div class="regex-value-item">
+                                        <span class="regex-value-label">正则表达�?/span>
+                                        <code class="regex-value-code" id="regexValue">^[a-zA-Z0-9]{1,10}$</code>
+                                        <button class="copy-btn" data-target="regexValue">复制</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 正则表达式控制区 -->
+                            <div class="regex-control-section">
+                                <!-- 字符类型选择 -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span>字符类型</span>
+                                    </label>
+                                    <div class="character-types">
+                                        <div class="character-type-item">
+                                            <input type="checkbox" id="charLetters" checked>
+                                            <label for="charLetters">字母 (a-zA-Z)</label>
+                                        </div>
+                                        <div class="character-type-item">
+                                            <input type="checkbox" id="charNumbers" checked>
+                                            <label for="charNumbers">数字 (0-9)</label>
+                                        </div>
+                                        <div class="character-type-item">
+                                            <input type="checkbox" id="charLowercase">
+                                            <label for="charLowercase">小写字母 (a-z)</label>
+                                        </div>
+                                        <div class="character-type-item">
+                                            <input type="checkbox" id="charUppercase">
+                                            <label for="charUppercase">大写字母 (A-Z)</label>
+                                        </div>
+                                        <div class="character-type-item">
+                                            <input type="checkbox" id="charWhitespace">
+                                            <label for="charWhitespace">空白字符 (空格, 制表符等)</label>
+                                        </div>
+                                        <div class="character-type-item">
+                                            <input type="checkbox" id="charSpecial">
+                                            <label for="charSpecial">特殊字符 (!@#$%^&*()-_=+[{]};:'",.<>/?)</label>
+                                        </div>
+                                        <div class="character-type-item">
+                                            <input type="checkbox" id="charCustom">
+                                            <label for="charCustom">自定义字�?/label>
+                                            <input type="text" class="custom-characters" id="customChars" placeholder="输入自定义字�?>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 重复次数设置 -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span>重复次数</span>
+                                    </label>
+                                    <div class="repeat-settings">
+                                        <div class="repeat-option">
+                                            <input type="radio" name="repeatType" id="repeatFixed" checked>
+                                            <label for="repeatFixed">固定次数</label>
+                                            <input type="number" class="repeat-input" id="repeatFixedValue" min="1" value="5">
+                                        </div>
+                                        <div class="repeat-option">
+                                            <input type="radio" name="repeatType" id="repeatRange">
+                                            <label for="repeatRange">范围</label>
+                                            <input type="number" class="repeat-input" id="repeatMin" min="0" value="1">
+                                            <span>�?/span>
+                                            <input type="number" class="repeat-input" id="repeatMax" min="1" value="10">
+                                        </div>
+                                        <div class="repeat-option">
+                                            <input type="radio" name="repeatType" id="repeatAtLeast">
+                                            <label for="repeatAtLeast">至少</label>
+                                            <input type="number" class="repeat-input" id="repeatAtLeastValue" min="0" value="1">
+                                        </div>
+                                        <div class="repeat-option">
+                                            <input type="radio" name="repeatType" id="repeatOptional">
+                                            <label for="repeatOptional">可�?(0次或1)</label>
+                                        </div>
+                                        <div class="repeat-option">
+                                            <input type="radio" name="repeatType" id="repeatAny">
+                                            <label for="repeatAny">任意次数 (0或多�?</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 位置设置 -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span>位置设置</span>
+                                    </label>
+                                    <div class="position-settings">
+                                        <div class="position-option">
+                                            <input type="checkbox" id="positionStart" checked>
+                                            <label for="positionStart">匹配开�?(^)</label>
+                                        </div>
+                                        <div class="position-option">
+                                            <input type="checkbox" id="positionEnd" checked>
+                                            <label for="positionEnd">匹配结尾 ($)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 高级选项 -->
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        <span>高级选项</span>
+                                    </label>
+                                    <div class="advanced-options">
+                                        <div class="advanced-option">
+                                            <input type="checkbox" id="optionCaseInsensitive">
+                                            <label for="optionCaseInsensitive">忽略大小�?(i)</label>
+                                        </div>
+                                        <div class="advanced-option">
+                                            <input type="checkbox" id="optionGlobal">
+                                            <label for="optionGlobal">全局匹配 (g)</label>
+                                        </div>
+                                        <div class="advanced-option">
+                                            <input type="checkbox" id="optionMultiline">
+                                            <label for="optionMultiline">多行模式 (m)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 中心卡片底部间距区域 -->
+                    <div class="center-foot-blank"></div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <div class="right-blank"></div>
+    </main>
+        <!--==============================页脚区域==============================-->
+    <!-- 页脚启用felx布局 -->
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <nav class="footer-container">
+                <div class="footer-card">
+                    <div class="footer-element-card website-age"></div>
+                    <div class="footer-element-card article-count"></div>
+
+                    <div class="footer-element-card copyright"></div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    <!-- 音乐播放器由JS动态创建 -->
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <!-- <script src="../../js/header-js/music-player.js"></script> -->
+    <script src="../../js/tools-js/regex-generator.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+</body>
+</html>
+
+

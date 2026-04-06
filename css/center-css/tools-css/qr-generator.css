@@ -1,0 +1,184 @@
+/* 二维码生成器样式 */
+
+.tool-container {
+    padding: 20px 0;
+}
+
+.tool-section {
+    background: var(--card-bg, #f8f9fa);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.tool-section h4 {
+    margin-bottom: 15px;
+    color: var(--text-color, #333);
+    font-size: 1.1rem;
+}
+
+/* 输入组 */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color, #333);
+}
+
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 6px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+    background: var(--input-bg, #fff);
+    color: var(--text-color, #333);
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+
+.input-group textarea:focus {
+    outline: none;
+    border-color: var(--button-border);
+}
+
+/* 配置行 */
+.config-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.config-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.config-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.config-group select,
+.config-group input[type="color"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.config-group select:focus,
+.config-group input[type="color"]:focus {
+    outline: none;
+    border-color: var(--button-border);
+}
+
+.config-group input[type="color"] {
+    height: 42px;
+    padding: 2px;
+}
+
+/* 生成按钮 */
+.generate-btn {
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.generate-btn:hover {
+    background: var(--button-hover-bg);
+}
+
+/* 二维码显示区域 */
+.qr-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    background: var(--hover-bg);
+    border-radius: 8px;
+    padding: 30px;
+}
+
+#qrContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-placeholder {
+    color: var(--text-muted);
+    font-size: 16px;
+    text-align: center;
+}
+
+#qrContainer canvas,
+#qrContainer img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* 操作按钮 */
+.qr-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.action-btn {
+    padding: 12px 24px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    background: var(--button-hover-bg);
+    color: var(--button-text);
+    border-color: var(--button-border);
+}
+
+/* 深色模式适配 - 已由主题切换CSS管理 */
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .config-row {
+        flex-direction: column;
+    }
+    
+    .qr-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        width: 100%;
+    }
+}

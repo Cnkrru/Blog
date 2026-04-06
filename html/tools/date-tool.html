@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 基础SEO -->
+    <title>日期工具 | Cnkrru的博客</title>
+    <meta name="description" content="在线日期工具，使用day.js库提供日期格式化、计算等功能">
+    <meta name="keywords" content="日期,day.js,日期格式化,日期计算,工具">
+    <meta name="author" content="Cnkrru">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <link rel="stylesheet" href="../../css/header-css/music-player.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
+    <link rel="stylesheet" href="../../css/center-css/tools-css/date-tool.css">
+    
+    <!-- day.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <!-- 插件 -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/locale/zh-cn.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/relativeTime.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/advancedFormat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/customParseFormat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/duration.js"></script>
+</head>
+<body>
+    <!--==============================页面头部部分==============================-->
+    <div class="header-blank"></div>
+    <!-- 页眉启用flex -->
+    <header class="header-flex">
+        <!-- 页眉面积分配 -->
+        <div class="header-S">
+            <!-- 页眉部分版心设计 -->
+            <nav class="header-container">
+                <!-- 页眉卡片设计 -->
+                <div class="header-card">
+                    <!-- Logo设计 -->
+                    <div class="logo-card">
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
+                    </div>
+                    <!-- 搜索框设计 -->
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <!-- 功能按钮模块区域设计 -->
+                    <div class="button-class-card">
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- 页眉与主体间空白区域 -->
+    <div class="header-blank"></div>
+    <!--==============================页面中间部分==============================-->
+    <!-- 页面中间部分启用flex布局 -->
+    <main class="mid-flex">
+        <!-- 左侧空白区域 -->
+        <div class="left-blank"></div>
+        <!-- ==========左侧侧边栏设计========== -->
+        <!-- 左侧边栏面积分配 -->
+        <aside class="left-asider-S">
+            <!-- 左侧边栏版心设计 -->
+            <div class="left-asider-container">
+                <!-- 左侧边栏总体卡片布局 -->
+                <div class="left-asider-card">
+                    <!-- 头像设计 -->
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
+                    </div>
+                    <!-- 欢迎语设计 -->
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <!-- 社媒友链卡片设计 -->
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <!-- 页面跳转链接设计 -->
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- 左侧边栏与主体部分的间距区域 -->
+        <div class="left-center-blank"></div>
+        <!-- ==========主体区域设计========== -->
+        <!-- 主体面积分配 -->
+        <section class="center-S">
+            <!-- 主体版心设计 -->
+            <div class="center-container">
+                <!-- 主体部分卡片设计 -->
+                <div class="center-card">
+                    <!-- 中心卡片 -->
+                    <!-- 主体部分卡片标题设计 -->
+                    <div class="center-head-card">
+                        <h2>日期工具</h2>
+                        <div style="display: flex; align-items: center;">
+                            <button class="back-to-top-btn">
+                                <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 中心卡片顶部间距区域 -->
+                    <div class="center-head-blank"></div>
+                    <div class="center-card-content">
+                        <div class="read-center-card-body">
+                            <!-- 内容区域css选择器专用套 -->
+                            <div class="text-style">
+                                <p>日期工具是一个基于day.js库的在线日期处理工具，支持日期格式化、计算、比较等功能。</p>
+                                
+                                <div class="date-tool-container">
+                                    <!-- 日期格式化区域 -->
+                                    <div class="tool-section">
+                                        <h3>日期格式化</h3>
+                                        <div class="tool-content">
+                                            <div class="input-group">
+                                                <label for="formatDate">日期：</label>
+                                                <input type="date" id="formatDate" value="2026-04-03">
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="formatPattern">格式化模式：</label>
+                                                <select id="formatPattern">
+                                                    <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                                    <option value="YYYY/MM/DD">YYYY/MM/DD</option>
+                                                    <option value="YYYY年MM月DD日">YYYY年MM月DD日</option>
+                                                    <option value="YYYY-MM-DD HH:mm:ss">YYYY-MM-DD HH:mm:ss</option>
+                                                    <option value="YYYY年MM月DD日 HH时mm分ss秒">YYYY年MM月DD日 HH时mm分ss秒</option>
+                                                    <option value="dddd, MMMM D, YYYY">dddd, MMMM D, YYYY</option>
+                                                </select>
+                                            </div>
+                                            <button id="formatBtn" class="btn-primary">格式化</button>
+                                            <div class="result-group">
+                                                <label>结果：</label>
+                                                <input type="text" id="formatResult" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 相对时间计算 -->
+                                    <div class="tool-section">
+                                        <h3>相对时间计算</h3>
+                                        <div class="tool-content">
+                                            <div class="input-group">
+                                                <label for="relativeDate">日期：</label>
+                                                <input type="date" id="relativeDate" value="2026-04-03">
+                                            </div>
+                                            <button id="relativeBtn" class="btn-primary">计算</button>
+                                            <div class="result-group">
+                                                <label>结果：</label>
+                                                <input type="text" id="relativeResult" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 日期计算 -->
+                                    <div class="tool-section">
+                                        <h3>日期计算</h3>
+                                        <div class="tool-content">
+                                            <div class="input-group">
+                                                <label for="calculateDate">基准日期：</label>
+                                                <input type="date" id="calculateDate" value="2026-04-03">
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="calculateType">操作类型：</label>
+                                                <select id="calculateType">
+                                                    <option value="add">添加</option>
+                                                    <option value="subtract">减去</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="calculateValue">数值：</label>
+                                                <input type="number" id="calculateValue" value="1">
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="calculateUnit">单位：</label>
+                                                <select id="calculateUnit">
+                                                    <option value="day">天</option>
+                                                    <option value="week">周</option>
+                                                    <option value="month">月</option>
+                                                    <option value="year">年</option>
+                                                    <option value="hour">小时</option>
+                                                    <option value="minute">分钟</option>
+                                                    <option value="second">秒</option>
+                                                </select>
+                                            </div>
+                                            <button id="calculateBtn" class="btn-primary">计算</button>
+                                            <div class="result-group">
+                                                <label>结果：</label>
+                                                <input type="text" id="calculateResult" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 日期比较 -->
+                                    <div class="tool-section">
+                                        <h3>日期比较</h3>
+                                        <div class="tool-content">
+                                            <div class="input-group">
+                                                <label for="compareDate1">日期1：</label>
+                                                <input type="date" id="compareDate1" value="2026-04-03">
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="compareDate2">日期2：</label>
+                                                <input type="date" id="compareDate2" value="2026-04-01">
+                                            </div>
+                                            <button id="compareBtn" class="btn-primary">比较</button>
+                                            <div class="result-group">
+                                                <label>结果：</label>
+                                                <input type="text" id="compareResult" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 日期差计算 -->
+                                    <div class="tool-section">
+                                        <h3>日期差计算</h3>
+                                        <div class="tool-content">
+                                            <div class="input-group">
+                                                <label for="diffDate1">开始日期：</label>
+                                                <input type="date" id="diffDate1" value="2026-04-01">
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="diffDate2">结束日期：</label>
+                                                <input type="date" id="diffDate2" value="2026-04-03">
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="diffUnit">单位：</label>
+                                                <select id="diffUnit">
+                                                    <option value="day">天</option>
+                                                    <option value="week">周</option>
+                                                    <option value="month">月</option>
+                                                    <option value="year">年</option>
+                                                    <option value="hour">小时</option>
+                                                    <option value="minute">分钟</option>
+                                                    <option value="second">秒</option>
+                                                </select>
+                                            </div>
+                                            <button id="diffBtn" class="btn-primary">计算</button>
+                                            <div class="result-group">
+                                                <label>结果：</label>
+                                                <input type="text" id="diffResult" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 当前日期时间 -->
+                                    <div class="tool-section">
+                                        <h3>当前日期时间</h3>
+                                        <div class="tool-content">
+                                            <button id="nowBtn" class="btn-primary">获取当前时间</button>
+                                            <div class="result-group">
+                                                <label>当前时间：</label>
+                                                <input type="text" id="nowResult" readonly>
+                                            </div>
+                                            <div class="result-group">
+                                                <label>Unix时间戳：</label>
+                                                <input type="text" id="timestampResult" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class="read-center-card-footer">
+                            <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
+                        </div>
+                    </div>
+                    <!-- 中心卡片底部间距区域 -->
+                    <div class="center-foot-blank"></div>
+                    <hr>
+                </div>
+            </div>
+        </section>
+        <div class="right-blank"></div>
+    </main>
+        <!--==============================页脚区域==============================-->
+    <!-- 页脚启用felx布局 -->
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <nav class="footer-container">
+                <div class="footer-card">
+                    <div class="footer-element-card website-age"></div>
+                    <div class="footer-element-card article-count"></div>
+
+                    <div class="footer-element-card copyright"></div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    <!-- 音乐播放器 -->
+    <div class="music-player-container" id="music-player-container">
+        <button class="music-player-close">&times;</button>
+        <div class="music-player-left">
+            <img class="music-player-cover" id="music-player-cover" src="" alt="专辑封面">
+            <div class="music-player-info">
+                <h3 class="music-player-title" id="music-player-title">未选择音乐</h3>
+                <p class="music-player-artist" id="music-player-artist">-</p>
+            </div>
+        </div>
+        <div class="music-player-center">
+            <div class="music-player-controls">
+                <button class="music-player-mode-btn" id="music-player-mode" title="顺序播放">🔁</button>
+                <button class="music-player-control-btn prev-btn" id="music-player-prev">&#9664;</button>
+                <button class="music-player-control-btn play-pause play-btn" id="music-player-play">&#9658;</button>
+                <button class="music-player-control-btn next-btn" id="music-player-next">&#9654;</button>
+                <button class="music-player-list-btn" id="music-player-list" title="播放列表">&#9776;</button>
+            </div>
+            <div class="music-player-progress">
+                <span class="music-player-time current-time" id="music-player-current-time">0:00</span>
+                <input type="range" class="music-player-progress-bar" id="music-player-progress" min="0" max="100" value="0">
+                <span class="music-player-time total-time" id="music-player-total-time">0:00</span>
+            </div>
+        </div>
+        <div class="music-player-right">
+            <div class="music-player-volume">
+                <span class="music-player-volume-icon" id="music-player-volume-icon">&#128266;</span>
+                <input type="range" class="music-player-volume-bar" id="music-player-volume" min="0" max="100" value="70">
+            </div>
+        </div>
+    </div>
+    
+    <!-- 音乐列表面板 -->
+    <div class="music-list-overlay" id="music-list-overlay">
+        <div class="music-list-modal">
+            <div class="music-list-header">
+                <h3 id="music-list-title">播放列表 (0首)</h3>
+                <button class="music-player-close" id="music-list-close">&times;</button>
+            </div>
+            <div class="music-list-content">
+                <ul id="music-list-items" class="music-list-items">
+                    <!-- 音乐列表项将在这里动态生成 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <script src="../../js/header-js/music-player.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+    <script src="../../js/tools-js/date-tool.js"></script>
+</body>
+</html>

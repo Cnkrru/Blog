@@ -1,0 +1,147 @@
+/* 日期工具样式 */
+
+.date-tool-container {
+    padding: 20px 0;
+}
+
+.tool-section {
+    background: var(--card-bg, #f8f9fa);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.tool-section h3 {
+    margin-bottom: 20px;
+    color: var(--text-color, #333);
+    font-size: 1.2rem;
+}
+
+.tool-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.input-group label {
+    min-width: 100px;
+    font-weight: 500;
+    color: var(--text-color, #333);
+}
+
+.input-group input,
+.input-group select {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--input-bg, #fff);
+    color: var(--text-color, #333);
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.btn-primary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    background: #4CAF50;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: flex-start;
+}
+
+.btn-primary:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.result-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.result-group label {
+    min-width: 100px;
+    font-weight: 500;
+    color: var(--text-color, #333);
+}
+
+.result-group input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--input-bg, #fff);
+    color: var(--text-color, #333);
+    background: #f9f9f9;
+    cursor: not-allowed;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .input-group,
+    .result-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .input-group label,
+    .result-group label {
+        min-width: auto;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .input-group input,
+    .input-group select,
+    .result-group input {
+        min-width: 100%;
+        width: 100%;
+    }
+    
+    .btn-primary {
+        align-self: stretch;
+    }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .tool-section {
+        background: var(--card-bg-dark, #2d2d2d);
+    }
+    
+    .input-group input,
+    .input-group select,
+    .result-group input {
+        background: var(--input-bg-dark, #3d3d3d);
+        border-color: var(--border-color-dark, #555);
+        color: var(--text-color-dark, #fff);
+    }
+    
+    .result-group input {
+        background: #333;
+    }
+}
