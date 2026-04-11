@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- 基础SEO -->
-    <title>个人博客项目介绍 | Cnkrru的博客</title>
-    <meta name="description" content="个人博客项目介绍，基于原生HTML+CSS+JavaScript开发，分享博客搭建经验">
-    <meta name="keywords" content="博客,前端,HTML,CSS,JavaScript,项目介绍">
+    <title>Mermaid图测试 | Cnkrru的博客</title>
+    <meta name="description" content="测试Mermaid图在博客中的支持能力，包括流程图、时序图、类图等">
+    <meta name="keywords" content="Mermaid,测试,图表">
     <meta name="author" content="Cnkrru">
     <meta name="robots" content="index, follow">
     
@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
     <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
     <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <!-- <link rel="stylesheet" href="../../css/header-css/music-player.css"> -->
     <link rel="stylesheet" href="../../css/center-css/comment.css">
     <link rel="stylesheet" href="../../css/public-css/text.css">
     <link rel="stylesheet" href="../../css/center-css/reading-time.css">
@@ -35,6 +36,7 @@
                 <div class="header-card">
                     <!-- Logo设计 -->
                     <div class="logo-card">
+                        <!-- <a href="index.html"><img src="./images/hugo.png" alt=""></a> -->
                         <a href="../../index.html"><h1>Cnkrru</h1></a>
                     </div>
                     <!-- 搜索框设计 -->
@@ -52,6 +54,7 @@
                         </div>
                         <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
                         <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
+                        <!-- <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放"></div> -->
                     </div>
                 </div>
             </nav>
@@ -92,7 +95,6 @@
                                 <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
                                 <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
                                 <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
-                                <li class="page-card"><a href="../indexs/novel-index.html">小说</a></li>
                             </ul>
                         </div>
                     </div>
@@ -109,7 +111,7 @@
                     <!-- 中心卡片 -->
                     <!-- 主体部分卡片标题设计 -->
                     <div class="center-head-card">
-                        <h2>post-1</h2>
+                        <h2>post-4</h2>
                         <div style="display: flex; align-items: center;">
                             <button class="back-to-top-btn">
                                 <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
@@ -144,28 +146,88 @@
                         <div class="read-center-card-body">
                             <!-- 内容区域css选择器专用套 -->
                             <div class="text-style">
-                                <p>标题：个人博客项目介绍</p>
-                                <p>分类：前端</p>
-                                <p>标签：前端</p>
-                                <p>编号：post-1</p>
-                                <p>时间：2026-03-29</p>
+                                <p>标题：Mermaid图测试</p>
+                                <p>分类：测试</p>
+                                <p>标签：测试,Mermaid</p>
+                                <p>编号：post-test-mermaid</p>
+                                <p>时间：2026-04-12</p>
                                 <hr>
-                                <p>该博客基于原生HTML+CSS+JavaScript开发，不使用任何前端框架，也不基于Hexo/Hugo等快速建站工具。</p>
-                                <p>初始代码由我自己书写，博客样式框架：HTML标签嵌套关系，CSS基础样式均由自己书写，文件结构自己设计，js代码由AI生成，js代码中的实现方法，均由作者指定。</p>
-                                <p>博客源码存放在GitHub仓库：
-                                    <a href="https://github.com/Cnkrru/Blog" target="_blank">https://github.com/Cnkrru/Blog</a>
-                                </p>
-                                <p>关于AI构建的问题：作者个人认为，一门技术最重要的是解决问题，学习了这门技术，也应该学会使用先进工具，而AI是当前最先进的coding工具</p>
-                                <p>AI目前发展很强大，但是更多的是让专业的人更加强大，不懂技术的人，做出来的，大多只是demo，而非project。</p>
-                                <p>创建个人博客过程中，创建基础样式，画整体框架阶段，80%的工作由作者完成，余下的重复性工作由AI完成，而后续很多页面，均是基于初代框架实现，大量复用初代代码。</p>
-                                <p>在AI加持下，程序员应该关注实现功能的方法，能看懂AI的代码，也能看出来bug在哪</p>
+                                <h2>Mermaid图测试</h2>
+                                <p>本页面用于测试Mermaid图在博客中的支持能力，包含多种类型的图表。</p>
+                                
+                                <h3>流程图</h3>
+                                <pre><code class="language-mermaid">
+flowchart TD
+    A[开始] --> B[初始化]
+    B --> C{条件判断}
+    C -->|是| D[执行操作1]
+    C -->|否| E[执行操作2]
+    D --> F[结束]
+    E --> F
+                                </code></pre>
+                                
+                                <h3>时序图</h3>
+                                <pre><code class="language-mermaid">
+sequenceDiagram
+    participant Client as 客户端
+    participant Server as 服务器
+    
+    Client->>Server: 发送请求
+    Server->>Server: 处理请求
+    Server-->>Client: 返回响应
+                                </code></pre>
+                                
+                                <h3>类图</h3>
+                                <pre><code class="language-mermaid">
+classDiagram
+    class Person {
+        - String name
+        - int age
+        + void setName(String name)
+        + String getName()
+        + void setAge(int age)
+        + int getAge()
+    }
+    
+    class Student {
+        - String studentId
+        + void setStudentId(String id)
+        + String getStudentId()
+    }
+    
+    Person <|-- Student
+                                </code></pre>
+                                
+                                <h3>甘特图</h3>
+                                <pre><code class="language-mermaid">
+gantt
+    dateFormat  YYYY-MM-DD
+    title 项目进度
+    section 计划
+    任务1           :a1, 2026-04-01, 30d
+    任务2           :after a1  , 20d
+    section 实施
+    任务3           :2026-04-15, 12d
+    任务4           : 24d
+                                </code></pre>
+                                
+                                <h3>饼图</h3>
+                                <pre><code class="language-mermaid">
+pie
+    title 编程语言使用比例
+    "JavaScript" : 30
+    "Python" : 25
+    "Java" : 20
+    "C++" : 15
+    "其他" : 10
+                                </code></pre>
                             </div>
                         </div>
                         <hr>
                         
                         <!-- 上下篇导航容器 -->
                         <div class="post-nav-container">
-                            <a href="#" class="post-nav-btn prev">
+                            <a href="post-3.html" class="post-nav-btn prev">
                                 <div class="post-nav-btn-text">
                                     <span class="post-nav-btn-label">上一篇</span>
                                     <span class="post-nav-btn-title">暂无</span>
@@ -228,6 +290,7 @@
                 <div class="footer-card">
                     <div class="footer-element-card website-age"></div>
                     <div class="footer-element-card article-count"></div>
+
                     <div class="footer-element-card copyright"></div>
                 </div>
             </nav>
@@ -254,9 +317,9 @@
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="../../js/center-js/public-js/notyf-integration.js"></script>
     <script src="../../js/center-js/posts-js/reading-time.js"></script>
-    <script src="../../js/baidu-analytics.js"></script>
+    <!-- Mermaid图支持 -->
+    <script src="../../js/center-js/posts-js/mermaid-render.js"></script>
     <!-- 移动端菜单脚本 -->
     <script src="../../js/mobile-menu.js"></script>
 </body>
 </html>
-

@@ -102,24 +102,13 @@
         if (!timeData) return null;
         
         const container = document.createElement('div');
-        container.className = config.containerClass;
-        container.style.cssText = `
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 12px;
-            background: rgba(255, 105, 180, 0.1);
-            border: 1px solid rgba(255, 105, 180, 0.3);
-            border-radius: 20px;
-            font-size: 13px;
-            color: #FF69B4;
-            margin: 10px 0;
-        `;
+        container.className = 'reading-time-container';
         
         // 添加时钟图标
         const icon = document.createElement('span');
+        icon.className = 'reading-time-icon';
         icon.innerHTML = `
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
@@ -127,6 +116,7 @@
         
         // 添加时间文本
         const text = document.createElement('span');
+        text.className = 'reading-time-text';
         text.textContent = config.format.replace('{time}', formatTime(timeData));
         
         container.appendChild(icon);

@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
     <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
     <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
-    <link rel="stylesheet" href="../../css/header-css/music-player.css">
     <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
     <link rel="stylesheet" href="../../css/center-css/tools-css/pdf-viewer.css">
     
     <title>PDF预览器 | Cnkrru的博客</title>
 </head>
 <body>
-    <div class="header-blank"></div>
+    <!-- 移动端菜单遮罩层 -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>  
     <header class="header-flex">
         <div class="header-S">
             <nav class="header-container">
@@ -29,17 +29,20 @@
                         <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
                     </div>
                     <div class="button-class-card">
+                        <!-- 移动端菜单按钮 -->
+                        <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                         <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
                         <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
-                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
-    <div class="header-blank"></div>
     <main class="mid-flex">
-        <div class="left-blank"></div>
         <aside class="left-asider-S">
             <div class="left-asider-container">
                 <div class="left-asider-card">
@@ -63,7 +66,6 @@
                                 <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
                                 <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
                                 <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
-                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
                                 <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
                             </ul>
                         </div>
@@ -71,7 +73,6 @@
                 </div>
             </div>
         </aside>
-        <div class="left-center-blank"></div>
         <section class="center-S">
             <div class="center-container">
                 <div class="center-card">
@@ -84,7 +85,6 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="center-head-blank"></div>
                     <div class="center-card-content">
                         <div class="read-center-card-body">
                             <div class="text-style">
@@ -142,10 +142,7 @@
                 </div>
             </div>
         </section>
-        <div class="right-center-blank"></div>
-        <div class="right-blank"></div>
     </main>
-    <div class="footer-blank"></div>
     <footer class="footer-flex">
         <div class="footer-S">
             <div class="footer-container">
@@ -157,18 +154,16 @@
             </div>
         </div>
     </footer>
-    <div class="footer-blank"></div>
-    
     <script src="../../js/header-js/theme-toggle.js"></script>
     <script src="../../js/header-js/immersive-reading.js"></script>
     <script src="../../js/header-js/back-to-top.js"></script>
-    <script src="../../js/header-js/music-player.js"></script>
     <script src="../../js/header-js/search.js"></script>
     <script src="../../js/footer-js/website-age.js"></script>
     <script src="../../js/footer-js/article-count.js"></script>
     <script src="../../js/footer-js/copyright.js"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="../../js/tools-js/pdf-viewer.js"></script>
+    <!-- 移动端菜单脚本 -->
+    <script src="../../js/mobile-menu.js"></script>
 </body>
 </html>

@@ -16,14 +16,15 @@
     <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
     <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
     <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
-    <link rel="stylesheet" href="../../css/header-css/music-player.css">
     <link rel="stylesheet" href="../../css/center-css/comment.css">
     <link rel="stylesheet" href="../../css/public-css/text.css">
+    <link rel="stylesheet" href="../../css/center-css/reading-time.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 </head>
 <body>
+    <!-- 移动端菜单遮罩层 -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>  
     <!--==============================页面头部部分==============================-->
-    <div class="header-blank"></div>
     <!-- 页眉启用flex -->
     <header class="header-flex">
         <!-- 页眉面积分配 -->
@@ -43,21 +44,22 @@
                     </div>
                     <!-- 功能按钮模块区域设计 -->
                     <div class="button-class-card">
+                        <!-- 移动端菜单按钮 -->
+                        <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                         <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
                         <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
-                        <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放"></div>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
-    <!-- 页眉与主体间空白区域 -->
-    <div class="header-blank"></div>
     <!--==============================页面中间部分==============================-->
     <!-- 页面中间部分启用flex布局 -->
     <main class="mid-flex">
-        <!-- 左侧空白区域 -->
-        <div class="left-blank"></div>
         <!-- ==========左侧侧边栏设计========== -->
         <!-- 左侧边栏面积分配 -->
         <aside class="left-asider-S">
@@ -89,7 +91,6 @@
                                 <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
                                 <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
                                 <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
-                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
                                 <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
                             </ul>
                         </div>
@@ -97,8 +98,6 @@
                 </div>
             </div>
         </aside>
-        <!-- 左侧边栏与主体部分的间距区域 -->
-        <div class="left-center-blank"></div>
         <!-- ==========主体区域设计========== -->
         <!-- 主体面积分配 -->
         <section class="center-S">
@@ -140,8 +139,6 @@
                         </div>
                     </div>
                     <hr>
-                    <!-- 中心卡片顶部间距区域 -->
-                    <div class="center-head-blank"></div>
                     <div class="center-card-content">
                         <div class="read-center-card-body">
                             <!-- 内容区域css选择器专用套 -->
@@ -173,7 +170,8 @@ async function fetchData() {
     } catch (error) {
         console.error('Error:', error);
     }
-}</code></pre>
+}
+                                </code></pre>
                                 
                                 <h3>CSS</h3>
                                 <pre><code class="language-css">/* CSS 示例 */
@@ -200,7 +198,8 @@ body {
 
 .button:hover {
     background-color: #45a049;
-}</code></pre>
+}
+                                </code></pre>
                                 
                                 <h3>HTML</h3>
                                 <pre><code class="language-html">&lt;!-- HTML 示例 --&gt;
@@ -221,8 +220,9 @@ body {
     &lt;/main&gt;
     &lt;script src="script.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-                                
+&lt;/html&gt;
+                                </code></pre>
+
                                 <h3>Python</h3>
                                 <pre><code class="language-python"># Python 示例
 def factorial(n):
@@ -245,8 +245,8 @@ class Person:
         self.age = age
     
     def greet(self):
-        return f"Hello, my name is {self.name}"</code></pre>
-                                
+        return f"Hello, my name is {self.name}"
+                                </code></pre>
                                 <h3>Java</h3>
                                 <pre><code class="language-java">// Java 示例
 public class HelloWorld {
@@ -263,51 +263,8 @@ public class HelloWorld {
     private class InnerClass {
         private String message = "Hello from inner class";
     }
-}</code></pre>
-                                
-                                <h3>SQL</h3>
-                                <pre><code class="language-sql">-- SQL 示例
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- 插入数据
-INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
-
--- 查询数据
-SELECT * FROM users WHERE name LIKE '%John%';
-
--- 更新数据
-UPDATE users SET email = 'john.doe@example.com' WHERE id = 1;
-
--- 删除数据
-DELETE FROM users WHERE id = 1;</code></pre>
-                                
-                                <h3>Bash</h3>
-                                <pre><code class="language-bash">#!/bin/bash
-
-# Bash 脚本示例
-
-echo "Hello, World!"
-
-# 变量定义
-name="Cnkrru"
-echo "My name is $name"
-
-# 条件语句
-if [ -f "file.txt" ]; then
-    echo "File exists"
-else
-    echo "File does not exist"
-fi
-
-# 循环
-for i in {1..5}; do
-    echo "Iteration $i"
-done</code></pre>
+}
+                                </code></pre>
                                 
                                 <h3>JSON</h3>
                                 <pre><code class="language-json">{
@@ -325,98 +282,8 @@ done</code></pre>
         "country": "China"
     },
     "isActive": true
-}</code></pre>
-                                
-                                <h3>TypeScript</h3>
-                                <pre><code class="language-typescript">// TypeScript 示例
-interface Person {
-    name: string;
-    age: number;
-    email?: string;
 }
-
-function greet(person: Person): string {
-    return `Hello, ${person.name}!`;
-}
-
-const user: Person = {
-    name: "Cnkrru",
-    age: 25
-};
-
-console.log(greet(user));</code></pre>
-                                
-                                <h3>Go</h3>
-                                <pre><code class="language-go">// Go 示例
-package main
-
-import "fmt"
-
-func main() {
-    fmt.Println("Hello, World!")
-    
-    // 变量定义
-    var name string = "Cnkrru"
-    age := 25
-    
-    fmt.Printf("Name: %s, Age: %d\n", name, age)
-    
-    // 函数调用
-    fmt.Println(add(10, 20))
-}
-
-func add(a, b int) int {
-    return a + b
-}</code></pre>
-                                
-                                <h3>Rust</h3>
-                                <pre><code class="language-rust">// Rust 示例
-fn main() {
-    println!("Hello, World!");
-    
-    // 变量定义
-    let name = "Cnkrru";
-    let age = 25;
-    
-    println!("Name: {}, Age: {}", name, age);
-    
-    // 函数调用
-    println!("Sum: {}", add(10, 20));
-}
-
-fn add(a: i32, b: i32) -> i32 {
-    a + b
-}</code></pre>
-                                
-                                <h3>Vue</h3>
-                                <pre><code class="language-vue">&lt;template&gt;
-  &lt;div class="hello"&gt;
-    &lt;h1&gt;{{ message }}&lt;/h1&gt;
-    &lt;button @click="changeMessage"&gt;Change Message&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
-
-&lt;script&gt;
-export default {
-  data() {
-    return {
-      message: 'Hello, Vue!'
-    }
-  },
-  methods: {
-    changeMessage() {
-      this.message = 'Message changed!'
-    }
-  }
-}
-&lt;/script&gt;
-
-&lt;style scoped&gt;
-.hello {
-  text-align: center;
-  padding: 20px;
-}
-&lt;/style&gt;</code></pre>
+                                </code></pre>
                                 
                                 <p>以上代码示例应该会显示为带有语法高亮的样式，并且会显示行号，右上角还有复制按钮。</p>
                             </div>
@@ -428,7 +295,7 @@ export default {
                             <a href="post-1.html" class="post-nav-btn prev">
                                 <div class="post-nav-btn-text">
                                     <span class="post-nav-btn-label">上一篇</span>
-                                    <span class="post-nav-btn-title">个人博客项目介绍</span>
+                                    <span class="post-nav-btn-title">暂无</span>
                                 </div>
                             </a>
                             <a href="#" class="post-nav-btn next">
@@ -473,15 +340,12 @@ export default {
                         <div class="comment-section">
                             <h3>评论</h3>
                             <div class="comment-container"></div>
-                        </div>                        
+                        </div>
                     </div>
-                    <!-- 中心卡片底部间距区域 -->
-                    <div class="center-foot-blank"></div>
                     <hr>
                 </div>
             </div>
         </section>
-        <div class="right-blank"></div>
     </main>
         <!--==============================页脚区域==============================-->
     <!-- 页脚启用felx布局 -->
@@ -498,57 +362,9 @@ export default {
         </div>
     </footer>
     <div class="footer-blank"></div>
-    <!-- 音乐播放器 -->
-    <div class="music-player-container" id="music-player-container">
-        <button class="music-player-close">&times;</button>
-        <div class="music-player-left">
-            <img class="music-player-cover" id="music-player-cover" src="" alt="专辑封面">
-            <div class="music-player-info">
-                <h3 class="music-player-title" id="music-player-title">未选择音乐</h3>
-                <p class="music-player-artist" id="music-player-artist">-</p>
-            </div>
-        </div>
-        <div class="music-player-center">
-            <div class="music-player-controls">
-                <button class="music-player-mode-btn" id="music-player-mode" title="顺序播放">🔁</button>
-                <button class="music-player-control-btn prev-btn" id="music-player-prev">&#9664;</button>
-                <button class="music-player-control-btn play-pause play-btn" id="music-player-play">&#9658;</button>
-                <button class="music-player-control-btn next-btn" id="music-player-next">&#9654;</button>
-                <button class="music-player-list-btn" id="music-player-list" title="播放列表">&#9776;</button>
-            </div>
-            <div class="music-player-progress">
-                <span class="music-player-time current-time" id="music-player-current-time">0:00</span>
-                <input type="range" class="music-player-progress-bar" id="music-player-progress" min="0" max="100" value="0">
-                <span class="music-player-time total-time" id="music-player-total-time">0:00</span>
-            </div>
-        </div>
-        <div class="music-player-right">
-            <div class="music-player-volume">
-                <span class="music-player-volume-icon" id="music-player-volume-icon">&#128266;</span>
-                <input type="range" class="music-player-volume-bar" id="music-player-volume" min="0" max="100" value="70">
-            </div>
-        </div>
-    </div>
-    
-    <!-- 音乐列表面板 -->
-    <div class="music-list-overlay" id="music-list-overlay">
-        <div class="music-list-modal">
-            <div class="music-list-header">
-                <h3 id="music-list-title">播放列表 (0首)</h3>
-                <button class="music-list-close" id="music-list-close">&times;</button>
-            </div>
-            <div class="music-list-content">
-                <ul id="music-list-items" class="music-list-items">
-                    <!-- 音乐列表项将在这里动态生成 -->
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- <script src="../../js/pjax.js"></script> -->
     <script src="../../js/header-js/theme-toggle.js"></script>
     <script src="../../js/header-js/immersive-reading.js"></script>
     <script src="../../js/header-js/back-to-top.js"></script>
-    <script src="../../js/header-js/music-player.js"></script>
     <script src="../../js/center-js/posts-js/comment.js"></script>
     <script src="../../js/header-js/search.js"></script>
     <script src="../../js/footer-js/website-age.js"></script>
@@ -565,5 +381,8 @@ export default {
     <script src="../../js/center-js/posts-js/post-qrcode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="../../js/center-js/public-js/notyf-integration.js"></script>
+    <script src="../../js/center-js/posts-js/reading-time.js"></script>
+    <!-- 移动端菜单脚本 -->
+    <script src="../../js/mobile-menu.js"></script>
 </body>
 </html>

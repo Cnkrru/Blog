@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
     <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
     <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
-    <!-- <link rel="stylesheet" href="../../css/header-css/music-player.css"> -->
     <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
     <link rel="stylesheet" href="../../css/center-css/tools-css/regex-generator.css">
     <title>正则表达式生成器</title>
 </head>
 <body>
+    <!-- 移动端菜单遮罩层 -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>  
     <!--==============================页面头部部分==============================-->
-    <div class="header-blank"></div>
     <!-- 页眉启用flex -->
     <header class="header-flex">
         <!-- 页眉面积分配 -->
@@ -43,22 +43,23 @@
                     </div>
                     <!-- 功能按钮模块区域设计 -->
                     <div class="button-class-card">
+                        <!-- 移动端菜单按钮 -->
+                        <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                         <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
                         <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
-                        <!-- <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div> -->
                     </div>
                 </div>
             </nav>
         </div>
     </header>
-    <!-- 页眉与主体间�?-->
-    <div class="header-blank"></div>
     <!--==============================页面中间部分==============================-->
     <!-- 页面中间部分启用flex布局 -->
     <main class="mid-flex">
-        <!-- 左侧空白区域 -->
-        <div class="left-blank"></div>
-        <!-- ==========左侧侧边栏设�?======== -->
+        <!-- ==========左侧侧边栏设计========== -->
         <!-- 左侧边栏面积分配 -->
         <aside class="left-asider-S">
             <!-- 左侧边栏版心设计 -->
@@ -67,9 +68,9 @@
                 <div class="left-asider-card">
                     <!-- 头像设计 -->
                     <div class="avator-card">
-                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头�?>
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
                     </div>
-                    <!-- 欢迎语设�?-->
+                    <!-- 欢迎语设计 -->
                     <div class="welcome-saying-card">
                         <p>欢迎来到我的博客</p>
                     </div>
@@ -89,7 +90,6 @@
                                 <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
                                 <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
                                 <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
-                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
                                 <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
                             </ul>
                         </div>
@@ -97,8 +97,6 @@
                 </div>
             </div>
         </aside>
-        <!-- 左侧边栏与主体部分的间距区域 -->
-        <div class="left-center-blank"></div>
         <!-- ==========主体区域设计========== -->
         <!-- 主体面积分配 -->
         <section class="center-S">
@@ -112,19 +110,17 @@
                         <h2>正则表达式生成器</h2>
                     </div>
                     <hr>
-                    <!-- 中心卡片顶部间距区域 -->
-                    <div class="center-head-blank"></div>
                     <div class="center-card-content tool-content">
                         <!-- 正则表达式生成器容器 -->
                         <div class="regex-generator-container">
-                            <!-- 正则表达式预览区�?-->
+                            <!-- 正则表达式预览区 -->
                             <div class="regex-preview-section">
                                 <div class="regex-preview-box">
                                     <code id="regexPreview">^[a-zA-Z0-9]{1,10}$</code>
                                 </div>
                                 <div class="regex-value-display">
                                     <div class="regex-value-item">
-                                        <span class="regex-value-label">正则表达�?/span>
+                                        <span class="regex-value-label">正则表达式：</span>
                                         <code class="regex-value-code" id="regexValue">^[a-zA-Z0-9]{1,10}$</code>
                                         <button class="copy-btn" data-target="regexValue">复制</button>
                                     </div>
@@ -165,8 +161,8 @@
                                         </div>
                                         <div class="character-type-item">
                                             <input type="checkbox" id="charCustom">
-                                            <label for="charCustom">自定义字�?/label>
-                                            <input type="text" class="custom-characters" id="customChars" placeholder="输入自定义字�?>
+                                            <label for="charCustom">自定义字符</label>
+                                            <input type="text" class="custom-characters" id="customChars" placeholder="输入自定义字符">
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +182,7 @@
                                             <input type="radio" name="repeatType" id="repeatRange">
                                             <label for="repeatRange">范围</label>
                                             <input type="number" class="repeat-input" id="repeatMin" min="0" value="1">
-                                            <span>�?/span>
+                                            <span>-</span>
                                             <input type="number" class="repeat-input" id="repeatMax" min="1" value="10">
                                         </div>
                                         <div class="repeat-option">
@@ -196,11 +192,11 @@
                                         </div>
                                         <div class="repeat-option">
                                             <input type="radio" name="repeatType" id="repeatOptional">
-                                            <label for="repeatOptional">可�?(0次或1)</label>
+                                            <label for="repeatOptional">可选 (0次或1)</label>
                                         </div>
                                         <div class="repeat-option">
                                             <input type="radio" name="repeatType" id="repeatAny">
-                                            <label for="repeatAny">任意次数 (0或多�?</label>
+                                            <label for="repeatAny">任意次数 (0多次)</label>
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +209,7 @@
                                     <div class="position-settings">
                                         <div class="position-option">
                                             <input type="checkbox" id="positionStart" checked>
-                                            <label for="positionStart">匹配开�?(^)</label>
+                                            <label for="positionStart">匹配开头 (^)</label>
                                         </div>
                                         <div class="position-option">
                                             <input type="checkbox" id="positionEnd" checked>
@@ -230,7 +226,7 @@
                                     <div class="advanced-options">
                                         <div class="advanced-option">
                                             <input type="checkbox" id="optionCaseInsensitive">
-                                            <label for="optionCaseInsensitive">忽略大小�?(i)</label>
+                                            <label for="optionCaseInsensitive">忽略大小写 (i)</label>
                                         </div>
                                         <div class="advanced-option">
                                             <input type="checkbox" id="optionGlobal">
@@ -245,13 +241,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 中心卡片底部间距区域 -->
-                    <div class="center-foot-blank"></div>
                     <hr>
                 </div>
             </div>
         </div>
-        <div class="right-blank"></div>
     </main>
         <!--==============================页脚区域==============================-->
     <!-- 页脚启用felx布局 -->
@@ -261,23 +254,21 @@
                 <div class="footer-card">
                     <div class="footer-element-card website-age"></div>
                     <div class="footer-element-card article-count"></div>
-
                     <div class="footer-element-card copyright"></div>
                 </div>
             </nav>
         </div>
     </footer>
-    <div class="footer-blank"></div>
-    <!-- 音乐播放器由JS动态创建 -->
     <script src="../../js/header-js/theme-toggle.js"></script>
     <script src="../../js/header-js/immersive-reading.js"></script>
     <script src="../../js/header-js/back-to-top.js"></script>
-    <!-- <script src="../../js/header-js/music-player.js"></script> -->
     <script src="../../js/tools-js/regex-generator.js"></script>
     <script src="../../js/header-js/search.js"></script>
     <script src="../../js/footer-js/website-age.js"></script>
     <script src="../../js/footer-js/article-count.js"></script>
     <script src="../../js/footer-js/copyright.js"></script>
+    <!-- 移动端菜单脚本 -->
+    <script src="../../js/mobile-menu.js"></script>
 </body>
 </html>
 

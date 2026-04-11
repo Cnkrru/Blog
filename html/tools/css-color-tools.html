@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
     <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
     <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
-    <!-- <link rel="stylesheet" href="../../css/header-css/music-player.css"> -->
     <link rel="stylesheet" href="../../css/center-css/tools-css/tool-common.css">
     <link rel="stylesheet" href="../../css/center-css/tools-css/css-color-tools.css">
     <title>CSS 颜色工具</title>
 </head>
 <body>
+    <!-- 移动端菜单遮罩层 -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>  
     <!--==============================页面头部部分==============================-->
-    <div class="header-blank"></div>
     <!-- 页眉启用flex -->
     <header class="header-flex">
         <!-- 页眉面积分配 -->
@@ -43,21 +43,22 @@
                     </div>
                     <!-- 功能按钮模块区域设计 -->
                     <div class="button-class-card">
+                        <!-- 移动端菜单按钮 -->
+                        <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                         <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
                         <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
-                        <!-- <div class="button-style music-player-btn"><img src="../../static/img/svg/music-player.svg" alt="音乐播放器"></div> -->
                     </div>
                 </div>
             </nav>
         </div>
     </header>
-    <!-- 页眉与主体间空白区域 -->
-    <div class="header-blank"></div>
     <!--==============================页面中间部分==============================-->
     <!-- 页面中间部分启用flex布局 -->
     <main class="mid-flex">
-        <!-- 左侧空白区域 -->
-        <div class="left-blank"></div>
         <!-- ==========左侧侧边栏设计========== -->
         <!-- 左侧边栏面积分配 -->
         <aside class="left-asider-S">
@@ -67,7 +68,7 @@
                 <div class="left-asider-card">
                     <!-- 头像设计 -->
                     <div class="avator-card">
-                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头�?>
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
                     </div>
                     <!-- 欢迎语设计 -->
                     <div class="welcome-saying-card">
@@ -89,7 +90,6 @@
                                 <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
                                 <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
                                 <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
-                                <!-- <li class="page-card"><a href="../indexs/video-index.html">视频</a></li> -->
                                 <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
                             </ul>
                         </div>
@@ -97,8 +97,6 @@
                 </div>
             </div>
         </aside>
-        <!-- 左侧边栏与主体部分的间距区域 -->
-        <div class="left-center-blank"></div>
         <!-- ==========主体区域设计========== -->
         <!-- 主体面积分配 -->
         <section class="center-S">
@@ -112,8 +110,6 @@
                         <h2>CSS 颜色工具</h2>
                     </div>
                     <hr>
-                    <!-- 中心卡片顶部间距区域 -->
-                    <div class="center-head-blank"></div>
                     <div class="center-card-content tool-content">
                         <!-- 工具容器 -->
                         <div class="color-tools-container">
@@ -235,13 +231,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 中心卡片底部间距区域 -->
-                    <div class="center-foot-blank"></div>
                     <hr>
                 </div>
             </div>
         </div>
-        <div class="right-blank"></div>
     </main>
         <!--==============================页脚区域==============================-->
     <!-- 页脚启用felx布局 -->
@@ -251,22 +244,21 @@
                 <div class="footer-card">
                     <div class="footer-element-card website-age"></div>
                     <div class="footer-element-card article-count"></div>
-
                     <div class="footer-element-card copyright"></div>
                 </nav>
             </div>
         </footer>
     <div class="footer-blank"></div>
-    <!-- 音乐播放器由JS动态创建 -->
     <script src="../../js/header-js/theme-toggle.js"></script>
     <script src="../../js/header-js/immersive-reading.js"></script>
     <script src="../../js/header-js/back-to-top.js"></script>
-    <!-- <script src="../../js/header-js/music-player.js"></script> -->
     <script src="../../js/tools-js/css-color-tools.js"></script>
     <script src="../../js/header-js/search.js"></script>
     <script src="../../js/footer-js/website-age.js"></script>
     <script src="../../js/footer-js/article-count.js"></script>
     <script src="../../js/footer-js/copyright.js"></script>
+    <!-- 移动端菜单脚本 -->
+    <script src="../../js/mobile-menu.js"></script>
 </body>
 </html>
 
