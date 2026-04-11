@@ -5,8 +5,8 @@
 /*==========获取当前主题对应的 CSS URL==========*/
 function getGiscusThemeUrl() {
     const isDark = document.body.classList.contains('dark-theme');
-    /* 使用 GitHub 仓库上的自定义主题 CSS */
-    const baseUrl = 'https://github.com/Cnkrru/Blog/tree/main/css';
+    /* 使用 GitHub raw 文件 URL */
+    const baseUrl = 'https://raw.githubusercontent.com/Cnkrru/Blog/main/css/center-css';
     return isDark 
         ? `${baseUrl}/comment-dark.css` 
         : `${baseUrl}/comment-light.css`;
