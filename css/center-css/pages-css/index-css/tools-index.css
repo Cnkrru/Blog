@@ -73,4 +73,143 @@
     pointer-events: none;
 }
 
+/*==============================响应式设计媒体查询==============================*/
+/* 超小屏手机 (＜576px) */
+@media (max-width: 575.98px) {
+    /* 调整容器布局 */
+    .tools-flex-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    /* 调整卡片大小 */
+    .tools-center-list-card {
+        width: 140px;
+        height: 160px;
+        padding: 8px;
+    }
+    
+    /* 调整卡片图标 */
+    .archives-center-list-card-header {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 8px;
+    }
+    
+    /* 调整卡片名称 */
+    .tools-center-list-card-name {
+        font-size: 12px;
+        height: 18px;
+        line-height: 18px;
+    }
+}
+
+/* 小屏手机横屏及以上 (≥576px) */
+@media (min-width: 576px) {
+    /* 调整容器布局 */
+    .tools-flex-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 18px;
+    }
+    
+    /* 调整卡片大小 */
+    .tools-center-list-card {
+        width: 160px;
+        height: 180px;
+        padding: 9px;
+    }
+    
+    /* 调整卡片图标 */
+    .archives-center-list-card-header {
+        width: 160px;
+        height: 160px;
+        margin-bottom: 9px;
+    }
+    
+    /* 调整卡片名称 */
+    .tools-center-list-card-name {
+        font-size: 13px;
+        height: 19px;
+        line-height: 19px;
+    }
+}
+
+/* 平板及以上 (≥768px) */
+@media (min-width: 768px) {
+    /* 恢复桌面布局 */
+    .tools-flex-row {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 20px;
+    }
+    
+    /* 调整卡片大小 */
+    .tools-center-list-card {
+        width: 180px;
+        height: 200px;
+        padding: 10px;
+    }
+    
+    /* 调整卡片图标 */
+    .archives-center-list-card-header {
+        width: 180px;
+        height: 180px;
+        margin-bottom: 10px;
+    }
+    
+    /* 调整卡片名称 */
+    .tools-center-list-card-name {
+        font-size: 14px;
+        height: 20px;
+        line-height: 20px;
+    }
+}
+
+/* 桌面及以上 (≥1024px) */
+@media (min-width: 1024px) {
+    /* 标准桌面布局 */
+    .tools-center-list-card {
+        width: 190px;
+        height: 210px;
+    }
+    
+    /* 调整卡片图标 */
+    .archives-center-list-card-header {
+        width: 190px;
+        height: 190px;
+    }
+}
+
+/* 大屏桌面及以上 (≥1200px) */
+@media (min-width: 1200px) {
+    /* 宽屏布局 */
+    .tools-center-list-card {
+        width: 200px;
+        height: 220px;
+    }
+    
+    /* 调整卡片图标 */
+    .archives-center-list-card-header {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* 超大屏及以上 (≥1440px) */
+@media (min-width: 1440px) {
+    /* 超大屏优化 */
+    .tools-center-list-card {
+        width: 210px;
+        height: 230px;
+    }
+    
+    /* 调整卡片图标 */
+    .archives-center-list-card-header {
+        width: 210px;
+        height: 210px;
+    }
+}
+
 

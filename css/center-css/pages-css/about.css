@@ -15,3 +15,95 @@ hr {
     margin-bottom: 5px;
 }
 
+/*==============================响应式设计媒体查询==============================*/
+/* 超小屏手机 (＜576px) */
+@media (max-width: 575.98px) {
+    /* 调整水平分隔线 */
+    hr {
+        margin: 15px 0;
+    }
+    
+    /* 调整卡片部分间距 */
+    .about-center-card-head {
+        margin-bottom: 3px;
+    }
+    
+    .about-center-card-body {
+        margin-bottom: 8px;
+    }
+    
+    .about-center-card-footer {
+        margin-bottom: 3px;
+    }
+}
+
+/* 小屏手机横屏及以上 (≥576px) */
+@media (min-width: 576px) {
+    /* 调整水平分隔线 */
+    hr {
+        margin: 18px 0;
+    }
+    
+    /* 调整卡片部分间距 */
+    .about-center-card-head {
+        margin-bottom: 4px;
+    }
+    
+    .about-center-card-body {
+        margin-bottom: 9px;
+    }
+    
+    .about-center-card-footer {
+        margin-bottom: 4px;
+    }
+}
+
+/* 平板及以上 (≥768px) */
+@media (min-width: 768px) {
+    /* 恢复桌面布局 */
+    /* 调整水平分隔线 */
+    hr {
+        margin: 20px 0;
+    }
+    
+    /* 调整卡片部分间距 */
+    .about-center-card-head {
+        margin-bottom: 5px;
+    }
+    
+    .about-center-card-body {
+        margin-bottom: 10px;
+    }
+    
+    .about-center-card-footer {
+        margin-bottom: 5px;
+    }
+}
+
+/* 桌面及以上 (≥1024px) */
+@media (min-width: 1024px) {
+    /* 标准桌面布局 */
+    /* 调整水平分隔线 */
+    hr {
+        margin: 20px 0;
+    }
+}
+
+/* 大屏桌面及以上 (≥1200px) */
+@media (min-width: 1200px) {
+    /* 宽屏布局 */
+    /* 调整水平分隔线 */
+    hr {
+        margin: 20px 0;
+    }
+}
+
+/* 超大屏及以上 (≥1440px) */
+@media (min-width: 1440px) {
+    /* 超大屏优化 */
+    /* 调整水平分隔线 */
+    hr {
+        margin: 20px 0;
+    }
+}
+

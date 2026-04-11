@@ -1,0 +1,80 @@
+/* 阅读时间预计样式 */
+.reading-time-container {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 10px 0;
+    background-color: var(--card-bg);
+    border: 2px solid var(--center-card-title-color);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: all 0.3s ease;
+}
+
+.reading-time-icon {
+    width: 16px;
+    height: 16px;
+    fill: var(--center-card-title-color);
+    flex-shrink: 0;
+}
+
+.reading-time-text {
+    font-size: 14px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 575.98px) {
+    .reading-time-container {
+        padding: 8px 12px;
+        margin: 8px 0;
+        border-radius: 16px;
+    }
+    
+    .reading-time-text {
+        font-size: 12px;
+    }
+    
+    .reading-time-icon {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .reading-time-container {
+        padding: 9px 13px;
+        margin: 9px 0;
+        border-radius: 18px;
+    }
+    
+    .reading-time-text {
+        font-size: 13px;
+    }
+    
+    .reading-time-icon {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+@media (min-width: 768px) {
+    .reading-time-container {
+        padding: 10px 15px;
+        margin: 10px 0;
+        border-radius: 20px;
+    }
+    
+    .reading-time-text {
+        font-size: 14px;
+    }
+    
+    .reading-time-icon {
+        width: 16px;
+        height: 16px;
+    }
+}

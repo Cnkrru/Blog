@@ -6,22 +6,19 @@
 }
 html, body {
     height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 body {
     font-family: Arial, "Microsoft YaHei", sans-serif;
     font-size: 16px;
-    /* color: #333; */
     line-height: 1.5;
-    /* background-image: url(../images/background.jpg);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover; */
-    /* background: linear-gradient(to bottom, 
-        #64b5f6, 
-        #f48fb1); */
     min-height: 100vh;
     background-attachment: fixed;
     background-size: cover;
@@ -30,12 +27,7 @@ body {
 
 a {
     text-decoration: none;
-    /* color: #333; */
 }
-
-/* a:hover {
-    color: #ff6700;
-} */
 
 input, button, textarea, select {
     border: none;
@@ -60,56 +52,12 @@ hr {
     margin: 0;
     padding: 0;
 }
-/*==============================空白区域分配==============================*/
-    /* 页顶空白 */
-.header-blank {
-    width: 100%;
-    height: 2.5%;
-}
-    /* 页中左侧空白 */
-.left-blank {
-    width: 2.5%;
-    height: 100%;
-    display: flex;
-}
-    /* 页中左侧边栏和内容区域间的空白 */
-.left-center-blank {
-    width: 20px;
-    height: 100%;
-    display: flex;
-}
-    /* 页中右侧空白 */
-.right-blank {
-    width: 2.5%;
-    height: 100%;
-    display: flex;
-}
-    /* 页底空白 */
-.footer-blank {
-    width: 100%;
-    height: 2.5%;
-    display: flex;
-}
-
-    /* 中心卡片头部空白 */
-.center-head-blank {
-    width: 100%;
-    height: 20px;
-    display: flex;
-}
-
-    /* 中心卡片尾部空白 */
-.center-foot-blank {
-    width: 100%;
-    height: 20px;
-    display: flex;
-}
-
 
 
 /*==============================header布局分配==============================*/
     /* 页眉启用flex布局 */
 .header-flex {
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,7 +83,6 @@ hr {
 .header-card {
     width: 100%;
     height: 100%;
-	/* background-color: white; */
     padding: 10px 30px;
 	margin-bottom: 10px;
     display: flex;
@@ -143,7 +90,6 @@ hr {
     align-items: center;
     gap: 300px;
     border-radius: 8px;
-	/* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 /*==========Logo设计==========*/
@@ -216,8 +162,6 @@ hr {
 .button-style {
     width: 40px;
     height: 40px;
-    /* background-color: pink; */
-    /* border: 1px solid #f48fb1; */
     border-radius: 25%;
     display: flex;
     justify-content: center;
@@ -233,6 +177,7 @@ hr {
     /* 中间布局启用flex布局 */
 .mid-flex {
     max-width: 1400px;
+    height: 850px;
     margin: 0 auto;
     width: 100%;
     height: 100%;
@@ -247,6 +192,7 @@ hr {
     width: 15%;
     height: 100%;
     display: flex;
+    /* align-self: flex-start; */
 }
 
     /* 左侧边栏版心 */
@@ -360,6 +306,12 @@ hr {
 	padding: 10px;
 	margin-bottom: 5px;
     overflow-y: auto;
+}
+
+.page-index-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .page-index-list-inner {
@@ -523,6 +475,428 @@ hr {
     min-height: 400px;
     border-radius: 4px;
 }
+
+/*==============================响应式设计媒体查询==============================*/
+/* 超小屏手机 (＜576px) */
+@media (max-width: 575.98px) {
+    /* 调整body gap */
+    body {
+        gap: 120px;
+    }
+    
+    /* 调整头部卡片 */
+    .header-card {
+        gap: 5px;
+    }
+    
+    /* 调整功能按钮卡片 */
+    .button-class-card {
+        gap: 5px;
+    }
+}
+
+/* 移动端基础样式 (默认) */
+/* 侧边栏菜单按钮 */
+.mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--button-text);
+    margin: 2px 0;
+    transition: all 0.3s ease;
+}
+
+/* 调整mid-flex */
+.mid-flex {
+    width: 100%;
+    min-height: 600px;
+}
+
+/* 移动端侧边栏 */
+.left-asider-S {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background: var(--card-bg);
+    box-shadow: 2px 0 10px var(--shadow-color);
+    z-index: 1000;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.left-asider-S.active {
+    left: 0;
+}
+
+/* 遮罩层 */
+.mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.mobile-menu-overlay.active {
+    display: block;
+}
+
+/* 调整布局 */
+.mid-flex {
+    flex-direction: column;
+}
+
+.center-S {
+    width: 100%;
+    padding: 0 10px;
+}
+
+.left-center-blank {
+    display: none;
+}
+
+/* 调整卡片大小 */
+.left-asider-card {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    padding: 20px;
+    margin-top: 60px;
+    border-radius: 8px;
+}
+
+.header-card {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    height: auto;
+    /* min-height: 60px; */
+}
+
+.logo-card {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.search-card {
+    width: 80%;
+    max-width: none;
+}
+
+.button-class-card {
+    gap: 10px;
+}
+
+/* 调整字体大小 */
+.welcome-saying-card p {
+    font-size: 14px;
+}
+
+.logo-card h1 {
+    font-size: 20px;
+}
+
+/* 调整按钮大小 */
+.button-style {
+    width: 36px;
+    height: 36px;
+}
+
+.button-style img {
+    width: 18px;
+    height: 18px;
+}
+
+/* 调整页脚 */
+.footer-S {
+    height: auto;
+    padding: 20px 0;
+}
+
+.footer-card {
+    padding: 10px;
+}
+
+.footer-element-card {
+    width: 90%;
+    padding: 8px;
+}
+
+/* 小屏手机横屏及以上 (≥576px) */
+@media (min-width: 576px) {
+    /* 调整body gap */
+    body {
+        gap: 150px;
+    }
+    
+    /* 调整字体大小 */
+    .welcome-saying-card p {
+        font-size: 16px;
+    }
+    
+    .logo-card h1 {
+        font-size: 22px;
+    }
+    
+    /* 调整按钮大小 */
+    .button-style {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .button-style img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* 调整搜索栏 */
+    .search-card {
+        width: 60%;
+    }
+    
+.header-card {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    height: auto;
+}
+    
+    /* 调整板块高度 */
+    .header-S {
+        height: 70px;
+    }
+    
+    .mid-flex {
+        max-height: 800px;
+    }
+    
+    .footer-S {
+        height: 180px;
+    }
+    
+
+}
+
+/* 平板及以上 (≥768px) */
+@media (min-width: 768px) {
+    /* 调整body gap */
+    body {
+        gap: 15px;
+    }
+    
+    /* 恢复桌面布局 */
+    .mobile-menu-toggle {
+        display: none;
+    }
+    
+    .left-asider-S {
+        position: static;
+        width: 20%;
+        height: fit-content;
+        left: 0;
+        box-shadow: none;
+        background: transparent;
+        align-self: flex-start;
+    }
+    
+    .mobile-menu-overlay {
+        display: none;
+    }
+    
+    /* 调整侧边栏和内容区域布局 */
+    .mid-flex {
+        flex-direction: row;
+    }
+    
+    .center-S {
+        width: calc(100% - 20% - 20px); /* 减去侧边栏宽度和间距 */
+        padding: 0;
+    }
+    
+    .left-center-blank {
+        display: flex;
+    }
+    
+    /* 调整侧边栏卡片大小 */
+    .left-asider-card {
+        width: 180px;
+        height: 550px;
+        margin-top: 0;
+        border-radius: 8px;
+    }
+    
+    /* 调整头部卡片 */
+    .header-card {
+        flex-direction: row;
+        gap: 50px;
+        height: 60px;
+    }
+    
+    /* 调整搜索栏 */
+    .search-card {
+        width: 30%;
+    }
+    
+    /* 调整板块高度 */
+    .header-S {
+        height: 60px;
+    }
+    
+    .mid-flex {
+        max-height: 650px;
+    }
+    
+    .footer-S {
+        height: 190px;
+    }
+    
+
+}
+
+/* 桌面及以上 (≥1024px) */
+@media (min-width: 1024px) {
+    /* 调整body gap */
+    body {
+        gap: 20px;
+    }
+    
+    /* 标准桌面布局 */
+    .left-asider-S {
+        width: 18%;
+    }
+    
+    .center-S {
+        width: 1000px;
+    }
+    
+    /* 调整侧边栏卡片大小 */
+    .left-asider-card {
+        width: 200px;
+        height: 600px;
+        border-radius: 8px;
+    }
+    
+    /* 调整头部卡片 */
+    .header-card {
+        gap: 300px;
+    }
+    
+    /* 调整搜索栏 */
+    .search-card {
+        width: 25%;
+    }
+    
+    /* 调整板块高度 */
+    .header-S {
+        height: 65px;
+    }
+    
+    .mid-flex {
+        max-height: 650px;
+    }
+    
+    .footer-S {
+        height: 200px;
+    }
+    
+
+    
+}
+
+/* 大屏桌面及以上 (≥1200px) */
+@media (min-width: 1200px) {
+    /* 调整body gap */
+    body {
+        gap: 25px;
+    }
+    
+    /* 宽屏布局 */
+    .center-S {
+        width: 1200px;
+    }
+    
+    /* 调整页眉和页脚宽度 */
+    .header-S, .footer-S {
+        max-width: 1400px;
+    }
+    
+    /* 调整板块高度 */
+    .header-S {
+        height: 70px;
+    }
+    
+    .mid-flex {
+        max-height: 650px;
+    }
+    
+    .footer-S {
+        height: 210px;
+    }
+    
+
+    
+}
+
+/* 超大屏及以上 (≥1440px) */
+@media (min-width: 1440px) {
+    /* 调整body gap */
+    body {
+        gap: 30px;
+    }
+    
+    /* 超大屏优化 */
+    .header-S, .footer-S {
+        max-width: 1600px;
+    }
+    
+    /* 调整侧边栏卡片大小 */
+    .left-asider-card {
+        width: 220px;
+        border-radius: 8px;
+    }
+    
+    /* 调整头部卡片 */
+    .header-card {
+        gap: 400px;
+    }
+    
+    /* 调整搜索栏宽度 */
+    .search-card {
+        width: 25%;
+    }
+    
+    /* 调整板块高度 */
+    .header-S {
+        height: 75px;
+    }
+    
+    .mid-flex {
+        max-height: 650px;
+    }
+    
+    .footer-S {
+        height: 220px;
+    }
+    
+
+    
+}
+
 
 
 

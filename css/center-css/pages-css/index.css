@@ -53,4 +53,118 @@
     margin-bottom: 10px;
 }
 
+/*==============================响应式设计媒体查询==============================*/
+/* 超小屏手机 (＜576px) */
+@media (max-width: 575.98px) {
+    /* 调整卡片大小 */
+    .index-center-list-card {
+        height: auto;
+        min-height: 120px;
+        padding: 15px;
+    }
+    
+    /* 调整标题大小 */
+    .index-center-list-card-header {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 8px;
+    }
+    
+    /* 调整内容大小 */
+    .index-center-list-card-content {
+        font-size: 14px;
+        height: auto;
+        margin-bottom: 8px;
+    }
+    
+    /* 调整元信息 */
+    .article-meta-info {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        gap: 5px;
+    }
+    
+    .article-meta-info span {
+        height: auto;
+        line-height: 1.2;
+        margin-bottom: 5px;
+    }
+}
+
+/* 小屏手机横屏及以上 (≥576px) */
+@media (min-width: 576px) {
+    /* 调整卡片大小 */
+    .index-center-list-card {
+        height: 130px;
+        padding: 12px;
+    }
+    
+    /* 调整标题大小 */
+    .index-center-list-card-header {
+        font-size: 18px;
+    }
+    
+    /* 调整内容大小 */
+    .index-center-list-card-content {
+        font-size: 15px;
+    }
+}
+
+/* 平板及以上 (≥768px) */
+@media (min-width: 768px) {
+    /* 恢复桌面布局 */
+    .index-center-list-card {
+        height: 120px;
+        padding: 10px;
+    }
+    
+    /* 调整标题大小 */
+    .index-center-list-card-header {
+        font-size: 20px;
+    }
+    
+    /* 调整内容大小 */
+    .index-center-list-card-content {
+        font-size: 16px;
+    }
+    
+    /* 调整元信息 */
+    .article-meta-info {
+        flex-direction: row;
+        align-items: center;
+        height: 30px;
+    }
+    
+    .article-meta-info span {
+        height: 30px;
+        line-height: 30px;
+        margin-bottom: 10px;
+    }
+}
+
+/* 桌面及以上 (≥1024px) */
+@media (min-width: 1024px) {
+    /* 标准桌面布局 */
+    .index-center-list-card {
+        height: 125px;
+    }
+}
+
+/* 大屏桌面及以上 (≥1200px) */
+@media (min-width: 1200px) {
+    /* 宽屏布局 */
+    .index-center-list-card {
+        height: 130px;
+    }
+}
+
+/* 超大屏及以上 (≥1440px) */
+@media (min-width: 1440px) {
+    /* 超大屏优化 */
+    .index-center-list-card {
+        height: 135px;
+    }
+}
+
 

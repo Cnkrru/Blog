@@ -31,4 +31,96 @@
     font-size: 15px;
 }
 
+/*==============================响应式设计媒体查询==============================*/
+/* 超小屏手机 (＜576px) */
+@media (max-width: 575.98px) {
+    /* 调整卡片大小 */
+    .links-center-list-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    /* 调整卡片标题 */
+    .links-center-list-card-header {
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+    
+    /* 调整卡片内容 */
+    .links-center-list-card-content {
+        font-size: 13px;
+    }
+}
+
+/* 小屏手机横屏及以上 (≥576px) */
+@media (min-width: 576px) {
+    /* 调整卡片大小 */
+    .links-center-list-card {
+        padding: 11px;
+        margin-bottom: 11px;
+    }
+    
+    /* 调整卡片标题 */
+    .links-center-list-card-header {
+        font-size: 14px;
+        margin-bottom: 4.5px;
+    }
+    
+    /* 调整卡片内容 */
+    .links-center-list-card-content {
+        font-size: 14px;
+    }
+}
+
+/* 平板及以上 (≥768px) */
+@media (min-width: 768px) {
+    /* 恢复桌面布局 */
+    /* 调整卡片大小 */
+    .links-center-list-card {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    
+    /* 调整卡片标题 */
+    .links-center-list-card-header {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+    
+    /* 调整卡片内容 */
+    .links-center-list-card-content {
+        font-size: 15px;
+    }
+}
+
+/* 桌面及以上 (≥1024px) */
+@media (min-width: 1024px) {
+    /* 标准桌面布局 */
+    /* 调整卡片大小 */
+    .links-center-list-card {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+/* 大屏桌面及以上 (≥1200px) */
+@media (min-width: 1200px) {
+    /* 宽屏布局 */
+    /* 调整卡片大小 */
+    .links-center-list-card {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+/* 超大屏及以上 (≥1440px) */
+@media (min-width: 1440px) {
+    /* 超大屏优化 */
+    /* 调整卡片大小 */
+    .links-center-list-card {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+}
+
 

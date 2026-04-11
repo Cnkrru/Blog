@@ -20,3 +20,114 @@
 	margin-bottom: 20px;
 }
 
+/*==============================响应式设计媒体查询==============================*/
+/* 超小屏手机 (＜576px) */
+@media (max-width: 575.98px) {
+    /* 调整卡片内容大小 */
+    .lose-center-card-content {
+        height: auto;
+        min-height: 200px;
+    }
+    
+    /* 调整内容区域 */
+    .lose-center-content {
+        height: auto;
+        line-height: 1.5;
+        font-size: 16px;
+        margin-top: 30px;
+        padding: 0 20px;
+    }
+    
+    /* 调整标题 */
+    .lose-center-content h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    
+    /* 调整段落 */
+    .lose-center-content p {
+        margin-bottom: 15px;
+    }
+}
+
+/* 小屏手机横屏及以上 (≥576px) */
+@media (min-width: 576px) {
+    /* 调整内容区域 */
+    .lose-center-content {
+        font-size: 18px;
+        margin-top: 40px;
+    }
+    
+    /* 调整标题 */
+    .lose-center-content h1 {
+        font-size: 28px;
+    }
+}
+
+/* 平板及以上 (≥768px) */
+@media (min-width: 768px) {
+    /* 恢复桌面布局 */
+    .lose-center-card-content {
+        height: 200px;
+    }
+    
+    /* 调整内容区域 */
+    .lose-center-content {
+        height: 200px;
+        line-height: 200px;
+        font-size: 20px;
+        margin-top: 50px;
+        padding: 0;
+    }
+    
+    /* 调整标题 */
+    .lose-center-content h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+    
+    /* 调整段落 */
+    .lose-center-content p {
+        margin-bottom: 20px;
+    }
+}
+
+/* 桌面及以上 (≥1024px) */
+@media (min-width: 1024px) {
+    /* 标准桌面布局 */
+    .lose-center-content {
+        font-size: 22px;
+    }
+    
+    /* 调整标题 */
+    .lose-center-content h1 {
+        font-size: 36px;
+    }
+}
+
+/* 大屏桌面及以上 (≥1200px) */
+@media (min-width: 1200px) {
+    /* 宽屏布局 */
+    .lose-center-content {
+        font-size: 24px;
+    }
+    
+    /* 调整标题 */
+    .lose-center-content h1 {
+        font-size: 40px;
+    }
+}
+
+/* 超大屏及以上 (≥1440px) */
+@media (min-width: 1440px) {
+    /* 超大屏优化 */
+    .lose-center-content {
+        font-size: 26px;
+    }
+    
+    /* 调整标题 */
+    .lose-center-content h1 {
+        font-size: 44px;
+    }
+}
+
