@@ -1,19 +1,14 @@
 // 百度统计分析代码
+var _hmt = _hmt || [];
 (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?your-site-id";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6a9c58ae2a568e9aadebe953a9a4092f";
+  // 使用document.head或document.getElementsByTagName("script")[0]作为插入点
+  var s = document.getElementsByTagName("script")[0];
+if (s) {
+s.parentNode.insertBefore(hm, s);
+    } 
+else {
+    document.head.appendChild(hm);
+    } 
 })();
-
-// 百度分析配置
-function initBaiduAnalytics() {
-    // 这里可以添加百度分析的自定义配置
-    // 例如：_hmt.push(['_setCustomVar', 1, 'userType', 'visitor', 3]);
-    console.log('百度分析已初始化');
-}
-
-// 页面加载完成后初始化百度分析
-document.addEventListener('DOMContentLoaded', function() {
-    initBaiduAnalytics();
-});
