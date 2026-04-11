@@ -12,19 +12,18 @@
     <meta name="robots" content="index, follow">
     
     <!-- 网站地图 -->
-    <link rel="sitemap" type="application/xml" title="Sitemap" href="./sitemap.xml">
-    
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="./sitemap.xml">   
     <link rel="stylesheet" href="./css/public-css/public.css">
     <link rel="stylesheet" href="./css/center-css/pages-css/index.css">
     <link rel="stylesheet" href="./css/center-css/pagination.css">
     <link rel="stylesheet" href="./css/header-css/theme-toggle.css">
     <link rel="stylesheet" href="./css/header-css/immersive-reading.css">
     <link rel="stylesheet" href="./css/center-css/back-to-top.css">
-    <!-- <link rel="stylesheet" href="./css/header-css/music-player.css"> -->
 </head>
 <body>
+    <!-- 移动端菜单遮罩层 -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>  
     <!--==============================页面头部部分==============================-->
-    <div class="header-blank"></div>
     <!-- 页眉启用flex -->
     <header class="header-flex">
         <!-- 页眉面积分配 -->
@@ -35,7 +34,6 @@
                 <div class="header-card">
                     <!-- Logo设计 -->
                     <div class="logo-card">
-                        <!-- <a href="index.html"><img src="./images/hugo.png" alt=""></a> -->
                         <a href="index.html"><h1>Cnkrru</h1></a>
                     </div>
                     <!-- 搜索框设计 -->
@@ -45,21 +43,23 @@
                     </div>
                     <!-- 功能按钮模块区域设计 -->
                     <div class="button-class-card">
+                        <!-- 移动端菜单按钮 -->
+                        <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                         <div class="button-style theme-toggle-btn"><img src="./static/img/svg/theme-toggle.svg" alt="切换主题"></div>
                         <div class="button-style immersive-reading-btn"><img src="./static/img/svg/book.svg" alt="沉浸式阅读"></div>
-                        <!-- <div class="button-style music-player-btn"><img src="./static/img/svg/music-player.svg" alt="音乐播放器"></div> -->
                     </div>
                 </div>
             </nav>
         </div>
     </header>
     <!-- 页眉与主体间距 -->
-    <div class="header-blank"></div>
     <!--==============================页面中间部分==============================-->
     <!-- 页面中间部分启用flex布局 -->
     <main class="mid-flex">
-        <!-- 左侧空白区域 -->
-        <div class="left-blank"></div>
         <!-- ==========左侧侧边栏设计========== -->
         <!-- 左侧边栏面积分配 -->
         <aside class="left-asider-S">
@@ -71,10 +71,6 @@
                     <div class="avator-card">
                         <img src="./static/img/avator.jpg" alt="Cnkrru的头像">
                     </div>
-                    <!-- 返回主页设计 -->
-                    <!-- <div class="back-index-card">
-                        <a href="index.html">Cnkrru'Blog</a>
-                    </div> -->
                     <!-- 欢迎语设计 -->
                     <div class="welcome-saying-card">
                         <p>欢迎来到我的博客</p>
@@ -95,17 +91,13 @@
                                 <li class="page-card"><a href="./html/indexs/archives-index.html">归档</a></li>
                                 <li class="page-card"><a href="./html/indexs/links-index.html">友链</a></li>
                                 <li class="page-card"><a href="./html/indexs/tools-index.html">工具</a></li>
-                                <!-- <li class="page-card"><a href="./html/indexs/video-index.html">视频</a></li> -->
                                 <li class="page-card"><a href="./html/indexs/projects-index.html">项目</a></li>
-
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </aside>
-        <!-- 左侧边栏与主体部分的间距区域 -->
-        <div class="left-center-blank"></div>
         <!-- ==========主体区域设计========== -->
         <!-- 主体面积分配 -->
         <section class="center-S">
@@ -121,8 +113,6 @@
                         <h2>最新文章</h2>
                     </div>
                     <hr>
-                    <!-- 中心卡片头部空白 -->
-                    <div class="center-head-blank"></div>
                     <!-- 中心卡片列表卡片 -->
                     <div class="center-card-content">
                         <!-- 文章0 -->
@@ -195,13 +185,10 @@
                             </div>
                         </a>
                     </div>
-                    <!-- 中心卡片尾部空白 -->
-                    <div class="center-foot-blank"></div>                    
                     <hr>                     
                 </div>
             </div>
         </section>
-        <div class="right-blank"></div>
     </main>
     <!--==============================页脚区域==============================-->
     <!-- 页脚启用felx布局 -->
@@ -211,19 +198,14 @@
                 <div class="footer-card">
                     <div class="footer-element-card website-age"></div>
                     <div class="footer-element-card article-count"></div>
-
                     <div class="footer-element-card copyright"></div>
                 </div>
             </nav>
         </div>
     </footer>
-    <div class="footer-blank"></div>
-    <!-- 音乐播放器由JS动态创建 -->
-    <!-- <script src="./js/ajax.js"></script> -->
     <script src="./js/header-js/theme-toggle.js"></script>
     <script src="./js/header-js/immersive-reading.js"></script>
     <script src="./js/header-js/back-to-top.js"></script>
-    <!-- <script src="./js/header-js/music-player.js"></script> -->
     <script src="./js/header-js/search.js"></script>
     <script src="./js/footer-js/website-age.js"></script>
     <script src="./js/footer-js/article-count.js"></script>
@@ -231,5 +213,7 @@
     <script src="./js/center-js/index.js"></script>
     <script src="./js/center-js/site-stats.js"></script>
     <script src="./js/baidu-analytics.js"></script>
+    <!-- 移动端菜单脚本 -->
+    <script src="./js/mobile-menu.js"></script>
 </body>
 </html>

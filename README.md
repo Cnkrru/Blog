@@ -2,7 +2,7 @@
 
 ## 项目简介
 
-这是一个功能完整的个人博客网站，包含文章管理、小说阅读、工具集等功能。项目采用纯HTML、CSS和JavaScript开发，无需后端服务器，可直接部署到任何静态网站托管服务。
+这是一个功能完整的个人博客网站，包含文章管理、工具集等功能。项目采用纯HTML、CSS和JavaScript开发，无需后端服务器，可直接部署到任何静态网站托管服务。
 
 ## 项目结构
 
@@ -13,28 +13,28 @@
 ├── css/                  # 样式文件
 │   ├── center-css/       # 中心内容样式
 │   │   ├── pages-css/    # 页面特定样式
-│   │   ├── tools-css/    # 工具页面样式
-│   │   └── ...
+│   │   └── reading-time.css # 阅读时间样式
 │   ├── header-css/       # 页头样式
 │   └── public-css/       # 公共样式
 ├── html/                 # HTML页面
 │   ├── archives/         # 归档页面
 │   ├── indexs/           # 索引页面
 │   ├── links/            # 友链页面
-│   ├── novels/           # 小说页面
 │   ├── posts/            # 文章页面
 │   ├── projects/         # 项目页面
 │   └── tools/            # 工具页面
+├── 404.html              # 404错误页面
 ├── import_export/        # 导入导出目录
 │   ├── export/           # 导出文件
 │   └── import/           # 导入文件
 ├── js/                   # JavaScript文件
 │   ├── center-js/        # 中心内容脚本
-│   ├── config-js/        # 配置脚本
+│   │   ├── posts-js/     # 文章相关脚本
+│   │   └── public-js/    # 公共脚本
 │   ├── footer-js/        # 页脚脚本
 │   ├── header-js/        # 页头脚本
-│   ├── tools-js/         # 工具脚本
-│   └── baidu-analytics.js # 百度统计
+│   ├── baidu-analytics.js # 百度统计
+│   └── mobile-menu.js    # 移动端菜单脚本
 ├── script/               # Python脚本
 │   ├── category_management.py    # 分类管理
 │   ├── cli_utils.py              # 命令行工具通用函数
@@ -58,6 +58,8 @@
 │   └── main.py                   # 主调度脚本
 ├── static/               # 静态资源
 │   └── img/              # 图片
+├── templates/            # 模板文件
+│   └── post_template.html # 文章模板
 ├── index.html            # 首页
 ├── robots.txt            # 爬虫配置
 ├── sitemap.xml           # 站点地图
@@ -74,13 +76,9 @@
 - 代码高亮和复制
 - 支持KaTeX数学公式
 - 支持Mermaid流程图
+- 阅读时间预计
 
-### 2. 小说系统
-- 小说章节管理
-- 小说阅读页面
-- 章节导航
-
-### 3. 工具集
+### 2. 工具集
 - Base64编解码器
 - 图表生成器
 - CSS颜色工具
@@ -89,14 +87,14 @@
 - 二维码生成器
 - 正则表达式生成器
 
-### 4. 其他功能
+### 3. 其他功能
 - 深色/浅色主题切换
 - 响应式设计
+- 移动端菜单
 - 百度统计分析
 - 分享功能
 - 评论系统
-- 灯箱效果
-- 懒加载
+- 页脚统计信息
 
 ## 如何使用
 
@@ -190,12 +188,12 @@ python script/main.py
 - **样式**：CSS变量, 响应式设计
 - **脚本**：Python 3
 - **第三方库**：
-  - Markdown
   - KaTeX (数学公式)
   - Mermaid (流程图)
   - Notyf (通知)
   - Clipboard.js (代码复制)
   - QRCode.js (二维码)
+  - PDF.js (PDF查看器)
 
 ## 目录说明
 
@@ -206,6 +204,7 @@ python script/main.py
 - **js/**: JavaScript脚本，按功能分类
 - **script/**: Python工具脚本，包含完整的命令行工具
 - **static/**: 静态资源（图片）
+- **templates/**: 模板文件，用于生成新文章
 
 ## 开发建议
 

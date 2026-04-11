@@ -3,136 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} - Cnkru</title>
+    
+    <!-- 基础SEO -->
+    <title>{title} | Cnkrru的博客</title>
     <meta name="description" content="{description}">
-    <meta name="keywords" content="{tags}">
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/header-css/header.css">
-    <link rel="stylesheet" href="../../css/center-css/main-content.css">
-    <link rel="stylesheet" href="../../css/center-css/pages-css/posts-css/posts.css">
-    <link rel="stylesheet" href="../../css/footer-css/footer.css">
-    <link rel="stylesheet" href="../../css/header-css/music-player.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="../../js/header-js/header.js"></script>
-    <script src="../../js/header-js/music-player.js"></script>
-    <script src="../../js/center-js/posts-js/posts.js"></script>
-    <script src="../../js/footer-js/footer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.5.1/dist/mermaid.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/notyf@3.10.0/notyf.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3.10.0/notyf.min.css">
+    <meta name="keywords" content="{keywords}">
+    <meta name="author" content="Cnkrru">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="stylesheet" href="../../css/public-css/public.css">
+    <link rel="stylesheet" href="../../css/center-css/pages-css/member-css/post.css">
+    <link rel="stylesheet" href="../../css/header-css/theme-toggle.css">
+    <link rel="stylesheet" href="../../css/header-css/immersive-reading.css">
+    <link rel="stylesheet" href="../../css/center-css/back-to-top.css">
+    <link rel="stylesheet" href="../../css/center-css/comment.css">
+    <link rel="stylesheet" href="../../css/public-css/text.css">
+    <link rel="stylesheet" href="../../css/center-css/reading-time.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 </head>
 <body>
-    <div class="header-blank"></div>
-    <div class="header-S">
-        <div class="header-S-B">
-            <a href="../../index.html" class="header-S-B-logo">Cnkru</a>
-            <div class="header-S-B-search">
-                <input type="text" placeholder="搜索..." class="search-input">
-                <button class="search-btn"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="header-S-B-function">
-                <button id="theme-toggle" class="header-S-B-function-btn" title="切换主题">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button id="music-toggle" class="header-S-B-function-btn" title="音乐播放器">
-                    <i class="fas fa-music"></i>
-                </button>
-                <button id="video-toggle" class="header-S-B-function-btn" title="视频播放器">
-                    <i class="fas fa-video"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="content">
-        <div class="content-left">
-            <div class="content-left-top">
-                <img src="../../static/imgs/avatar.png" alt="头像" class="content-left-top-img">
-                <p class="content-left-top-text">欢迎来到我的博客</p>
-                <div class="content-left-top-icon">
-                    <a href="https://space.bilibili.com/349892346" target="_blank" class="content-left-top-icon-a"><i class="fab fa-bilibili"></i></a>
-                    <a href="https://github.com/Cnkrru" target="_blank" class="content-left-top-icon-a"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
-            <div class="content-left-bottom">
-                <a href="../../index.html" class="content-left-bottom-btn">首页</a>
-                <a href="../../html/indexs/archives-index.html" class="content-left-bottom-btn">归档</a>
-                <a href="../../html/indexs/projects-index.html" class="content-left-bottom-btn">项目</a>
-                <a href="../../html/indexs/links-index.html" class="content-left-bottom-btn">友链</a>
-                <a href="../../html/indexs/tools-index.html" class="content-left-bottom-btn">工具</a>
-                <a href="../../html/indexs/about.html" class="content-left-bottom-btn">关于</a>
-            </div>
-        </div>
-        <div class="content-right">
-            <div class="content-right-main">
-                <div class="article-content">
-                    <h2 class="article-title">{title}</h2>
-                    <div class="article-meta">
-                        <span class="article-date">{date_str}</span>
-                        <span class="article-category">{category}</span>
-                        <span class="article-tags">{tags}</span>
+    <!-- 移动端菜单遮罩层 -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>  
+    <!--==============================页面头部部分==============================-->
+    <!-- 页眉启用flex -->
+    <header class="header-flex">
+        <!-- 页眉面积分配 -->
+        <div class="header-S">
+            <!-- 页眉部分版心设计 -->
+            <nav class="header-container">
+                <!-- 页眉卡片设计 -->
+                <div class="header-card">
+                    <!-- Logo设计 -->
+                    <div class="logo-card">
+                        <a href="../../index.html"><h1>Cnkrru</h1></a>
                     </div>
-                    <div class="article-body">
-                        <!-- 文章内容 -->
+                    <!-- 搜索框设计 -->
+                    <div class="search-card">
+                        <input type="text" placeholder="搜索">
+                        <button><img src="../../static/img/svg/search.svg" alt="搜索"></button>
+                    </div>
+                    <!-- 功能按钮模块区域设计 -->
+                    <div class="button-class-card">
+                        <!-- 移动端菜单按钮 -->
+                        <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="button-style theme-toggle-btn"><img src="../../static/img/svg/theme-toggle.svg" alt="切换主题"></div>
+                        <div class="button-style immersive-reading-btn"><img src="../../static/img/svg/book.svg" alt="沉浸式阅读"></div>
                     </div>
                 </div>
-                <div class="article-nav">
-                    <div class="article-nav-prev">
-                        <span>上一篇：</span>
-                        <a href="#" class="article-nav-link">无</a>
+            </nav>
+        </div>
+    </header>
+    <!--==============================页面中间部分==============================-->
+    <!-- 页面中间部分启用flex布局 -->
+    <main class="mid-flex">
+        <!-- ==========左侧侧边栏设计========== -->
+        <!-- 左侧边栏面积分配 -->
+        <aside class="left-asider-S">
+            <!-- 左侧边栏版心设计 -->
+            <div class="left-asider-container">
+                <!-- 左侧边栏总体卡片布局 -->
+                <div class="left-asider-card">
+                    <!-- 头像设计 -->
+                    <div class="avator-card">
+                        <img src="../../static/img/avator.jpg" alt="Cnkrru的头像">
                     </div>
-                    <div class="article-nav-next">
-                        <span>下一篇：</span>
-                        <a href="#" class="article-nav-link">无</a>
+                    <!-- 欢迎语设计 -->
+                    <div class="welcome-saying-card">
+                        <p>欢迎来到我的博客</p>
+                    </div>
+                    <!-- 社媒友链卡片设计 -->
+                    <div class="social-links-card">
+                        <ul>
+                            <li><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><img src="../../static/img/svg/bilibili.png" alt="Bilibili"></a></li>
+                            <li><a href="https://github.com/Cnkrru"><img src="../../static/img/svg/github.png" alt="GitHub"></a></li>
+                        </ul>
+                    </div>
+                    <!-- 页面跳转链接设计 -->
+                    <div class="page-index-list">
+                        <div class="page-index-list-inner">
+                            <ul>
+                                <li class="page-card"><a href="../../index.html">首页</a></li>
+                                <li class="page-card"><a href="../indexs/about.html">关于</a></li>
+                                <li class="page-card"><a href="../indexs/archives-index.html">归档</a></li>
+                                <li class="page-card"><a href="../indexs/links-index.html">友链</a></li>
+                                <li class="page-card"><a href="../indexs/tools-index.html">工具</a></li>
+                                <li class="page-card"><a href="../indexs/projects-index.html">项目</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </aside>
+        <!-- ==========主体区域设计========== -->
+        <!-- 主体面积分配 -->
+        <section class="center-S">
+            <!-- 主体版心设计 -->
+            <div class="center-container">
+                <!-- 主体部分卡片设计 -->
+                <div class="center-card">
+                    <!-- 中心卡片 -->
+                    <!-- 主体部分卡片标题设计 -->
+                    <div class="center-head-card">
+                        <h2>{post_id}</h2>
+                        <div style="display: flex; align-items: center;">
+                            <button class="back-to-top-btn">
+                                <img src="../../static/img/svg/arrow-up.svg" alt="返回顶部">
+                            </button>
+                            <div class="toc-btn-container">
+                                <button class="toc-btn">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                        <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
+                                    </svg>
+                                    目录
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文章目录卡片 -->
+                    <div class="toc-card">
+                        <div class="toc-card-header">
+                            <h3>文章目录</h3>
+                            <button class="toc-close-btn">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="toc-card-content">
+                            <ul class="toc-list"></ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="center-card-content">
+                        <div class="read-center-card-body">
+                            <!-- 内容区域css选择器专用套 -->
+                            <div class="text-style">
+                                <p>标题：{title}</p>
+                                <p>分类：{category}</p>
+                                <p>标签：{tags}</p>
+                                <p>编号：{post_id}</p>
+                                <p>时间：{date}</p>
+                                <hr>
+                                {content}
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <!-- 上下篇导航容器 -->
+                        <div class="post-nav-container">
+                            <a href="{prev_link}" class="post-nav-btn prev">
+                                <div class="post-nav-btn-text">
+                                    <span class="post-nav-btn-label">上一篇</span>
+                                    <span class="post-nav-btn-title">{prev_title}</span>
+                                </div>
+                            </a>
+                            <a href="{next_link}" class="post-nav-btn next">
+                                <div class="post-nav-btn-text">
+                                    <span class="post-nav-btn-label">下一篇</span>
+                                    <span class="post-nav-btn-title">{next_title}</span>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <hr>
+                        
+                        <!-- 分享按钮容器 -->
+                        <div class="share-container">
+                            <div class="share-btn wechat" title="分享到微信">
+                                <img src="../../static/img/svg/wechat.svg" alt="微信">
+                            </div>
+                            <div class="share-btn qq" title="分享到QQ">
+                                <img src="../../static/img/svg/QQ.svg" alt="QQ">
+                            </div>
 
-    <div class="footer">
-        <div class="footer-content">
-            <div class="footer-content-left">
-                <p>© 2026 Cnkru. All rights reserved.</p>
+                            <div class="share-btn copy" title="复制链接">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="post-qrcode-section">
+                            <h4>手机扫码访问</h4>
+                            <div id="post-qrcode-container" class="post-qrcode-container"></div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="read-center-card-footer">
+                            <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
+                        </div>
+                        <!-- 评论区域 -->
+                        <div class="comment-section">
+                            <h3>评论</h3>
+                            <div class="comment-container"></div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
             </div>
-            <div class="footer-content-right">
-                <a href="../../html/indexs/about.html" class="footer-content-right-a">关于</a>
-                <a href="../../html/indexs/archives-index.html" class="footer-content-right-a">归档</a>
-                <a href="../../html/indexs/links-index.html" class="footer-content-right-a">友链</a>
-            </div>
-        </div>
-    </div>
+        </section>
+    </main>
+        <!--==============================页脚区域==============================-->
+    <!-- 页脚启用felx布局 -->
+    <footer class="footer-flex">
+        <div class="footer-S">
+            <nav class="footer-container">
+                <div class="footer-card">
+                    <div class="footer-element-card website-age"></div>
+                    <div class="footer-element-card article-count"></div>
 
-    <!-- 音乐播放器由JS动态创建 -->
-    <script>
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 初始化代码高亮
-            hljs.highlightAll();
-            
-            // 初始化KaTeX
-            renderMathInElement(document.body, {{
-                delimiters: [
-                    {{left: "$$", right: "$$", display: true}},
-                    {{left: "$", right: "$", display: false}}
-                ]
-            }});
-            
-            // 初始化Mermaid
-            mermaid.initialize({{
-                startOnLoad: true
-            }});
-            
-            // 初始化代码复制功能
-            new ClipboardJS('.copy-btn');
-        });
-    </script>
+                    <div class="footer-element-card copyright"></div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+    <div class="footer-blank"></div>
+    <script src="../../js/header-js/theme-toggle.js"></script>
+    <script src="../../js/header-js/immersive-reading.js"></script>
+    <script src="../../js/header-js/back-to-top.js"></script>
+    <script src="../../js/center-js/posts-js/comment.js"></script>
+    <script src="../../js/header-js/search.js"></script>
+    <script src="../../js/footer-js/website-age.js"></script>
+    <script src="../../js/center-js/posts-js/share.js"></script>
+    <script src="../../js/footer-js/copyright.js"></script>
+    <script src="../../js/center-js/posts-js/toc.js"></script>
+    <script src="../../js/footer-js/article-count.js"></script>
+    <script src="../../js/center-js/posts-js/post-nav.js"></script>
+    <script src="../../js/center-js/posts-js/code-highlight.js"></script>
+    <script src="../../js/center-js/posts-js/markdown-render.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+    <script src="../../js/center-js/posts-js/code-copy.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="../../js/center-js/posts-js/post-qrcode.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="../../js/center-js/public-js/notyf-integration.js"></script>
+    <script src="../../js/center-js/posts-js/reading-time.js"></script>
+    <!-- 移动端菜单脚本 -->
+    <script src="../../js/mobile-menu.js"></script>
 </body>
 </html>
