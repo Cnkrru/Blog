@@ -106,8 +106,6 @@
   {
     "id": "changelog",
     "title": "网站更新日志",
-    "category": "网站公告",
-    "tags": ["网站公告", "更新日志"],
     "path": "./html/changelog.html",
     "date": "2026-04-16",
     "description": "记录网站的更新历史和功能变更",
@@ -119,8 +117,6 @@
   {
     "id": "terminal",
     "title": "终端",
-    "category": "工具",
-    "tags": ["工具", "终端"],
     "path": "./html/terminal.html",
     "date": "2026-04-16",
     "description": "网站内置终端，执行特殊命令",
