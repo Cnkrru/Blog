@@ -1,0 +1,173 @@
+/*==============================沉浸阅读模式==============================*/
+
+/* 实现方法 */
+/* 1.display: none;隐藏需要隐藏的组件 */
+/* 2.更改要放大的区域的大小尺寸 */
+
+/* 沉浸阅读模式 - 左侧边栏隐藏 */
+body.immersive-reading .left-blank,
+body.immersive-reading .left-asider-S,
+body.immersive-reading .left-center-blank,
+body.immersive-reading .footer-blank,
+body.immersive-reading .footer-flex,
+body.immersive-reading .footer-S {
+    display: none;
+}
+
+/* 沉浸阅读模式过渡效果 */
+.left-blank,
+.left-asider-S,
+.left-center-blank,
+.center-S,
+.mid-flex,
+.footer-blank,
+.footer-flex,
+.footer-S {
+    transition: all 0.3s ease;
+}
+
+/* 沉浸阅读模式 - 中心内容卡片宽度变大 */
+body.immersive-reading .center-S {
+    width: 1400px;
+    max-width: 1400px;
+}
+
+/* 沉浸阅读模式 - 整体布局调整 */
+body.immersive-reading .mid-flex {
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: flex-start; /* 让内容对齐到顶部，避免垂直居中导致与 header 重叠 */
+}
+
+/* 沉浸阅读模式 - 中心卡片高度调整 */
+body.immersive-reading .center-card {
+    max-height: none;
+    height: auto;
+}
+
+/*==============================响应式设计媒体查询==============================*/
+
+/* 超小屏手机 (＜576px) */
+@media (max-width: 575.98px) {
+    /* 沉浸阅读模式 - 中心内容卡片宽度调整 */
+    body.immersive-reading .center-S {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    /* 沉浸阅读模式 - 整体布局调整 */
+    body.immersive-reading .mid-flex {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* 小屏手机横屏及以上 (≥576px) */
+@media (min-width: 576px) {
+    /* 沉浸阅读模式 - 中心内容卡片宽度调整 */
+    body.immersive-reading .center-S {
+        width: 90%;
+        max-width: 90%;
+    }
+    
+    /* 沉浸阅读模式 - 整体布局调整 */
+    body.immersive-reading .mid-flex {
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-top: 60px; /* 调整这个值，确保不会挡住 header */
+        align-items: flex-start; /* 让内容对齐到顶部，避免垂直居中导致与 header 重叠 */
+    }
+    
+    /* 沉浸阅读模式 - 中心卡片高度调整 */
+    body.immersive-reading .center-card {
+        max-height: none;
+        height: auto;
+    }
+}
+
+/* 平板及以上 (≥768px) */
+@media (min-width: 768px) {
+    /* 沉浸阅读模式 - 中心内容卡片宽度调整 */
+    body.immersive-reading .center-S {
+        width: 700px;
+        max-width: 700px;
+    }
+    
+    /* 沉浸阅读模式 - 整体布局调整 */
+    body.immersive-reading .mid-flex {
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-top: 70px; /* 调整这个值，确保不会挡住 header */
+        align-items: flex-start; /* 让内容对齐到顶部，避免垂直居中导致与 header 重叠 */
+    }
+    
+    /* 沉浸阅读模式 - 中心卡片高度调整 */
+    body.immersive-reading .center-card {
+        max-height: none;
+        height: auto;
+    }
+}
+
+/* 桌面及以上 (≥1024px) */
+@media (min-width: 1024px) {
+    /* 沉浸阅读模式 - 中心内容卡片宽度调整 */
+    body.immersive-reading .center-S {
+        width: 900px;
+        max-width: 900px;
+    }
+    
+    /* 沉浸阅读模式 - 整体布局调整 */
+    body.immersive-reading .mid-flex {
+        margin-top: 80px; /* 调整这个值，确保不会挡住 header */
+        align-items: flex-start; /* 让内容对齐到顶部，避免垂直居中导致与 header 重叠 */
+    }
+    
+    /* 沉浸阅读模式 - 中心卡片高度调整 */
+    body.immersive-reading .center-card {
+        max-height: none;
+        height: auto;
+    }
+}
+
+/* 大屏桌面及以上 (≥1200px) */
+@media (min-width: 1200px) {
+    /* 沉浸阅读模式 - 中心内容卡片宽度调整 */
+    body.immersive-reading .center-S {
+        width: 1100px;
+        max-width: 1100px;
+    }
+    
+    /* 沉浸阅读模式 - 整体布局调整 */
+    body.immersive-reading .mid-flex {
+        margin-top: 80px; /* 调整这个值，确保不会挡住 header */
+        align-items: flex-start; /* 让内容对齐到顶部，避免垂直居中导致与 header 重叠 */
+    }
+    
+    /* 沉浸阅读模式 - 中心卡片高度调整 */
+    body.immersive-reading .center-card {
+        max-height: none;
+        height: auto;
+    }
+}
+
+/* 超大屏及以上 (≥1440px) */
+@media (min-width: 1440px) {
+    /* 沉浸阅读模式 - 中心内容卡片宽度调整 */
+    body.immersive-reading .center-S {
+        width: 1400px;
+        max-width: 1400px;
+    }
+    
+    /* 沉浸阅读模式 - 整体布局调整 */
+    body.immersive-reading .mid-flex {
+        margin-top: 80px; /* 调整这个值，确保不会挡住 header */
+        align-items: flex-start; /* 让内容对齐到顶部，避免垂直居中导致与 header 重叠 */
+    }
+    
+    /* 沉浸阅读模式 - 中心卡片高度调整 */
+    body.immersive-reading .center-card {
+        max-height: none;
+        height: auto;
+    }
+}

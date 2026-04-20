@@ -1,0 +1,85 @@
+:root {
+  /* 默认（暗色）主题 */
+  /* IndexLogo组件颜色 */
+  --logo-gradient: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+  
+  /* HeroContent组件颜色 */
+  --hero-gradient-text: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+  --hero-accent-primary: #1e88e5;
+  --hero-text-muted: #94a3b8;
+  
+  /* IndexNavbar组件颜色 */
+  --navbar-text-secondary: #e2e8f0;
+  --navbar-accent-primary: #1e88e5;
+  --navbar-gradient-primary: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
+  
+  /* ParticlesBackground组件颜色 */
+  --particle-gradient: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+  --particle-shadow1: #ff6b6b;
+  --particle-shadow2: #4ecdc4;
+  
+  /* CustomCursor组件颜色 */
+  --cursor-border: #ffffff;
+  --cursor-gradient: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+  --cursor-dot: #ffffff;
+  --cursor-shadow: #ffffff;
+  
+  /* ScrollIndicator组件颜色 */
+  --scroll-accent-primary: #1e88e5;
+  --scroll-text-muted: #94a3b8;
+  
+  /* Heatmap组件颜色 */
+  --heatmap-title-gradient: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+  --heatmap-button-text: #ffffff;
+  --heatmap-background: rgba(255, 255, 255, 0.1);
+  --heatmap-border: rgba(255, 255, 255, 0.2);
+  --heatmap-cell-no-article: rgba(255, 255, 255, 0.1);
+  --heatmap-cell-no-article-border: rgba(255, 255, 255, 0.2);
+  --heatmap-cell-has-article: #1e88e5;
+  --heatmap-legend-text: #94a3b8;
+  --heatmap-text: #e2e8f0;
+  --heatmap-scroll-text: #94a3b8;
+}
+
+body.light-theme {
+  /* 亮色主题 */
+  /* IndexLogo组件颜色 */
+  --logo-gradient: linear-gradient(45deg, #ff6b6b, #ff8e53, #feb47b, #4ecdc4, #45b7d1);
+  
+  /* HeroContent组件颜色 */
+  --hero-gradient-text: linear-gradient(45deg, #ff6b6b, #ff8e53, #feb47b, #4ecdc4, #45b7d1);
+  --hero-accent-primary: #1976d2;
+  --hero-text-muted: #64b5f6;
+  
+  /* IndexNavbar组件颜色 */
+  --navbar-text-secondary: #1565c0;
+  --navbar-accent-primary: #1976d2;
+  --navbar-gradient-primary: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+  
+  /* ParticlesBackground组件颜色 */
+  --particle-gradient: linear-gradient(45deg, #ff6b6b, #ff8e53, #feb47b, #4ecdc4, #45b7d1);
+  --particle-shadow1: #ff6b6b;
+  --particle-shadow2: #4ecdc4;
+  
+  /* CustomCursor组件颜色 */
+  --cursor-border: #0d47a1;
+  --cursor-gradient: linear-gradient(45deg, #ff6b6b, #ff8e53, #feb47b, #4ecdc4, #45b7d1);
+  --cursor-dot: #0d47a1;
+  --cursor-shadow: #0d47a1;
+  
+  /* ScrollIndicator组件颜色 */
+  --scroll-accent-primary: #1976d2;
+  --scroll-text-muted: #64b5f6;
+  
+  /* Heatmap组件颜色 */
+  --heatmap-title-gradient: linear-gradient(45deg, #ff6b6b, #ff8e53, #feb47b, #4ecdc4, #45b7d1);
+  --heatmap-button-text: #1e88e5;
+  --heatmap-background: rgba(255, 255, 255, 0.6);
+  --heatmap-border: rgba(255, 255, 255, 0.3);
+  --heatmap-cell-no-article: rgba(255, 255, 255, 0.3);
+  --heatmap-cell-no-article-border: rgba(0, 0, 0, 0.1);
+  --heatmap-cell-has-article: #ff6b6b;
+  --heatmap-legend-text: #64b5f6;
+  --heatmap-text: #2c3e50;
+  --heatmap-scroll-text: #64b5f6;
+}

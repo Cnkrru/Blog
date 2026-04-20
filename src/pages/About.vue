@@ -1,0 +1,141 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import SimpleMarkdownParser from '../components/functions/center/SimpleMarkdownParser.vue'
+import GitHub from '../components/api/GitHub.vue'
+import { useHead } from '@vueuse/head'
+
+// SEO 配置
+useHead({
+  title: '关于 - Cnkrru\'s Blog',
+  meta: [
+    { name: 'description', content: '关于Cnkrru和Cnkrru\'s Blog，了解作者的个人经历、技术技能和創作初衷' },
+    { name: 'keywords', content: '关于,个人简介,技术经历,Cnkrru' },
+    { name: 'author', content: 'Cnkrru' },
+    { name: 'robots', content: 'index, follow' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://cnkrru.top/about' },
+    { property: 'og:title', content: '关于 - Cnkrru\'s Blog' },
+    { property: 'og:description', content: '关于Cnkrru和Cnkrru\'s Blog，了解作者的个人经历、技术技能和創作初衷' },
+    { property: 'og:locale', content: 'zh_CN' },
+    { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:url', content: 'https://cnkrru.top/about' },
+    { name: 'twitter:title', content: '关于 - Cnkrru\'s Blog' },
+    { name: 'twitter:description', content: '关于Cnkrru和Cnkrru\'s Blog，了解作者的个人经历、技术技能和创作初衷' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://cnkrru.top/about' }
+  ]
+})
+
+// About页面标题
+const AboutTitle = '关于'
+const aboutContent = ref('')
+const loading = ref(true)
+const error = ref(null)
+
+const loadAboutContent = async () => {
+    try {
+        loading.value = true
+        error.value = null
+        
+        // 从src/pages/about.md读取Markdown文件
+        const mdModule = await import('./about.md?raw')
+        aboutContent.value = mdModule.default
+    } catch (importError) {
+        error.value = '加载关于页面内容失败'
+        aboutContent.value = ''
+    } finally {
+        loading.value = false
+    }
+}
+
+onMounted(() => {
+    loadAboutContent()
+})
+</script>
+
+
+<template>
+    <!-- 中心卡片 -->
+    <!-- 主体部分卡片标题设计 -->
+    <div class="center-head-card">
+        <h2>{{ AboutTitle }}</h2>
+    </div>
+    <hr>
+    <div class="center-card-content">
+        <div class="about-center-card-body">
+            <div v-if="loading" class="loading-message">
+                <p>加载中...</p>
+            </div>
+            <div v-else-if="error" class="error-message">
+                <p>{{ error }}</p>
+            </div>
+            <div v-else class="text-style">
+                <SimpleMarkdownParser :content="aboutContent" />
+            </div>
+            
+            <!-- GitHub 信息 -->
+            <div class="github-section">
+                <GitHub username="Cnkrru" />
+            </div>
+        </div>
+    </div>
+    <hr>
+</template>
+
+<style scoped>
+/* 主体部分卡片body设计 */
+.about-center-card-body {
+    width: 100%;
+    /* 移除固定高度，让内容自然展开 */
+    height: auto;
+    /* 移除滚动 */
+    overflow: visible;
+}
+
+/* 主体部分卡片footer设计 */
+.about-center-card-footer {
+    width: 100%;
+    height: 100px;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* GitHub 部分样式 */
+.github-section {
+    margin: 30px 0;
+    width: 100%;
+}
+
+.github-section :deep(.github-container) {
+    margin: 0;
+}
+
+/*==============================响应式设计媒体查询=============================*/
+/* 超小屏手机 (576px) */
+@media (max-width: 575.98px) {
+    /* 调整主体部分卡片footer */
+    .about-center-card-footer {
+        height: 120px;
+    }
+}
+
+/* 小屏手机横屏(576px) */
+@media (min-width: 576px) {
+    /* 保持现有样式 */
+}
+
+/* 平板及横屏(768px) */
+@media (min-width: 768px) {
+    /* 恢复桌面布局 */
+    /* 调整主体部分卡片footer */
+    .about-center-card-footer {
+        height: 100px;
+    }
+}
+</style>

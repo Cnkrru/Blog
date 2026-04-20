@@ -1,0 +1,25 @@
+{
+  "routes": [
+    "/",
+    "/home",
+    "/about",
+    "/archives",
+    "/links",
+    "/tools",
+    "/projects",
+    "/post",
+    "/post/0",
+    "/post/1",
+    "/post/2",
+    "/post/3",
+    "/post/4",
+    "/post/5",
+    "/post/6",
+    "/post/7",
+    "/post/8",
+    "/post/9",
+    "/project/0",
+    "/project/1",
+    "/tool/1"
+  ]
+}
