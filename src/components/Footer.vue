@@ -1,6 +1,6 @@
 <script setup>
 import WebsiteAge from './functions/footer/WebsiteAge.vue'
-import Copyright from './functions/footer/Copyright.vue'
+import Copyright from './functions/footer/CopyRight.vue'
 </script>
 
 <template>
