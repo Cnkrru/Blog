@@ -3,10 +3,10 @@ import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useHead } from '@vueuse/head'
-import Announcement from '../components/functions/center/Announcement.vue'
-import ArticleCount from '../components/functions/center/ArticleCount.vue'
-import Pagination from '../components/Pagination.vue'
-import { useArticlesStore } from '../stores/articles'
+import Announcement from '../components/p-center/Announcement.vue'
+import ArticleCount from '../components/p-center/ArticleCount.vue'
+import Pagination from '../components/p-center/Pagination.vue'
+import { useArticlesStore } from '../stores/index.js'
 
 const { t } = useI18n()
 const store = useArticlesStore()

@@ -1,9 +1,9 @@
 <script setup>
-import IndexLogo from '../components/index/IndexLogo.vue'
-import IndexNavbar from '../components/index/IndexNavbar.vue'
-import HeroContent from '../components/index/HeroContent.vue'
-import ScrollIndicator from '../components/index/ScrollIndicator.vue'
-import NetworkParticles from '../components/index/NetworkParticles.vue'
+import IndexLogo from '../components/p-index/IndexLogo.vue'
+import IndexNavbar from '../components/p-index/IndexNavbar.vue'
+import HeroContent from '../components/p-index/HeroContent.vue'
+import ScrollIndicator from '../components/p-index/ScrollIndicator.vue'
+import NetworkParticles from '../components/p-index/NetworkParticles.vue'
 import WelcomeNotification from '../components/api/WelcomeNotification.vue'
 
 import '../assets/css/index.css'
@@ -64,6 +64,30 @@ import '../assets/css/index.css'
 @media (max-width: 768px) {
   .navbar {
     padding: 1.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 1rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .hero-container {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+}
+
+/* 防止移动端横向滚动 */
+@media (max-width: 480px) {
+  .hero-container {
+    overflow-x: hidden;
+  }
+  
+  .navbar {
+    flex-wrap: wrap;
   }
 }
 </style>

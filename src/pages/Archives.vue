@@ -3,9 +3,9 @@ import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useHead } from '@vueuse/head'
-import TagCloud from '../components/functions/center/TagCloud.vue'
-import ArticleCount from '../components/functions/center/ArticleCount.vue'
-import { useArticlesStore } from '../stores/articles'
+import TagCloud from '../components/p-center/TagCloud.vue'
+import ArticleCount from '../components/p-center/ArticleCount.vue'
+import { useArticlesStore } from '../stores/index.js'
 
 const { t } = useI18n()
 const store = useArticlesStore()

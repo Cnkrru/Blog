@@ -14,7 +14,7 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    component: () => import('../pages/About.vue')
+    component: () => import('../pages/About/About.vue')
   },
   {
     path: '/archives',
@@ -25,11 +25,6 @@ const routes = [
     path: '/links',
     name: 'Links',
     component: () => import('../pages/Links.vue')
-  },
-  {
-    path: '/tools',
-    name: 'Tools',
-    component: () => import('../pages/Tools.vue')
   },
   {
     path: '/projects',
@@ -45,21 +40,6 @@ const routes = [
     path: '/project/:id',
     name: 'Project',
     component: () => import('../pages/project/Projects.vue')
-  },
-  {
-    path: '/tool/1',
-    name: 'SerialTool',
-    component: () => import('../components/tools/SerialToolPage.vue')
-  },
-  {
-    path: '/tool/2',
-    name: 'CodeRunnerTool',
-    component: () => import('../components/tools/CodeRunnerToolPage.vue')
-  },
-  {
-    path: '/tool/:id',
-    name: 'Tool',
-    component: () => import('../pages/tools/Tools.vue')
   },
   {
     path: '/changelog',

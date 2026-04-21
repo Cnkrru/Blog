@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useArticlesStore = defineStore('articles', () => {
   const articles = ref([])
@@ -12,7 +12,6 @@ export const useArticlesStore = defineStore('articles', () => {
     ...import.meta.glob('../pages/log/*.md', { query: '?raw', import: 'default', eager: false }),
     ...import.meta.glob('../pages/command/*.md', { query: '?raw', import: 'default', eager: false }),
     ...import.meta.glob('../pages/project/*.md', { query: '?raw', import: 'default', eager: false }),
-    ...import.meta.glob('../pages/tools/*.md', { query: '?raw', import: 'default', eager: false }),
   }
 
   /**
@@ -52,16 +51,14 @@ export const useArticlesStore = defineStore('articles', () => {
    *   changelog           -> pages/log/changelog.md
    *   terminal            -> pages/command/terminal.md
    *   project-N           -> pages/project/project-{N}.md
-   *   tool-N              -> pages/tools/tool-{N}.md
    */
   async function loadMarkdown(id) {
     console.log('loadMarkdown called with id:', id)
     const candidates = [
       // 数字 id：文章，文件名带 post- 前缀
       `../pages/post/post-${id}.md`,
-      // 已带前缀的直接匹配（project-N / tool-N 等）
+      // 已带前缀的直接匹配（project-N 等）
       `../pages/project/${id}.md`,
-      `../pages/tools/${id}.md`,
       // 特殊页
       `../pages/log/${id}.md`,
       `../pages/command/${id}.md`,
@@ -86,5 +83,12 @@ export const useArticlesStore = defineStore('articles', () => {
     return null
   }
 
-  return { articles, loaded, fetchArticles, loadMarkdown }
+  // 计算文章数量，排除 terminal 和 changelog
+  const articleCount = computed(() => {
+    return articles.value
+      .filter(item => item.id !== 'terminal' && item.id !== 'changelog')
+      .length
+  })
+
+  return { articles, loaded, loading, fetchArticles, loadMarkdown, articleCount }
 })

@@ -61,13 +61,19 @@
 /*友链子页面列表单元悬停边框颜色*/ --links-subpage-item-border-hover: #ff6700;
 
 /*==============================热力图变量==============================*/
-/*热力图背景颜色*/ --heatmap-background: rgba(255, 255, 255, 0.8);
-/*热力图边框颜色*/ --heatmap-border: rgba(255, 192, 203, 0.5);
-/*热力图文本颜色*/ --heatmap-text: #333;
+/*热力图背景颜色*/ --heatmap-background: rgba(255, 255, 255, 0.9);
+/*热力图边框颜色*/ --heatmap-border: rgba(255, 105, 180, 0.5);
+/*热力图文本颜色*/ --heatmap-text: #333333;
 /*热力图标题渐变*/ --heatmap-title-gradient: linear-gradient(90deg, #ff69b4, #ff1493, #ff69b4);
 /*热力图无文章单元格颜色*/ --heatmap-cell-no-article: rgba(255, 192, 203, 0.2);
 /*热力图无文章单元格边框*/ --heatmap-cell-no-article-border: rgba(255, 192, 203, 0.3);
 /*热力图有文章单元格颜色*/ --heatmap-cell-has-article: #ff69b4;
+
+/*==============================访客地图变量==============================*/
+/*访客地图信息背景*/ --map-info-bg: white;
+/*访客地图信息文本*/ --map-info-text: #333333;
+/*访客地图标题颜色*/ --map-info-title: #1e88e5;
+/*访客地图副文本颜色*/ --map-info-subtext: #333333;
 }
 
 /* 暗色主题变量 */
@@ -136,10 +142,16 @@ body.dark-theme {
 /*热力图背景颜色*/ --heatmap-background: rgba(30, 30, 63, 0.9);
 /*热力图边框颜色*/ --heatmap-border: rgba(79, 195, 247, 0.5);
 /*热力图文本颜色*/ --heatmap-text: #e0e0e0;
-/*热力图标题渐变*/ --heatmap-title-gradient: linear-gradient(90deg, #4fc3f7, #00bcd4, #4fc3f7);
-/*热力图无文章单元格颜色*/ --heatmap-cell-no-article: rgba(79, 195, 247, 0.2);
-/*热力图无文章单元格边框*/ --heatmap-cell-no-article-border: rgba(79, 195, 247, 0.3);
+/*热力图标题渐变*/ --heatmap-title-gradient: linear-gradient(90deg, #4ecdc4, #ff8e53, #4ecdc4);
+/*热力图无文章单元格颜色*/ --heatmap-cell-no-article: rgba(79, 195, 247, 0.3);
+/*热力图无文章单元格边框*/ --heatmap-cell-no-article-border: rgba(79, 195, 247, 0.5);
 /*热力图有文章单元格颜色*/ --heatmap-cell-has-article: #4fc3f7;
+
+/*==============================访客地图变量==============================*/
+/*访客地图信息背景*/ --map-info-bg: rgba(0, 0, 0, 0.5);
+/*访客地图信息文本*/ --map-info-text: #ffffff;
+/*访客地图标题颜色*/ --map-info-title: #4ecdc4;
+/*访客地图副文本颜色*/ --map-info-subtext: #aaaaaa;
 }
 
 /*==============================通用样式==============================*/

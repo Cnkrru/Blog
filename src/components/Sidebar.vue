@@ -1,8 +1,8 @@
 <script setup>
-import Avatar from './functions/sidebar/Avatar.vue'
-import WelcomeSaying from './functions/sidebar/WelcomeSaying.vue'
-import PageLinks from './functions/sidebar/PageLinks.vue'
-import RssSubscribe from './functions/sidebar/RssSubscribe.vue'
+import Avatar from './p-sidebar/Avatar.vue'
+import WelcomeSaying from './p-sidebar/WelcomeSaying.vue'
+import PageLinks from './p-sidebar/PageLinks.vue'
+import RssSubscribe from './p-sidebar/RssSubscribe.vue'
 import Weather from './api/Weather.vue'
 </script>
 

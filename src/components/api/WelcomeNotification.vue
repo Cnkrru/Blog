@@ -4,6 +4,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+// 记录是否已经显示过欢迎语
+const hasShownWelcome = ref(false)
+
 const visitorInfo = ref({
   ip: '',
   city: '',
@@ -109,41 +112,81 @@ const fetchVisitorInfo = async () => {
   let visitorData = defaultVisitorInfo
   let apiSuccess = false
 
-  try {
-    // 尝试使用 ipinfo.io
-    const response = await fetch('https://ipinfo.io/json')
-    if (response.ok) {
-      const data = await response.json()
-      visitorData = {
+  // API 列表，按优先级排序
+  const apis = [
+    {
+      name: 'ipinfo.io',
+      url: 'https://ipinfo.io/json',
+      parser: (data) => ({
         ip: data.ip || '未知',
         city: data.city || '未知',
         region: data.region || '',
         country: data.country || '中国',
         countryCode: data.country || ''
-      }
-      apiSuccess = true
+      })
+    },
+    {
+      name: 'ipapi.co',
+      url: 'https://ipapi.co/json/',
+      parser: (data) => ({
+        ip: data.ip || '未知',
+        city: data.city || '未知',
+        region: data.region || '',
+        country: data.country_name || '中国',
+        countryCode: data.country_code || ''
+      })
+    },
+    {
+      name: 'ipwho.is',
+      url: 'https://ipwho.is/',
+      parser: (data) => ({
+        ip: data.ip || '未知',
+        city: data.city || '未知',
+        region: data.region || '',
+        country: data.country || '中国',
+        countryCode: data.country_code || ''
+      })
+    },
+    {
+      name: 'freeipapi.com',
+      url: 'https://freeipapi.com/api/json/',
+      parser: (data) => ({
+        ip: data.ipAddresses?.[0] || '未知',
+        city: data.cityName || '未知',
+        region: data.regionName || '',
+        country: data.countryName || '中国',
+        countryCode: data.countryCode || ''
+      })
+    },
+    {
+      name: 'ip-api.com',
+      url: 'https://ip-api.com/json/?fields=status,country,countryCode,regionName,city,query',
+      parser: (data) => ({
+        ip: data.query || '未知',
+        city: data.city || '未知',
+        region: data.regionName || '',
+        country: data.country || '中国',
+        countryCode: data.countryCode || ''
+      })
     }
-  } catch (error) {
-    console.warn('ipinfo.io API 调用失败:', error)
-  }
+  ]
 
-  // 如果第一个 API 失败，尝试使用 ipapi.co
-  if (!apiSuccess) {
+  // 依次尝试每个 API
+  for (const api of apis) {
+    if (apiSuccess) break
     try {
-      const response = await fetch('https://ipapi.co/json/')
+      const response = await fetch(api.url)
       if (response.ok) {
         const data = await response.json()
-        visitorData = {
-          ip: data.ip || '未知',
-          city: data.city || '未知',
-          region: data.region || '',
-          country: data.country_name || '中国',
-          countryCode: data.country_code || ''
+        // 检查返回数据是否有效
+        if (data.status !== 'fail' && data.ip) {
+          visitorData = api.parser(data)
+          apiSuccess = true
+          console.log(`${api.name} API 获取成功:`, visitorData.city)
         }
-        apiSuccess = true
       }
     } catch (error) {
-      console.warn('ipapi.co API 调用失败:', error)
+      console.warn(`${api.name} API 调用失败:`, error)
     }
   }
 

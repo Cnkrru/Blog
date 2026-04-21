@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import PageNav from '../components/PageNav.vue'
+import PageNav from '../components/p-center/PageNav.vue'
 
 // SEO 配置
 useHead({

@@ -10,7 +10,7 @@ import './assets/css/text.css'
 import './assets/css/immersive-reading.css'
 import './assets/css/music-player.css'
 
-import { createPinia } from 'pinia'
+import { pinia } from './stores/index.js'
 import i18n from './i18n'
 
 import { SpeedInsights } from '@vercel/speed-insights/vue'
@@ -30,7 +30,7 @@ export function createApp(): AppReturn {
   vueApp.use(head)
 
   vueApp.use(router)
-  vueApp.use(createPinia())
+  vueApp.use(pinia)
   vueApp.use(i18n)
 
   vueApp.component('SpeedInsights', SpeedInsights)

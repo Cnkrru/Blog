@@ -2,15 +2,15 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import BackToTop from '../../components/functions/center/BackToTop.vue'
-import LoaderPost from '../../components/functions/center/LoaderPost.vue'
-import ReadingTime from '../../components/functions/center/ReadingTime.vue'
-import Toc from '../../components/functions/center/Toc.vue'
-import TocButton from '../../components/functions/center/TocButton.vue'
-import PostMenu from '../../components/functions/center/PostMenu.vue'
-import Share from '../../components/functions/center/Share.vue'
+import BackToTop from '../../components/p-center/BackToTop.vue'
+import ContentLoader from '../../components/content/ContentLoader.vue'
+import ReadingTime from '../../components/p-center/ReadingTime.vue'
+import Toc from '../../components/p-center/Toc.vue'
+import TocButton from '../../components/p-center/TocButton.vue'
+import PostMenu from '../../components/p-center/PostMenu.vue'
+import Share from '../../components/p-center/Share.vue'
 
-import Comment from '../../components/functions/center/Comment.vue'
+import Comment from '../../components/api/Comment.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -129,9 +129,10 @@ onMounted(() => {
     <div class="center-card-content" ref="contentCard">
         <!-- 阅读时间卡片 -->
         <ReadingTime v-if="!loading && !error" />
-        <LoaderPost 
-            :post-id="postId" 
-            @post-loaded="handlePostLoaded"
+        <ContentLoader 
+            :id="postId" 
+            type="post"
+            @content-loaded="handlePostLoaded"
             @loading="handleLoading"
             @error="handleError"
             @prev-next-posts="handlePrevNextPosts"

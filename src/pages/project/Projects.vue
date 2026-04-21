@@ -2,17 +2,17 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import BackToTop from '../../components/functions/center/BackToTop.vue'
-import LoaderProject from '../../components/functions/center/LoaderProject.vue'
-import ReadingTime from '../../components/functions/center/ReadingTime.vue'
-import Toc from '../../components/functions/center/Toc.vue'
-import TocButton from '../../components/functions/center/TocButton.vue'
-import PostMenu from '../../components/functions/center/PostMenu.vue'
-import Share from '../../components/functions/center/Share.vue'
+import BackToTop from '../../components/p-center/BackToTop.vue'
+import ContentLoader from '../../components/content/ContentLoader.vue'
+import ReadingTime from '../../components/p-center/ReadingTime.vue'
+import Toc from '../../components/p-center/Toc.vue'
+import TocButton from '../../components/p-center/TocButton.vue'
+import PostMenu from '../../components/p-center/PostMenu.vue'
+import Share from '../../components/p-center/Share.vue'
 
-import Comment from '../../components/functions/center/Comment.vue'
-import PostNav from '../../components/functions/center/PostNav.vue'
-import SiteStats from '../../components/functions/center/SiteStats.vue'
+import Comment from '../../components/api/Comment.vue'
+import PostNav from '../../components/p-center/PostNav.vue'
+import SiteStats from '../../components/p-center/SiteStats.vue'
 
 const route = useRoute()
 const projectId = computed(() => route.params.id)
@@ -161,10 +161,11 @@ const handleError = (err) => {
     <div class="center-card-content">
         <!-- 阅读时间卡片 -->
         <ReadingTime v-if="!loading && !error" />
-        <LoaderProject 
+        <ContentLoader 
             :key="projectId"
-            :project-id="projectId" 
-            @project-loaded="handleProjectLoaded"
+            :id="projectId" 
+            type="project"
+            @content-loaded="handleProjectLoaded"
             @loading="handleLoading"
             @error="handleError"
         />

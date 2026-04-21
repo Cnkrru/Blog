@@ -37,7 +37,7 @@ Sakura.prototype.draw = function(cxt) {
 // 无飘落代码
 Sakura.prototype.update = function() {
 	this.x = this.fn.x(this.x, this.y);
-	this.y = this.fn.y(this.y, this.y);
+	this.y = this.fn.y(this.x, this.y);
 	this.r = this.fn.r(this.r);
 
 	// 如果樱花越界, 重新调整位置
@@ -151,6 +151,14 @@ function getRandom(option) {
 }
 
 function startSakura() {
+	// 检查图片是否已加载完成
+	if (!img.complete || img.naturalWidth === 0) {
+		// 图片未加载完成，等待加载
+		img.onload = function() {
+			startSakura();
+		};
+		return;
+	}
 
 	requestAnimationFrame = window.requestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
@@ -162,7 +170,7 @@ function startSakura() {
 	staticx = true;
 	canvas.height = window.innerHeight;
 	canvas.width = window.innerWidth;
-	canvas.setAttribute('style', 'position: fixed;left: 0;top: 0;pointer-events: none;');
+	canvas.setAttribute('style', 'position: fixed;left: 0;top: 0;pointer-events: none;z-index: 9999;');
 	canvas.setAttribute('id', 'canvas_sakura');
 	document.getElementsByTagName('body')[0].appendChild(canvas);
 	cxt = canvas.getContext('2d');

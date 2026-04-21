@@ -1,15 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import Logo from './functions/header/Logo.vue'
-import ThemeToggle from './functions/header/ThemeToggle.vue'
-import Reading from './functions/header/Reading.vue'
-import ReadingProgress from './functions/header/ReadingProgress.vue'
-import Search from './functions/header/Search.vue'
-import MusicPlay from './functions/header/MusicPlay.vue'
-import MobileMenu from './functions/header/MobileMenu.vue'
-import LanguageSelector from './functions/header/LanguageSelector.vue'
-import DynamicEffectControl from './functions/header/DynamicEffectControl.vue'
+import Logo from './p-header/Logo.vue'
+import ThemeToggle from './p-header/ThemeToggle.vue'
+import Reading from './p-header/Reading.vue'
+import ReadingProgress from './p-header/ReadingProgress.vue'
+import Search from './p-header/Search.vue'
+import MusicPlay from './media/MusicPlay.vue'
+import MobileMenu from './p-header/MobileMenu.vue'
+import LanguageSelector from './p-header/LanguageSelector.vue'
+import DynamicEffectControl from './p-header/DynamicEffectControl.vue'
 
 const router = useRouter()
 
