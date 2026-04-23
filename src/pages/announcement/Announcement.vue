@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, computed } from 'vue'
 import { useAnnouncementStore } from '../../stores'
-import SimpleMarkdownParser from '../content/SimpleMarkdownParser.vue'
+import SimpleMarkdownParser from '../../components/content/SimpleMarkdownParser.vue'
 
 const announcementStore = useAnnouncementStore()
 

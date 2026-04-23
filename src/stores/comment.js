@@ -66,14 +66,18 @@ export const useCommentStore = defineStore('comment', () => {
     try {
       const commentContainers = document.querySelectorAll('.comment-container')
       
+      console.log('找到评论容器数量:', commentContainers.length)
+      
       commentContainers.forEach(container => {
         // 避免重复注入
         if (container.querySelector('script[src*="giscus"]')) {
+          console.log('评论脚本已存在，跳过注入')
           setLoaded(true)
           setLoading(false)
           return
         }
 
+        console.log('开始注入giscus脚本')
         const giscusScript = document.createElement('script')
         giscusScript.src = 'https://giscus.app/client.js'
         giscusScript.setAttribute('data-repo', giscusConfig.value.repo)
@@ -92,18 +96,26 @@ export const useCommentStore = defineStore('comment', () => {
         
         // 加载完成回调
         giscusScript.onload = () => {
+          console.log('giscus脚本加载完成')
           setLoaded(true)
           setLoading(false)
         }
         
         giscusScript.onerror = () => {
+          console.error('giscus脚本加载失败')
           setError('评论系统加载失败')
           setLoading(false)
         }
         
+        // 直接标记为加载完成，因为giscus脚本会自动处理渲染
+        setLoaded(true)
+        setLoading(false)
+        
         container.appendChild(giscusScript)
+        console.log('giscus脚本注入完成')
       })
     } catch (err) {
+      console.error('初始化评论系统失败:', err)
       setError('初始化评论系统失败')
       setLoading(false)
     }

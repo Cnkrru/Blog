@@ -40,28 +40,25 @@ export function useContentLoader(type, id) {
           const searchData = await articlesStore.fetchArticles()
           itemData = searchData.find(item => item.id === id)
           
-          if (itemData) {
-            // 加载 markdown 内容
-            const mdText = await articlesStore.loadMarkdown(id)
-            if (mdText) {
-              const { frontmatter, content: mdContent } = parseFrontmatter(mdText)
-              content.value = {
-                ...itemData,
-                ...frontmatter,
-                tags: frontmatter.tags || itemData.tags || []
-              }
-              markdownContent.value = mdContent
-              
-              // 保存到缓存
-              contentStore.setContent(type, id, {
-                ...content.value,
-                markdownContent: mdContent
-              })
-            } else {
-              throw new Error('Failed to load markdown content')
+          // 尝试加载 markdown 内容，即使在 search.json 中找不到
+          const mdText = await articlesStore.loadMarkdown(id)
+          if (mdText) {
+            const { frontmatter, content: mdContent } = parseFrontmatter(mdText)
+            content.value = {
+              ...(itemData || {}),
+              ...frontmatter,
+              id: id,
+              tags: frontmatter.tags || (itemData ? itemData.tags : [])
             }
+            markdownContent.value = mdContent
+            
+            // 保存到缓存
+            contentStore.setContent(type, id, {
+              ...content.value,
+              markdownContent: mdContent
+            })
           } else {
-            throw new Error('Content not found')
+            throw new Error('Failed to load markdown content')
           }
           break
 

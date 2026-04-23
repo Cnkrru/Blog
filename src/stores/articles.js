@@ -48,6 +48,7 @@ export const useArticlesStore = defineStore('articles', () => {
    * 根据 id 加载对应 md 文件的原始内容
    * 文件命名规则：
    *   数字 id (0,1,2...)  -> pages/post/post-{id}.md
+   *   字符串 id           -> pages/post/{id}.md
    *   changelog           -> pages/log/changelog.md
    *   terminal            -> pages/command/terminal.md
    *   project-N           -> pages/project/project-{N}.md
@@ -57,6 +58,8 @@ export const useArticlesStore = defineStore('articles', () => {
     const candidates = [
       // 数字 id：文章，文件名带 post- 前缀
       `../pages/post/post-${id}.md`,
+      // 字符串 id：文章，直接匹配文件名
+      `../pages/post/${id}.md`,
       // 已带前缀的直接匹配（project-N 等）
       `../pages/project/${id}.md`,
       // 特殊页

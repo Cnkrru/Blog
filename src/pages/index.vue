@@ -1,9 +1,9 @@
 <script setup>
-import IndexLogo from '../components/p-index/IndexLogo.vue'
-import IndexNavbar from '../components/p-index/IndexNavbar.vue'
-import HeroContent from '../components/p-index/HeroContent.vue'
-import ScrollIndicator from '../components/p-index/ScrollIndicator.vue'
-import NetworkParticles from '../components/p-index/NetworkParticles.vue'
+import IndexLogo from '../components/page-index/IndexLogo.vue'
+import IndexNavbar from '../components/page-index/IndexNavbar.vue'
+import HeroContent from '../components/page-index/HeroContent.vue'
+import ScrollIndicator from '../components/page-index/ScrollIndicator.vue'
+import NetworkParticles from '../components/page-index/NetworkParticles.vue'
 import WelcomeNotification from '../components/api/WelcomeNotification.vue'
 
 import '../assets/css/index.css'

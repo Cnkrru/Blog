@@ -196,7 +196,8 @@ watch(() => props.latex, () => {
 
 onUnmounted(() => {
   // 清理资源
-  mathRef.value = null
+  // 不再直接设置mathRef.value为null，因为可能会在异步操作中访问到
+  // 让Vue的响应式系统自动处理清理
 })
 </script>
 

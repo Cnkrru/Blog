@@ -9,77 +9,36 @@ const statsLoaded = ref(false)
 const themeStore = useThemeStore()
 const isDarkTheme = computed(() => themeStore.isDark)
 
-// 不蒜子 CDN 链接列表（主链接 + 备用链接）
-const busuanziCdnLinks = [
-  '//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js',
-  '//busuanzi.ibruce.info/busuanzi/3.6.9/busuanzi.min.js',
-  '//lib.baomitu.com/busuanzi/3.6.9/busuanzi.min.js'
-]
-
-// 加载资源函数，支持备用链接
-const loadResource = (urls, type) => {
-  return new Promise((resolve, reject) => {
-    let currentIndex = 0
-
-    const tryLoad = () => {
-      if (currentIndex >= urls.length) {
-        reject(new Error(`${type} 加载失败，所有 CDN 链接都不可用`))
-        return
-      }
-
-      const url = urls[currentIndex]
-      const script = document.createElement('script')
-      script.src = url
-      script.defer = true
-      script.onload = () => resolve()
-      script.onerror = () => {
-        console.warn(`CDN 加载失败: ${url}，尝试备用链接`)
-        currentIndex++
-        tryLoad()
-      }
-
-      document.head.appendChild(script)
-    }
-
-    tryLoad()
-  })
-}
+// 不蒜子 CDN 链接
+const busuanziCdnLink = '//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js'
 
 // 加载不蒜子脚本
 const loadBusuanzi = async () => {
   if (typeof window === 'undefined') return
   
-  if (window.busuanzi) {
-    statsLoaded.value = true
-    isLoading.value = false
+  // 直接标记为加载完成，因为不蒜子脚本会自动处理数据显示
+  statsLoaded.value = true
+  isLoading.value = false
+  
+  // 检查是否已经加载过不蒜子脚本
+  if (document.querySelector('script[src*="busuanzi"]')) {
+    console.log('不蒜子脚本已加载')
     return
   }
 
-  try {
-    await loadResource(busuanziCdnLinks, '不蒜子脚本')
-    
-    // 监听不蒜子加载完成
-    const checkBusuanzi = setInterval(() => {
-      if (window.busuanzi) {
-        clearInterval(checkBusuanzi)
-        statsLoaded.value = true
-        isLoading.value = false
-      }
-    }, 100)
-    
-    // 超时处理
-    setTimeout(() => {
-      if (!statsLoaded.value) {
-        clearInterval(checkBusuanzi)
-        error.value = '统计数据加载超时'
-        isLoading.value = false
-      }
-    }, 5000)
-  } catch (err) {
-    error.value = '统计脚本加载失败'
-    isLoading.value = false
-    console.error('加载不蒜子脚本失败:', err)
+  // 加载不蒜子脚本
+  const script = document.createElement('script')
+  script.src = busuanziCdnLink
+  script.defer = true
+  script.onload = () => {
+    console.log('不蒜子脚本加载完成')
   }
+  script.onerror = () => {
+    error.value = '统计脚本加载失败'
+    console.error('加载不蒜子脚本失败')
+  }
+  document.head.appendChild(script)
+  console.log('不蒜子脚本开始加载:', busuanziCdnLink)
 }
 
 // 重试加载

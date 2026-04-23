@@ -22,7 +22,7 @@ export const useAnnouncementStore = defineStore('announcement', () => {
   
   const loadAnnouncement = async () => {
     try {
-      const mdModule = await import('../pages/announcement.md?raw')
+      const mdModule = await import('../pages/announcement/index.md?raw')
       announcementContent.value = mdModule.default
       lastUpdated.value = new Date()
     } catch (error) {

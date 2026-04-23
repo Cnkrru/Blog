@@ -27,12 +27,12 @@ const REGEX = {
   EASTER_EGG: /<easter-egg([^>]*)>[\s\S]*?<\/easter-egg>/gim,
   MERMAID_CODE: /```mermaid\n/,
   MERMAID_END: /```$/,
-  HEADING_1: /^# (.*$)/gim,
-  HEADING_2: /^## (.*$)/gim,
-  HEADING_3: /^### (.*$)/gim,
-  HEADING_4: /^#### (.*$)/gim,
-  HEADING_5: /^##### (.*$)/gim,
-  HEADING_6: /^###### (.*$)/gim,
+  HEADING_1: /^\s*# (.*$)/gim,
+  HEADING_2: /^\s*## (.*$)/gim,
+  HEADING_3: /^\s*### (.*$)/gim,
+  HEADING_4: /^\s*#### (.*$)/gim,
+  HEADING_5: /^\s*##### (.*$)/gim,
+  HEADING_6: /^\s*###### (.*$)/gim,
   IMAGE: /!\[([^\]]*)\]\(([^)]+)\)/gim,
   BOLD: /\*\*(.*)\*\*/gim,
   ITALIC: /\*(.*)\*/gim,
@@ -40,7 +40,7 @@ const REGEX = {
   UNORDERED_LIST: /^\s*\-\s(.*$)/gim,
   ORDERED_LIST: /^\s*\d+\.\s(.*$)/gim,
   INLINE_CODE: /`(.*?)`/gim,
-  BLOCKQUOTE: /^> (.*$)/gim
+  BLOCKQUOTE: /^\s*> (.*$)/gim
 }
 
 // 提取 Mermaid 代码块
@@ -94,7 +94,12 @@ const replaceSpecialBlocks = (content) => {
   // 首先处理 Mermaid 代码块
   let mermaidIndex = 0
   content = content.replace(REGEX.MERMAID_BLOCK, (match) => {
-    const code = match.replace(REGEX.MERMAID_CODE, '').replace(REGEX.MERMAID_END, '').trim()
+    // 提取 mermaid 代码，去除开始和结束标记
+    let code = match
+    // 去除开始标记
+    code = code.replace(/^```mermaid\s*/i, '')
+    // 去除结束标记
+    code = code.replace(/```$/i, '').trim()
     mermaidBlocks.value.push({ id: `mermaid-${mermaidIndex}`, code })
     const placeholder = `<div class="mermaid-placeholder" data-id="mermaid-${mermaidIndex}"></div>`
     mermaidIndex++
@@ -221,51 +226,130 @@ function parseMarkdown(content) {
     })
 
   // 列表处理：按行扫描，将连续的列表行分组包裹，避免互相干扰
-  html = html.split('\n').reduce((acc, line) => {
-    const ulMatch = line.match(/^\s*-\s(.+)$/)
-    const olMatch = line.match(/^\s*\d+\.\s(.+)$/)
+  const lines = html.split('\n')
+  const result = []
+  let listStack = [] // 用于处理嵌套列表
+
+  for (const line of lines) {
+    // 匹配无序列表项，捕获缩进级别
+    const ulMatch = line.match(/^(\s*)\-\s(.+)$/)
+    // 匹配有序列表项，捕获缩进级别
+    const olMatch = line.match(/^(\s*)\d+\.\s(.+)$/)
 
     if (ulMatch) {
-      // 无序列表项
-      if (acc.listType === 'ul') {
-        acc.listItems.push(`<li>${ulMatch[1]}</li>`)
-      } else {
-        if (acc.listType) acc.lines.push(`<${acc.listType}>${acc.listItems.join('')}</${acc.listType}>`)
-        acc.listType = 'ul'
-        acc.listItems = [`<li>${ulMatch[1]}</li>`]
-      }
+      const indent = ulMatch[1].length
+      const content = ulMatch[2]
+      handleListItem('ul', indent, content)
     } else if (olMatch) {
-      // 有序列表项
-      if (acc.listType === 'ol') {
-        acc.listItems.push(`<li>${olMatch[1]}</li>`)
-      } else {
-        if (acc.listType) acc.lines.push(`<${acc.listType}>${acc.listItems.join('')}</${acc.listType}>`)
-        acc.listType = 'ol'
-        acc.listItems = [`<li>${olMatch[1]}</li>`]
-      }
+      const indent = olMatch[1].length
+      const content = olMatch[2]
+      handleListItem('ol', indent, content)
     } else {
       // 非列表行，先把积累的列表 flush
-      if (acc.listType) {
-        acc.lines.push(`<${acc.listType}>${acc.listItems.join('')}</${acc.listType}>`)
-        acc.listType = null
-        acc.listItems = []
+      while (listStack.length > 0) {
+        const { type, items } = listStack.pop()
+        const listHtml = `<${type}>${items.join('')}</${type}>`
+        if (listStack.length > 0) {
+          // 如果栈不为空，将当前列表作为上一个列表的项
+          listStack[listStack.length - 1].items.push(`<li>${listHtml}</li>`)
+        } else {
+          // 如果栈为空，将当前列表添加到结果中
+          result.push(listHtml)
+        }
       }
-      acc.lines.push(line)
+      result.push(line)
     }
-    return acc
-  }, { lines: [], listType: null, listItems: [] })
+  }
 
   // flush 末尾可能残留的列表
-  if (html.listType) {
-    html.lines.push(`<${html.listType}>${html.listItems.join('')}</${html.listType}>`)
+  while (listStack.length > 0) {
+    const { type, items } = listStack.pop()
+    const listHtml = `<${type}>${items.join('')}</${type}>`
+    if (listStack.length > 0) {
+      listStack[listStack.length - 1].items.push(`<li>${listHtml}</li>`)
+    } else {
+      result.push(listHtml)
+    }
   }
-  html = html.lines.join('\n')
+  
+  html = result.join('\n')
+  
+  // 处理列表项的函数
+  function handleListItem(type, indent, content) {
+    // 计算缩进级别（假设每个缩进级别为 2 个空格）
+    const level = Math.floor(indent / 2)
+    
+    // 弹出栈中级别大于等于当前级别的列表
+    while (listStack.length > level) {
+      const { type: poppedType, items: poppedItems } = listStack.pop()
+      const listHtml = `<${poppedType}>${poppedItems.join('')}</${poppedType}>`
+      if (listStack.length > 0) {
+        listStack[listStack.length - 1].items.push(`<li>${listHtml}</li>`)
+      } else {
+        result.push(listHtml)
+      }
+    }
+    
+    // 如果栈的长度小于当前级别，创建新的列表
+    while (listStack.length < level) {
+      listStack.push({ type: listStack.length > 0 ? listStack[listStack.length - 1].type : type, items: [] })
+    }
+    
+    // 如果栈为空或者栈顶的列表类型与当前类型不同，创建新的列表
+    if (listStack.length === 0 || listStack[listStack.length - 1].type !== type) {
+      listStack.push({ type, items: [`<li>${content}</li>`] })
+    } else {
+      // 否则，将当前项添加到栈顶的列表中
+      listStack[listStack.length - 1].items.push(`<li>${content}</li>`)
+    }
+  }
 
-  html = html
-    // 段落
-    .replace(/^(?!<h[1-6]>)(?!<ul>)(?!<ol>)(?!<li>)(?!<pre>)(?!<blockquote>)(?!<table>)(?!<div class="mermaid-placeholder">)(?!<div class="math-placeholder">)(?!<div class="code-block-placeholder">)(?!<div class="easter-egg-placeholder">)(.*$)/gim, '<p>$1</p>')
-    // 空行
-    .replace(/<p><\/p>/gim, '')
+  // 段落处理：按行扫描，将连续的非列表、非标题、非引用、非代码块行分组为段落
+  const paraLines = html.split('\n')
+  const paraResult = []
+  let currentPara = []
+
+  for (const line of paraLines) {
+    // 检查是否为特殊行（标题、列表、引用、代码块、表格、占位符等）
+    const isSpecialLine = /^(<h[1-6]>|<ul>|<ol>|<li>|<pre>|<blockquote>|<table>|<div class="mermaid-placeholder">|<div class="math-placeholder">|<div class="code-block-placeholder">|<div class="easter-egg-placeholder">|<div class="mermaid-container">|<div class="math-container">|<div class="code-container">|<div class="easter-egg-container">)/.test(line)
+    
+    if (isSpecialLine) {
+      // 如果当前有积累的段落，先flush
+      if (currentPara.length > 0) {
+        const paraContent = currentPara.join(' ').trim()
+        if (paraContent) {
+          paraResult.push(`<p>${paraContent}</p>`)
+        }
+        currentPara = []
+      }
+      // 添加特殊行
+      paraResult.push(line)
+    } else if (line.trim() === '') {
+      // 空行，flush当前段落
+      if (currentPara.length > 0) {
+        const paraContent = currentPara.join(' ').trim()
+        if (paraContent) {
+          paraResult.push(`<p>${paraContent}</p>`)
+        }
+        currentPara = []
+      }
+      // 保留空行
+      paraResult.push('')
+    } else {
+      // 普通行，添加到当前段落
+      currentPara.push(line)
+    }
+  }
+
+  // flush 末尾可能残留的段落
+  if (currentPara.length > 0) {
+    const paraContent = currentPara.join(' ').trim()
+    if (paraContent) {
+      paraResult.push(`<p>${paraContent}</p>`)
+    }
+  }
+  
+  html = paraResult.join('\n')
 
   // 最后处理indent，不影响其他语法
   html = html.replace(/\[indent:(\d+)\]/g, (match, n) => {

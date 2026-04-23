@@ -1,25 +1,12 @@
 <template>
   <div>
-    <SimpleMarkdownParser :content="content" />
-    <!-- 自定义灯箱-->
-    <div v-if="showLightbox" class="lightbox-overlay" @click="closeLightbox">
-      <div class="lightbox-content" @click.stop>
-        <button class="lightbox-close" @click="closeLightbox">&times;</button>
-        <img :src="lightboxImages[currentImageIndex].src" :alt="lightboxImages[currentImageIndex].title">
-        <div class="lightbox-title">{{ lightboxImages[currentImageIndex].title }}</div>
-        <div class="lightbox-nav">
-          <button class="lightbox-prev" @click="prevImage" :disabled="currentImageIndex === 0">&lt;</button>
-          <button class="lightbox-next" @click="nextImage" :disabled="currentImageIndex === lightboxImages.length - 1">&gt;</button>
-        </div>
-      </div>
-    </div>
+    <CdnMarkdownRenderer :content="content" @update:toc="(toc) => emit('update:toc', toc)" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
-import SimpleMarkdownParser from './SimpleMarkdownParser.vue'
-import LazyImage from './LazyImage.vue'
+import { defineProps, defineEmits } from 'vue'
+import CdnMarkdownRenderer from './CdnMarkdownRenderer.vue'
 
 const props = defineProps({
   content: {
@@ -29,127 +16,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:toc'])
-
-const showLightbox = ref(false)
-const currentImageIndex = ref(0)
-const lightboxImages = ref([])
-const lazyImages = ref([])
-let observer = null
-
-const extractToc = (content) => {
-  const toc = []
-  const lines = content.split('\n')
-  const levelCounters = [0, 0, 0, 0, 0, 0]
-  let headingCounter = 0
-
-  lines.forEach((line) => {
-    const headingMatch = line.match(/^(#{1,6})\s*(.+)$/)
-    if (headingMatch) {
-      const level = headingMatch[1].length
-      const text = headingMatch[2].trim()
-      const id = `heading-${headingCounter++}`
-
-      for (let i = level; i < levelCounters.length; i++) {
-        levelCounters[i] = 0
-      }
-      levelCounters[level - 1]++
-
-      let numbering = ''
-      for (let i = 0; i < level; i++) {
-        if (levelCounters[i] > 0) {
-          numbering += levelCounters[i] + '.'
-        }
-      }
-      numbering = numbering.slice(0, -1)
-
-      toc.push({ level, text, id, numbering })
-    }
-  })
-
-  return toc
-}
-
-const openLightbox = (index) => {
-  currentImageIndex.value = index
-  showLightbox.value = true
-}
-
-const closeLightbox = () => {
-  showLightbox.value = false
-}
-
-const prevImage = () => {
-  if (currentImageIndex.value > 0) {
-    currentImageIndex.value--
-  }
-}
-
-const nextImage = () => {
-  if (currentImageIndex.value < lightboxImages.value.length - 1) {
-    currentImageIndex.value++
-  }
-}
-
-const onImageLoad = (index) => {
-  // 图片加载完成，可用于调试或统计
-}
-
-const addImageClickListeners = () => {
-  const contentImages = document.querySelectorAll('.markdown-content img, .post-content img, .markdown-image')
-  const imageData = []
-  const newLazyImages = []
-
-  contentImages.forEach((image, index) => {
-    const src = image.src
-    const alt = image.alt || ''
-
-    imageData.push({ src, title: alt })
-
-    newLazyImages.push({
-      id: index,
-      src,
-      alt,
-      loaded: false
-    })
-
-    image.style.cursor = 'pointer'
-    image.addEventListener('click', () => {
-      openLightbox(index)
-    })
-  })
-
-  lightboxImages.value = imageData
-  lazyImages.value = newLazyImages
-}
-
-const cleanupObserver = () => {
-  if (observer) {
-    observer.disconnect()
-    observer = null
-  }
-}
-
-onMounted(() => {
-  const toc = extractToc(props.content)
-  emit('update:toc', toc)
-
-  setTimeout(() => {
-    addImageClickListeners()
-  }, 200)
-})
-
-watch(() => props.content, () => {
-  const toc = extractToc(props.content)
-  emit('update:toc', toc)
-
-  setTimeout(() => {
-    addImageClickListeners()
-  }, 200)
-})
-
-onUnmounted(() => {
-  cleanupObserver()
-})
 </script>
 
 <style scoped>
