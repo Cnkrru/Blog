@@ -13,93 +13,51 @@ const emit = defineEmits(['close'])
 
 const musicStore = useMusicStore()
 
-// 搜索状态
-const searchQuery = ref('')
-const searchResults = ref([])
-const isSearching = ref(false)
-const searchError = ref('')
+// 状态
+const songId = ref('')
+const source = ref('wy')
+const quality = ref('320k')
+const isLoading = ref(false)
+const error = ref('')
+const musicUrl = ref('')
 
 // 配置
 const API_URL = "https://88.lxmusic.xn--fiqs8s"
 const API_KEY = "lxmusic"
-const MUSIC_SOURCES = ['kw', 'kg', 'tx', 'wy', 'mg'] // 酷我、酷狗、腾讯、网易云、咪咕
-const MUSIC_QUALITY = ['128k', '320k', 'flac', 'flac24bit']
+const API_PATH = "/v4" // 正确的 v4 路径
+const MUSIC_SOURCES = [
+  { value: 'wy', label: '网易云 (wy)' },
+  { value: 'kw', label: '酷我 (kw)' },
+  { value: 'kg', label: '酷狗 (kg)' },
+  { value: 'tx', label: '腾讯 (tx)' },
+  { value: 'mg', label: '咪咕 (mg)' }
+]
+const MUSIC_QUALITY = [
+  { value: '128k', label: '128k' },
+  { value: '320k', label: '320k' },
+  { value: 'flac', label: 'FLAC' },
+  { value: 'flac24bit', label: 'FLAC 24bit' }
+]
 
 // 使用 Vercel API 代理
 const useProxy = true
 const proxyUrl = '/api/proxy'
 
-// 搜索音乐
-const searchMusic = async () => {
-  if (!searchQuery.value.trim()) return
-  
-  isSearching.value = true
-  searchError.value = ''
-  searchResults.value = []
-  
-  try {
-    // 构建 API URL
-    const apiUrl = `${API_URL}/lxmusicv4/search?keyword=${encodeURIComponent(searchQuery.value)}&page=1&limit=20`
-    
-    let response
-    if (useProxy) {
-      // 使用 Vercel 代理
-      response = await fetch(proxyUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          url: apiUrl,
-          method: 'GET'
-        })
-      })
-    } else {
-      // 直接调用 API
-      response = await fetch(apiUrl, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Request-Key': API_KEY
-        },
-        mode: 'cors',
-        credentials: 'omit'
-      })
-    }
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json()
-    
-    if (data.code === 0 && data.data && data.data.list) {
-      searchResults.value = data.data.list.map(item => ({
-        id: item.id,
-        title: item.name,
-        artist: item.artists?.join(' / ') || '未知艺术家',
-        album: item.album || '未知专辑',
-        source: item.source,
-        cover: item.picUrl || '',
-        // 为了兼容现有的播放器，我们需要准备 audio 字段
-        audio: '', // 稍后通过 getMusicUrl 获取
-        backupAudio: []
-      }))
-    } else {
-      searchError.value = data.msg || '搜索失败'
-    }
-  } catch (error) {
-    searchError.value = `搜索失败: ${error.message}`
-    console.error('Search error:', error)
-  } finally {
-    isSearching.value = false
-  }
-}
-
 // 获取音乐播放链接
-const getMusicUrl = async (song, quality = '320k') => {
+const fetchMusic = async () => {
+  if (!songId.value.trim()) {
+    error.value = '请输入歌曲 ID'
+    return
+  }
+  
+  isLoading.value = true
+  error.value = ''
+  musicUrl.value = ''
+  
   try {
     // 构建 API URL
-    const apiUrl = `${API_URL}/lxmusicv4/url/${song.source}/${song.id}/${quality}`
+    const apiUrl = `${API_URL}${API_PATH}/url/${source.value}/${songId.value}/${quality.value}`
+    console.log('Fetching music:', apiUrl)
     
     let response
     if (useProxy) {
@@ -131,51 +89,54 @@ const getMusicUrl = async (song, quality = '320k') => {
     }
     
     const data = await response.json()
+    console.log('API response:', data)
     
     if (data.code === 0 && data.data) {
-      return data.data
+      musicUrl.value = data.data
     } else {
-      throw new Error(data.msg || '获取播放链接失败')
+      throw new Error(data.msg || '获取音乐失败')
     }
-  } catch (error) {
-    console.error('Get music url error:', error)
-    throw error
+  } catch (err) {
+    console.error('Error fetching music:', err)
+    error.value = `获取失败: ${err.message}`
+  } finally {
+    isLoading.value = false
   }
 }
 
-// 添加到播放列表
-const addToPlaylist = async (song) => {
-  try {
-    // 获取播放链接
-    const audioUrl = await getMusicUrl(song)
-    song.audio = audioUrl
-    
-    // 添加到播放列表
-    musicStore.playlist.push({
-      ...song,
-      id: song.id,
-      title: song.title,
-      artist: song.artist,
-      cover: song.cover,
-      audio: audioUrl,
-      backupAudio: []
-    })
-    
-    // 自动播放
-    const index = musicStore.playlist.length - 1
-    musicStore.selectSong(index)
-    
-    // 显示成功消息
-    alert('添加成功并开始播放')
-  } catch (error) {
-    alert(`添加失败: ${error.message}`)
+// 播放音乐
+const playMusic = () => {
+  if (!musicUrl.value) return
+  
+  // 创建歌曲信息
+  const song = {
+    id: songId.value,
+    title: `ID: ${songId.value}`,
+    artist: `${source.value.toUpperCase()} - ${quality.value}`,
+    album: '洛雪音乐',
+    cover: '',
+    audio: musicUrl.value,
+    backupAudio: []
   }
+  
+  // 添加到播放列表
+  musicStore.playlist.push(song)
+  
+  // 自动播放
+  const index = musicStore.playlist.length - 1
+  musicStore.selectSong(index)
+  
+  // 显示成功消息
+  alert('添加成功并开始播放')
+  
+  // 关闭面板
+  closeSearch()
 }
 
-// 处理键盘回车搜索
+// 处理键盘回车
 const handleKeyPress = (event) => {
   if (event.key === 'Enter') {
-    searchMusic()
+    fetchMusic()
   }
 }
 
@@ -194,7 +155,7 @@ onMounted(() => {
     <div class="lx-music-search">
       <div class="search-header">
         <div class="search-title">
-          <h3>洛雪音乐搜索</h3>
+          <h3>洛雪音乐 ID 输入</h3>
           <button 
             @click="closeSearch"
             class="close-btn"
@@ -205,57 +166,57 @@ onMounted(() => {
             </svg>
           </button>
         </div>
-        <div class="search-input-group">
+        
+        <div class="input-group">
           <input
-            v-model="searchQuery"
+            v-model="songId"
             type="text"
-            placeholder="输入歌曲名、歌手名搜索"
+            placeholder="输入歌曲 ID（例如：1869042078）"
             @keypress="handleKeyPress"
             class="search-input"
             autofocus
           />
+          
+          <div class="select-group">
+            <select v-model="source" class="source-select">
+              <option v-for="item in MUSIC_SOURCES" :key="item.value" :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+            
+            <select v-model="quality" class="quality-select">
+              <option v-for="item in MUSIC_QUALITY" :key="item.value" :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+          </div>
+          
           <button 
-            @click="searchMusic" 
-            :disabled="isSearching"
-            class="search-btn"
+            @click="fetchMusic" 
+            :disabled="isLoading"
+            class="fetch-btn"
           >
-            {{ isSearching ? '搜索中...' : '搜索' }}
+            {{ isLoading ? '获取中...' : '获取音乐' }}
           </button>
         </div>
-        <div v-if="searchError" class="search-error">
-          {{ searchError }}
+        
+        <div v-if="error" class="search-error">
+          {{ error }}
         </div>
-      </div>
-      
-      <div class="search-results">
-        <div v-if="searchResults.length === 0 && !isSearching" class="no-results">
-          请输入关键词搜索音乐
-        </div>
-        <div v-else-if="isSearching" class="loading">
-          搜索中...
-        </div>
-        <div v-else class="results-list">
-          <div 
-            v-for="(song, index) in searchResults" 
-            :key="index"
-            class="song-item"
-          >
-            <div class="song-info">
-              <div class="song-meta">
-                <h4 class="song-title">{{ song.title }}</h4>
-                <p class="song-artist">{{ song.artist }} - {{ song.album }}</p>
-                <span class="song-source">{{ song.source.toUpperCase() }}</span>
-              </div>
-              <div class="song-actions">
-                <button 
-                  @click="addToPlaylist(song)"
-                  class="add-btn"
-                >
-                  添加到播放列表
-                </button>
-              </div>
-            </div>
+        
+        <div v-if="musicUrl" class="music-info">
+          <div class="music-details">
+            <h4>音乐准备就绪</h4>
+            <p>ID: {{ songId }}</p>
+            <p>音源: {{ source.toUpperCase() }}</p>
+            <p>音质: {{ quality }}</p>
           </div>
+          <button 
+            @click="playMusic"
+            class="play-btn"
+          >
+            播放音乐
+          </button>
         </div>
       </div>
     </div>
@@ -280,7 +241,7 @@ onMounted(() => {
 .lx-music-search {
   background: var(--card-bg, #ffffff);
   border-radius: 8px;
-  padding: 20px;
+  padding: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   max-width: 600px;
   width: 90%;
@@ -293,7 +254,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .search-title h3 {
@@ -318,19 +279,18 @@ onMounted(() => {
   color: var(--text-primary, #333);
 }
 
-.search-input-group {
+.input-group {
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .search-input {
-  flex: 1;
   padding: 12px 20px;
   border: 2px solid var(--border-color, #ddd);
   border-radius: 25px;
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--input-bg, #ffffff);
@@ -344,134 +304,115 @@ onMounted(() => {
   transform: translateY(-1px);
 }
 
-.search-input::placeholder {
-  color: var(--text-secondary, #999);
-  transition: color 0.3s;
+.select-group {
+  display: flex;
+  gap: 10px;
 }
 
-.search-input:focus::placeholder {
-  color: var(--text-tertiary, #ccc);
+.source-select,
+.quality-select {
+  flex: 1;
+  padding: 10px 16px;
+  border: 2px solid var(--border-color, #ddd);
+  border-radius: 20px;
+  font-size: 14px;
+  background: var(--input-bg, #ffffff);
+  color: var(--text-primary, #333);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
 }
 
-.search-btn {
+.source-select:focus,
+.quality-select:focus {
+  border-color: var(--primary-color, #409eff);
+  box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.1);
+}
+
+.fetch-btn {
   padding: 12px 24px;
   background: var(--primary-color, #409eff);
   color: white;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 6px rgba(64, 158, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
   white-space: nowrap;
 }
 
-.search-btn:hover:not(:disabled) {
+.fetch-btn:hover:not(:disabled) {
   background: var(--primary-hover, #66b1ff);
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.4);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(64, 158, 255, 0.4);
+  transform: translateY(-2px);
 }
 
-.search-btn:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(64, 158, 255, 0.3);
-}
-
-.search-btn:disabled {
+.fetch-btn:disabled {
   background: var(--disabled-bg, #ccc);
   cursor: not-allowed;
-  box-shadow: none;
   transform: none;
+  box-shadow: none;
 }
 
 .search-error {
   color: var(--error-color, #f56c6c);
-  font-size: 12px;
-  margin-bottom: 15px;
-}
-
-.search-results {
-  min-height: 200px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.no-results,
-.loading {
-  text-align: center;
-  padding: 40px 0;
-  color: var(--text-secondary, #999);
   font-size: 14px;
-}
-
-.results-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.song-item {
-  padding: 15px;
-  border: 1px solid var(--border-color, #ddd);
+  margin-bottom: 16px;
+  padding: 12px;
+  background: rgba(245, 108, 108, 0.1);
   border-radius: 4px;
-  transition: all 0.3s;
+  border-left: 4px solid var(--error-color, #f56c6c);
 }
 
-.song-item:hover {
-  border-color: var(--primary-color, #409eff);
-  box-shadow: 0 2px 4px rgba(64, 158, 255, 0.1);
-}
-
-.song-info {
+.music-info {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(64, 158, 255, 0.1);
+  border-radius: 8px;
+  border: 1px solid var(--primary-color, #409eff);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.song-meta {
+.music-details {
   flex: 1;
 }
 
-.song-title {
-  margin: 0 0 5px 0;
+.music-details h4 {
+  margin: 0 0 8px 0;
   color: var(--text-primary, #333);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.song-artist {
-  margin: 0 0 5px 0;
-  color: var(--text-secondary, #999);
+.music-details p {
+  margin: 4px 0;
+  color: var(--text-secondary, #666);
   font-size: 14px;
 }
 
-.song-source {
-  display: inline-block;
-  padding: 2px 8px;
-  background: var(--primary-light, #ecf5ff);
-  color: var(--primary-color, #409eff);
-  font-size: 12px;
-  border-radius: 10px;
-}
-
-.song-actions {
-  margin-left: 20px;
-}
-
-.add-btn {
-  padding: 8px 16px;
+.play-btn {
+  padding: 10px 20px;
   background: var(--success-color, #67c23a);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 12px;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(103, 194, 58, 0.3);
+  white-space: nowrap;
+  margin-left: 20px;
 }
 
-.add-btn:hover {
+.play-btn:hover {
   background: var(--success-hover, #85ce61);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(103, 194, 58, 0.4);
 }
 
 /* 动画效果 */
@@ -513,36 +454,22 @@ body.dark-theme .search-input:focus {
   box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.2), 0 2px 8px rgba(64, 158, 255, 0.3);
 }
 
-body.dark-theme .search-input::placeholder {
-  color: var(--text-secondary-dark, #777);
-}
-
-body.dark-theme .search-input:focus::placeholder {
-  color: var(--text-tertiary-dark, #555);
-}
-
-body.dark-theme .search-btn {
-  box-shadow: 0 2px 6px rgba(64, 158, 255, 0.4);
-}
-
-body.dark-theme .search-btn:hover:not(:disabled) {
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.5);
-}
-
-body.dark-theme .search-btn:disabled {
-  background: var(--disabled-bg-dark, #444);
-}
-
-body.dark-theme .song-item {
+body.dark-theme .source-select,
+body.dark-theme .quality-select {
+  background: var(--input-bg-dark, #2c2c2c);
   border-color: var(--border-color-dark, #3c3c3c);
-  background: var(--card-bg-dark, #1f1f1f);
-}
-
-body.dark-theme .song-title {
   color: var(--text-primary-dark, #e0e0e0);
 }
 
-body.dark-theme .song-artist {
+body.dark-theme .music-info {
+  background: rgba(64, 158, 255, 0.15);
+}
+
+body.dark-theme .music-details h4 {
+  color: var(--text-primary-dark, #e0e0e0);
+}
+
+body.dark-theme .music-details p {
   color: var(--text-secondary-dark, #999);
 }
 
@@ -553,5 +480,25 @@ body.dark-theme .close-btn {
 body.dark-theme .close-btn:hover {
   background: var(--hover-bg-dark, #3c3c3c);
   color: var(--text-primary-dark, #e0e0e0);
+}
+
+@media (max-width: 768px) {
+  .lx-music-search {
+    padding: 20px;
+  }
+  
+  .select-group {
+    flex-direction: column;
+  }
+  
+  .music-info {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .play-btn {
+    margin-left: 0;
+    align-self: flex-start;
+  }
 }
 </style>

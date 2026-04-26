@@ -1,7 +1,6 @@
 // Vercel API route for lxmusic proxy
-const https = require('https');
-const http = require('http');
-const { URL } = require('url');
+import https from 'node:https';
+import { URL } from 'node:url';
 
 /**
  * 使用原生 https 模块发起请求
@@ -9,11 +8,10 @@ const { URL } = require('url');
 function fetchUrl(targetUrl, options = {}) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(targetUrl);
-    const protocol = parsedUrl.protocol === 'https:' ? https : http;
 
     const requestOptions = {
       hostname: parsedUrl.hostname,
-      port: parsedUrl.port || (parsedUrl.protocol === 'https:' ? 443 : 80),
+      port: parsedUrl.port || 443,
       path: parsedUrl.pathname + parsedUrl.search,
       method: options.method || 'GET',
       headers: {
@@ -24,9 +22,7 @@ function fetchUrl(targetUrl, options = {}) {
       }
     };
 
-    console.log('Fetching:', targetUrl);
-
-    const req = protocol.request(requestOptions, (res) => {
+    const req = https.request(requestOptions, (res) => {
       let data = '';
 
       res.on('data', (chunk) => {
@@ -34,9 +30,6 @@ function fetchUrl(targetUrl, options = {}) {
       });
 
       res.on('end', () => {
-        console.log('Response status:', res.statusCode);
-        console.log('Response data:', data.substring(0, 200));
-
         try {
           const jsonData = JSON.parse(data);
           resolve({ status: res.statusCode, data: jsonData });
@@ -47,48 +40,34 @@ function fetchUrl(targetUrl, options = {}) {
     });
 
     req.on('error', (error) => {
-      console.error('Request error:', error);
       reject(error);
     });
-
-    if (options.body) {
-      req.write(options.body);
-    }
 
     req.end();
   });
 }
 
 /**
- * API proxy for lxmusic API to bypass CORS restrictions
+ * API proxy for lxmusic API
  */
-module.exports = async function(req, res) {
-  console.log('Proxy request received:', req.method, req.url);
-  console.log('Request body:', req.body);
-
+export default async function handler(req, res) {
   try {
     const { url, method = 'GET' } = req.body || {};
 
     if (!url) {
-      console.error('Missing url parameter');
       return res.status(400).json({ error: 'Missing url parameter' });
     }
 
     // Only allow requests to lxmusic API
     if (!url.startsWith('https://88.lxmusic.xn--fiqs8s')) {
-      console.error('Forbidden URL:', url);
       return res.status(403).json({ error: 'Forbidden: Only lxmusic API requests are allowed' });
     }
 
-    console.log('Proxying request to:', url);
-
     const result = await fetchUrl(url, { method });
-
-    console.log('Proxy result:', result);
 
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error('Handler error:', error);
     res.status(500).json({ error: 'Internal server error', details: error.message });
   }
-};
+}
