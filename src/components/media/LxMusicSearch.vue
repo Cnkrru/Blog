@@ -25,6 +25,10 @@ const API_KEY = "lxmusic"
 const MUSIC_SOURCES = ['kw', 'kg', 'tx', 'wy', 'mg'] // 酷我、酷狗、腾讯、网易云、咪咕
 const MUSIC_QUALITY = ['128k', '320k', 'flac', 'flac24bit']
 
+// 使用 Vercel API 代理
+const useProxy = true
+const proxyUrl = '/api/proxy'
+
 // 搜索音乐
 const searchMusic = async () => {
   if (!searchQuery.value.trim()) return
@@ -34,15 +38,33 @@ const searchMusic = async () => {
   searchResults.value = []
   
   try {
-    // 注意：v4 API 路径与 v3 不同
-    const response = await fetch(`${API_URL}/lxmusicv4/search?keyword=${encodeURIComponent(searchQuery.value)}&page=1&limit=20`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Request-Key': API_KEY
-      },
-      mode: 'cors',
-      credentials: 'omit'
-    })
+    // 构建 API URL
+    const apiUrl = `${API_URL}/lxmusicv4/search?keyword=${encodeURIComponent(searchQuery.value)}&page=1&limit=20`
+    
+    let response
+    if (useProxy) {
+      // 使用 Vercel 代理
+      response = await fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: apiUrl,
+          method: 'GET'
+        })
+      })
+    } else {
+      // 直接调用 API
+      response = await fetch(apiUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Request-Key': API_KEY
+        },
+        mode: 'cors',
+        credentials: 'omit'
+      })
+    }
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
@@ -76,15 +98,33 @@ const searchMusic = async () => {
 // 获取音乐播放链接
 const getMusicUrl = async (song, quality = '320k') => {
   try {
-    // v4 API 路径
-    const response = await fetch(`${API_URL}/lxmusicv4/url/${song.source}/${song.id}/${quality}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Request-Key': API_KEY
-      },
-      mode: 'cors',
-      credentials: 'omit'
-    })
+    // 构建 API URL
+    const apiUrl = `${API_URL}/lxmusicv4/url/${song.source}/${song.id}/${quality}`
+    
+    let response
+    if (useProxy) {
+      // 使用 Vercel 代理
+      response = await fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: apiUrl,
+          method: 'GET'
+        })
+      })
+    } else {
+      // 直接调用 API
+      response = await fetch(apiUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Request-Key': API_KEY
+        },
+        mode: 'cors',
+        credentials: 'omit'
+      })
+    }
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
