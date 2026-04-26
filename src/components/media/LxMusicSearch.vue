@@ -105,33 +105,33 @@ const fetchMusic = async () => {
 }
 
 // 播放音乐
-const playMusic = () => {
-  if (!musicUrl.value) return
-  
-  // 创建歌曲信息
-  const song = {
-    id: songId.value,
-    title: `ID: ${songId.value}`,
-    artist: `${source.value.toUpperCase()} - ${quality.value}`,
-    album: '洛雪音乐',
-    cover: '',
-    audio: musicUrl.value,
-    backupAudio: []
+  const playMusic = () => {
+    if (!musicUrl.value) return
+    
+    // 创建歌曲信息
+    const song = {
+      id: songId.value,
+      title: `ID: ${songId.value}`,
+      artist: `${source.value.toUpperCase()} - ${quality.value}`,
+      album: '洛雪音乐',
+      cover: 'https://neeko-copilot.bytedance.net/api/text2image?prompt=music%20note%20icon%20minimal%20design&size=512x512',
+      audio: musicUrl.value,
+      backupAudio: []
+    }
+    
+    // 添加到播放列表
+    musicStore.playlist.push(song)
+    
+    // 自动播放
+    const index = musicStore.playlist.length - 1
+    musicStore.selectSong(index)
+    
+    // 显示成功消息
+    alert('添加成功并开始播放')
+    
+    // 关闭面板
+    closeSearch()
   }
-  
-  // 添加到播放列表
-  musicStore.playlist.push(song)
-  
-  // 自动播放
-  const index = musicStore.playlist.length - 1
-  musicStore.selectSong(index)
-  
-  // 显示成功消息
-  alert('添加成功并开始播放')
-  
-  // 关闭面板
-  closeSearch()
-}
 
 // 处理键盘回车
 const handleKeyPress = (event) => {

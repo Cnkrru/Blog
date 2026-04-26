@@ -358,6 +358,11 @@ export const useMusicStore = defineStore('music', () => {
   }
 
   const selectSong = (index) => {
+    // 确保音频对象已初始化
+    if (!audio) {
+      initializePlayer()
+    }
+    
     if (index !== currentIndex.value) {
       const wasPlaying = isPlaying.value
       currentIndex.value = index
