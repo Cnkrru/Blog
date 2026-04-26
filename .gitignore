@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 # Custom ignore
-app/
 release/
