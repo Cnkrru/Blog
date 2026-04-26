@@ -2,106 +2,99 @@
   {
     "id": "1",
     "name": "GitHub",
-    "url": "https://github.com/Cnkrru",
     "category": "个人",
-    "description": "GitHub个人页面"
+    "description": "GitHub个人页面",
+    "url": "https://github.com/Cnkrru"
   },
   {
     "id": "2",
     "name": "Bilibili",
-    "url": "https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0",
     "category": "个人",
-    "description": "Bilibili个人页面"
+    "description": "Bilibili个人页面",
+    "url": "https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"
   },
   {
     "id": "3",
     "name": "随机生成图片",
-    "url": "https://picsum.photos/",
     "category": "前端",
-    "description": "随机生成图片网站"
+    "description": "随机生成图片网站",
+    "url": "https://picsum.photos/"
   },
   {
     "id": "4",
     "name": "图片转代码",
-    "url": " https://www.imgcook.com/",
     "category": "前端",
-    "description": "图片转代码网站"
+    "description": "图片转代码网站",
+    "url": "https://www.imgcook.com/"
   },
   {
     "id": "5",
     "name": "Hexo",
-    "url": " https://hexo.io/zh-cn/",
     "category": "SSG",
-    "description": "Hexo网站文档"
+    "description": "Hexo网站文档",
+    "url": "https://hexo.io/zh-cn/"
   },
   {
     "id": "6",
     "name": "Hugo",
-    "url": " https://gohugo.io/",
     "category": "SSG",
-    "description": "Hugo网站文档"
+    "description": "Hugo网站文档",
+    "url": "https://gohugo.io/"
   },
   {
     "id": "7",
     "name": "dumi",
-    "url": " https://d.umijs.org/",
     "category": "SSG",
-    "description": "dumi网站文档"
+    "description": "dumi网站文档",
+    "url": "https://d.umijs.org/"
   },
   {
     "id": "8",
     "name": "docsify",
-    "url": " https://docsify.js.org/#/",
     "category": "SSG",
-    "description": "docsify网站文档"
+    "description": "docsify网站文档",
+    "url": "https://docsify.js.org/#/"
   },
   {
     "id": "9",
     "name": "CodePen",
-    "url": " https://codepen.io/",
     "category": "前端",
-    "description": "前端代码分享网站"
+    "description": "前端代码分享网站",
+    "url": "https://codepen.io/"
   },
   {
     "id": "10",
     "name": "Giscus",
-    "url": " https://giscus.app/",
     "category": "前端第三方API",
-    "description": "评论系统网站分享"
+    "description": "评论系统网站分享",
+    "url": "https://giscus.app/"
   },
   {
     "id": "11",
     "name": "百度统计",
-    "url": "  https://tongji.baidu.com/web/welcome/login?castk=LTE%3D",
     "category": "前端第三方API",
-    "description": "百度网站统计"
+    "description": "百度网站统计",
+    "url": "https://tongji.baidu.com/web/welcome/login?castk=LTE%3D"
   },
   {
     "id": "12",
     "name": "谷歌分析",
-    "url": "  https://analytics.google.com/web/ualytics/",
     "category": "前端第三方API",
-    "description": "谷歌网站分析"
+    "description": "谷歌网站分析",
+    "url": "https://analytics.google.com/web/ualytics/"
   },
   {
     "id": "13",
     "name": "Vue",
-    "url": " https://vuejs.org/",
     "category": "前端官网",
-    "description": "Vue网站文档"
-  },
-  {
-    "id": "14",
-    "name": "TypeScript",
-    "url": " https://www.typescriptlang.org/",
-    "category": "前端官网",
-    "description": "TypeScript网站文档"
+    "description": "Vue网站文档",
+    "url": "https://vuejs.org/"
   },
   {
     "id": "15",
     "name": "Steam",
-    "url": " https://store.steampowered.com/",
     "category": "官网",
-    "description": "Steam官网"
-  } 
+    "description": "Steam官网",
+    "url": "https://store.steampowered.com/"
+  }
 ]
