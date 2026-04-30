@@ -56,7 +56,6 @@ export const useCodeStore = defineStore('code', () => {
     copyEnabled.value = !copyEnabled.value
   }
 
-  // 持久化设置到 localStorage
   const saveSettings = () => {
     if (typeof localStorage !== 'undefined') {
       try {
@@ -67,12 +66,11 @@ export const useCodeStore = defineStore('code', () => {
           copyEnabled: copyEnabled.value
         }))
       } catch (error) {
-        console.error('保存代码设置失败:', error)
+        console.error('[codeStore] 保存代码设置失败:', error)
       }
     }
   }
 
-  // 从 localStorage 加载
   const loadSettings = () => {
     if (typeof localStorage !== 'undefined') {
       try {
@@ -85,7 +83,7 @@ export const useCodeStore = defineStore('code', () => {
           copyEnabled.value = data.copyEnabled !== false
         }
       } catch (error) {
-        console.error('加载代码设置失败:', error)
+        console.error('[codeStore] 加载代码设置失败:', error)
       }
     }
   }

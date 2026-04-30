@@ -3,13 +3,12 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import BackToTop from '../../components/p-center/BackToTop.vue'
-import ContentLoader from '../../components/content/ContentLoader.vue'
+import ContentRender from '../../components/content/ContentRender.vue'
 import ReadingTime from '../../components/p-center/ReadingTime.vue'
 import Toc from '../../components/p-center/Toc.vue'
 import TocButton from '../../components/p-center/TocButton.vue'
 import PostMenu from '../../components/p-center/PostMenu.vue'
-import PostNav from '../../components/p-center/PostNav.vue'
-import Share from '../../components/p-center/Share.vue'
+import ArticleNav from '../../components/p-center/ArticleNav.vue'
 
 import Comment from '../../components/api/Comment.vue'
 import RelatedArticles from '../../components/p-center/RelatedArticles.vue'
@@ -25,10 +24,8 @@ const nextPost = ref(null)
 const post = ref(null)
 const loading = ref(true)
 const error = ref(null)
-const toc = ref([])
 const contentCard = ref(null)
 
-// 在组件顶层调用 useHead，使用响应式数据
 useHead({
   title: computed(() => post.value ? (post.value.seoTitle || `${post.value.title} - 我的博客`) : '文章详情 - 我的博客'),
   meta: computed(() => [
@@ -48,7 +45,6 @@ useHead({
       name: 'robots',
       content: 'index, follow'
     },
-    // Open Graph 标签
     {
       property: 'og:title',
       content: post.value ? (post.value.seoTitle || post.value.title) : '文章详情 - 我的博客'
@@ -77,7 +73,6 @@ useHead({
       property: 'og:locale',
       content: 'zh_CN'
     },
-    // Twitter Card 标签
     {
       name: 'twitter:card',
       content: 'summary_large_image'
@@ -134,7 +129,6 @@ const toggleToc = () => {
 }
 
 const scrollToTop = () => {
-    // 按照 BackToTop 组件的实现方法，使用 document.querySelector 获取中心卡片内容区域
     const centerCardContent = document.querySelector('.center-card-content');
     if (centerCardContent) {
         centerCardContent.scrollTo({
@@ -146,7 +140,6 @@ const scrollToTop = () => {
 
 const handlePostLoaded = (loadedPost) => {
     post.value = loadedPost
-    // 文章加载完成后滚动到顶部，添加延迟确保内容已完全渲染
     setTimeout(() => {
         scrollToTop()
     }, 100)
@@ -165,13 +158,15 @@ const handlePrevNextPosts = (data) => {
     nextPost.value = data.nextPost
 }
 
-const handleTocUpdate = (newToc) => {
-    toc.value = newToc
+
+
+const handleArticleNav = (post) => {
+    if (post && post.id) {
+        router.push(`/post/${post.id}`)
+    }
 }
 
-// 监听路由变化，滚动到顶部
 watch(() => route.params.id, () => {
-    // 添加延迟确保页面完全加载后再滚动
     setTimeout(() => {
         scrollToTop()
     }, 500)
@@ -184,7 +179,6 @@ onMounted(() => {
 
 <template>
     <div id="site-stats-container"></div>
-    <!-- 中心卡片头部区域 -->
     <div class="center-head-card">
         <h2>{{ post?.title || '文章详情' }}</h2>
         <div class="center-head-card-tools">
@@ -194,15 +188,13 @@ onMounted(() => {
         </div>
     </div>
     
-    <!-- 文章目录卡片 -->
-    <Toc v-model:show="showToc" :toc="toc" />
+    <Toc v-model:show="showToc" />
     
     <hr>
     
     <div class="center-card-content" ref="contentCard">
-        <!-- 阅读时间卡片 -->
         <ReadingTime v-if="!loading && !error" />
-        <ContentLoader 
+        <ContentRender 
             :key="postId"
             :id="postId" 
             type="post"
@@ -210,16 +202,12 @@ onMounted(() => {
             @loading="handleLoading"
             @error="handleError"
             @prev-next-posts="handlePrevNextPosts"
-            @update:toc="handleTocUpdate"
         />
-        
         
         <hr v-if="!loading && !error">
         
-        <!-- 上下篇导航容器 -->
-        <PostNav :prev-post="prevPost" :next-post="nextPost" :scroll-to-top="scrollToTop" v-if="!loading && !error" />
+        <ArticleNav :prev-post="prevPost" :next-post="nextPost" @navigate="handleArticleNav" v-if="!loading && !error" />
         
-        <!-- 相关文章推荐 -->
         <RelatedArticles 
             :current-article-id="postId" 
             :current-article-category="post?.category || ''" 
@@ -227,34 +215,26 @@ onMounted(() => {
         />
         
         <hr v-if="!loading && !error">
-        
-        <!-- 分享按钮容器 -->
-        <Share v-if="!loading && !error" />
-        
-        <hr v-if="!loading && !error">
-        
+
         <div class="read-center-card-footer" v-if="!loading && !error">
             <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
         </div>
         
-        <!-- 评论区域 -->
         <Comment v-if="!loading && !error" />
         
         <hr v-if="!loading && !error">
         
-        <!-- 站点统计 -->
         <SiteStats v-if="!loading && !error" />
     </div>
     <hr>
 </template>
 
 <style scoped>
-/* 加载和错误提示样式 */
+/* 布局样式 */
 .loading-message,
 .error-message {
     text-align: center;
     padding: 50px 0;
-    color: #666;
 }
 
 .center-head-card-tools {
@@ -266,7 +246,7 @@ onMounted(() => {
 }
 
 /* 移动端：按钮一行在上，标题一行在下 */
-@media (max-width: 575.98px) {
+@media (max-width: calc(var(--sm) - 1px)) {
     :deep(.center-head-card) {
         flex-direction: column-reverse;
         align-items: flex-start;
@@ -286,4 +266,16 @@ onMounted(() => {
         justify-content: flex-start;
     }
 }
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.loading-message,
+.error-message {
+    color: #666;
+}
+</style>
+
+<style scoped>
+/* 响应式设计媒体查询 */
 </style>

@@ -5,15 +5,15 @@
       <div v-for="(block, index) in orderedBlocks" :key="`block-${index}`">
         <!-- Mermaid 图表 -->
         <div v-if="block.type === 'mermaid'" class="mermaid-container">
-          <MermaidRenderer :code="block.content" />
+          <MermaidRender :code="block.content" />
         </div>
         <!-- 数学公式 -->
         <div v-else-if="block.type === 'math'" class="math-container">
-          <MathRenderer :latex="block.content" />
+          <KatexRender :latex="block.content" />
         </div>
         <!-- 代码块 -->
         <div v-else-if="block.type === 'code'" class="code-container">
-          <CodeHighlighter :code="block.content" :language="block.language" />
+          <HighlightRender :code="block.content" :language="block.language" />
         </div>
         <!-- 彩蛋动画块 -->
         <div v-else-if="block.type === 'easter-egg'" class="easter-egg-container">
@@ -41,9 +41,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import MermaidRenderer from './MermaidRenderer.vue'
-import MathRenderer from './MathRenderer.vue'
-import CodeHighlighter from './CodeHighlighter.vue'
+import MermaidRender from './MermaidRender.vue'
+import KatexRender from './KatexRender.vue'
+import HighlightRender from './HighlightRender.vue'
 import EasterEggAnimation from '../media/EasterEggAnimation.vue'
 
 const props = defineProps({
@@ -462,11 +462,6 @@ const renderMarkdown = async () => {
       }
     }
     
-    // 提取目录
-    const toc = extractToc(props.content)
-    console.log('提取的目录', toc)
-    emit('update:toc', toc)
-    
     // 添加图片点击事件
     nextTick(() => {
       addImageClickListeners()
@@ -477,6 +472,8 @@ const renderMarkdown = async () => {
     renderMode.value = 'normal'
   }
 }
+
+
 
 // 添加图片点击事件
 const addImageClickListeners = () => {
@@ -539,15 +536,12 @@ watch(() => props.content, () => {
 .markdown-content {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
-  color: var(--text-color) !important;
   padding: 1rem;
-  background-color: transparent;
   min-height: 200px;
 }
 
 /* 确保内容块可见 */
 .markdown-content > div {
-  color: var(--text-color) !important;
 }
 
 /* 标题样式 */
@@ -561,18 +555,15 @@ watch(() => props.content, () => {
   margin-bottom: 1rem;
   font-weight: 600;
   line-height: 1.25;
-  color: var(--text-color) !important;
 }
 
 .markdown-content h1 {
   font-size: 2rem;
-  border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.3rem;
 }
 
 .markdown-content h2 {
   font-size: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.3rem;
 }
 
@@ -584,7 +575,6 @@ watch(() => props.content, () => {
 .markdown-content p {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  color: var(--text-color) !important;
 }
 
 /* 列表样式 */
@@ -593,21 +583,17 @@ watch(() => props.content, () => {
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding-left: 2rem;
-  color: var(--text-color) !important;
 }
 
 .markdown-content li {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
-  color: var(--text-color) !important;
 }
 
 /* 代码样式 */
 .markdown-content code {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 0.875rem;
-  background-color: var(--code-bg);
-  color: var(--code-text);
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
 }
@@ -616,13 +602,11 @@ watch(() => props.content, () => {
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding: 1rem;
-  background-color: var(--code-bg);
   border-radius: 3px;
   overflow-x: auto;
 }
 
 .markdown-content pre code {
-  background-color: transparent;
   padding: 0;
 }
 
@@ -631,9 +615,6 @@ watch(() => props.content, () => {
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding: 0.5rem 1rem;
-  border-left: 4px solid var(--accent-fg);
-  background-color: var(--hover-bg);
-  color: var(--text-secondary);
 }
 
 /* 图片样式 */
@@ -647,7 +628,6 @@ watch(() => props.content, () => {
 
 /* 链接样式 */
 .markdown-content a {
-  color: var(--accent-fg);
   text-decoration: none;
 }
 
@@ -668,24 +648,16 @@ watch(() => props.content, () => {
 .markdown-content td {
   padding: 0.75rem;
   text-align: left;
-  border: 1px solid var(--border-color);
-  color: var(--text-color) !important;
 }
 
 .markdown-content th {
-  background-color: var(--hover-bg);
   font-weight: 600;
-}
-
-.markdown-content tr:nth-child(even) {
-  background-color: var(--hover-bg);
 }
 
 /* 分隔线样式 */
 .markdown-content hr {
   margin: 2rem 0;
   border: 0;
-  border-top: 1px solid var(--border-color);
 }
 
 /* 灯箱样式 */
@@ -695,7 +667,6 @@ watch(() => props.content, () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -706,10 +677,8 @@ watch(() => props.content, () => {
   position: relative;
   max-width: 90%;
   max-height: 90%;
-  background-color: white;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
 
@@ -721,7 +690,6 @@ watch(() => props.content, () => {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #333;
 }
 
 .lightbox-content img {
@@ -734,7 +702,6 @@ watch(() => props.content, () => {
 .lightbox-title {
   margin-bottom: 15px;
   font-size: 16px;
-  color: #333;
 }
 
 .lightbox-nav {
@@ -745,23 +712,17 @@ watch(() => props.content, () => {
 
 .lightbox-prev,
 .lightbox-next {
-  background-color: var(--button-bg);
-  border: 2px solid var(--button-border);
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 16px;
-  color: var(--button-text);
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: bold;
-  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .lightbox-prev:hover,
 .lightbox-next:hover {
-  background-color: var(--button-hover-bg);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .lightbox-prev:disabled,
@@ -770,5 +731,151 @@ watch(() => props.content, () => {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+</style>
+
+<style>
+/* 颜色样式 */
+.markdown-content {
+  color: var(--common-text) !important;
+  background-color: transparent;
+}
+
+.markdown-content > div {
+  color: var(--common-text) !important;
+}
+
+/* 标题颜色 */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  color: var(--common-text) !important;
+}
+
+.markdown-content h1 {
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.markdown-content h2 {
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+/* 段落颜色 */
+.markdown-content p {
+  color: var(--common-text) !important;
+}
+
+/* 列表颜色 */
+.markdown-content ul,
+.markdown-content ol {
+  color: var(--common-text) !important;
+}
+
+.markdown-content li {
+  color: var(--common-text) !important;
+}
+
+/* 代码颜色 */
+.markdown-content code {
+  background-color: rgba(255, 192, 203, 0.2);
+  color: var(--common-text);
+}
+
+.markdown-content pre {
+  background-color: rgba(255, 192, 203, 0.1);
+}
+
+/* 引用颜色 */
+.markdown-content blockquote {
+  border-left: 4px solid var(--common-color-1);
+  background-color: rgba(255, 192, 203, 0.1);
+  color: var(--common-text);
+}
+
+/* 链接颜色 */
+.markdown-content a {
+  color: var(--common-color-1);
+}
+
+/* 表格颜色 */
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid var(--common-color-1);
+  color: var(--common-text) !important;
+}
+
+.markdown-content th {
+  background-color: rgba(255, 192, 203, 0.1);
+}
+
+.markdown-content tr:nth-child(even) {
+  background-color: rgba(255, 192, 203, 0.05);
+}
+
+/* 分隔线颜色 */
+.markdown-content hr {
+  border-top: 1px solid var(--common-color-1);
+}
+
+/* 灯箱颜色 */
+.lightbox-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-content {
+  background-color: var(--common-bg);
+  box-shadow: 0 4px 20px var(--common-shadow);
+}
+
+.lightbox-close {
+  color: var(--common-text);
+}
+
+.lightbox-title {
+  color: var(--common-text);
+}
+
+/* 灯箱导航颜色 */
+.lightbox-prev,
+.lightbox-next {
+  background-color: var(--common-color-1);
+  border: 2px solid var(--common-color-1);
+  color: var(--common-content);
+  box-shadow: 0 2px 8px var(--common-shadow);
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background-color: var(--common-hover);
+  box-shadow: 0 4px 12px var(--common-shadow);
+}
+</style>
+
+<style>
+/* 响应式设计 */
+@media (max-width: var(--md)) {
+  .markdown-content {
+    padding: 0.5rem;
+  }
+  
+  .markdown-content h1 {
+    font-size: 1.75rem;
+  }
+  
+  .markdown-content h2 {
+    font-size: 1.25rem;
+  }
+  
+  .lightbox-content {
+    max-width: 95%;
+    padding: 10px;
+  }
+  
+  .lightbox-content img {
+    max-height: 60vh;
+  }
 }
 </style>

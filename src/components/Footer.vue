@@ -37,22 +37,17 @@ import Copyright from './p-footer/CopyRight.vue'
 .footer-card {
     width: 100%;
     padding: 15px;
-    background: var(--card-bg);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
     display: flex;
     flex-direction: column !important;
     gap: 10px;
     align-items: center;
 }
 
-.footer-card .footer-element-card {
+.footer-element-card {
     width: 80% !important;
-    margin-bottom: 5px !important;
-    border: 2px solid var(--footer-element-card-border-color);
-    background-color: var(--card-bg);
+    margin-bottom: 5px !important;;
     border-radius: 8px;
     padding: 10px;
     transition: all 0.3s ease;
@@ -61,9 +56,51 @@ import Copyright from './p-footer/CopyRight.vue'
     align-items: center;
     text-align: center;
 }
+</style>
 
-.footer-card .footer-element-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+<style scoped>
+.footer-card {
+    background-color: var(--common-bg);
+}
+
+.footer-element-card {
+    background-color: var(--common-color-1);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
+    .footer-S {
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .footer-card {
+        padding: 10px;
+    }
+
+    .footer-element-card {
+        width: 90%;
+        padding: 8px;
+    }
+}
+
+@media (max-width: var(--lg)) {
+    .footer-S {
+        height: 190px;
+    }
+}
+
+@media (max-width: var(--xl)) {
+    .footer-S {
+        height: 200px;
+    }
+}
+
+@media (max-width: var(--2xl)) {
+    .footer-S {
+        max-width: 1400px;
+        height: 210px;
+    }
 }
 </style>

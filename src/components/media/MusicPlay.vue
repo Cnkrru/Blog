@@ -7,14 +7,13 @@ import PlayerVolume from './PlayerVolume.vue'
 import PlayerPlaylist from './PlayerPlaylist.vue'
 import AudioVisualizer from './AudioVisualizer.vue'
 import AudioEffects from './AudioEffects.vue'
-import LxMusicSearch from './LxMusicSearch.vue'
+import MusicPlayerStyles from './MusicPlayerStyles.vue'
 
 const playerRef = ref(null)
 const toggleBtnRef = ref(null)
 const playerCoverRef = ref(null)
 const isEffectsVisible = ref(false)
 const visualizerEnabled = ref(false)
-const isSearchVisible = ref(false)
 
 const musicStore = useMusicStore()
 
@@ -94,10 +93,6 @@ const toggleEffects = () => {
   }
 }
 
-const toggleSearch = () => {
-  isSearchVisible.value = !isSearchVisible.value
-}
-
 const onClickOutside = (e) => {
   if (isPlaylistVisible.value && playerRef.value &&
       !playerRef.value.contains(e.target) &&
@@ -160,6 +155,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <MusicPlayerStyles />
   <div>
     <AudioVisualizer
       :is-playing="isPlaying"
@@ -234,21 +230,6 @@ onUnmounted(() => {
             </svg>
           </button>
         </div>
-        <div class="player-search">
-          <button
-            type="button"
-            class="control-btn search-btn"
-            :class="{ active: isSearchVisible }"
-            aria-label="搜索音乐"
-            title="搜索音乐"
-            @click="toggleSearch"
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-              <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" fill="none"/>
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -258,11 +239,6 @@ onUnmounted(() => {
       :is-visible="isEffectsVisible"
       @effect-change="handleEffectsChange"
       @close="toggleEffects"
-    />
-
-    <LxMusicSearch
-      :is-visible="isSearchVisible"
-      @close="toggleSearch"
     />
 
     <PlayerPlaylist
@@ -275,20 +251,19 @@ onUnmounted(() => {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .button-style {
-  background-color: var(--button-bg);
-  border: 1px solid var(--button-border);
   transition: all 0.3s ease;
   cursor: pointer;
 }
+</style>
 
-.button-style img {
-  filter: invert(1);
-  transition: filter 0.3s ease;
-}
+<!-- 颜色样式 -->
+<style scoped>
+/* 按钮颜色由 Header.vue 统一管理 */
+</style>
 
-body.dark-theme .button-style img {
-  filter: invert(0);
-}
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

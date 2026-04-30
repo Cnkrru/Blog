@@ -21,7 +21,6 @@ const emit = defineEmits(['effect-change', 'close'])
 
 const audioStore = useAudioStore()
 
-// 从store中获取状态
 const effectsEnabled = computed(() => audioStore.effectsEnabled)
 const visualizerEnabled = computed(() => audioStore.visualizerEnabled)
 const currentSurroundMode = computed(() => audioStore.currentSurroundMode)
@@ -31,7 +30,6 @@ const eqPresets = computed(() => audioStore.eqPresets)
 
 const isExpanded = ref(false)
 
-// 切换可视化状态
 const toggleVisualizer = () => {
   audioStore.toggleVisualizer()
   emit('effect-change', {
@@ -42,7 +40,6 @@ const toggleVisualizer = () => {
   })
 }
 
-// 切换音效启用状态
 const toggleEffects = () => {
   audioStore.toggleEffects()
   emit('effect-change', {
@@ -53,7 +50,6 @@ const toggleEffects = () => {
   })
 }
 
-// 切换环绕模式
 const changeSurroundMode = (mode) => {
   audioStore.setSurroundMode(mode)
   emit('effect-change', {
@@ -64,7 +60,6 @@ const changeSurroundMode = (mode) => {
   })
 }
 
-// 切换均衡器预设
 const changeEqPreset = (preset) => {
   audioStore.setEqPreset(preset)
   emit('effect-change', {
@@ -90,18 +85,15 @@ const closePanel = () => {
 }
 
 onMounted(() => {
-  // 初始化音效设置
   audioStore.init()
 })
 
 onUnmounted(() => {
-  // 清理工作
 })
 </script>
 
 <template>
   <div class="audio-effects" :class="{ expanded: isExpanded, enabled: effectsEnabled }">
-    <!-- 音效面板 -->
     <div v-show="isExpanded" class="effects-panel">
       <div class="effects-header">
         <h4>音效设置</h4>
@@ -118,7 +110,6 @@ onUnmounted(() => {
       </div>
 
       <div class="effects-content" :class="{ disabled: !effectsEnabled }">
-        <!-- 可视化开关 -->
         <div class="effect-section">
           <div class="visualizer-toggle">
             <label class="effect-label">音频可视化</label>
@@ -128,7 +119,6 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 环绕模式 -->
         <div class="effect-section">
           <label class="effect-label">环绕模式</label>
           <div class="surround-modes">
@@ -145,7 +135,6 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 均衡器预设 -->
         <div class="effect-section">
           <label class="effect-label">均衡器</label>
           <div class="eq-presets">
@@ -178,8 +167,6 @@ onUnmounted(() => {
   height: 36px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: #888;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -188,13 +175,10 @@ onUnmounted(() => {
 }
 
 .effects-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
 }
 
 .effects-toggle-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
@@ -209,12 +193,10 @@ onUnmounted(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 280px;
-  background: rgba(30, 30, 50, 0.95);
   border-radius: 16px;
   padding: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid;
   animation: fadeIn 0.3s ease;
   z-index: 1000;
 }
@@ -236,14 +218,13 @@ onUnmounted(() => {
   align-items: center;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid;
 }
 
 .effects-header h4 {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
 }
 
 .header-actions {
@@ -259,8 +240,6 @@ onUnmounted(() => {
   font-size: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.1);
-  color: #888;
 }
 
 .close-btn {
@@ -268,8 +247,6 @@ onUnmounted(() => {
   height: 24px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: #888;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -278,13 +255,9 @@ onUnmounted(() => {
 }
 
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
 }
 
 .enable-btn.active {
-  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-  color: white;
 }
 
 .effects-content.disabled {
@@ -303,7 +276,6 @@ onUnmounted(() => {
 .effect-label {
   display: block;
   font-size: 12px;
-  color: #aaa;
   margin-bottom: 8px;
 }
 
@@ -316,23 +288,17 @@ onUnmounted(() => {
 .visualizer-btn {
   padding: 6px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: #ccc;
+  border: 1px solid;
   font-size: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .visualizer-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .visualizer-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-color: transparent;
-  color: white;
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
@@ -347,12 +313,103 @@ onUnmounted(() => {
 .preset-btn {
   padding: 6px 12px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: #ccc;
+  border: 1px solid;
   font-size: 11px;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.mode-btn:hover,
+.preset-btn:hover {
+}
+
+.mode-btn.active,
+.preset-btn.active {
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.mode-btn:disabled,
+.preset-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>
+
+<style scoped>
+.effects-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #888;
+}
+
+.effects-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.effects-toggle-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.effects-panel {
+  background: rgba(30, 30, 50, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.effects-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.effects-header h4 {
+  color: #fff;
+}
+
+.enable-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #888;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #888;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.enable-btn.active {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+}
+
+.effect-label {
+  color: #aaa;
+}
+
+.visualizer-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #ccc;
+}
+
+.visualizer-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.visualizer-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.mode-btn,
+.preset-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #ccc;
 }
 
 .mode-btn:hover,
@@ -364,14 +421,9 @@ onUnmounted(() => {
 .mode-btn.active,
 .preset-btn.active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: transparent;
   color: white;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
+</style>
 
-.mode-btn:disabled,
-.preset-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+<style scoped>
 </style>

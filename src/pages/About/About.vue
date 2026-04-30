@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import SimpleMarkdownParser from '../../components/content/SimpleMarkdownParser.vue'
+import MarkdownRender from '../../components/content/MarkdownRender.vue'
 import GitHub from '../../components/api/GitHub.vue'
 import { useHead } from '@vueuse/head'
 
@@ -57,8 +57,6 @@ onMounted(() => {
 
 
 <template>
-    <!-- 中心卡片 -->
-    <!-- 主体部分卡片标题设计 -->
     <div class="center-head-card">
         <h2>{{ AboutTitle }}</h2>
     </div>
@@ -72,10 +70,9 @@ onMounted(() => {
                 <p>{{ error }}</p>
             </div>
             <div v-else class="text-style">
-                <SimpleMarkdownParser :content="aboutContent" />
+                <MarkdownRender :content="aboutContent" />
             </div>
             
-            <!-- GitHub 信息 -->
             <div class="github-section">
                 <GitHub username="Cnkrru" />
             </div>
@@ -85,16 +82,13 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* 主体部分卡片body设计 */
+/* 布局样式 */
 .about-center-card-body {
     width: 100%;
-    /* 移除固定高度，让内容自然展开 */
     height: auto;
-    /* 移除滚动 */
     overflow: visible;
 }
 
-/* 主体部分卡片footer设计 */
 .about-center-card-footer {
     width: 100%;
     height: 100px;
@@ -106,7 +100,6 @@ onMounted(() => {
     flex-wrap: wrap;
 }
 
-/* GitHub 部分样式 */
 .github-section {
     margin: 30px 0;
     width: 100%;
@@ -115,25 +108,25 @@ onMounted(() => {
 .github-section :deep(.github-container) {
     margin: 0;
 }
+</style>
 
-/*==============================响应式设计媒体查询=============================*/
-/* 超小屏手机 (576px) */
-@media (max-width: 575.98px) {
-    /* 调整主体部分卡片footer */
+<style scoped>
+/* 颜色样式 */
+</style>
+
+<style scoped>
+/* 响应式设计媒体查询 */
+@media (max-width: calc(var(--sm) - 1px)) {
     .about-center-card-footer {
         height: 120px;
     }
 }
 
-/* 小屏手机横屏(576px) */
-@media (min-width: 576px) {
+@media (max-width: var(--sm)) {
     /* 保持现有样式 */
 }
 
-/* 平板及横屏(768px) */
-@media (min-width: 768px) {
-    /* 恢复桌面布局 */
-    /* 调整主体部分卡片footer */
+@media (max-width: var(--md)) {
     .about-center-card-footer {
         height: 100px;
     }

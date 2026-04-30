@@ -254,315 +254,524 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* 布局样式 */
 .github-container {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--card-border);
-  transition: all 0.3s ease;
+    border-radius: 12px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 }
 
 .github-loading,
 .github-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
 }
 
 .loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-top-color: var(--primary-color);
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-
-.github-error {
-  color: var(--error-color);
+    width: 50px;
+    height: 50px;
+    border: 4px solid;
+    border-top-color: inherit;
+    border-radius: 50%;
+    margin-bottom: 20px;
 }
 
 .retry-button {
-  margin-top: 16px;
-  padding: 10px 20px;
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    margin-top: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .retry-button:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
+    transform: translateY(-2px);
 }
 
 .github-content {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }
 
 /* 用户卡片 */
 .user-card {
-  display: flex;
-  gap: 24px;
-  padding: 24px;
-  background: var(--card-bg-secondary);
-  border-radius: 12px;
-  transition: transform 0.3s ease;
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
 }
 
 .user-card:hover {
-  transform: translateY(-4px);
+    transform: translateY(-4px);
 }
 
 .avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 4px solid var(--primary-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid;
+    flex-shrink: 0;
 }
 
 .user-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .user-info h3 {
-  margin: 0 0 4px 0;
-  font-size: 1.5rem;
-  background: var(--logo-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+    margin: 0 0 4px 0;
+    font-size: 1.5rem;
 }
 
 .username {
-  margin: 0 0 8px 0;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
 }
 
 .bio {
-  margin: 0 0 16px 0;
-  color: var(--text-primary);
-  font-size: 0.95rem;
-  line-height: 1.5;
+    margin: 0 0 16px 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .user-stats {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 16px;
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
 }
 
 .stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .stat-value {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: var(--text-primary);
+    font-size: 1.3rem;
+    font-weight: bold;
 }
 
 .stat-label {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+    font-size: 0.8rem;
 }
 
 .profile-link {
-  margin-top: auto;
-  padding: 10px 20px;
-  background: var(--primary-color);
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-  text-align: center;
-  transition: all 0.3s ease;
+    margin-top: auto;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
 .profile-link:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
+    transform: translateY(-2px);
 }
 
 /* 仓库列表 */
 .section-title {
-  margin: 0 0 16px 0;
-  font-size: 1.2rem;
-  color: var(--text-primary);
-  position: relative;
-  padding-left: 16px;
+    margin: 0 0 16px 0;
+    font-size: 1.2rem;
+    position: relative;
+    padding-left: 16px;
 }
 
 .section-title::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 20px;
-  background: var(--logo-gradient);
-  border-radius: 2px;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    border-radius: 2px;
 }
 
 .repos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
 }
 
 .repo-card {
-  padding: 16px;
-  background: var(--card-bg-secondary);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
 }
 
 .repo-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
 }
 
 .repo-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .repo-name {
-  font-weight: 600;
-  color: var(--primary-color);
-  font-size: 1rem;
+    font-weight: 600;
+    font-size: 1rem;
 }
 
 .repo-stars {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+    font-size: 0.85rem;
 }
 
 .repo-description {
-  margin: 0 0 12px 0;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .repo-meta {
-  display: flex;
-  gap: 16px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+    display: flex;
+    gap: 16px;
+    font-size: 0.85rem;
 }
 
 .language-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 4px;
-}
-
-.language-dot.javascript { background: #f1e05a; }
-.language-dot.typescript { background: #2b7489; }
-.language-dot.vue { background: #41b883; }
-.language-dot.html { background: #e34c26; }
-.language-dot.css { background: #563d7c; }
-.language-dot.python { background: #3572A5; }
-.language-dot.java { background: #b07219; }
-.language-dot.go { background: #00ADD8; }
-.language-dot.rust { background: #dea584; }
-
-.repo-forks {
-  color: var(--text-secondary);
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 4px;
 }
 
 /* 贡献统计 */
 .contribution-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
 }
 
 .contribution-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background: var(--card-bg-secondary);
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
 }
 
 .contribution-item:hover {
-  transform: translateY(-4px);
+    transform: translateY(-4px);
 }
 
 .contribution-value {
-  font-size: 2rem;
-  font-weight: bold;
-  background: var(--logo-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 .contribution-label {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 4px;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.loading-spinner {
+  border-color: #e0e0e0;
+  border-top-color: #3498db;
 }
 
+.retry-button {
+  background-color: #3498db;
+  color: white;
+}
+
+.retry-button:hover {
+  background-color: #2980b9;
+}
+
+.user-card {
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.user-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.avatar {
+  border-color: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-info h3 {
+  color: #24292e;
+}
+
+.username {
+  color: #586069;
+}
+
+.bio {
+  color: #586069;
+}
+
+.stat-value {
+  color: #24292e;
+}
+
+.stat-label {
+  color: #586069;
+}
+
+.profile-link {
+  background-color: #3498db;
+  color: white;
+}
+
+.profile-link:hover {
+  background-color: #2980b9;
+}
+
+.section-title {
+  color: #24292e;
+}
+
+.section-title::before {
+  background-color: #3498db;
+}
+
+.repo-card {
+  background-color: #ffffff;
+  border-color: #e8e8e8;
+}
+
+.repo-card:hover {
+  background-color: #fafbfc;
+  border-color: #d1d5da;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.repo-name {
+  color: #0366d6;
+}
+
+.repo-stars {
+  color: #f1c40f;
+}
+
+.repo-description {
+  color: #586069;
+}
+
+.repo-meta {
+  color: #586069;
+}
+
+.language-dot {
+  background-color: #586069;
+}
+
+.language-dot.javascript {
+  background-color: #f1e05a;
+}
+
+.language-dot.python {
+  background-color: #3572a5;
+}
+
+.language-dot.java {
+  background-color: #b07219;
+}
+
+.language-dot.html {
+  background-color: #e34c26;
+}
+
+.language-dot.css {
+  background-color: #563d7c;
+}
+
+.language-dot.typescript {
+  background-color: #2b7489;
+}
+
+.language-dot.vue {
+  background-color: #41b883;
+}
+
+.contribution-item {
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+}
+
+.contribution-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contribution-value {
+  color: #3498db;
+}
+
+.contribution-label {
+  color: #586069;
+}
+
+/* 暗色主题适配 */
+:deep(html.dark) .loading-spinner {
+  border-color: #333;
+  border-top-color: #64b5f6;
+}
+
+:deep(html.dark) .retry-button {
+  background-color: #64b5f6;
+  color: #1e1e1e;
+}
+
+:deep(html.dark) .retry-button:hover {
+  background-color: #90caf9;
+}
+
+:deep(html.dark) .user-card {
+  background-color: #2d2d2d;
+  border-color: #444;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+:deep(html.dark) .user-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+:deep(html.dark) .avatar {
+  border-color: #444;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+:deep(html.dark) .user-info h3 {
+  color: #e0e0e0;
+}
+
+:deep(html.dark) .username {
+  color: #a0a0a0;
+}
+
+:deep(html.dark) .bio {
+  color: #a0a0a0;
+}
+
+:deep(html.dark) .stat-value {
+  color: #e0e0e0;
+}
+
+:deep(html.dark) .stat-label {
+  color: #a0a0a0;
+}
+
+:deep(html.dark) .profile-link {
+  background-color: #64b5f6;
+  color: #1e1e1e;
+}
+
+:deep(html.dark) .profile-link:hover {
+  background-color: #90caf9;
+}
+
+:deep(html.dark) .section-title {
+  color: #e0e0e0;
+}
+
+:deep(html.dark) .section-title::before {
+  background-color: #64b5f6;
+}
+
+:deep(html.dark) .repo-card {
+  background-color: #2d2d2d;
+  border-color: #444;
+}
+
+:deep(html.dark) .repo-card:hover {
+  background-color: #333;
+  border-color: #555;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:deep(html.dark) .repo-name {
+  color: #64b5f6;
+}
+
+:deep(html.dark) .repo-stars {
+  color: #ffd54f;
+}
+
+:deep(html.dark) .repo-description {
+  color: #a0a0a0;
+}
+
+:deep(html.dark) .repo-meta {
+  color: #a0a0a0;
+}
+
+:deep(html.dark) .language-dot {
+  background-color: #a0a0a0;
+}
+
+:deep(html.dark) .contribution-item {
+  background-color: #2d2d2d;
+  border-color: #444;
+}
+
+:deep(html.dark) .contribution-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:deep(html.dark) .contribution-value {
+  color: #64b5f6;
+}
+
+:deep(html.dark) .contribution-label {
+  color: #a0a0a0;
+}
+</style>
+
+<style scoped>
 /* 响应式设计 */
-@media (max-width: 768px) {
-  .user-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  .avatar {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .user-stats {
-    justify-content: center;
-  }
-  
-  .repos-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .contribution-stats {
-    grid-template-columns: 1fr;
-  }
-  
-  .contribution-value {
-    font-size: 1.5rem;
-  }
+@media (max-width: var(--md)) {
+    .user-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .user-stats {
+        justify-content: center;
+    }
+    
+    .repos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contribution-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .contribution-value {
+        font-size: 1.5rem;
+    }
 }
-
-
 </style>

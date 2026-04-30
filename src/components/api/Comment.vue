@@ -83,14 +83,11 @@ onUnmounted(() => {
 .comment-section {
     margin-top: 2rem;
     padding: 1.5rem;
-    background-color: var(--card-bg);
     border-radius: 8px;
-    border: 1px solid var(--border-color);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .comment-section:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
 
@@ -101,33 +98,21 @@ onUnmounted(() => {
     align-items: center;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid;
 }
 
 .comment-header h3 {
     margin: 0;
-    color: var(--text-color);
     font-size: 1.2rem;
     font-weight: 600;
-    background: linear-gradient(45deg, var(--accent-color), var(--accent-color-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .comment-count {
     font-size: 0.9rem;
-    color: var(--text-color-muted);
     font-weight: 500;
-    background: var(--card-bg-secondary);
     padding: 2px 8px;
     border-radius: 12px;
     transition: all 0.3s ease;
-}
-
-.comment-count:hover {
-    background: var(--accent-color-light);
-    color: var(--text-color);
 }
 
 /* 评论内容 */
@@ -150,15 +135,14 @@ onUnmounted(() => {
 .loading-spinner {
     width: 24px;
     height: 24px;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-top-color: var(--accent-color);
+    border: 2px solid;
+    border-top-color: inherit;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
 
 .loading-text {
     font-size: 14px;
-    color: var(--text-color-muted);
     font-weight: 500;
 }
 
@@ -182,27 +166,22 @@ onUnmounted(() => {
 
 .error-text {
     font-size: 14px;
-    color: var(--error-color);
     font-weight: 500;
     margin-bottom: 16px;
 }
 
 .retry-button {
-    background-color: var(--button-bg);
-    border: 2px solid var(--button-border);
+    border: 2px solid;
     border-radius: 6px;
     padding: 6px 12px;
     font-size: 14px;
-    color: var(--button-text);
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
 }
 
 .retry-button:hover {
-    background-color: var(--button-hover-bg);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 /* 评论容器 */
@@ -243,20 +222,79 @@ onUnmounted(() => {
         transform: rotate(360deg);
     }
 }
+</style>
+
+<style scoped>
+/* 评论区域颜色 */
+.comment-section {
+    background-color: var(--common-bg);
+    border: 1px solid var(--common-color-1);
+}
+
+/* 评论标题 */
+.comment-header {
+    border-bottom: 1px solid var(--common-color-1);
+}
+
+.comment-header h3 {
+    color: var(--common-text);
+    background: linear-gradient(45deg, var(--common-color-1), var(--common-color-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.comment-count {
+    color: var(--common-text);
+    background: var(--common-hover);
+}
+
+.comment-count:hover {
+    background: var(--common-color-2);
+    color: var(--common-text);
+}
+
+/* 加载状态颜色 */
+.loading-spinner {
+    border-color: var(--common-hover);
+    border-top-color: var(--common-color-1);
+}
+
+.loading-text {
+    color: var(--common-text);
+}
+
+/* 错误状态颜色 */
+.error-text {
+    color: var(--common-color-1);
+}
+
+.retry-button {
+    background-color: var(--common-bg);
+    border-color: var(--common-color-1);
+    color: var(--common-text);
+}
+
+.retry-button:hover {
+    background-color: var(--common-hover);
+    box-shadow: 0 4px 8px var(--common-shadow);
+}
 
 /* 暗色主题适配 */
 :deep(html.dark) .loading-spinner {
     border-color: rgba(255, 255, 255, 0.1);
-    border-top-color: var(--accent-color);
+    border-top-color: var(--common-color-1);
 }
 
 :deep(html.dark) .error-text {
-    color: var(--error-color);
+    color: var(--common-color-1);
 }
+</style>
 
+<style scoped>
 /*==============================响应式设计查询=============================*/
-/* 超小屏手机76px) */
-@media (max-width: 575.98px) {
+/* 超小屏手机 */
+@media (max-width: calc(var(--sm) - 1px)) {
     .comment-section {
         margin-top: 1rem;
         padding: 1rem;
@@ -276,13 +314,13 @@ onUnmounted(() => {
     }
 }
 
-/* 小屏手机横屏及以上 (76px) */
-@media (min-width: 576px) {
+/* 小屏手机横屏及以下 */
+@media (max-width: var(--sm)) {
     /* 保持现有样式 */
 }
 
-/* 平板及以上 (768px) */
-@media (min-width: 768px) {
+/* 平板及以下 */
+@media (max-width: var(--md)) {
     /* 恢复桌面布局 */
     .comment-section {
         margin-top: 2rem;

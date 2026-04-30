@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const canvas = ref(null)
 const particles = ref([])
 let animationId = null
@@ -10,9 +8,6 @@ let ctx = null
 let isDarkMode = false
 let mouseX = null
 let mouseY = null
-let hasJumped = false
-let connectionCount = 0 // 记录当前连线数
-const JUMP_THRESHOLD = 50 // 降低阈值，更容易触发
 
 class Particle {
   constructor(canvasWidth, canvasHeight) {
@@ -91,9 +86,8 @@ const getColors = () => {
 }
 
 const connectParticles = (canvasWidth, canvasHeight, linkColor) => {
-  const linkDistance = 180 // 增加连线距离
-  const maxMouseConnections = 8 // 增加鼠标连线数量
-  connectionCount = 0 // 重置计数
+  const linkDistance = 180
+  const maxMouseConnections = 8
   
   for (let i = 0; i < particles.value.length; i++) {
     for (let j = i + 1; j < particles.value.length; j++) {
@@ -108,7 +102,6 @@ const connectParticles = (canvasWidth, canvasHeight, linkColor) => {
         ctx.moveTo(particles.value[i].x, particles.value[i].y)
         ctx.lineTo(particles.value[j].x, particles.value[j].y)
         ctx.stroke()
-        connectionCount++
       }
     }
   }
@@ -134,50 +127,6 @@ const connectParticles = (canvasWidth, canvasHeight, linkColor) => {
       ctx.moveTo(particles.value[conn.index].x, particles.value[conn.index].y)
       ctx.lineTo(mouseX, mouseY)
       ctx.stroke()
-      connectionCount++
-    }
-  }
-  
-  // 检查连线数量，达到阈值时显示通知询问是否跳转
-  if (connectionCount >= JUMP_THRESHOLD && !hasJumped) {
-    hasJumped = true
-    // 调用自定义通知函数，显示带有按钮的通知
-    showJumpNotification()
-  }
-}
-
-const showJumpNotification = () => {
-  // 使用更安全的方式显示通知
-  if (typeof window !== 'undefined') {
-    // 检查是否已有通知系统
-    if (window.notificationComponent && typeof window.notificationComponent.addNotification === 'function') {
-      window.notificationComponent.addNotification(
-        '检测到粒子连线达到阈值，是否跳转到终端页面？',
-        'info',
-        10000,
-        [
-          {
-            text: '确定',
-            action: () => {
-              router.push('/terminal')
-            }
-          },
-          {
-            text: '取消',
-            action: () => {
-              // 取消操作，不做任何事
-            }
-          }
-        ]
-      )
-    } else if (window.toast && typeof window.toast.info === 'function') {
-      // 使用简单的toast通知
-      window.toast.info('检测到粒子连线达到阈值，请手动跳转到终端页面', 5000)
-    } else {
-      // 使用浏览器原生确认框作为备选
-      if (confirm('检测到粒子连线达到阈值，是否跳转到终端页面？')) {
-        router.push('/terminal')
-      }
     }
   }
 }
@@ -283,6 +232,7 @@ onUnmounted(() => {
   ></canvas>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .network-particles {
   position: absolute;
@@ -293,4 +243,12 @@ onUnmounted(() => {
   pointer-events: none;
   z-index: 3;
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

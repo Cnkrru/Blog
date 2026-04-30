@@ -24,4 +24,39 @@ dist-ssr
 *.sw?
 
 # Custom ignore
+app/
 release/
+temp/
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+.vite/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Coverage
+coverage/
+
+# Build
+*.tgz
+
+# Temp files
+*.tmp
+*.temp
+*.cache
+*.pid
+*.seed
+
+# Error reports
+error-reports/
+
+# OS files
+Thumbs.db
+
+# Documentation
+JS_TO_TS_MIGRATION.md

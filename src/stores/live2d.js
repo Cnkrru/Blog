@@ -1,18 +1,25 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-export const useLive2dStore = defineStore('live2d', {
-  state: () => ({
-    isVisible: true
-  }),
-  actions: {
-    toggle() {
-      this.isVisible = !this.isVisible
-    },
-    show() {
-      this.isVisible = true
-    },
-    hide() {
-      this.isVisible = false
-    }
+export const useLive2dStore = defineStore('live2d', () => {
+  const isVisible = ref(true)
+
+  const toggle = () => {
+    isVisible.value = !isVisible.value
+  }
+
+  const show = () => {
+    isVisible.value = true
+  }
+
+  const hide = () => {
+    isVisible.value = false
+  }
+
+  return {
+    isVisible,
+    toggle,
+    show,
+    hide
   }
 })

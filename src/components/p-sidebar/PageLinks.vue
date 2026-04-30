@@ -1,58 +1,75 @@
 <script setup>
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 </script>
 
 <template>
-  <div class="page-index-list">
-    <div class="page-index-list-inner">
+  <div class="page-list-card">
       <ul>
-        <li class="page-card"><router-link to="/home"> {{ t('home') }} </router-link></li>
-        <li class="page-card"><router-link to="/about"> {{ t('about') }} </router-link></li>
-        <li class="page-card"><router-link to="/archives"> {{ t('archives') }} </router-link></li>
-        <li class="page-card"><router-link to="/links"> {{ t('links') }} </router-link></li>
-        <li class="page-card"><router-link to="/projects"> {{ t('projects') }} </router-link></li>
+        <li ><router-link to="/home" class="page-card"> 首页 </router-link></li>
+        <li ><router-link to="/about" class="page-card"> 关于 </router-link></li>
+        <li ><router-link to="/archives" class="page-card"> 归档 </router-link></li>
+        <li ><router-link to="/links" class="page-card"> 友链 </router-link></li>
+        <li ><router-link to="/projects" class="page-card"> 项目 </router-link></li>
+        <li ><router-link to="/rss.xml" target="_blank" rel="noopener noreferrer" class="page-card"> RSS </router-link></li>
       </ul>
-    </div>
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
-/*==========跳转其他页面样式==========*/
-.page-index-list {
+.page-list-card {
     width:100%;
-    max-height: 180px;
-    height: fit-content;
+    height: 180px;
+    padding: 8px;
+    margin-bottom: 5px;
     text-align: center;
-	padding: 8px;
-	margin-bottom: 5px;
     overflow-y: auto;
 }
 
-.page-index-list ul {
+.page-list-card ul {
+    width: 100%;
+    height: 100%;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.page-index-list-inner {
+.page-list-card ul li {
     width: 100%;
+    height: fit-content;
 }
 
 .page-card {
+    display: block;
     width: 100%;
     height: fit-content;
-    text-align: center;
-    border: 8px;
-	padding: 6px;
-	margin-bottom: 4px;
+    padding: 6px;
+    margin-bottom: 4px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .page-card:hover {
     transform: translateY(-5px);
     border-left-width: 6px;
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.page-card {
+    background-color: var(--common-color-1);
+    border: 2px solid var(--common-color-2);
+    box-shadow: var(--common-shadow);
+    color: var(--common-content);
+}
+
+.page-card:hover {
+    box-shadow: var(--common-shadow);
+    background-color: var(--common-hover);
+}
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

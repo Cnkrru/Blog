@@ -472,12 +472,12 @@ export const useMusicStore = defineStore('music', () => {
   const loadMusicConfig = async () => {
     try {
       const response = await fetch('/config/music.json')
-      if (!response.ok) throw new Error('Network response was not ok')
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
       const data = await response.json()
       playlist.value = data.songs
       initializePlayer()
     } catch (error) {
-      // 静默处理错误
+      console.error('[musicStore] 加载音乐配置失败:', error)
     }
   }
 

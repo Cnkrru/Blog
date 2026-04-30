@@ -55,9 +55,18 @@ onUnmounted(() => {
   <div class="live2d-container"></div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .live2d-container {
   position: fixed;
   z-index: 9999;
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

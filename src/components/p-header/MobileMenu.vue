@@ -75,32 +75,78 @@ onUnmounted(() => {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
-
-/* 移动端菜单容器 - 只在768px以下显示 */
 .mobile-menu-container {
   display: none;
 }
 
-@media (max-width: 768px) {
-  .mobile-menu-container {
-    display: block;
-  }
-}
-
-/* 移动端菜单遮罩层样式 */
 .mobile-menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
   display: none;
 }
 
 .mobile-menu-overlay.active {
   display: block;
+}
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.mobile-menu-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+/* 按钮颜色由 Header.vue 统一管理 */
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
+@media (max-width: calc(var(--sm) - 1px)) {
+  .mobile-menu-toggle {
+      display: none;
+  }
+}
+
+@media (max-width: var(--md)) {
+  .mobile-menu-container {
+    display: block;
+  }
+  .mobile-menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+  }
+
+  .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+  }
+
+  .mobile-menu-overlay.active {
+      display: block;
+  }
+}
+
+@media (max-width: var(--lg)) {
+    .mobile-menu-toggle {
+        display: none;
+    }
+    
+    .mobile-menu-overlay {
+        display: none;
+    }
 }
 </style>

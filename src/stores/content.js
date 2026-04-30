@@ -2,9 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useContentStore = defineStore('content', () => {
-  // 状态
-  const posts = ref({})
-  const projects = ref({})
+  const content = ref({})
   const loading = ref({})
   const errors = ref({})
   const cache = ref({})
@@ -34,18 +32,17 @@ export const useContentStore = defineStore('content', () => {
     }
   }
 
-  const setContent = (type, id, content) => {
-    if (!posts.value[type]) {
-      posts.value[type] = {}
+  const setContent = (type, id, data) => {
+    if (!content.value[type]) {
+      content.value[type] = {}
     }
-    posts.value[type][id] = content
-    // 缓存内容
-    cacheContent(type, id, content)
+    content.value[type][id] = data
+    cacheContent(type, id, data)
   }
 
   const getContent = (type, id) => {
-    if (posts.value[type] && posts.value[type][id]) {
-      return posts.value[type][id]
+    if (content.value[type] && content.value[type][id]) {
+      return content.value[type][id]
     }
     return getFromCache(type, id)
   }
@@ -108,18 +105,12 @@ export const useContentStore = defineStore('content', () => {
   }
 
   return {
-    // 状态
-    posts,
-    projects,
+    content,
     loading,
     errors,
     cache,
-    
-    // 计算属性
     isAnyLoading,
     hasErrors,
-    
-    // 方法
     setLoading,
     setError,
     clearError,

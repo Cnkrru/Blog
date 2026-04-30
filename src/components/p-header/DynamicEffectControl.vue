@@ -1,6 +1,6 @@
 <template>
   <div
-    class="button-style effect-toggle-btn"
+    class="button-style"
     @click="toggleEffect"
     :title="isEffectEnabled ? '关闭动态效果' : '开启动态效果'"
   >
@@ -180,17 +180,8 @@ watch(isDarkMode, () => {
 })
 </script>
 
+<!-- 布局样式 -->
 <style scoped>
-.effect-toggle-btn {
-  width: 40px;
-  height: 40px;
-}
-
-.effect-toggle-btn img {
-  width: 24px;
-  height: 24px;
-}
-
 .sakura-container {
   position: fixed;
   top: 0;
@@ -234,4 +225,16 @@ watch(isDarkMode, () => {
     opacity: 0;
   }
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.snowflake {
+  background-color: var(--common-color-1);
+}
+/* 按钮颜色由 Header.vue 统一管理 */
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

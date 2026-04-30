@@ -4,7 +4,6 @@ import { ref, onMounted } from 'vue'
 const copyrightYear = ref<number>(new Date().getFullYear())
 
 onMounted(() => {
-  // 组件挂载时设置当前年份
   copyrightYear.value = new Date().getFullYear()
 })
 </script>
@@ -22,8 +21,16 @@ onMounted(() => {
   font-size: 0.9rem;
   font-weight: 500;
 }
+</style>
 
-@media (min-width: 768px) {
+<style scoped>
+.copyright {
+  color: var(--common-content);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
   .copyright {
     text-align: left;
   }

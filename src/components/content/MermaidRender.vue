@@ -195,18 +195,14 @@ watch(() => isDarkTheme.value, () => {
   width: 100%;
   margin: 20px 0;
   padding: 20px;
-  background-color: #f9f9f9;
   border-radius: 8px;
   overflow: auto;
   position: relative;
   clear: both;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .mermaid-container-dark {
-  background-color: #2d2d2d;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .mermaid-loading {
@@ -221,16 +217,12 @@ watch(() => isDarkTheme.value, () => {
 .loading-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #3498db;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
 }
 
 .mermaid-container-dark .loading-spinner {
-  border: 3px solid #333;
-  border-top: 3px solid #64b5f6;
 }
 
 @keyframes spin {
@@ -245,14 +237,11 @@ watch(() => isDarkTheme.value, () => {
   justify-content: center;
   padding: 40px;
   min-height: 300px;
-  color: #cc0000;
 }
 
 .retry-button {
   margin-top: 16px;
   padding: 8px 16px;
-  background-color: #3498db;
-  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -261,7 +250,6 @@ watch(() => isDarkTheme.value, () => {
 }
 
 .retry-button:hover {
-  background-color: #2980b9;
 }
 
 /* Mermaid 样式 */
@@ -278,6 +266,79 @@ watch(() => isDarkTheme.value, () => {
 
 /* 暗色主题适配 */
 .mermaid-container-dark :deep(.mermaid) {
+}
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.mermaid-container {
+  background-color: var(--common-bg);
+  box-shadow: 0 2px 4px var(--common-shadow);
+  border: 1px solid var(--common-color-1);
+}
+
+.mermaid-container-dark {
+  background-color: var(--common-bg);
+  box-shadow: 0 2px 4px var(--common-shadow);
+  border: 1px solid var(--common-color-1);
+}
+
+.loading-spinner {
+  border: 3px solid rgba(255, 192, 203, 0.3);
+  border-top: 3px solid var(--common-color-1);
+}
+
+.mermaid-container-dark .loading-spinner {
+  border: 3px solid rgba(58, 170, 231, 0.3);
+  border-top: 3px solid var(--common-color-1);
+}
+
+.mermaid-error {
+  color: #cc0000;
+}
+
+.retry-button {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+}
+
+.retry-button:hover {
+  background-color: var(--common-hover);
+}
+
+/* 暗色主题适配 */
+.mermaid-container-dark :deep(.mermaid) {
   filter: brightness(0.9);
+}
+</style>
+
+<style scoped>
+/* 响应式设计 */
+@media (max-width: var(--md)) {
+  .mermaid-container {
+    padding: 15px;
+  }
+  
+  .mermaid-loading,
+  .mermaid-error {
+    padding: 30px 15px;
+  }
+}
+
+@media (max-width: var(--sm)) {
+  .mermaid-container {
+    padding: 12px;
+    margin: 15px 0;
+  }
+  
+  .loading-spinner {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .retry-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }
 </style>

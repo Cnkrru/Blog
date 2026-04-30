@@ -4,7 +4,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// 记录是否已经显示过欢迎语
 const hasShownWelcome = ref(false)
 
 const visitorInfo = ref({
@@ -100,7 +99,6 @@ const getWelcomeMessage = (city, region, country, countryCode) => {
 }
 
 const fetchVisitorInfo = async () => {
-  // 备用的访客信息（当 API 调用失败时使用）
   const defaultVisitorInfo = {
     ip: '未知',
     city: '未知',
@@ -112,7 +110,6 @@ const fetchVisitorInfo = async () => {
   let visitorData = defaultVisitorInfo
   let apiSuccess = false
 
-  // API 列表，按优先级排序
   const apis = [
     {
       name: 'ipinfo.io',
@@ -171,26 +168,22 @@ const fetchVisitorInfo = async () => {
     }
   ]
 
-  // 依次尝试每个 API
   for (const api of apis) {
     if (apiSuccess) break
     try {
       const response = await fetch(api.url)
       if (response.ok) {
         const data = await response.json()
-        // 检查返回数据是否有效
         if (data.status !== 'fail' && data.ip) {
           visitorData = api.parser(data)
           apiSuccess = true
-          console.log(`${api.name} API 获取成功:`, visitorData.city)
         }
       }
     } catch (error) {
-      console.warn(`${api.name} API 调用失败:`, error)
+      console.warn(`[WelcomeNotification] ${api.name} API 调用失败:`, error)
     }
   }
 
-  // 如果所有 API 都失败，使用默认信息
   visitorInfo.value = visitorData
 
   const welcomeMsg = getWelcomeMessage(
@@ -200,13 +193,11 @@ const fetchVisitorInfo = async () => {
     visitorInfo.value.countryCode
   )
 
-  // 显示欢迎消息
   const showWelcomeMessage = (message) => {
     if (typeof window !== 'undefined' && document && document.body) {
       if (window.toast) {
         window.toast.info(message, 5000)
       } else {
-        // 备用的 toast 实现
         const toast = document.createElement('div')
         toast.style.cssText = `
           position: fixed;
@@ -269,23 +260,6 @@ const fetchVisitorInfo = async () => {
   }
 
   showWelcomeMessage(welcomeMsg)
-}
-
-const getGreetingTime = () => {
-  const hour = new Date().getHours()
-  if (hour >= 5 && hour < 9) {
-    return '早上好'
-  } else if (hour >= 9 && hour < 12) {
-    return '上午好'
-  } else if (hour >= 12 && hour < 14) {
-    return '中午好'
-  } else if (hour >= 14 && hour < 18) {
-    return '下午好'
-  } else if (hour >= 18 && hour < 22) {
-    return '晚上好'
-  } else {
-    return '夜深了'
-  }
 }
 
 onMounted(() => {

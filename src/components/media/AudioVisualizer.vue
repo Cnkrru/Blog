@@ -192,6 +192,7 @@ onUnmounted(() => {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .audio-visualizer {
   position: fixed;
@@ -218,4 +219,12 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

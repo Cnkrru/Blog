@@ -1,13 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useHead } from '@vueuse/head'
-import TagCloud from '../components/p-center/TagCloud.vue'
+import { useArticlesStore } from '../stores'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
-import { useArticlesStore } from '../stores/index.js'
+import TagCloud from '../components/p-center/TagCloud.vue'
 
-const { t } = useI18n()
 const store = useArticlesStore()
 
 // SEO 配置
@@ -49,12 +46,10 @@ const loadArticles = async () => {
 }
 
 const categorizeArticles = () => {
-    // 按分类分组
     const categoryMap = {}
     
     articles.value.forEach(article => {
         const category = article.category
-        // 只有有分类的文章才显示
         if (category) {
             if (!categoryMap[category]) {
                 categoryMap[category] = []
@@ -63,7 +58,6 @@ const categorizeArticles = () => {
         }
     })
     
-    // 转换为数组并按分类名称排序
     categories.value = Object.keys(categoryMap).map(category => {
         return {
             name: category,
@@ -91,17 +85,14 @@ onMounted(() => {
 
 <template>
     <div id="site-stats-container"></div>
-    <!-- 中心卡片头部区域 -->
     <div class="center-head-card">
-        <h2>{{ t('archives') }}</h2>
+        <h2>归档</h2>
         <ArticleCount />
         <TagCloud :articles="articles" />
     </div>
     <hr>
-    <!-- 中心卡片内容 -->
     <div class="center-card-content">
         <template v-for="category in categories" :key="category.name">
-            <!-- 分类卡片 -->
             <a href="#" @click.prevent="toggleCategory(category.name)">
                 <div class="index-center-list-card">
                     <div class="index-center-list-card-header">
@@ -117,7 +108,6 @@ onMounted(() => {
                 </div>
             </a>
             
-            <!-- 展开的文章列表 -->
             <div v-if="expandedCategory === category.name" class="category-posts">
                 <template v-for="article in category.posts" :key="article.id">
                     <RouterLink :to="`/post/${article.id}`" class="post-item">
@@ -132,45 +122,37 @@ onMounted(() => {
 </template>
 
 <style scoped>
-    /* 中心卡片头部设计 */
-    .center-head-card {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-        gap: 10px;
-    }
-    
-    /* 主体部分卡片列表设计 */
+/* 布局样式 */
+.center-head-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
 .index-center-list-card {
     width: 100%;
     height: 120px;
-	padding: 10px;
-	margin-bottom: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
     border-radius: 8px;
-    border: 3px solid var(--center-card-border-color);
-    background-color: var(--card-bg);
+    border: 3px solid;
     transition: border-color 0.3s ease;
-    /* overflow-y: auto; */
 }
 
-    /* 主体部分卡片列表悬停设计 */
 .index-center-list-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-width: 4px;
 }
 
-    /* 主体部分卡片列表标题设计 */
 .index-center-list-card-header {
     width: 100%;
     height: 30px;
     font-size: 20px;
     margin-bottom: 10px;
-    color: var(--center-card-title-color);
 }
 
-    /* 主体部分卡片列表内容设计 */
 .index-center-list-card-content {
     width: 100%;
     height: 30px;
@@ -180,10 +162,8 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    color: var(--text-color);
 }
 
-    /* 元信息样式 */
 .article-meta-info {
     width: 100%;
     height: 30px;
@@ -197,13 +177,11 @@ onMounted(() => {
     height: 30px;
     line-height: 30px;
     margin-bottom: 10px;
-    color: var(--text-color);
 }
 
-/* 分类文章列表样式 */
 .category-posts {
     margin: 10px 0 20px 20px;
-    border-left: 3px solid var(--border-color);
+    border-left: 3px solid;
     padding-left: 20px;
 }
 
@@ -213,13 +191,11 @@ onMounted(() => {
     align-items: center;
     padding: 8px 0;
     text-decoration: none;
-    color: var(--text-color);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid;
     transition: all 0.3s ease;
 }
 
 .post-item:hover {
-    color: var(--accent-fg);
     padding-left: 10px;
 }
 
@@ -229,36 +205,74 @@ onMounted(() => {
 
 .post-date {
     font-size: 0.875rem;
-    color: var(--text-color);
     opacity: 0.7;
     margin-left: 20px;
 }
+</style>
 
-/*==============================响应式设计媒体查询=============================*/
-/* 超小屏手机(576px) */
-@media (max-width: 575.98px) {
-    /* 调整卡片大小 */
+<style scoped>
+/* 颜色样式 */
+.index-center-list-card {
+    border-color: var(--common-color-1);
+    background-color: var(--common-bg);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.index-center-list-card:hover {
+    box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+.index-center-list-card-header {
+    color: var(--common-text);
+}
+
+.index-center-list-card-content {
+    color: var(--common-text);
+}
+
+.article-meta-info span {
+    color: var(--common-text);
+}
+
+.category-posts {
+    border-left-color: var(--common-color-1);
+}
+
+.post-item {
+    color: var(--common-text);
+    border-bottom-color: var(--common-color-1);
+}
+
+.post-item:hover {
+    color: var(--common-hover);
+}
+
+.post-date {
+    color: var(--common-text);
+}
+</style>
+
+<style scoped>
+/* 响应式设计媒体查询 */
+@media (max-width: calc(var(--sm) - 1px)) {
     .index-center-list-card {
         height: auto;
         min-height: 120px;
         padding: 15px;
     }
     
-    /* 调整标题大小 */
     .index-center-list-card-header {
         font-size: 16px;
         height: auto;
         margin-bottom: 8px;
     }
     
-    /* 调整内容大小 */
     .index-center-list-card-content {
         font-size: 14px;
         height: auto;
         margin-bottom: 8px;
     }
     
-    /* 调整元信息样式 */
     .article-meta-info {
         flex-direction: column;
         align-items: flex-start;
@@ -272,7 +286,6 @@ onMounted(() => {
         margin-bottom: 5px;
     }
     
-    /* 调整分类文章列表样式 */
     .category-posts {
         margin: 10px 0 15px 10px;
         padding-left: 10px;
@@ -291,25 +304,20 @@ onMounted(() => {
     }
 }
 
-/* 小屏手机横屏(576px) */
-@media (min-width: 576px) {
-    /* 调整卡片大小 */
+@media (max-width: var(--sm)) {
     .index-center-list-card {
         height: 130px;
         padding: 12px;
     }
     
-    /* 调整标题大小 */
     .index-center-list-card-header {
         font-size: 18px;
     }
     
-    /* 调整内容大小 */
     .index-center-list-card-content {
         font-size: 15px;
     }
     
-    /* 调整分类文章列表样式 */
     .category-posts {
         margin: 10px 0 18px 15px;
         padding-left: 15px;
@@ -324,25 +332,20 @@ onMounted(() => {
     }
 }
 
-/* 平板及横屏(768px) */
-@media (min-width: 768px) {
-    /* 恢复桌面布局 */
+@media (max-width: var(--md)) {
     .index-center-list-card {
         height: 120px;
         padding: 10px;
     }
     
-    /* 调整标题大小 */
     .index-center-list-card-header {
         font-size: 20px;
     }
     
-    /* 调整内容大小 */
     .index-center-list-card-content {
         font-size: 16px;
     }
     
-    /* 调整元信息样式 */
     .article-meta-info {
         flex-direction: row;
         align-items: center;
@@ -355,7 +358,6 @@ onMounted(() => {
         margin-bottom: 10px;
     }
     
-    /* 调整分类文章列表样式 */
     .category-posts {
         margin: 10px 0 20px 20px;
         padding-left: 20px;
@@ -374,25 +376,19 @@ onMounted(() => {
     }
 }
 
-/* 桌面及横屏(1024px) */    
-@media (min-width: 1024px) {
-    /* 标准桌面布局 */
+@media (max-width: var(--lg)) {
     .index-center-list-card {
         height: 125px;
     }
 }
 
-/* 大屏桌面及横屏(1200px) */    
-@media (min-width: 1200px) {
-    /* 宽屏布局 */
+@media (max-width: var(--xl)) {
     .index-center-list-card {
         height: 130px;
     }
 }
 
-/* 超大屏及以上 (1440px) */
-@media (min-width: 1440px) {
-    /* 超大屏优化 */
+@media (max-width: var(--2xl)) {
     .index-center-list-card {
         height: 135px;
     }

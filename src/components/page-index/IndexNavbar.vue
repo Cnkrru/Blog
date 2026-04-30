@@ -2,8 +2,8 @@
   <div class="nav-menu-container">
     <ul class="nav-menu">
       <li v-for="(section, index) in sections" :key="section.id" class="nav-item">
-        <a 
-          href="#" 
+        <a
+          href="#"
           @click.prevent="navigateTo(section.path)"
           class="nav-link"
         >
@@ -55,27 +55,13 @@ const navigateTo = (path) => {
   position: relative;
   display: inline-block;
   text-decoration: none;
-  background: var(--logo-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   font-size: 1.25rem;
   font-weight: 500;
   padding: 0.5rem 0;
   transition: all 0.3s ease;
-  animation: gradient-shift 3s ease infinite, nav-glow 2s ease-in-out infinite;
-  text-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
 }
 
 .nav-link:hover {
-  background: var(--logo-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 2s ease infinite, nav-glow-hover 1s ease-in-out infinite;
-  text-shadow: 0 0 20px rgba(78, 205, 196, 0.4);
   transform: translateY(-2px);
 }
 
@@ -90,7 +76,6 @@ const navigateTo = (path) => {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--navbar-gradient-primary);
   transition: width 0.3s ease;
   border-radius: 2px;
 }
@@ -98,67 +83,104 @@ const navigateTo = (path) => {
 .nav-link:hover .nav-link-underline {
   width: 100%;
 }
+</style>
 
-@media (max-width: 768px) {
+<style scoped>
+.nav-link {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+  text-shadow: 0 0 10px var(--common-color-1);
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes nav-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px var(--common-color-1);
+  }
+  50% {
+    text-shadow: 0 0 15px var(--common-color-1);
+  }
+}
+
+@keyframes nav-glow-hover {
+  0%, 100% {
+    text-shadow: 0 0 20px var(--common-color-1);
+  }
+  50% {
+    text-shadow: 0 0 30px var(--common-color-1);
+  }
+}
+
+.nav-link:hover {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px var(--common-color-1);
+  animation: gradient-shift 3s ease infinite, nav-glow-hover 1s ease-in-out infinite;
+}
+
+.nav-link-underline {
+  background: var(--common-color-1);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
   .nav-menu {
     gap: 1.5rem;
   }
-  
+
   .nav-link {
     font-size: 0.875rem;
     padding: 0.4rem 0;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--sm)) {
   .nav-menu {
     gap: 0.75rem;
     flex-wrap: wrap;
     justify-content: center;
   }
-  
+
   .nav-link {
     font-size: 0.75rem;
     padding: 0.3rem 0;
   }
-  
+
   .nav-item {
     margin-bottom: 0.25rem;
   }
 }
 
-@keyframes nav-glow {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
-  }
-  50% {
-    text-shadow: 0 0 15px rgba(78, 205, 196, 0.3);
-  }
-}
-
-@keyframes nav-glow-hover {
-  0%, 100% {
-    text-shadow: 0 0 20px rgba(78, 205, 196, 0.4);
-  }
-  50% {
-    text-shadow: 0 0 30px rgba(78, 205, 196, 0.6);
-  }
-}
-
-/* 触摸设备优化 */
 @media (hover: none) and (pointer: coarse) {
   .nav-link {
     padding: 0.5rem 0.75rem;
   }
-  
+
   .nav-link:hover .nav-link-underline {
     width: 0;
   }
-  
+
   .nav-link:active .nav-link-underline {
     width: 100%;
   }
 }
-
-
 </style>

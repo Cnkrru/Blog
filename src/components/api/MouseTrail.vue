@@ -166,6 +166,7 @@ watch(() => isEnabled.value, (newValue) => {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .mouse-trail {
   position: fixed;
@@ -186,8 +187,14 @@ watch(() => isEnabled.value, (newValue) => {
   will-change: transform, opacity, font-size;
   user-select: none;
 }
+</style>
 
-/* 暗色主题适配 */
+<!-- 颜色样式 -->
+<style scoped>
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 @media (prefers-color-scheme: dark) {
   .trail-char {
     text-shadow: 0 0 15px currentColor;

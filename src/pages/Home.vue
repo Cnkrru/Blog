@@ -1,14 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useHead } from '@vueuse/head'
 import Announcement from './announcement/Announcement.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
-import Pagination from '../components/p-center/Pagination.vue'
+import PageNav from '../components/p-center/PageNav.vue'
 import { useArticlesStore } from '../stores/index.js'
 
-const { t } = useI18n()
 const store = useArticlesStore()
 
 // SEO 配置
@@ -101,7 +99,7 @@ onMounted(() => {
     <div id="site-stats-container"></div>
     <!-- 中心卡片头部区域 -->
     <div class="center-head-card">
-        <h2>{{ t('recentPosts') }}</h2>
+        <h2>最新文章</h2>
         <ArticleCount />
         <Announcement />
     </div>
@@ -126,8 +124,8 @@ onMounted(() => {
                             <div class="index-center-list-card-content">
                                 <div class="article-meta-info">
                                     <span>ID: {{ article.id }}</span>
-                                    <span v-if="article.category">{{ t('categories') }}: {{ article.category }}</span>
-                                    <span v-if="article.tags && article.tags.length > 0">{{ t('tags') }}: {{ article.tags.join(', ') }}</span>
+                                    <span v-if="article.category">分类: {{ article.category }}</span>
+                                    <span v-if="article.tags && article.tags.length > 0">标签: {{ article.tags.join(', ') }}</span>
                                     <span>Date: {{ article.date }}</span>
                                 </div>
                             </div>
@@ -140,18 +138,19 @@ onMounted(() => {
         </div>
     </div>
     <hr>
-    <Pagination
+    <PageNav
       v-if="!loading && !error"
+      type="posts"
       :current-page="currentPage"
       :total-pages="totalPages"
-      :prev-label="t('previous')"
-      :next-label="t('next')"
+      :categories="[]"
       @change="changePage"
     />
 </template>
 
-<style scoped>
-    /* 中心卡片头部样式 */
+<!-- 布局样式 -->
+<style>
+/* 中心卡片头部样式 */
 .center-head-card {
     display: flex;
     justify-content: space-between;
@@ -160,36 +159,32 @@ onMounted(() => {
     gap: 10px;
 }
 
-    /* 主体部分卡片列表设计 */
+/* 主体部分卡片列表设计 */
 .index-center-list-card {
     width: 100%;
     height: 120px;
 	padding: 10px;
 	margin-bottom: 10px;
     border-radius: 8px;
-    border: 3px solid var(--center-card-border-color);
-    background-color: var(--card-bg);
+    border: 3px solid;
     transition: all 0.3s ease;
-    /* overflow-y: auto; */
 }
 
-    /* 主体部分卡片列表悬停设计 */
+/* 主体部分卡片列表悬停设计 */
 .index-center-list-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-width: 4px;
 }
 
-    /* 主体部分卡片列表标题设计 */
+/* 主体部分卡片列表标题设计 */
 .index-center-list-card-header {
     width: 100%;
     height: 30px;
     font-size: 20px;
     margin-bottom: 10px;
-    color: var(--center-card-title-color);
 }
 
-    /* 主体部分卡片列表内容设计 */
+/* 主体部分卡片列表内容设计 */
 .index-center-list-card-content {
     width: 100%;
     height: 30px;
@@ -199,10 +194,9 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    color: var(--text-color);
 }
 
-    /* 元信息样式 */
+/* 元信息样式 */
 .article-meta-info {
     width: 100%;
     height: 30px;
@@ -210,7 +204,6 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    color: var(--text-color);
     opacity: 0.8;
 }
 
@@ -226,12 +219,134 @@ onMounted(() => {
 .empty-message {
     text-align: center;
     padding: 50px 0;
-    color: var(--text-color);
 }
 
-/* 响应式设计媒体查询 */
-/* 超小屏手机(576px) */
-@media (max-width: 575.98px) {
+/* 分页容器 */
+.pagination-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* 分页列表 */
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 分页列表项 */
+.pagination li {
+    margin: 0 5px;
+}
+
+/* 分页链接 */
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* 分页链接悬停 */
+.pagination a:hover {
+    transform: none;
+}
+
+/* 分页激活状态 */
+.pagination .active a {
+    border-color: inherit;
+}
+
+/* 分页禁用状态 */
+.pagination .disabled a {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 分页禁用状态悬停 */
+.pagination .disabled a:hover {
+    transform: none;
+}
+</style>
+
+<!-- 颜色样式 -->
+<style>
+/* home页面中心列表卡片 */
+.index-center-list-card {
+    border-color: var(--common-color-1);
+    background-color: var(--common-bg);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* home页面中心列表卡片悬停 */
+.index-center-list-card:hover {
+    box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+/* home页面中心列表卡片标题 */
+.index-center-list-card-header {
+    color: var(--common-text);
+}
+
+/* home页面中心列表卡片内容 */
+.index-center-list-card-content {
+    color: var(--common-text);
+}
+
+/* 元信息样式 */
+.article-meta-info {
+    color: var(--common-text);
+}
+
+/* 加载和错误提示样式 */
+.loading-message,
+.error-message,
+.empty-message {
+    color: var(--common-text);
+}
+
+/* 分页链接颜色 */
+.pagination a {
+    color: var(--common-text);
+    background-color: var(--common-bg);
+    border-color: var(--common-color-1);
+}
+
+/* 分页链接悬停 */
+.pagination a:hover {
+    background-color: var(--common-hover);
+}
+
+/* 分页激活状态 */
+.pagination .active a {
+    background-color: var(--common-hover);
+    color: var(--common-text);
+    border-color: var(--common-hover);
+}
+
+/* 分页禁用状态 */
+.pagination .disabled a {
+    background-color: var(--common-bg);
+    color: var(--common-text);
+}
+
+/* 分页禁用状态悬停 */
+.pagination .disabled a:hover {
+    background-color: var(--common-bg);
+}
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style>
+/* 超小屏手机 */
+@media (max-width: calc(var(--sm) - 1px)) {
     /* 调整卡片大小 */
     .index-center-list-card {
         height: auto;
@@ -266,10 +381,20 @@ onMounted(() => {
         line-height: 1.2;
         margin-bottom: 5px;
     }
+    
+    /* 分页控件响应式 */
+    .pagination a {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+    
+    .pagination li {
+        margin: 0 3px;
+    }
 }
 
-/* 小屏手机横屏(576px) */
-@media (min-width: 576px) {
+/* 小屏手机横屏及以下 */
+@media (max-width: var(--sm)) {
     /* 调整卡片大小 */
     .index-center-list-card {
         height: 130px;
@@ -287,8 +412,8 @@ onMounted(() => {
     }
 }
 
-/* 平板及横屏(768px) */
-@media (min-width: 768px) {
+/* 平板及以下 */
+@media (max-width: var(--md)) {
     /* 恢复桌面布局 */
     .index-center-list-card {
         height: 120px;
@@ -319,96 +444,27 @@ onMounted(() => {
     }
 }
 
-/* 桌面及横屏(1024px) */
-@media (min-width: 1024px) {
+/* 桌面及以下 */
+@media (max-width: var(--lg)) {
     /* 标准桌面布局 */
     .index-center-list-card {
         height: 125px;
     }
 }
 
-/* 大屏桌面及横屏(1200px) */
-@media (min-width: 1200px) {
+/* 大屏桌面及以下 */
+@media (max-width: var(--xl)) {
     /* 宽屏布局 */
     .index-center-list-card {
         height: 130px;
     }
 }
 
-/* 超大屏及以上 (1440px) */
-@media (min-width: 1440px) {
+/* 超大屏及以下 */
+@media (max-width: var(--2xl)) {
     /* 超大屏优化 */
     .index-center-list-card {
         height: 135px;
-    }
-}
-
-/*===================================分页控件设计================================*/
-
-/* 分页样式 */
-.pagination-container {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.pagination {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.pagination li {
-    margin: 0 5px;
-}
-
-.pagination a {
-    display: inline-block;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: var(--text-color);
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.pagination a:hover {
-    background-color: var(--hover-bg);
-    transform: none;
-}
-
-.pagination .active a {
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border-color: var(--button-bg);
-}
-
-.pagination .disabled a {
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.pagination .disabled a:hover {
-    transform: none;
-    background-color: var(--card-bg);
-}
-
-/* 响应式设计媒体查询 */
-@media (max-width: 768px) {
-    .pagination a {
-        padding: 6px 10px;
-        font-size: 14px;
-    }
-    
-    .pagination li {
-        margin: 0 3px;
     }
 }
 </style>

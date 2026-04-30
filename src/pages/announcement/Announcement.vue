@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted, computed } from 'vue'
 import { useAnnouncementStore } from '../../stores'
-import SimpleMarkdownParser from '../../components/content/SimpleMarkdownParser.vue'
+import MarkdownRender from '../../components/content/MarkdownRender.vue'
 
 const announcementStore = useAnnouncementStore()
 
@@ -39,7 +39,6 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <!-- 公告按钮 -->
     <button class="announcement-btn" @click="openAnnouncement">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
@@ -47,7 +46,6 @@ onUnmounted(() => {
       <span>公告</span>
     </button>
     
-    <!-- 公告弹窗 -->
     <transition name="modal">
       <div v-if="showModal" class="modal-overlay" @click="closeAnnouncement">
         <transition name="modal-content">
@@ -65,7 +63,7 @@ onUnmounted(() => {
                 <div class="loading-spinner"></div>
                 <p>加载公告中...</p>
               </div>
-              <SimpleMarkdownParser v-else :content="announcementContent" />
+              <MarkdownRender v-else :content="announcementContent" />
             </div>
             <div class="modal-footer">
               <button class="modal-btn" @click="closeAnnouncement">确定</button>
@@ -78,21 +76,18 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* 公告按钮 */
+/* 布局样式 */
 .announcement-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background-color: var(--button-bg);
-    border: 2px solid var(--button-border);
+    border: 2px solid;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: var(--button-text);
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .announcement-btn svg {
@@ -102,19 +97,15 @@ onUnmounted(() => {
 }
 
 .announcement-btn:hover {
-    background-color: var(--button-hover-bg);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-/* 弹窗样式 */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,18 +113,15 @@ onUnmounted(() => {
 }
 
 .modal-content {
-    background: var(--card-bg);
     border-radius: 8px;
     padding: 20px;
     max-width: 500px;
     width: 90%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border: 1px solid var(--border-color);
+    border: 1px solid;
     max-height: 80vh;
     overflow-y: auto;
 }
 
-/* 动画效果 */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
@@ -155,7 +143,6 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-/* 加载动画 */
 .loading-message {
   display: flex;
   flex-direction: column;
@@ -167,8 +154,8 @@ onUnmounted(() => {
 .loading-spinner {
   width: 30px;
   height: 30px;
-  border: 3px solid var(--border-color);
-  border-top-color: var(--button-bg);
+  border: 3px solid;
+  border-top-color: inherit;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
@@ -185,12 +172,11 @@ onUnmounted(() => {
     align-items: center;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid;
 }
 
 .modal-header h3 {
     margin: 0;
-    color: var(--text-color);
 }
 
 .modal-close {
@@ -204,17 +190,14 @@ onUnmounted(() => {
     cursor: pointer;
     border-radius: 50%;
     transition: all 0.3s ease;
-    color: var(--text-color);
 }
 
 .modal-close:hover {
-    background-color: var(--hover-bg);
 }
 
 .modal-body {
     margin-bottom: 20px;
     line-height: 1.6;
-    color: var(--text-color);
 }
 
 .modal-body p {
@@ -229,13 +212,11 @@ onUnmounted(() => {
     display: flex;
     justify-content: flex-end;
     padding-top: 10px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid;
 }
 
 .modal-btn {
-    background: var(--button-bg);
-    color: var(--button-text);
-    border: 1px solid var(--button-border);
+    border: 1px solid;
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
@@ -244,6 +225,73 @@ onUnmounted(() => {
 }
 
 .modal-btn:hover {
-    background: var(--button-hover-bg);
 }
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.announcement-btn {
+    background-color: var(--common-color-1);
+    border-color: var(--common-color-1);
+    color: var(--common-content);
+    box-shadow: 0 2px 8px var(--common-shadow);
+}
+
+.announcement-btn:hover {
+    background-color: var(--common-hover);
+    box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background: var(--common-bg);
+    border-color: var(--common-color-1);
+    box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+.loading-spinner {
+    border-color: var(--common-color-1);
+    border-top-color: var(--common-hover);
+}
+
+.modal-header {
+    border-bottom-color: var(--common-color-1);
+}
+
+.modal-header h3 {
+    color: var(--common-text);
+}
+
+.modal-close {
+    color: var(--common-text);
+}
+
+.modal-close:hover {
+    background-color: var(--common-hover);
+}
+
+.modal-body {
+    color: var(--common-text);
+}
+
+.modal-footer {
+    border-top-color: var(--common-color-1);
+}
+
+.modal-btn {
+    background: var(--common-hover);
+    color: var(--common-text);
+    border-color: var(--common-color-1);
+}
+
+.modal-btn:hover {
+    background: var(--common-hover);
+}
+</style>
+
+<style scoped>
+/* 响应式设计媒体查询 */
 </style>

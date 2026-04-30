@@ -35,7 +35,7 @@ const weatherIcons: Record<string, string> = {
   sunny: '☀️',
   partly_cloudy: '⛅',
   cloudy: '☁️',
-  rainy: '🌧️',
+  rainy: '️',
   snowy: '❄️',
   thunderstorm: '⛈️',
   foggy: '🌫️',
@@ -91,7 +91,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
   error.value = ''
 
   try {
-      // 创建带超时的 fetch
       const fetchWithTimeout = (url: string, options = {}, timeout = 10000): Promise<Response> => {
         return new Promise((resolve, reject) => {
           const timer = setTimeout((): void => {
@@ -112,7 +111,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
 
       let ipData: IPData | null = null
       try {
-        // 1. 获取 IP 地理位置 - 方案1: ip-api
         console.log('尝试使用 ip-api 获取位置...')
         try {
           const ipResponse: Response = await fetchWithTimeout('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon')
@@ -128,7 +126,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
           }
         } catch (e) {
           console.log('ip-api 失败，尝试方案2: ipinfo.io...')
-          // 方案2: ipinfo.io
           try {
             const ipinfoResponse: Response = await fetchWithTimeout('https://ipinfo.io/json')
             if (ipinfoResponse.ok) {
@@ -149,13 +146,11 @@ const fetchLocationAndWeather = async (): Promise<void> => {
             }
           } catch (e) {
             console.log('ipinfo.io 失败，尝试方案3: ipify + 默认位置...')
-            // 方案3: ipify 获取IP + 默认位置
             try {
               const ipifyResponse: Response = await fetchWithTimeout('https://api.ipify.org?format=json')
               if (ipifyResponse.ok) {
                 const ipifyData = await ipifyResponse.json()
                 console.log('获取到IP:', ipifyData.ip)
-                // 使用默认位置（吉林长春）
                 ipData = {
                   city: 'Changchun',
                   countryCode: 'CN',
@@ -174,7 +169,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
       } 
       catch (locationError: unknown) {
         console.warn('位置获取失败，使用默认位置:', locationError)
-        // 使用默认位置（吉林长春）
         ipData = {
           city: 'Changchun',
           countryCode: 'CN',
@@ -187,7 +181,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
     const country = ipData.countryCode || ''
     locationInfo.value = { city, country }
 
-    // 2. 获取天气
     const weatherResponse: Response = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${ipData.lat}&longitude=${ipData.lon}&current=temperature_2m,weather_code&timezone=auto`)
     if (!weatherResponse.ok) throw new Error('获取天气失败')
     const weatherData: WeatherData = await weatherResponse.json()
@@ -204,7 +197,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
   catch (err: unknown) {
     error.value = '加载失败'
     console.warn('天气加载失败:', err)
-    // 使用默认天气数据
     weather.value = {
       temperature: 20,
       weatherCode: 0,
@@ -239,31 +231,23 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .weather-mini {
+  min-width: 90px;
+  padding: 6px 10px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 10px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  min-width: 90px;
   transition: all 0.3s ease;
 }
 
-.weather-mini:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px var(--shadow-color);
-}
-
 .weather-loading {
+  font-size: 12px;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
-  font-size: 12px;
-  color: var(--text-muted);
 }
 
 .weather-content {
@@ -279,19 +263,35 @@ onMounted(() => {
 .weather-temp {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
 }
 
 .weather-city {
   font-size: 11px;
-  color: var(--text-muted);
   max-width: 50px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+</style>
 
-@media (max-width: 768px) {
+<style scoped>
+.weather-mini {
+  background: var(--common-bg);
+  color: var(--common-content);
+  border: 2px solid var(--common-bg);
+}
+
+.weather-temp {
+  color: var(--common-color-1);
+}
+
+.weather-city {
+  color: var(--common-color-1);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
   .weather-mini {
     padding: 4px 8px;
     min-width: 80px;

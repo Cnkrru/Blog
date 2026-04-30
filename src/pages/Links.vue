@@ -101,11 +101,6 @@ onMounted(() => {
     <!-- 中心卡片内容 -->
     <div class="center-card-content">
         <template v-if="getCurrentCategory()">
-            <!-- 分类标题 -->
-            <div class="category-title">
-                <h3>{{ getCurrentCategory().name }}</h3>
-            </div>
-            <hr>
             <!-- 分类链接列表 -->
             <div class="links-content">
                 <a v-for="link in getCurrentCategory().links" :key="link.id" :href="link.url" target="_blank" class="link-card">
@@ -127,6 +122,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* 布局样式 */
 .links-content {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -137,10 +133,8 @@ onMounted(() => {
     display: block;
     padding: 20px;
     border-radius: 8px;
-    border: 3px solid var(--center-card-border-color);
-    background-color: var(--card-bg);
+    border: 3px solid;
     text-decoration: none;
-    color: var(--text-color);
     transition: all 0.3s ease;
     height: 150px;
     display: flex;
@@ -150,7 +144,6 @@ onMounted(() => {
 
 .link-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-width: 4px;
 }
 
@@ -158,25 +151,12 @@ onMounted(() => {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 8px;
-    color: var(--center-card-title-color);
 }
 
 .link-description {
     font-size: 0.9rem;
-    color: var(--text-color);
     opacity: 0.8;
     flex: 1;
-}
-
-/* 分类标题样式 */
-.category-title {
-    margin: 20px 0 10px 0;
-}
-
-.category-title h3 {
-    font-size: 24px;
-    color: var(--center-card-title-color);
-    margin: 0;
 }
 
 /* 分页样式 */
@@ -203,40 +183,80 @@ onMounted(() => {
     display: inline-block;
     padding: 8px 12px;
     text-decoration: none;
-    color: var(--text-color);
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    border: 1px solid;
     border-radius: 4px;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .pagination a:hover {
-    background-color: var(--hover-bg);
     transform: none;
 }
 
 .pagination .active a {
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border-color: var(--button-bg);
+    border-color: inherit;
 }
 
 .pagination .disabled a {
-    background-color: var(--card-bg);
-    color: var(--text-color);
     opacity: 0.5;
     cursor: not-allowed;
 }
 
 .pagination .disabled a:hover {
     transform: none;
-    background-color: var(--card-bg);
+}
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.link-card {
+    border-color: var(--common-color-1);
+    background-color: var(--common-bg);
+    color: var(--common-text);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
-/*==============================响应式设计媒体查询=============================*/
-/* 超小屏手机(576px) */
-@media (max-width: 575.98px) {
+.link-card:hover {
+    box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+.link-name {
+    color: var(--common-text);
+}
+
+.link-description {
+    color: var(--common-text);
+}
+
+.pagination a {
+    color: var(--common-text);
+    background-color: var(--common-bg);
+    border-color: var(--common-color-1);
+}
+
+.pagination a:hover {
+    background-color: var(--common-hover);
+}
+
+.pagination .active a {
+    background-color: var(--common-hover);
+    color: var(--common-text);
+    border-color: var(--common-hover);
+}
+
+.pagination .disabled a {
+    background-color: var(--common-bg);
+    color: var(--common-text);
+}
+
+.pagination .disabled a:hover {
+    background-color: var(--common-bg);
+}
+</style>
+
+<style scoped>
+/* 响应式设计媒体查询 */
+@media (max-width: calc(var(--sm) - 1px)) {
     .links-content {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 10px;
@@ -255,10 +275,6 @@ onMounted(() => {
         font-size: 0.8rem;
     }
     
-    .category-title h3 {
-        font-size: 20px;
-    }
-    
     .pagination a {
         padding: 5px 8px;
         font-size: 13px;
@@ -269,8 +285,7 @@ onMounted(() => {
     }
 }
 
-/* 小屏手机横屏(576px) */
-@media (min-width: 576px) {
+@media (max-width: var(--md)) {
     .links-content {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 15px;
@@ -289,10 +304,6 @@ onMounted(() => {
         font-size: 0.85rem;
     }
     
-    .category-title h3 {
-        font-size: 22px;
-    }
-    
     .pagination a {
         padding: 6px 10px;
         font-size: 14px;
@@ -303,61 +314,20 @@ onMounted(() => {
     }
 }
 
-/* 平板及横屏(768px) */
-@media (min-width: 768px) {
-    /* 恢复桌面布局 */
+@media (max-width: var(--lg)) {
     .links-content {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 20px;
     }
-    
-    .link-card {
-        height: 150px;
-        padding: 20px;
-    }
-    
-    .link-name {
-        font-size: 1.2rem;
-    }
-    
-    .link-description {
-        font-size: 0.9rem;
-    }
-    
-    .category-title h3 {
-        font-size: 24px;
-    }
-    
-    .pagination a {
-        padding: 8px 12px;
-        font-size: 16px;
-    }
-    
-    .pagination li {
-        margin: 0 5px;
-    }
 }
 
-
-/* 桌面及横屏(1024px) */
-@media (min-width: 1024px) {
-    /* 标准桌面布局 */
-    .links-content {
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    }
-}
-
-/* 大屏桌面及横屏(1200px) */
-@media (min-width: 1200px) {
-    /* 宽屏布局 */
+@media (max-width: var(--xl)) {
     .links-content {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* 超大屏及以上 (1440px) */
-@media (min-width: 1440px) {
-    /* 超大屏优化 */
+@media (max-width: var(--2xl)) {
     .links-content {
         grid-template-columns: repeat(4, 1fr);
     }

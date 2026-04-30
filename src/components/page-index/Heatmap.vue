@@ -1,21 +1,19 @@
 <template>
   <div class="heatmap-wrapper">
-    <!-- 加载状态 -->
     <div v-if="isLoading" class="loading-overlay">
       <div class="loading-spinner"></div>
       <div class="loading-text">加载中...</div>
     </div>
-    
-    <!-- 错误状态 -->
+
     <div v-if="error && !isLoading" class="error-message">
       <p>⚠️ {{ error }}</p>
       <button @click="updateHeatmapData" class="retry-btn">重试</button>
     </div>
-    
-    <!-- 第一个div：年份选择、标题、月份选择 -->
+
     <div class="heatmap-header">
       <div class="year-selector">
-        <select v-model="selectedYear" @change="updateHeatmapData" :disabled="isLoading">          <option v-for="year in years" :key="year" :value="year">
+        <select v-model="selectedYear" @change="updateHeatmapData" :disabled="isLoading">
+          <option v-for="year in years" :key="year" :value="year">
             {{ year }}年
           </option>
         </select>
@@ -29,12 +27,11 @@
         </select>
       </div>
     </div>
-    
-    <!-- 第二个div：热力图 -->
+
     <div class="heatmap-content">
       <div class="heatmap-grid" v-if="currentMonthData.length > 0 && !error">
-        <div 
-          v-for="(day, index) in currentMonthData" 
+        <div
+          v-for="(day, index) in currentMonthData"
           :key="index"
           class="heatmap-cell"
           :class="[
@@ -47,8 +44,7 @@
         <p>暂无数据</p>
       </div>
     </div>
-    
-    <!-- 第三个div：图例 -->
+
     <div class="heatmap-legend">
       <span class="legend-text">无文章</span>
       <div class="legend-cells">
@@ -61,18 +57,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useThemeStore } from '../../stores'
 
 const themeStore = useThemeStore()
 const isDarkMode = computed(() => themeStore.isDark)
 
-const selectedYear = ref(new Date().getFullYear()) // 默认选择当前年份
-const selectedMonth = ref(new Date().getMonth() + 1) // 默认选择当前月份
+const selectedYear = ref(new Date().getFullYear())
+const selectedMonth = ref(new Date().getMonth() + 1)
 const isLoading = ref(false)
 const error = ref(null)
 
-// 动态生成年份列表：从2026年到当前年份+2年
 const currentYear = new Date().getFullYear()
 const years = ref(Array.from({ length: Math.max(currentYear + 2 - 2026 + 1, 3) }, (_, i) => 2026 + i))
 const months = ref([
@@ -82,11 +77,10 @@ const months = ref([
 const yearData = ref([])
 const currentMonthData = ref([])
 
-// 从search.json获取文章发布数据
 const fetchArticleData = async () => {
   isLoading.value = true
   error.value = null
-  
+
   try {
     const response = await fetch('/config/search.json')
     if (!response.ok) {
@@ -103,7 +97,6 @@ const fetchArticleData = async () => {
   }
 }
 
-// 构建日期索引 - O(n) 时间复杂度
 const buildDateIndex = (articles) => {
   const dateIndex = new Set()
   articles.forEach(article => {
@@ -114,7 +107,6 @@ const buildDateIndex = (articles) => {
   return dateIndex
 }
 
-// 处理文章数据（针对指定年份）
 const processArticleData = (articles, year) => {
   const data = []
   const dateIndex = buildDateIndex(articles)
@@ -130,10 +122,8 @@ const processArticleData = (articles, year) => {
   return data
 }
 
-// 缓存原始文章数据，避免切换年份时重复 fetch
 let cachedArticles = null
 
-// 更新热力图：切换年份或月份时调用
 const updateHeatmapData = async () => {
   if (!cachedArticles) {
     cachedArticles = await fetchArticleData()
@@ -144,7 +134,6 @@ const updateHeatmapData = async () => {
     .sort((a, b) => new Date(a.date) - new Date(b.date))
 }
 
-// 只切换月份时不需要重新处理全年数据
 const onMonthChange = () => {
   currentMonthData.value = yearData.value
     .filter(item => item.month === selectedMonth.value)
@@ -160,20 +149,16 @@ onMounted(async () => {
 .heatmap-wrapper {
   margin: 2rem 0;
   padding: 2rem;
-  background: var(--heatmap-background);
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  border: 1px solid var(--heatmap-border);
   display: flex;
   flex-direction: column;
   gap: 2rem;
   align-items: center;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
   position: relative;
   min-height: 300px;
 }
 
-/* 加载状态 */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -184,7 +169,6 @@ onMounted(async () => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--heatmap-background);
   z-index: 10;
   border-radius: 12px;
 }
@@ -192,36 +176,31 @@ onMounted(async () => {
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid var(--heatmap-border);
-  border-top-color: var(--heatmap-cell-has-article);
+  border: 3px solid;
+  border-top-color: inherit;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
 }
 
 .loading-text {
-  color: var(--heatmap-text);
   font-size: 0.875rem;
 }
 
-/* 错误状态 */
 .error-message {
   text-align: center;
   padding: 1rem;
-  background: rgba(255, 0, 0, 0.1);
   border-radius: 8px;
-  border: 1px solid rgba(255, 0, 0, 0.2);
+  border: 1px solid;
   margin-bottom: 1rem;
 }
 
 .error-message p {
-  color: #ff4444;
   margin-bottom: 0.5rem;
 }
 
 .retry-btn {
   padding: 0.5rem 1rem;
-  background: var(--heatmap-cell-has-article);
   color: white;
   border: none;
   border-radius: 4px;
@@ -234,14 +213,11 @@ onMounted(async () => {
   opacity: 0.8;
 }
 
-/* 无数据状态 */
 .no-data {
   text-align: center;
   padding: 2rem;
-  color: var(--heatmap-text);
 }
 
-/* 第一个div：年份选择、标题、月份选择 */
 .heatmap-header {
   display: flex;
   justify-content: space-between;
@@ -249,29 +225,14 @@ onMounted(async () => {
   width: 100%;
   max-width: 600px;
   gap: 1.5rem;
-  color: var(--heatmap-text);
 }
 
 .heatmap-title {
   font-size: 1.25rem;
   font-weight: 600;
-  background: var(--heatmap-title-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   margin: 0;
   flex: 1;
   text-align: center;
-  animation: gradient-shift 3s ease infinite;
-}
-
-.dark-theme .heatmap-title {
-  background: linear-gradient(90deg, #4fc3f7, #29b6f6, #4fc3f7);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .year-selector,
@@ -283,10 +244,8 @@ onMounted(async () => {
 .year-selector select,
 .month-selector select {
   padding: 0.5rem 1rem;
-  border: 1px solid var(--heatmap-border);
+  border: 1px solid;
   border-radius: 8px;
-  background: var(--heatmap-background);
-  color: var(--heatmap-text);
   font-size: 0.875rem;
   cursor: pointer;
   backdrop-filter: blur(5px);
@@ -296,8 +255,6 @@ onMounted(async () => {
 
 .year-selector select:hover:not(:disabled),
 .month-selector select:hover:not(:disabled) {
-  background: var(--heatmap-cell-no-article);
-  border-color: var(--heatmap-cell-has-article);
 }
 
 .year-selector select:disabled,
@@ -306,7 +263,6 @@ onMounted(async () => {
   cursor: not-allowed;
 }
 
-/* 第二个div：热力图 */
 .heatmap-content {
   width: 100%;
   display: flex;
@@ -336,38 +292,28 @@ onMounted(async () => {
   transform: scale(1.1);
 }
 
-/* 热力图状态 */
 .heatmap-no-article {
-  background: rgba(255, 192, 203, 0.2);
-  border: 1px solid rgba(255, 192, 203, 0.3);
 }
 
 .heatmap-has-article {
-  background: #ff69b4;
-  box-shadow: 0 0 8px #ff69b4;
-  border: 1px solid #ff69b4;
+  box-shadow: 0 0 8px;
+  border: 1px solid;
 }
 
-/* 暗色主题热力图状态 */
 .heatmap-no-article-dark {
-  background: rgba(79, 195, 247, 0.2);
-  border: 1px solid rgba(79, 195, 247, 0.3);
 }
 
 .heatmap-has-article-dark {
-  background: #4fc3f7;
-  box-shadow: 0 0 8px #4fc3f7;
-  border: 1px solid #4fc3f7;
+  box-shadow: 0 0 8px;
+  border: 1px solid;
 }
 
-/* 第三个div：图例 */
 .heatmap-legend {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   font-size: 0.75rem;
-  color: var(--heatmap-text);
   width: 100%;
 }
 
@@ -383,29 +329,81 @@ onMounted(async () => {
 }
 
 .legend-cell.no-article {
-  background: rgba(255, 192, 203, 0.2);
-  border: 1px solid rgba(255, 192, 203, 0.3);
 }
 
 .legend-cell.has-article {
-  background: #ff69b4;
-  box-shadow: 0 0 8px #ff69b4;
-  border: 1px solid #ff69b4;
+  box-shadow: 0 0 8px;
+  border: 1px solid;
 }
 
-/* 暗色主题图例 */
 .legend-cell.no-article-dark {
-  background: rgba(79, 195, 247, 0.2);
-  border: 1px solid rgba(79, 195, 247, 0.3);
 }
 
 .legend-cell.has-article-dark {
-  background: #4fc3f7;
-  box-shadow: 0 0 8px #4fc3f7;
-  border: 1px solid #4fc3f7;
+  box-shadow: 0 0 8px;
+  border: 1px solid;
 }
 
-/* 渐变动画 */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
+
+<style scoped>
+.heatmap-wrapper {
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+  box-shadow: 0 8px 32px var(--common-shadow);
+}
+
+.loading-overlay {
+  background: var(--common-bg);
+}
+
+.loading-spinner {
+  border-color: var(--common-color-1);
+  border-top-color: var(--common-color-1);
+}
+
+.loading-text {
+  color: var(--common-text);
+}
+
+.error-message {
+  background: var(--common-shadow);
+  border-color: var(--common-color-1);
+}
+
+.error-message p {
+  color: var(--common-color-1);
+}
+
+.retry-btn {
+  background: var(--common-color-1);
+}
+
+.no-data {
+  color: var(--common-text);
+}
+
+.heatmap-header {
+  color: var(--common-text);
+}
+
+.heatmap-title {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+}
+
 @keyframes gradient-shift {
   0% {
     background-position: 0% 50%;
@@ -418,16 +416,70 @@ onMounted(async () => {
   }
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.year-selector select,
+.month-selector select {
+  border-color: var(--common-color-1);
+  background: var(--common-bg);
+  color: var(--common-text);
 }
 
-@media (max-width: 768px) {
+.year-selector select:hover:not(:disabled),
+.month-selector select:hover:not(:disabled) {
+  background: var(--common-color-1);
+  border-color: var(--common-color-1);
+}
+
+.heatmap-no-article {
+  background: var(--common-content);
+  border: 1px solid var(--common-color-1);
+}
+
+.heatmap-has-article {
+  background: var(--common-color-1);
+  box-shadow: 0 0 8px var(--common-color-1);
+  border-color: var(--common-color-1);
+}
+
+.heatmap-no-article-dark {
+  background: var(--common-content);
+  border: 1px solid var(--common-color-1);
+}
+
+.heatmap-has-article-dark {
+  background: var(--common-color-1);
+  box-shadow: 0 0 8px var(--common-color-1);
+  border-color: var(--common-color-1);
+}
+
+.heatmap-legend {
+  color: var(--common-text);
+}
+
+.legend-cell.no-article {
+  background: var(--common-color-1);
+  border: 1px solid var(--common-color-1);
+}
+
+.legend-cell.has-article {
+  background: var(--common-color-1);
+  box-shadow: 0 0 8px var(--common-color-1);
+  border-color: var(--common-color-1);
+}
+
+.legend-cell.no-article-dark {
+  background: var(--common-color-1);
+  border: 1px solid var(--common-color-1);
+}
+
+.legend-cell.has-article-dark {
+  background: var(--common-color-1);
+  box-shadow: 0 0 8px var(--common-color-1);
+  border-color: var(--common-color-1);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
   .heatmap-header {
     flex-direction: column;
     gap: 1rem;
@@ -445,9 +497,7 @@ onMounted(async () => {
   }
 }
 
-
-
-@media (max-width: 480px) {
+@media (max-width: var(--sm)) {
   .heatmap-grid {
     gap: 3px;
     max-width: 250px;

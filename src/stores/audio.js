@@ -67,7 +67,6 @@ export const useAudioStore = defineStore('audio', () => {
     saveSettings()
   }
   
-  // 保存设置到 localStorage
   const saveSettings = () => {
     if (typeof localStorage !== 'undefined') {
       try {
@@ -79,12 +78,11 @@ export const useAudioStore = defineStore('audio', () => {
           customEqSettings: customEqSettings.value
         }))
       } catch (error) {
-        console.error('保存音效设置失败:', error)
+        console.error('[audioStore] 保存音效设置失败:', error)
       }
     }
   }
   
-  // 从 localStorage 加载设置
   const loadSettings = () => {
     if (typeof localStorage !== 'undefined') {
       try {
@@ -98,7 +96,7 @@ export const useAudioStore = defineStore('audio', () => {
           customEqSettings.value = settings.customEqSettings || []
         }
       } catch (error) {
-        console.error('加载音效设置失败:', error)
+        console.error('[audioStore] 加载音效设置失败:', error)
       }
     }
   }

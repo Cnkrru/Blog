@@ -57,7 +57,6 @@ export const useClipboardStore = defineStore('clipboard', () => {
     copyError.value = null
   }
 
-  // 持久化设置到 localStorage
   const saveToStorage = () => {
     if (typeof localStorage !== 'undefined') {
       try {
@@ -66,12 +65,11 @@ export const useClipboardStore = defineStore('clipboard', () => {
           copyCount: copyCount.value
         }))
       } catch (error) {
-        console.error('保存剪贴板历史失败:', error)
+        console.error('[clipboardStore] 保存剪贴板历史失败:', error)
       }
     }
   }
 
-  // 从 localStorage 加载
   const loadFromStorage = () => {
     if (typeof localStorage !== 'undefined') {
       try {
@@ -82,7 +80,7 @@ export const useClipboardStore = defineStore('clipboard', () => {
           copyCount.value = data.copyCount || 0
         }
       } catch (error) {
-        console.error('加载剪贴板历史失败:', error)
+        console.error('[clipboardStore] 加载剪贴板历史失败:', error)
       }
     }
   }

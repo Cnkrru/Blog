@@ -4,14 +4,9 @@ import App from './App.vue'
 import { createAppRouter } from './router'
 
 import './assets/css/color.css'
-import './assets/css/index.css'
-import './assets/css/public.css'
-import './assets/css/text.css'
-import './assets/css/immersive-reading.css'
-import './assets/css/music-player.css'
+import './assets/css/breakpoint.css'
 
 import { pinia } from './stores/index.js'
-import i18n from './i18n'
 
 import { SpeedInsights } from '@vercel/speed-insights/vue'
 import { Analytics } from '@vercel/analytics/vue'
@@ -31,7 +26,6 @@ export function createApp(): AppReturn {
 
   vueApp.use(router)
   vueApp.use(pinia)
-  vueApp.use(i18n)
 
   vueApp.component('SpeedInsights', SpeedInsights)
   vueApp.component('Analytics', Analytics)

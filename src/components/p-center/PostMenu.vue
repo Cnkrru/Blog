@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { usePostsStore } from '../../stores'
 
 const props = defineProps({
@@ -13,7 +12,6 @@ const props = defineProps({
 
 const emit = defineEmits(['update:show'])
 
-const { t } = useI18n()
 const router = useRouter()
 const postsStore = usePostsStore()
 
@@ -21,8 +19,6 @@ const searchKeyword = ref('')
 const sortBy = ref('date')
 
 const posts = computed(() => postsStore.filteredPosts)
-const loading = computed(() => postsStore.loading)
-const error = computed(() => postsStore.error)
 
 const loadPosts = async () => {
   await postsStore.fetchPosts()
@@ -96,7 +92,7 @@ onMounted(() => {
               v-model="searchKeyword"
               @input="handleSearch"
               placeholder="搜索文章..."
-              class="search-input"
+              class="menu-search-input"
             />
             <button v-if="searchKeyword" @click="clearSearch" class="clear-search-btn">
               ×
@@ -120,20 +116,8 @@ onMounted(() => {
           </div>
         </div>
         
-        <!-- 加载状态 -->
-        <div v-if="loading" class="loading-message">
-          <div class="loading-spinner"></div>
-          <p>加载中...</p>
-        </div>
-        
-        <!-- 错误状态 -->
-        <div v-else-if="error" class="error-message">
-          <p>{{ error }}</p>
-          <button @click="loadPosts" class="retry-btn">重试</button>
-        </div>
-        
         <!-- 文章列表 -->
-        <ul v-else-if="posts.length > 0" class="post-list">
+        <ul class="post-list">
           <li 
             v-for="(post, index) in posts" 
             :key="post.id"
@@ -145,18 +129,12 @@ onMounted(() => {
             <span class="post-date">{{ post.date }}</span>
           </li>
         </ul>
-        
-        <!-- 空状态 -->
-        <div v-else class="empty-message">
-          <p>暂无文章</p>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* 文章菜单卡片 */
 .post-menu-card {
     position: fixed;
     top: 50%;
@@ -164,11 +142,8 @@ onMounted(() => {
     transform: translate(100%, -50%);
     width: 300px;
     max-height: 70vh;
-    background-color: var(--card-bg);
-    border: 2px solid var(--center-card-border-color);
     border-right: none;
     border-radius: 12px 0 0 12px;
-    box-shadow: -4px 4px 12px var(--shadow-color);
     z-index: 999;
     overflow: hidden;
     transition: transform 0.3s ease;
@@ -190,20 +165,17 @@ onMounted(() => {
     }
 }
 
-/* 文章菜单卡片头部 */
 .post-menu-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .post-menu-card-header h3 {
     margin: 0;
     font-size: 16px;
     font-weight: bold;
-    color: var(--center-card-title-color);
 }
 
 .post-menu-close-btn {
@@ -217,21 +189,14 @@ onMounted(() => {
     cursor: pointer;
     border-radius: 50%;
     transition: all 0.3s ease;
-    color: var(--text-color);
 }
 
-.post-menu-close-btn:hover {
-    background-color: var(--hover-bg);
-}
-
-/* 文章菜单卡片内容 */
 .post-menu-card-content {
     padding: 15px 20px;
     max-height: calc(70vh - 60px);
     overflow-y: auto;
 }
 
-/* 搜索和排序控件 */
 .post-menu-controls {
     margin-bottom: 16px;
 }
@@ -241,31 +206,26 @@ onMounted(() => {
     margin-bottom: 12px;
 }
 
-.search-input {
+.menu-search-input {
     width: 100%;
     padding: 8px 32px 8px 12px;
-    border: 1px solid var(--border-color);
     border-radius: 6px;
-    background-color: var(--input-bg);
-    color: var(--text-color);
     font-size: 14px;
     transition: all 0.3s ease;
 }
 
-.search-input:focus {
+.menu-search-input:focus {
     outline: none;
-    border-color: var(--accent-fg);
     box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
 }
 
-.clear-search-btn {
+.menu-clear-search-btn {
     position: absolute;
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: var(--text-secondary);
     font-size: 18px;
     cursor: pointer;
     width: 20px;
@@ -277,11 +237,6 @@ onMounted(() => {
     transition: all 0.2s ease;
 }
 
-.clear-search-btn:hover {
-    background-color: var(--hover-bg);
-    color: var(--text-color);
-}
-
 .sort-controls {
     display: flex;
     gap: 8px;
@@ -290,79 +245,12 @@ onMounted(() => {
 .sort-btn {
     flex: 1;
     padding: 6px 12px;
-    border: 1px solid var(--border-color);
     border-radius: 6px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
     font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.sort-btn:hover {
-    background-color: var(--button-hover-bg);
-}
-
-.sort-btn.active {
-    background-color: var(--accent-fg);
-    color: white;
-    border-color: var(--accent-fg);
-}
-
-/* 加载状态 */
-.loading-message {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--text-secondary);
-}
-
-.loading-spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--border-color);
-    border-top: 3px solid var(--accent-fg);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 16px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* 错误状态 */
-.error-message {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--error-color);
-}
-
-.retry-btn {
-    margin-top: 16px;
-    padding: 6px 16px;
-    border: 1px solid var(--error-color);
-    border-radius: 6px;
-    background-color: transparent;
-    color: var(--error-color);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.retry-btn:hover {
-    background-color: var(--error-color);
-    color: white;
-}
-
-/* 空状态 */
-.empty-message {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--text-secondary);
-}
-
-/* 文章列表 */
 .post-list {
     list-style: none;
     padding: 0;
@@ -371,7 +259,6 @@ onMounted(() => {
 
 .post-list-item {
     padding: 8px 12px;
-    border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -393,12 +280,10 @@ onMounted(() => {
 }
 
 .post-list-item:hover {
-    background-color: var(--hover-bg);
     transform: translateX(-4px);
 }
 
 .post-id {
-    color: var(--accent-fg);
     font-weight: bold;
     margin-right: 10px;
     font-size: 14px;
@@ -407,7 +292,6 @@ onMounted(() => {
 
 .post-title {
     flex: 1;
-    color: var(--text-color);
     font-size: 14px;
     line-height: 1.5;
     white-space: nowrap;
@@ -416,39 +300,30 @@ onMounted(() => {
 }
 
 .post-date {
-    color: var(--text-secondary);
     font-size: 12px;
     margin-left: 10px;
     white-space: nowrap;
 }
 
-/* 文章菜单按钮容器 */
 .post-menu-btn-container {
     display: flex;
     align-items: center;
 }
 
-/* 文章菜单按钮 */
 .post-menu-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background-color: var(--button-bg);
-    border: 2px solid var(--button-border);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: var(--button-text);
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .post-menu-btn:hover {
-    background-color: var(--button-hover-bg);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .post-menu-btn svg {
@@ -456,29 +331,84 @@ onMounted(() => {
     height: 18px;
     margin-right: 6px;
 }
+</style>
 
-/* 文章菜单滚动条样式 */
-.post-menu-card-content::-webkit-scrollbar {
-    width: 6px;
+<style scoped>
+.post-menu-card {
+    background-color: var(--common-bg);
+    border: 1px solid var(--common-color-1);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.post-menu-card-content::-webkit-scrollbar-track {
-    background: transparent;
+.post-menu-card-header h3 {
+    color: var(--common-text);
 }
 
-.post-menu-card-content::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-    border-radius: 3px;
+.post-menu-card-content {
+    color: var(--common-text);
 }
 
-.post-menu-card-content::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-thumb-hover);
+.menu-search-input {
+    background-color: var(--common-bg);
+    color: var(--common-text);
+    border: 1px solid var(--common-color-1);
 }
 
-/*==============================响应式设计查询=============================*/
-/* 超小屏手机76px) */
-@media (max-width: 575.98px) {
-    /* 调整文章菜单卡片 */
+.menu-clear-search-btn {
+    color: var(--common-text);
+}
+
+.sort-btn {
+    background-color: var(--common-color-1);
+    color: var(--common-text);
+    border: 1px solid var(--common-color-1);
+}
+
+.sort-btn:hover {
+    background-color: var(--common-hover);
+}
+
+.sort-btn.active {
+    background-color: var(--common-hover);
+}
+
+.post-list-item:hover {
+    background-color: var(--common-hover);
+}
+
+.post-id {
+    color: var(--common-text);
+}
+
+.post-title {
+    color: var(--common-text);
+}
+
+.post-date {
+    color: var(--common-content);
+}
+
+.post-menu-btn {
+    background-color: var(--common-color-1);
+    color: var(--common-content);
+    border: 1px solid var(--common-color-1);
+}
+
+.post-menu-btn:hover {
+    background-color: var(--common-hover);
+}
+
+.post-menu-btn svg {
+    fill: var(--common-content);
+}
+
+.post-menu-close-btn svg {
+    fill: var(--common-text);
+}
+</style>
+
+<style scoped>
+@media (max-width: calc(var(--sm) - 1px)) {
     .post-menu-card {
         width: 240px;
         max-height: 60vh;
@@ -525,9 +455,7 @@ onMounted(() => {
     }
 }
 
-/* 小屏手机横屏及以上 (76px) */
-@media (min-width: 576px) {
-    /* 调整文章菜单卡片 */
+@media (max-width: var(--sm)) {
     .post-menu-card {
         width: 260px;
         max-height: 65vh;
@@ -564,10 +492,7 @@ onMounted(() => {
     }
 }
 
-/* 平板及以上 (768px) */
-@media (min-width: 768px) {
-    /* 恢复桌面布局 */
-    /* 调整文章菜单卡片 */
+@media (max-width: var(--md)) {
     .post-menu-card {
         width: 300px;
         max-height: 70vh;
@@ -604,28 +529,19 @@ onMounted(() => {
     }
 }
 
-/* 桌面及以上 (1024px) */
-@media (min-width: 1024px) {
-    /* 标准桌面布局 */
-    /* 调整文章菜单卡片 */
+@media (max-width: var(--lg)) {
     .post-menu-card {
         width: 320px;
     }
 }
 
-/* 大屏桌面及以上 (1200px) */
-@media (min-width: 1200px) {
-    /* 宽屏布局 */
-    /* 调整文章菜单卡片 */
+@media (max-width: var(--xl)) {
     .post-menu-card {
         width: 340px;
     }
 }
 
-/* 超大屏及以上 (1440px) */
-@media (min-width: 1440px) {
-    /* 超大屏优 */
-    /* 调整文章菜单卡片 */
+@media (max-width: var(--2xl)) {
     .post-menu-card {
         width: 360px;
     }

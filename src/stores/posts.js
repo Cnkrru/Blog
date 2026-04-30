@@ -1,94 +1,104 @@
 import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
-export const usePostsStore = defineStore('posts', {
-  state: () => ({
-    posts: [],
-    loading: false,
-    error: null,
-    searchKeyword: '',
-    sortBy: 'date', // date, title, id
-    sortOrder: 'desc' // desc, asc
-  }),
-  
-  getters: {
-    filteredPosts: (state) => {
-      let filtered = [...state.posts]
-      
-      // 搜索过滤
-      if (state.searchKeyword) {
-        const keyword = state.searchKeyword.toLowerCase()
-        filtered = filtered.filter(post => 
-          post.title.toLowerCase().includes(keyword) ||
-          post.id.toLowerCase().includes(keyword)
-        )
-      }
-      
-      // 排序
-      filtered.sort((a, b) => {
-        let comparison = 0
-        
-        switch (state.sortBy) {
-          case 'date':
-            comparison = new Date(b.date) - new Date(a.date)
-            break
-          case 'title':
-            comparison = a.title.localeCompare(b.title)
-            break
-          case 'id':
-            comparison = a.id.localeCompare(b.id)
-            break
-        }
-        
-        return state.sortOrder === 'desc' ? comparison : -comparison
-      })
-      
-      return filtered
-    },
-    postCount: (state) => state.posts.length
-  },
-  
-  actions: {
-    async fetchPosts() {
-      this.loading = true
-      this.error = null
-      
-      try {
-        const response = await fetch('/config/search.json')
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`)
-        }
-        
-        const data = await response.json()
-        // 过滤掉终端和日志条目
-        this.posts = data.filter(post => post.id !== 'terminal' && post.id !== 'changelog')
-      } catch (error) {
-        this.error = error.message
-        console.error('Failed to load posts:', error)
-      } finally {
-        this.loading = false
-      }
-    },
-    
-    setSearchKeyword(keyword) {
-      this.searchKeyword = keyword
-    },
-    
-    setSortBy(sortBy) {
-      this.sortBy = sortBy
-    },
-    
-    setSortOrder(sortOrder) {
-      this.sortOrder = sortOrder
-    },
-    
-    toggleSortOrder() {
-      this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc'
-    },
-    
-    resetFilters() {
-      this.searchKeyword = ''
-      this.sortBy = 'date'
-      this.sortOrder = 'desc'
+export const usePostsStore = defineStore('posts', () => {
+  const posts = ref([])
+  const loading = ref(false)
+  const error = ref(null)
+  const searchKeyword = ref('')
+  const sortBy = ref('date')
+  const sortOrder = ref('desc')
+
+  const filteredPosts = computed(() => {
+    let filtered = [...posts.value]
+
+    if (searchKeyword.value) {
+      const keyword = searchKeyword.value.toLowerCase()
+      filtered = filtered.filter(post =>
+        post.title.toLowerCase().includes(keyword) ||
+        post.id.toLowerCase().includes(keyword)
+      )
     }
+
+    filtered.sort((a, b) => {
+      let comparison = 0
+
+      switch (sortBy.value) {
+        case 'date':
+          comparison = new Date(b.date) - new Date(a.date)
+          break
+        case 'title':
+          comparison = a.title.localeCompare(b.title)
+          break
+        case 'id':
+          comparison = a.id.localeCompare(b.id)
+          break
+      }
+
+      return sortOrder.value === 'desc' ? comparison : -comparison
+    })
+
+    return filtered
+  })
+
+  const postCount = computed(() => posts.value.length)
+
+  const fetchPosts = async () => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const response = await fetch('/config/search.json')
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`)
+      }
+
+      const data = await response.json()
+      posts.value = data.filter(post => post.id !== 'changelog')
+    } catch (errorData) {
+      error.value = errorData.message
+      console.error('[postsStore] 加载文章失败:', errorData)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const setSearchKeyword = (keyword) => {
+    searchKeyword.value = keyword
+  }
+
+  const setSortBy = (newSortBy) => {
+    sortBy.value = newSortBy
+  }
+
+  const setSortOrder = (newSortOrder) => {
+    sortOrder.value = newSortOrder
+  }
+
+  const toggleSortOrder = () => {
+    sortOrder.value = sortOrder.value === 'desc' ? 'asc' : 'desc'
+  }
+
+  const resetFilters = () => {
+    searchKeyword.value = ''
+    sortBy.value = 'date'
+    sortOrder.value = 'desc'
+  }
+
+  return {
+    posts,
+    loading,
+    error,
+    searchKeyword,
+    sortBy,
+    sortOrder,
+    filteredPosts,
+    postCount,
+    fetchPosts,
+    setSearchKeyword,
+    setSortBy,
+    setSortOrder,
+    toggleSortOrder,
+    resetFilters
   }
 })

@@ -44,13 +44,11 @@ const getPageLabel = (index) => {
   return `第 ${index} 页`
 }
 
-// 计算要显示的页码（最多显示5页
 const displayPages = computed(() => {
   const pages = []
   let startPage = Math.max(1, props.currentPage - 2)
   let endPage = Math.min(props.totalPages, startPage + 4)
   
-  // 调整，确保显示5页
   if (endPage - startPage < 4) {
     startPage = Math.max(1, endPage - 4)
   }
@@ -67,7 +65,6 @@ const toggleDropdown = (event) => {
   showCategoryDropdown.value = !showCategoryDropdown.value
 }
 
-// 点击外部关闭下拉
 const closeDropdown = () => {
   showCategoryDropdown.value = false
 }
@@ -76,7 +73,6 @@ const closeDropdown = () => {
 <template>
   <div class="page-nav-container" @click="closeDropdown">
     <div class="pagination-bar">
-      <!-- 左侧：上一页按钮 -->
       <button
         class="nav-btn prev-btn"
         :disabled="currentPage === 1"
@@ -85,7 +81,6 @@ const closeDropdown = () => {
         &lt; 上一页
       </button>
 
-      <!-- 中间：分页按钮 -->
       <div class="page-buttons">
         <button
           v-for="page in displayPages"
@@ -97,7 +92,6 @@ const closeDropdown = () => {
         </button>
       </div>
 
-      <!-- 右侧：下一页按钮 + 分类按钮 -->
       <div class="right-section">
         <button
           class="nav-btn next-btn"
@@ -107,7 +101,6 @@ const closeDropdown = () => {
           下一页 &gt;
         </button>
 
-        <!-- 分类下拉按钮 -->
         <div class="dropdown-wrapper" v-if="categories.length > 0">
           <button
             class="nav-btn category-btn"
@@ -117,7 +110,6 @@ const closeDropdown = () => {
             <span class="dropdown-arrow">▼</span>
           </button>
 
-          <!-- 分类下拉卡片 -->
           <div class="dropdown-card" v-if="showCategoryDropdown" @click.stop>
             <div class="dropdown-header">
               快速跳转
@@ -139,7 +131,6 @@ const closeDropdown = () => {
       </div>
     </div>
 
-    <!-- 底部：页面信息 -->
     <div class="page-info">
       第 {{ currentPage }} / {{ totalPages }} 页
       <span v-if="currentCategory" class="current-category">
@@ -155,13 +146,10 @@ const closeDropdown = () => {
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  background: var(--card-bg);
   border-radius: 8px;
-  border: 1px solid var(--border-color);
   position: relative;
 }
 
-/* 分页主栏 */
 .pagination-bar {
   display: flex;
   align-items: center;
@@ -171,19 +159,10 @@ const closeDropdown = () => {
 
 .nav-btn {
   padding: 8px 16px;
-  border: 1px solid var(--border-color);
   border-radius: 4px;
-  background: var(--card-bg);
-  color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
-}
-
-.nav-btn:hover:not(:disabled) {
-  background: var(--hover-bg);
-  border-color: var(--button-bg);
-  transform: translateY(-2px);
 }
 
 .nav-btn:disabled {
@@ -195,7 +174,6 @@ const closeDropdown = () => {
   min-width: 100px;
 }
 
-/* 页码按钮区域 */
 .page-buttons {
   display: flex;
   gap: 8px;
@@ -205,36 +183,19 @@ const closeDropdown = () => {
 
 .page-btn {
   padding: 8px 14px;
-  border: 1px solid var(--border-color);
   border-radius: 4px;
-  background: var(--card-bg);
-  color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
   min-width: 80px;
 }
 
-.page-btn:hover {
-  background: var(--hover-bg);
-  border-color: var(--button-bg);
-  transform: translateY(-2px);
-}
-
-.page-btn.active {
-  background: var(--button-bg);
-  color: var(--button-text);
-  border-color: var(--button-bg);
-}
-
-/* 右侧区域 */
 .right-section {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* 分类下拉按钮 */
 .dropdown-wrapper {
   position: relative;
 }
@@ -254,7 +215,6 @@ const closeDropdown = () => {
   transform: rotate(180deg);
 }
 
-/* 下拉卡片 */
 .dropdown-card {
   position: absolute;
   bottom: calc(100% + 8px);
@@ -262,10 +222,7 @@ const closeDropdown = () => {
   min-width: 220px;
   max-height: 400px;
   overflow-y: auto;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   animation: slideUp 0.2s ease;
 }
@@ -283,11 +240,8 @@ const closeDropdown = () => {
 
 .dropdown-header {
   padding: 12px 16px;
-  border-bottom: 1px solid var(--border-color);
   font-weight: bold;
-  color: var(--text-color);
   font-size: 14px;
-  background: var(--card-bg-secondary);
 }
 
 .dropdown-list {
@@ -299,7 +253,6 @@ const closeDropdown = () => {
   padding: 12px 16px;
   border: none;
   background: none;
-  color: var(--text-color);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -309,17 +262,7 @@ const closeDropdown = () => {
   text-align: left;
 }
 
-.dropdown-item:hover {
-  background: var(--hover-bg);
-}
-
-.dropdown-item.active {
-  background: rgba(78, 201, 176, 0.1);
-  border-left: 3px solid var(--button-bg);
-}
-
 .item-number {
-  color: var(--text-secondary);
   min-width: 24px;
 }
 
@@ -330,25 +273,70 @@ const closeDropdown = () => {
 
 .current-badge {
   padding: 2px 8px;
-  background: var(--button-bg);
-  color: var(--button-text);
   border-radius: 4px;
   font-size: 12px;
 }
 
-/* 页面信息 */
 .page-info {
   text-align: center;
-  color: var(--text-secondary);
   font-size: 14px;
+}
+</style>
+
+<style scoped>
+.nav-btn {
+  border: 1px solid var(--common-color-1);
+  background: var(--common-color-1);
+  color: var(--common-content);
+}
+
+.page-btn {
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border: 1px solid var(--common-color-1);
+}
+
+.page-btn.active {
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border-color: var(--common-color-1);
+}
+
+.dropdown-card {
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+
+.dropdown-header {
+  color: var(--common-color-1);
+  border-bottom: 1px solid var(--common-color-1);
+  background: var(--common-bg);
+}
+
+.dropdown-item {
+  color: var(--common-color-1);
+}
+
+.item-number {
+  color: var(--common-color-1);
+}
+
+.current-badge {
+  background: var(--common-color-1);
+  color: var(--common-content);
+}
+
+.page-info {
+  color: var(--common-content);
 }
 
 .current-category {
-  color: var(--text-color);
+  color: var(--common-content);
 }
+</style>
 
-/* 响应式设计 */
-@media (max-width: 768px) {
+<style scoped>
+@media (max-width: var(--md)) {
   .page-nav-container {
     padding: 12px;
   }

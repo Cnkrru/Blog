@@ -40,7 +40,6 @@ export const useUserStore = defineStore('user', () => {
     
     let locationData = null
     
-    // 依次尝试每个 API
     for (const api of apis) {
       if (locationData) break
       try {
@@ -48,12 +47,9 @@ export const useUserStore = defineStore('user', () => {
         if (response.ok) {
           const data = await response.json()
           locationData = api.parser(data)
-          if (locationData) {
-            console.log(`${api.name} API 获取成功:`, locationData.city)
-          }
         }
       } catch (error) {
-        console.warn(`${api.name} API 调用失败:`, error)
+        console.warn(`[userStore] ${api.name} API 调用失败:`, error)
       }
     }
     

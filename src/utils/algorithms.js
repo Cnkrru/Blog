@@ -249,48 +249,6 @@ export function jaccardSimilarity(set1, set2) {
   return intersection.size / union.size;
 }
 
-// ==================== 缓存算法 ====================
-
-/**
- * LRU (Least Recently Used) 缓存
- */
-export class LRUCache {
-  constructor(capacity) {
-    this.capacity = capacity;
-    this.cache = new Map();
-  }
-
-  get(key) {
-    if (!this.cache.has(key)) return null;
-    
-    const value = this.cache.get(key);
-    // 移动到最近使用
-    this.cache.delete(key);
-    this.cache.set(key, value);
-    return value;
-  }
-
-  put(key, value) {
-    if (this.cache.has(key)) {
-      this.cache.delete(key);
-    } else if (this.cache.size >= this.capacity) {
-      // 移除最久未使用的
-      const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
-    }
-    
-    this.cache.set(key, value);
-  }
-
-  clear() {
-    this.cache.clear();
-  }
-
-  size() {
-    return this.cache.size;
-  }
-}
-
 // ==================== 排序算法 ====================
 
 /**
@@ -496,9 +454,6 @@ export default {
   BM25Scorer,
   levenshteinDistance,
   jaccardSimilarity,
-  
-  // 缓存算法
-  LRUCache,
   
   // 排序算法
   quickSelect,

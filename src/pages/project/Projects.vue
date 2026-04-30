@@ -3,15 +3,15 @@ import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import BackToTop from '../../components/p-center/BackToTop.vue'
-import ContentLoader from '../../components/content/ContentLoader.vue'
+import ContentRender from '../../components/content/ContentRender.vue'
 import ReadingTime from '../../components/p-center/ReadingTime.vue'
 import Toc from '../../components/p-center/Toc.vue'
 import TocButton from '../../components/p-center/TocButton.vue'
 import PostMenu from '../../components/p-center/PostMenu.vue'
-import Share from '../../components/p-center/Share.vue'
+
 
 import Comment from '../../components/api/Comment.vue'
-import PostNav from '../../components/p-center/PostNav.vue'
+import ArticleNav from '../../components/p-center/ArticleNav.vue'
 import SiteStats from '../../components/p-center/SiteStats.vue'
 
 const route = useRoute()
@@ -25,7 +25,6 @@ const toc = ref([])
 const prevProject = ref(null)
 const nextProject = ref(null)
 
-// 在组件顶层调用 useHead，使用响应式数据
 useHead({
   title: computed(() => project.value ? (project.value.seoTitle || `${project.value.name} - 项目展示`) : '项目详情 - 我的博客'),
   meta: computed(() => [
@@ -45,7 +44,6 @@ useHead({
       name: 'robots',
       content: 'index, follow'
     },
-    // Open Graph 标签
     {
       property: 'og:title',
       content: project.value ? (project.value.seoTitle || project.value.name) : '项目详情 - 我的博客'
@@ -74,7 +72,6 @@ useHead({
       property: 'og:locale',
       content: 'zh_CN'
     },
-    // Twitter Card 标签
     {
       name: 'twitter:card',
       content: 'summary_large_image'
@@ -143,7 +140,6 @@ const handleError = (err) => {
 
 <template>
     <div id="site-stats-container"></div>
-    <!-- 中心卡片头部区域 -->
     <div class="center-head-card">
         <h2>{{ project?.name || '项目详情' }}</h2>
         <div class="center-head-card-tools">
@@ -153,15 +149,13 @@ const handleError = (err) => {
         </div>
     </div>
     
-    <!-- 项目目录卡片 -->
     <Toc v-model:show="showToc" :toc="toc" />
     
     <hr>
     
     <div class="center-card-content">
-        <!-- 阅读时间卡片 -->
         <ReadingTime v-if="!loading && !error" />
-        <ContentLoader 
+        <ContentRender 
             :key="projectId"
             :id="projectId" 
             type="project"
@@ -172,39 +166,33 @@ const handleError = (err) => {
         
         <hr v-if="!loading && !error">
         
-        <!-- 上下篇导航容器 -->
-        <PostNav :prev-post="prevProject" :next-post="nextProject" v-if="!loading && !error" />
+        <ArticleNav :prev-post="prevProject" :next-post="nextProject" v-if="!loading && !error" />
         
         <hr v-if="!loading && !error">
         
-        <!-- 分享按钮容器 -->
         <Share v-if="!loading && !error" /> 
 
-        
         <hr v-if="!loading && !error">
         
         <div class="read-center-card-footer" v-if="!loading && !error">
             <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
         </div>
         
-        <!-- 评论区域 -->
         <Comment v-if="!loading && !error" />
         
         <hr v-if="!loading && !error">
         
-        <!-- 站点统计 -->
         <SiteStats v-if="!loading && !error" />
     </div>
     <hr>
 </template>
 
 <style scoped>
-/* 加载和错误提示样式 */
+/* 布局样式 */
 .loading-message,
 .error-message {
     text-align: center;
     padding: 50px 0;
-    color: #666;
 }
 
 .center-head-card-tools {
@@ -212,4 +200,16 @@ const handleError = (err) => {
     justify-content: flex-end;
     align-items: center;
 }
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.loading-message,
+.error-message {
+    color: #666;
+}
+</style>
+
+<style scoped>
+/* 响应式设计媒体查询 */
 </style>

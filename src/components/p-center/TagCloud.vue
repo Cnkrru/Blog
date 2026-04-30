@@ -22,10 +22,7 @@ const isDarkTheme = computed(() => themeStore.isDark)
 const tags = computed(() => tagStore.tags)
 const tagStats = computed(() => tagStore.tagStats)
 const sortBy = computed(() => tagStore.sortBy)
-const loading = computed(() => tagStore.loading)
-const error = computed(() => tagStore.error)
 
-// 过滤后的标签（用于搜索）
 const filteredTags = computed(() => {
   if (!searchQuery.value) {
     return tagStats.value
@@ -36,7 +33,6 @@ const filteredTags = computed(() => {
   )
 })
 
-// 初始化标签数据
 const loadTags = async () => {
   await tagStore.loadTags(props.articles)
 }
@@ -60,13 +56,11 @@ const toggleTagCloud = () => {
   }
 }
 
-// 切换排序方式
 const changeSortBy = (newSortBy) => {
   tagStore.setSortBy(newSortBy)
-  loadTags() // 重新加载标签
+  loadTags()
 }
 
-// 获取相关标签
 const getRelatedTags = (tag) => {
   return tagStore.getRelatedTags(tag, 5)
 }
@@ -78,7 +72,6 @@ const closeTagCloud = () => {
   searchQuery.value = ''
 }
 
-// 清除搜索
 const clearSearch = () => {
   searchQuery.value = ''
 }
@@ -94,14 +87,12 @@ onMounted(() => {
 
 <template>
   <div class="tag-cloud-container" :class="{ 'dark-theme': isDarkTheme }">
-    <!-- 标签云按钮 -->
     <button @click="toggleTagCloud" class="tag-cloud-button">
       <span class="button-icon">🏷️</span>
       <span class="button-text">标签云</span>
       <span class="tag-count">{{ tags.length }}</span>
     </button>
     
-    <!-- 标签云弹窗 -->
     <div v-if="showTagCloud" class="tag-cloud-modal">
       <div class="tag-cloud-content" :class="{ 'dark-theme': isDarkTheme }">
         <div class="tag-cloud-header">
@@ -109,7 +100,6 @@ onMounted(() => {
           <button @click="closeTagCloud" class="close-button">×</button>
         </div>
         
-        <!-- 搜索框 -->
         <div class="search-container">
           <input 
             v-model="searchQuery" 
@@ -126,7 +116,6 @@ onMounted(() => {
           </button>
         </div>
         
-        <!-- 排序选项 -->
         <div class="sort-options">
           <span class="sort-label">排序:</span>
           <button 
@@ -155,20 +144,7 @@ onMounted(() => {
           </button>
         </div>
         
-        <!-- 加载状态 -->
-        <div v-if="loading" class="tag-cloud-loading">
-          <div class="loading-spinner"></div>
-          <span>加载标签中...</span>
-        </div>
-        
-        <!-- 错误状态 -->
-        <div v-else-if="error" class="tag-cloud-error">
-          <span>{{ error }}</span>
-          <button @click="loadTags" class="retry-button">重试</button>
-        </div>
-        
-        <!-- 标签云 -->
-        <div v-else class="tag-cloud">
+        <div class="tag-cloud">
           <span 
             v-for="stat in filteredTags" 
             :key="stat.tag"
@@ -183,14 +159,8 @@ onMounted(() => {
           >
             {{ stat.tag }} ({{ stat.count }})
           </span>
-          
-          <!-- 空状态 -->
-          <div v-if="filteredTags.length === 0" class="tag-cloud-empty">
-            <span>{{ searchQuery ? '没有找到匹配的标签' : '暂无标签' }}</span>
-          </div>
         </div>
         
-        <!-- 标签文章列表 -->
         <div v-if="selectedTag && tagArticles.length > 0" class="tag-articles">
           <div class="tag-header">
             <h4>{{ selectedTag }} 的文章 ({{ tagArticles.length }})</h4>
@@ -219,7 +189,6 @@ onMounted(() => {
           </RouterLink>
         </div>
         
-        <!-- 标签文章空状态 -->
         <div v-if="selectedTag && tagArticles.length === 0" class="tag-articles-empty">
           <span>该标签下暂无文章</span>
         </div>
@@ -235,9 +204,6 @@ onMounted(() => {
 }
 
 .tag-cloud-button {
-  background-color: var(--button-bg);
-  border: 1px solid var(--button-border);
-  color: var(--button-text);
   font-size: 16px;
   cursor: pointer;
   padding: 8px 12px;
@@ -247,13 +213,10 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .tag-cloud-button:hover {
-  background-color: var(--button-hover-bg);
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .button-icon {
@@ -265,8 +228,6 @@ onMounted(() => {
 }
 
 .tag-count {
-  background-color: var(--accent-fg);
-  color: white;
   font-size: 12px;
   font-weight: bold;
   padding: 2px 6px;
@@ -281,7 +242,6 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -290,15 +250,12 @@ onMounted(() => {
 }
 
 .tag-cloud-content {
-  background-color: var(--card-bg);
-  border: 3px solid var(--center-card-border-color);
   border-radius: 12px;
   padding: 24px;
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 8px 24px var(--shadow-color);
   animation: slideIn 0.3s ease;
   position: relative;
 }
@@ -309,12 +266,10 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--center-card-hr-color);
 }
 
 .tag-cloud-header h3 {
   margin: 0;
-  color: var(--center-card-title-color);
   font-size: 20px;
   font-weight: 600;
 }
@@ -324,7 +279,6 @@ onMounted(() => {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: var(--text-color);
   padding: 0;
   width: 32px;
   height: 32px;
@@ -337,12 +291,9 @@ onMounted(() => {
 }
 
 .close-button:hover {
-  background-color: var(--hover-bg);
-  color: var(--link-hover-color);
   transform: rotate(90deg);
 }
 
-/* 搜索框 */
 .search-container {
   position: relative;
   margin-bottom: 16px;
@@ -351,18 +302,13 @@ onMounted(() => {
 .search-input {
   width: 100%;
   padding: 10px 40px 10px 12px;
-  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
-  background-color: var(--input-bg);
-  color: var(--text-color);
   transition: all 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--accent-fg);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
 .clear-button {
@@ -374,61 +320,9 @@ onMounted(() => {
   border: none;
   font-size: 16px;
   cursor: pointer;
-  color: var(--text-muted);
   padding: 2px 6px;
   border-radius: 50%;
   transition: all 0.2s ease;
-}
-
-.clear-button:hover {
-  background-color: var(--hover-bg);
-  color: var(--text-color);
-}
-
-.tag-cloud-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  min-height: 200px;
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border-color);
-  border-top: 3px solid var(--accent-fg);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-.tag-cloud-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  min-height: 200px;
-  color: var(--error-color);
-}
-
-.retry-button {
-  margin-top: 16px;
-  padding: 8px 16px;
-  background-color: var(--accent-fg);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.retry-button:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
 }
 
 .tag-cloud {
@@ -437,7 +331,6 @@ onMounted(() => {
   gap: 10px;
   margin-bottom: 20px;
   padding: 20px;
-  background-color: var(--hover-bg);
   border-radius: 10px;
   min-height: 200px;
   align-content: flex-start;
@@ -446,8 +339,6 @@ onMounted(() => {
 .tag {
   padding: 6px 12px;
   border-radius: 18px;
-  background-color: var(--social-bg);
-  color: var(--text-color);
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
@@ -457,36 +348,27 @@ onMounted(() => {
 }
 
 .tag:hover {
-  background-color: var(--accent-fg);
-  color: white;
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .tag.active {
-  background-color: var(--accent-fg);
-  color: white;
   font-weight: bold;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .tag-cloud-empty {
   width: 100%;
   text-align: center;
   padding: 60px 20px;
-  color: var(--text-muted);
   font-style: italic;
 }
 
 .tag-articles {
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid var(--center-card-hr-color);
 }
 
 .tag-articles h4 {
   margin: 0 0 16px 0;
-  color: var(--text-color);
   font-size: 16px;
   font-weight: 600;
 }
@@ -497,17 +379,13 @@ onMounted(() => {
   align-items: center;
   padding: 12px 0;
   text-decoration: none;
-  color: var(--text-color);
-  border-bottom: 1px solid var(--border-color);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .tag-article-item:hover {
-  color: var(--link-hover-color);
   padding-left: 12px;
-  background-color: var(--hover-bg);
   border-radius: 6px;
   margin: 0 -6px;
   padding: 12px 6px 12px 18px;
@@ -521,7 +399,6 @@ onMounted(() => {
 
 .tag-article-date {
   font-size: 0.875rem;
-  color: var(--text-muted);
   margin-left: 20px;
   white-space: nowrap;
 }
@@ -530,35 +407,27 @@ onMounted(() => {
   margin-top: 24px;
   padding: 40px 20px;
   text-align: center;
-  color: var(--text-muted);
   font-style: italic;
-  border-top: 1px solid var(--center-card-hr-color);
 }
 
-/* 排序选项 */
 .sort-options {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
   padding: 12px;
-  background-color: var(--hover-bg);
   border-radius: 8px;
   flex-wrap: wrap;
 }
 
 .sort-label {
   font-size: 14px;
-  color: var(--text-muted);
   font-weight: 500;
   white-space: nowrap;
 }
 
 .sort-button {
   padding: 6px 12px;
-  border: 1px solid var(--border-color);
-  background-color: var(--card-bg);
-  color: var(--text-color);
   border-radius: 6px;
   font-size: 13px;
   cursor: pointer;
@@ -567,18 +436,9 @@ onMounted(() => {
 }
 
 .sort-button:hover {
-  background-color: var(--hover-bg);
   transform: translateY(-1px);
 }
 
-.sort-button.active {
-  background-color: var(--accent-fg);
-  color: white;
-  border-color: var(--accent-fg);
-  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
-}
-
-/* 标签头部 */
 .tag-header {
   display: flex;
   justify-content: space-between;
@@ -597,15 +457,12 @@ onMounted(() => {
 
 .related-label {
   font-size: 13px;
-  color: var(--text-muted);
   font-weight: 500;
   white-space: nowrap;
 }
 
 .related-tag {
   padding: 3px 8px;
-  background-color: var(--social-bg);
-  color: var(--text-color);
   border-radius: 14px;
   font-size: 12px;
   cursor: pointer;
@@ -614,19 +471,12 @@ onMounted(() => {
 }
 
 .related-tag:hover {
-  background-color: var(--accent-fg);
-  color: white;
   transform: scale(1.05);
 }
 
-/* 动画 */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideIn {
@@ -641,12 +491,8 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes tagFadeIn {
@@ -659,9 +505,133 @@ onMounted(() => {
     transform: scale(1);
   }
 }
+</style>
 
-/* 响应式设计 */
-@media (max-width: 768px) {
+<style scoped>
+.tag-cloud-button {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+  border: 2px solid var(--common-color-1);
+}
+
+.tag-count {
+  color: var(--common-content);
+  background-color: var(--common-color-1);
+}
+
+.tag-cloud-content {
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+}
+
+.tag-cloud-header {
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.tag-cloud-header h3 {
+  color: var(--common-text);
+}
+
+.close-button {
+  color: var(--common-text);
+}
+
+.close-button:hover {
+  background-color: var(--common-color-1);
+}
+
+.search-input {
+  background-color: var(--common-bg);
+  color: var(--common-text);
+  border: 1px solid var(--common-color-1);
+}
+
+.clear-button {
+  color: var(--common-text);
+}
+
+.clear-button:hover {
+  background-color: var(--common-color-1);
+}
+
+.tag-cloud {
+  background-color: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+
+.tag {
+  background-color: var(--common-color-1);
+  color: var(--common-text);
+}
+
+.tag:hover {
+  background-color: var(--common-hover);
+}
+
+.tag.active {
+  background-color: var(--common-hover);
+  color: var(--common-text);
+}
+
+.tag-article-item {
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.tag-article-item:hover {
+  background-color: var(--common-hover);
+}
+
+.tag-article-title {
+  color: var(--common-text);
+}
+
+.tag-article-date {
+  color: var(--common-content);
+}
+
+.sort-options {
+  background-color: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+
+.sort-label {
+  color: var(--common-text);
+}
+
+.sort-button {
+  background-color: var(--common-color-1);
+  color: var(--common-text);
+  border: 1px solid var(--common-color-1);
+}
+
+.sort-button:hover {
+  background-color: var(--common-hover);
+}
+
+.sort-button.active {
+  background-color: var(--common-hover);
+}
+
+.tag-header h4 {
+  color: var(--common-text);
+}
+
+.related-label {
+  color: var(--common-content);
+}
+
+.related-tag {
+  background-color: var(--common-color-1);
+  color: var(--common-text);
+}
+
+.related-tag:hover {
+  background-color: var(--common-hover);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
   .tag-cloud-content {
     width: 95%;
     padding: 20px;
@@ -719,7 +689,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--sm)) {
   .tag-cloud-content {
     padding: 16px;
   }

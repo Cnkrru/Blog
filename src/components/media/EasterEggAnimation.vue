@@ -146,6 +146,7 @@ onMounted(() => {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .easter-egg-wrapper {
   margin: 20px 0;
@@ -157,8 +158,6 @@ onMounted(() => {
 .easter-egg-trigger-btn {
   padding: 15px 40px;
   font-size: 16px;
-  background-color: #ff6b6b;
-  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -168,9 +167,7 @@ onMounted(() => {
 }
 
 .easter-egg-trigger-btn:hover:not(:disabled) {
-  background-color: #ff8e8e;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .easter-egg-trigger-btn:disabled {
@@ -184,7 +181,6 @@ onMounted(() => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8);
   z-index: 9998;
   pointer-events: none;
 }
@@ -205,7 +201,6 @@ onMounted(() => {
 .final-text {
   font-size: 144px;
   font-weight: 800;
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
   background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -227,4 +222,34 @@ onMounted(() => {
     background-position: 0% 50%;
   }
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.easter-egg-trigger-btn {
+  background-color: var(--common-hover);
+  color: var(--common-content);
+}
+
+.easter-egg-trigger-btn:hover:not(:disabled) {
+  background-color: var(--common-hover);
+  box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+.animation-backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.final-text {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+}
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

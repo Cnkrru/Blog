@@ -46,46 +46,23 @@ const toggleToc = () => {
 </template>
 
 <style scoped>
-/* 目录按钮容器 */
 .toc-btn-container {
     display: flex;
     align-items: center;
 }
 
-/* 目录按钮 */
 .toc-btn {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 16px;
-    background-color: var(--button-bg);
-    border: 2px solid var(--button-border);
-    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--button-text);
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 2px 8px var(--shadow-color);
     position: relative;
     overflow: hidden;
-}
-
-.toc-btn:hover {
-    background-color: var(--button-hover-bg);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-/* 活跃状态样式 - 适配主题 */
-.toc-btn.active {
-    border-color: var(--accent-fg);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-}
-
-.toc-btn.active:hover {
-    background-color: var(--accent-hover);
-    border-color: var(--accent-hover);
+    transition: all 0.3s ease;
 }
 
 .toc-btn svg {
@@ -95,34 +72,37 @@ const toggleToc = () => {
     transition: all 0.3s ease;
 }
 
-.toc-btn.active svg {
-    transform: rotate(90deg);
-}
-
-.btn-text {
-    transition: all 0.3s ease;
-}
-
 .toc-count {
-    background-color: var(--accent-fg);
-    color: white;
+    min-width: 18px;
     font-size: 12px;
     font-weight: bold;
+    text-align: center;
     padding: 2px 6px;
     border-radius: 10px;
-    min-width: 18px;
-    text-align: center;
     margin-left: 6px;
     transition: all 0.3s ease;
 }
+</style>
 
-.toc-btn.active .toc-count {
-    background-color: white;
-    color: var(--accent-fg);
+<style scoped>
+.toc-btn {
+    background-color: var(--common-color-1);
+    color: var(--common-content); 
+    border: 1px solid var(--common-color-1);
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
+.toc-btn svg {
+    fill: var(--common-content);
+}
+
+.toc-count {
+    color: var(--common-text);
+    border: 1px solid var(--common-color-1);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
     .toc-btn {
         padding: 6px 12px;
         font-size: 13px;
@@ -141,7 +121,7 @@ const toggleToc = () => {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--sm)) {
     .toc-btn {
         padding: 5px 10px;
         font-size: 12px;

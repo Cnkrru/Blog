@@ -1,0 +1,106 @@
+/*==============================初始化==============================*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+body {
+    font-family: Arial, "Microsoft YaHei", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+}
+
+input, button, textarea, select {
+    border: none;
+    outline: none;
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    vertical-align: middle;
+    max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+hr {
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: calc(var(--sm) - 1px)) {
+    body {
+        gap: 120px;
+    }
+}
+
+@media (max-width: calc(var(--lg) - 1px)) {
+    body {
+        gap: 15px;
+    }
+}
+
+@media (max-width: calc(var(--xl) - 1px)) {
+    body {
+        gap: 20px;
+    }
+}
+
+@media (max-width: calc(var(--2xl) - 1px)) {
+    body {
+        gap: 25px;
+    }
+}
+
+/* 应用主题变量 */
+body {
+    background: linear-gradient(to bottom, 
+        var(--common-color-1), 
+        var(--common-color-2));
+    color: var(--common-text);
+
+    min-height: 100vh;
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+a {
+    color: var(--common-text);
+}
+
+a:hover {
+    color: var(--common-hover);
+}
+
+/* 卡片类元素 */
+.header-card,
+.left-asider-card,
+.center-card,
+.footer-card,
+.footer-element-card,
+.page-list-card {
+    background-color: var(--common-bg);
+    box-shadow: 0 2px 4px var(--common-shadow);
+}

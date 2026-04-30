@@ -33,7 +33,6 @@ const loadEcharts = async () => {
 const loadChinaMap = async () => {
   return new Promise(async (resolve, reject) => {
     try {
-      // 使用备用地图数据源
       const response = await fetch('https://cdn.jsdelivr.net/npm/echarts/map/json/china.json')
       if (!response.ok) {
         throw new Error('Network response was not ok')
@@ -43,7 +42,6 @@ const loadChinaMap = async () => {
       resolve()
     } catch (error) {
       console.warn('Failed to load China map data:', error)
-      // 即使加载失败也继续，避免阻塞其他功能
       resolve()
     }
   })
@@ -135,8 +133,7 @@ const initChart = () => {
 
   chart.setOption(option)
   isLoading.value = false
-  
-  // 监听主题变化
+
   if (typeof MutationObserver !== 'undefined') {
     const observer = new MutationObserver(() => {
       if (chart) {
@@ -157,18 +154,16 @@ const initChart = () => {
         })
       }
     })
-    
+
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-    
-    // 保存observer以便清理
+
     onUnmounted(() => observer.disconnect())
   }
 }
 
 const fetchVisitorLocation = async () => {
   const locationData = await userStore.fetchUserLocation()
-  
-  // 只有有坐标时才更新图表和飞线
+
   if (locationData && locationData.lon !== null) {
     updateChart()
     addFlyLine()
@@ -192,8 +187,7 @@ const addFlyLine = () => {
   if (!chart || userStore.visitorCities.length < 1) return
 
   const endCity = userStore.visitorCities[userStore.visitorCities.length - 1]
-  
-  // 如果没有坐标，不显示飞线
+
   if (!endCity.value) return
 
   const startCity = {
@@ -277,26 +271,11 @@ onUnmounted(() => {
   flex-direction: column;
   padding: 1rem;
   border-radius: 12px;
-  background: var(--card-bg);
-}
-
-@media (max-width: 768px) {
-  .visitor-map {
-    height: 400px;
-  }
-}
-
-@media (max-width: 480px) {
-  .visitor-map {
-    height: 300px;
-  }
 }
 
 .map-info-container {
   padding: 1rem;
   border-radius: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--center-card-border-color);
   flex-shrink: 0;
   width: 100%;
   margin-bottom: 1rem;
@@ -304,18 +283,14 @@ onUnmounted(() => {
 }
 
 .map-info {
-  background: var(--map-info-bg);
   padding: 10px 15px;
   border-radius: 8px;
-  color: var(--map-info-text);
 }
 
 .chart-container {
   flex: 1;
   padding: 1rem;
   border-radius: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--center-card-border-color);
   min-height: 0;
   overflow: hidden;
 }
@@ -329,7 +304,6 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.7);
   z-index: 10;
   border-radius: 12px;
   padding: 1rem;
@@ -337,7 +311,6 @@ onUnmounted(() => {
 }
 
 .loading-text {
-  color: #4ecdc4;
   font-size: 16px;
   font-weight: 500;
 }
@@ -345,12 +318,61 @@ onUnmounted(() => {
 .map-info h4 {
   margin: 0 0 5px 0;
   font-size: 14px;
-  color: var(--map-info-title);
 }
 
 .map-info p {
   margin: 0;
   font-size: 12px;
-  color: var(--map-info-subtext);
+}
+</style>
+
+<style scoped>
+.visitor-map {
+  background: var(--common-bg);
+}
+
+.map-info-container {
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+
+.map-info {
+  background: var(--common-bg);
+  color: var(--common-text);
+}
+
+.chart-container {
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+
+.loading-overlay {
+  background: var(--common-shadow);
+}
+
+.loading-text {
+  color: var(--common-color-1);
+}
+
+.map-info h4 {
+  color: var(--common-color-1);
+}
+
+.map-info p {
+  color: var(--common-text);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
+  .visitor-map {
+    height: 400px;
+  }
+}
+
+@media (max-width: var(--sm)) {
+  .visitor-map {
+    height: 300px;
+  }
 }
 </style>

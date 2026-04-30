@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, computed, watch } from 'vue'
-import MarkdownRenderer from './MarkdownRenderer.vue'
-import { useContentLoader } from '../../composables/useContentLoader'
+import MarkdownRender from './MarkdownRender.vue'
+import { useContentLoader } from '../../utils/useContentLoader'
 import { useArticlesStore } from '../../stores'
 
 const props = defineProps({
@@ -92,7 +92,7 @@ watch(() => props.type, () => loadContentData())
         </template>
         
         <!-- Markdown 内容 -->
-        <MarkdownRenderer 
+        <MarkdownRender 
           :content="markdownContent" 
           @update:toc="(toc) => emit('update:toc', toc)" 
         />
@@ -115,7 +115,6 @@ watch(() => props.type, () => loadContentData())
   justify-content: center;
   text-align: center;
   padding: 50px 20px;
-  color: var(--text-color);
   min-height: 300px;
   gap: 16px;
   animation: fadeIn 0.3s ease;
@@ -124,8 +123,6 @@ watch(() => props.type, () => loadContentData())
 .loading-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid rgba(0, 0, 0, 0.1);
-  border-top-color: var(--accent-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -144,7 +141,6 @@ watch(() => props.type, () => loadContentData())
   justify-content: center;
   text-align: center;
   padding: 50px 20px;
-  color: var(--error-color);
   min-height: 300px;
   gap: 16px;
   animation: fadeIn 0.3s ease;
@@ -163,12 +159,9 @@ watch(() => props.type, () => loadContentData())
 }
 
 .retry-button {
-  background-color: var(--button-bg);
-  border: 2px solid var(--button-border);
   border-radius: 6px;
   padding: 8px 16px;
   font-size: 14px;
-  color: var(--button-text);
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
@@ -176,9 +169,7 @@ watch(() => props.type, () => loadContentData())
 }
 
 .retry-button:hover {
-  background-color: var(--button-hover-bg);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 /* 内容状态 */
@@ -194,7 +185,6 @@ watch(() => props.type, () => loadContentData())
 
 .content-container hr {
   margin: 16px 0;
-  border: 1px solid var(--border-color);
 }
 
 /* 动画 */
@@ -217,15 +207,51 @@ watch(() => props.type, () => loadContentData())
     transform: rotate(360deg);
   }
 }
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.loading-message {
+  color: var(--common-text);
+}
+
+.loading-spinner {
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--common-color-1);
+}
+
+/* 错误状态颜色 */
+.error-message {
+  color: var(--common-color-1);
+}
+
+/* 重试按钮颜色 */
+.retry-button {
+  background-color: var(--common-color-1);
+  border: 2px solid var(--common-color-2);
+  color: var(--common-content);
+}
+
+.retry-button:hover {
+  background-color: var(--common-hover);
+  box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+/* 分隔线颜色 */
+.content-container hr {
+  border: 1px solid var(--common-color-2);
+}
 
 /* 暗色主题适配 */
 :deep(html.dark) .loading-spinner {
   border-color: rgba(255, 255, 255, 0.1);
-  border-top-color: var(--accent-color);
+  border-top-color: var(--common-color-1);
 }
+</style>
 
+<style scoped>
 /* 响应式设计 */
-@media (max-width: 768px) {
+@media (max-width: var(--md)) {
   .loading-message,
   .error-message {
     padding: 30px 16px;

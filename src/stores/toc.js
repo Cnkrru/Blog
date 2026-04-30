@@ -1,113 +1,122 @@
 import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
-export const useTocStore = defineStore('toc', {
-  state: () => ({
-    show: false,
-    activeId: '',
-    toc: [],
-    lastScrollTime: 0,
-    scrollThrottleDelay: 100
-  }),
-  
-  getters: {
-    hasToc: (state) => state.toc.length > 0,
-    activeItem: (state) => {
-      if (!state.activeId) return null
-      return state.toc.find(item => item.id === state.activeId)
-    },
-    tocDepth: (state) => {
-      if (state.toc.length === 0) return 0
-      return Math.max(...state.toc.map(item => item.level))
+export const useTocStore = defineStore('toc', () => {
+  const show = ref(false)
+  const activeId = ref('')
+  const toc = ref([])
+  const lastScrollTime = ref(0)
+  const scrollThrottleDelay = ref(100)
+
+  const hasToc = computed(() => toc.value.length > 0)
+
+  const activeItem = computed(() => {
+    if (!activeId.value) return null
+    return toc.value.find(item => item.id === activeId.value)
+  })
+
+  const tocDepth = computed(() => {
+    if (toc.value.length === 0) return 0
+    return Math.max(...toc.value.map(item => item.level))
+  })
+
+  const toggleToc = () => {
+    show.value = !show.value
+
+    try {
+      localStorage.setItem('toc_show_preference', show.value.toString())
+    } catch (e) {
+      console.warn('[tocStore] 无法保存目录显示偏好:', e)
     }
-  },
-  
-  actions: {
-    toggleToc() {
-      this.show = !this.show
-      
-      // 记录用户偏好
-      try {
-        localStorage.setItem('toc_show_preference', this.show.toString())
-      } catch (e) {
-        console.warn('无法保存目录显示偏好:', e)
-      }
-    },
-    
-    setShow(show) {
-      this.show = show
-      
-      // 记录用户偏好
-      try {
-        localStorage.setItem('toc_show_preference', show.toString())
-      } catch (e) {
-        console.warn('无法保存目录显示偏好:', e)
-      }
-    },
-    
-    setToc(toc) {
-      this.toc = toc
-    },
-    
-    setActiveId(id) {
-      if (id !== this.activeId) {
-        this.activeId = id
-      }
-    },
-    
-    scrollToHeading(id) {
-      const element = document.getElementById(id)
-      if (!element) return
-      
-      // 尝试找到中心内容卡片作为滚动容器
-      const scrollContainers = [
-        document.querySelector('.center-card-content'),
-        document.querySelector('.post-content'),
-        document.querySelector('.markdown-content')
-      ]
-      
-      let container = null
-      for (const potentialContainer of scrollContainers) {
-        if (potentialContainer && potentialContainer.contains(element)) {
-          container = potentialContainer
-          break
-        }
-      }
-      
-      if (container) {
-        // 计算元素相对于容器的位置
-        const rect = element.getBoundingClientRect()
-        const containerRect = container.getBoundingClientRect()
-        const relativeTop = rect.top - containerRect.top
-        
-        // 在容器内滚动
-        container.scrollTo({
-          top: container.scrollTop + relativeTop - 20, // 减去20像素的偏移，让标题显示在顶部
-          behavior: 'smooth'
-        })
-      } else {
-        // 如果没有找到合适的容器，直接滚动到元素
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        })
-      }
-    },
-    
-    loadUserPreference() {
-      try {
-        const savedPreference = localStorage.getItem('toc_show_preference')
-        if (savedPreference !== null) {
-          this.show = savedPreference === 'true'
-        }
-      } catch (e) {
-        console.warn('无法加载目录显示偏好:', e)
-      }
-    },
-    
-    reset() {
-      this.show = false
-      this.activeId = ''
-      this.toc = []
+  }
+
+  const setShow = (newShow) => {
+    show.value = newShow
+
+    try {
+      localStorage.setItem('toc_show_preference', newShow.toString())
+    } catch (e) {
+      console.warn('[tocStore] 无法保存目录显示偏好:', e)
     }
+  }
+
+  const setToc = (newToc) => {
+    toc.value = newToc
+  }
+
+  const setActiveId = (id) => {
+    if (id !== activeId.value) {
+      activeId.value = id
+    }
+  }
+
+  const scrollToHeading = (id) => {
+    const element = document.getElementById(id)
+    if (!element) return
+
+    const scrollContainers = [
+      document.querySelector('.center-card-content'),
+      document.querySelector('.post-content'),
+      document.querySelector('.markdown-content')
+    ]
+
+    let container = null
+    for (const potentialContainer of scrollContainers) {
+      if (potentialContainer && potentialContainer.contains(element)) {
+        container = potentialContainer
+        break
+      }
+    }
+
+    if (container) {
+      const rect = element.getBoundingClientRect()
+      const containerRect = container.getBoundingClientRect()
+      const relativeTop = rect.top - containerRect.top
+
+      container.scrollTo({
+        top: container.scrollTop + relativeTop - 20,
+        behavior: 'smooth'
+      })
+    } else {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
+
+  const loadUserPreference = () => {
+    try {
+      const savedPreference = localStorage.getItem('toc_show_preference')
+      if (savedPreference !== null) {
+        show.value = savedPreference === 'true'
+      }
+    } catch (e) {
+      console.warn('[tocStore] 无法加载目录显示偏好:', e)
+    }
+  }
+
+  const reset = () => {
+    show.value = false
+    activeId.value = ''
+    toc.value = []
+  }
+
+  return {
+    show,
+    activeId,
+    toc,
+    lastScrollTime,
+    scrollThrottleDelay,
+    hasToc,
+    activeItem,
+    tocDepth,
+    toggleToc,
+    setShow,
+    setToc,
+    setActiveId,
+    scrollToHeading,
+    loadUserPreference,
+    reset
   }
 })

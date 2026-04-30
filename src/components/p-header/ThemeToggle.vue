@@ -9,13 +9,6 @@ const toggleTheme = () => {
   themeStore.toggleTheme()
 }
 
-onMounted(() => {
-  // 主题已在App.vue中初始化
-})
-
-onUnmounted(() => {
-  // 清理工作已在themeStore中处理
-})
 </script>
 
 <template>
@@ -31,3 +24,16 @@ onUnmounted(() => {
     <img src="../../assets/imgs/svg/theme-toggle.svg" alt="">
   </div>
 </template>
+
+<!-- 布局样式 -->
+<style scoped>
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+/* 按钮颜色由 Header.vue 统一管理 */
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
+</style>

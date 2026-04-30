@@ -133,189 +133,239 @@ onMounted(() => {
 
 <style scoped>
 .copy-button {
-  background-color: var(--button-bg);
-  border: 2px solid var(--button-border);
-  border-radius: 8px;
-  padding: 4px 8px;
-  font-size: 12px;
-  text-align: center;
-  color: var(--button-text);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: bold;
-  box-shadow: 0 2px 8px var(--shadow-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  min-width: 70px;
-  position: relative;
-  overflow: hidden;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 70px;
+    position: relative;
+    overflow: hidden;
 }
 
 .copy-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    120deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.2) 50%,
-    transparent 70%
-  );
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
 }
 
 .copy-button:hover::before {
-  transform: translateX(100%);
+    transform: translateX(100%);
 }
 
 .copy-button:hover {
-  background-color: var(--button-hover-bg);
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 16px var(--shadow-color);
+    transform: translateY(-2px) scale(1.02);
 }
 
 .copy-button:active {
-  transform: translateY(0) scale(0.98);
+    transform: translateY(0) scale(0.98);
 }
 
 .copy-button:focus {
-  outline: 2px solid var(--button-focus);
-  outline-offset: 2px;
+    outline-offset: 2px;
 }
 
 /* 复制成功状态 */
 .copy-button.copied-success {
-  background-color: #28a745;
-  color: white;
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
-  animation: successPulse 0.6s ease;
+    transform: translateY(-2px) scale(1.05);
+    animation: successPulse 0.6s ease;
 }
 
 .copy-button.copied-success:hover {
-  background-color: #28a745;
-  transform: translateY(-2px) scale(1.05);
+    transform: translateY(-2px) scale(1.05);
 }
 
 /* 复制失败状态 */
 .copy-button.copied-fail {
-  background-color: #dc3545;
-  color: white;
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.5);
-  animation: failShake 0.6s ease;
+    transform: translateY(-2px) scale(1.05);
+    animation: failShake 0.6s ease;
 }
 
 .copy-button.copied-fail:hover {
-  background-color: #dc3545;
-  transform: translateY(-2px) scale(1.05);
+    transform: translateY(-2px) scale(1.05);
 }
 
 /* 加载状态 */
 .copy-button.loading {
-  pointer-events: none;
-  opacity: 0.8;
+    pointer-events: none;
+    opacity: 0.8;
 }
 
 .copy-button.loading .loading-spinner {
-  animation: spin 0.8s linear infinite;
+    animation: spin 0.8s linear infinite;
 }
 
 /* 状态文本样式 */
 .status-text {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.3s ease;
 }
 
 .status-text .copy-icon,
 .status-text .check-icon {
-  font-size: 14px;
-  transition: transform 0.3s ease;
+    font-size: 14px;
+    transition: transform 0.3s ease;
 }
 
 .copy-button:hover .copy-icon {
-  transform: scale(1.2);
+    transform: scale(1.2);
 }
 
 .copy-button.copied-success .check-icon {
-  animation: checkBounce 0.5s ease;
+    animation: checkBounce 0.5s ease;
 }
 
 /* 加载动画 */
 .loading-spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+    width: 14px;
+    height: 14px;
+    border: 2px solid;
+    border-top-color: inherit;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
 }
 
 /* 动画关键帧 */
 @keyframes successPulse {
-  0% {
-    transform: translateY(-2px) scale(1);
-  }
-  50% {
-    transform: translateY(-2px) scale(1.1);
-  }
-  100% {
-    transform: translateY(-2px) scale(1.05);
-  }
+    0% {
+        transform: translateY(-2px) scale(1);
+    }
+    50% {
+        transform: translateY(-2px) scale(1.1);
+    }
+    100% {
+        transform: translateY(-2px) scale(1.05);
+    }
 }
 
 @keyframes failShake {
-  0%, 100% {
-    transform: translateY(-2px) scale(1.05) translateX(0);
-  }
-  25% {
-    transform: translateY(-2px) scale(1.05) translateX(-4px);
-  }
-  75% {
-    transform: translateY(-2px) scale(1.05) translateX(4px);
-  }
+    0%, 100% {
+        transform: translateY(-2px) scale(1.05) translateX(0);
+    }
+    25% {
+        transform: translateY(-2px) scale(1.05) translateX(-4px);
+    }
+    75% {
+        transform: translateY(-2px) scale(1.05) translateX(4px);
+    }
 }
 
 @keyframes checkBounce {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* 响应式设计 */
-@media (max-width: 768px) {
-  .copy-button {
-    padding: 3px 6px;
-    font-size: 10px;
-    min-width: 60px;
-  }
+@media (max-width: var(--md)) {
+    .copy-button {
+        padding: 3px 6px;
+        font-size: 10px;
+        min-width: 60px;
+    }
 
-  .loading-spinner {
-    width: 12px;
-    height: 12px;
-  }
+    .loading-spinner {
+        width: 12px;
+        height: 12px;
+    }
+}
+</style>
+
+<style scoped>
+/* 复制按钮颜色 */
+.copy-button {
+    background-color: var(--common-color-1);
+    border: 1px solid var(--common-color-1);
+    color: var(--common-content);
+    box-shadow: 0 2px 8px var(--common-shadow);
+}
+
+.copy-button::before {
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 70%
+    );
+}
+
+.copy-button:hover {
+    background-color: var(--common-hover);
+    box-shadow: 0 6px 16px var(--common-shadow);
+}
+
+.copy-button:focus {
+    outline-color: var(--common-color-1);
+}
+
+/* 复制成功状态 */
+.copy-button.copied-success {
+    background-color: #28a745;
+    color: white;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+}
+
+.copy-button.copied-success:hover {
+    background-color: #28a745;
+}
+
+/* 复制失败状态 */
+.copy-button.copied-fail {
+    background-color: #dc3545;
+    color: white;
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.5);
+}
+
+.copy-button.copied-fail:hover {
+    background-color: #dc3545;
+}
+
+/* 加载动画 */
+.loading-spinner {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
+    .copy-button {
+        padding: 3px 6px;
+        font-size: 10px;
+        min-width: 60px;
+    }
+
+    .loading-spinner {
+        width: 12px;
+        height: 12px;
+    }
 }
 </style>

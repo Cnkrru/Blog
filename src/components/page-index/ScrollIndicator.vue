@@ -8,6 +8,7 @@
 <script setup>
 </script>
 
+<!-- 布局样式 -->
 <style scoped>
 .scroll-indicator {
   position: absolute;
@@ -24,13 +25,26 @@
 .scroll-line {
   width: 2px;
   height: 60px;
-  background: linear-gradient(to bottom, var(--scroll-accent-primary), transparent);
 }
 
 .scroll-text {
   font-size: 0.75rem;
-  color: var(--scroll-text-muted);
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.scroll-line {
+  background: linear-gradient(to bottom, var(--common-color-1), transparent);
+}
+
+.scroll-text {
+  color: var(--common-text);
+}
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

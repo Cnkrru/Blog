@@ -41,14 +41,11 @@ const updateTime = () => {
 }
 
 onMounted(() => {
-  // 初始更新时间
   updateTime()
-  // 每秒更新一次
   timer = setInterval(updateTime, 1000)
 })
 
 onUnmounted(() => {
-  // 清理定时器
   if (timer) {
     clearInterval(timer)
   }
@@ -64,7 +61,6 @@ onUnmounted(() => {
   justify-content: center;
 }
 
-/* Small size */
 .clock-small {
   gap: 10px;
   margin: 15px 0;
@@ -88,7 +84,6 @@ onUnmounted(() => {
   font-size: 1.2rem;
 }
 
-/* Medium size (default) */
 .clock-medium {
   gap: 16px;
   margin: 30px 0;
@@ -112,7 +107,6 @@ onUnmounted(() => {
   font-size: 2rem;
 }
 
-/* Large size */
 .clock-large {
   gap: 20px;
   margin: 40px 0;
@@ -136,86 +130,50 @@ onUnmounted(() => {
   font-size: 2.5rem;
 }
 
-/* Base styles */
 .clock-card {
-  background: var(--card-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--card-border);
   text-align: center;
   transition: all 0.3s ease;
 }
 
 .clock-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  border-color: var(--accent-fg);
 }
 
 .card-number {
-  font-weight: bold;
-  background: var(--logo-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 3s ease infinite;
   line-height: 1;
 }
 
 .card-label {
-  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .clock-separator {
   font-weight: bold;
-  color: var(--text-primary);
   line-height: 1;
 }
+</style>
 
-/* 响应式设计 */
-@media (max-width: 575.98px) {
-  .real-time-clock {
-    gap: 8px;
-  }
-  
-  .clock-card {
-    padding: 12px;
-    min-width: 60px;
-  }
-  
-  .card-number {
-    font-size: 1.8rem;
-  }
-  
-  .card-label {
-    font-size: 0.8rem;
-  }
-  
-  .clock-separator {
-    font-size: 1.5rem;
-  }
+<style scoped>
+.clock-card {
+  background: var(--common-bg);
+  box-shadow: 0 4px 12px var(--common-shadow);
+  border: 1px solid var(--common-color-1);
 }
 
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .real-time-clock {
-    gap: 12px;
-  }
-  
-  .clock-card {
-    padding: 16px;
-    min-width: 70px;
-  }
-  
-  .card-number {
-    font-size: 2rem;
-  }
-  
-  .clock-separator {
-    font-size: 1.8rem;
-  }
+.clock-card:hover {
+  box-shadow: 0 6px 20px var(--common-shadow);
+  border-color: var(--common-color-1);
+}
+
+.card-number {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
 }
 
 @keyframes gradient-shift {
@@ -230,5 +188,55 @@ onUnmounted(() => {
   }
 }
 
+.card-label {
+  color: var(--common-text);
+}
 
+.clock-separator {
+  color: var(--common-text);
+}
+</style>
+
+<style scoped>
+@media (max-width: calc(var(--sm) - 1px)) {
+  .real-time-clock {
+    gap: 8px;
+  }
+
+  .clock-card {
+    padding: 12px;
+    min-width: 60px;
+  }
+
+  .card-number {
+    font-size: 1.8rem;
+  }
+
+  .card-label {
+    font-size: 0.8rem;
+  }
+
+  .clock-separator {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: var(--sm)) {
+  .real-time-clock {
+    gap: 12px;
+  }
+
+  .clock-card {
+    padding: 16px;
+    min-width: 70px;
+  }
+
+  .card-number {
+    font-size: 2rem;
+  }
+
+  .clock-separator {
+    font-size: 1.8rem;
+  }
+}
 </style>

@@ -2,28 +2,20 @@
 </script>
 
 <template>
-  <div class="avator-card">
-    <img src="/src/assets/imgs/avator.jpg" alt="Cnkrru的头像">
-  </div>
+    <div class="avator-card">
+        <img src="/src/assets/imgs/avator.jpg" alt="Cnkrru的头像">
+    </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
-/*==========头像样式==========*/
-    /* 圆形头像卡片样式 */
 .avator-card {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    transition: all 0.3s ease;
 }
 
-    /* 头像伪效果 */
-.avator-card:hover {
-    transform: translateY(1.1);
-}
-
-    /* 头像图片样式 */
 .avator-card img {
     width: 100%;
     height: 100%;
@@ -31,3 +23,13 @@
 }
 </style>
 
+<!-- 颜色样式 -->
+<style scoped>
+.avator-card {
+    border: 3px solid var(--common-color-1);
+}
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
+</style>

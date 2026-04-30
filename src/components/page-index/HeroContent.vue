@@ -19,20 +19,19 @@
 
     <div class="right-aligned-content">
       <div class="main-content">
-          <div class="left-card">
-            <div class="clock-container">
-              <RealTimeClock :size="'small'" />
-            </div>
-            <div class="heatmap-container">
-              <Heatmap />
-            </div>
+        <div class="left-card">
+          <div class="clock-container">
+            <RealTimeClock :size="'small'" />
           </div>
-          <div class="right-card">
-            <VisitorMap />
+          <div class="heatmap-container">
+            <Heatmap />
           </div>
         </div>
+        <div class="right-card">
+          <VisitorMap />
+        </div>
+      </div>
     </div>
-
   </main>
 </template>
 
@@ -45,7 +44,6 @@ import VisitorMap from './VisitorMap.vue'
 
 const router = useRouter()
 
-// 优化的打字效果组合式函数
 function useTyping(options = {}) {
   const {
     text = 'Welcome to Cnkrru\'s Blog',
@@ -61,7 +59,7 @@ function useTyping(options = {}) {
   const isDeleting = ref(false)
   const isPaused = ref(false)
   const currentText = ref(text)
-  
+
   let animationFrameId = null
   let lastTime = 0
   let pauseStartTime = 0
@@ -69,7 +67,7 @@ function useTyping(options = {}) {
 
   const getRandomSpeed = (baseSpeed) => {
     if (!randomSpeed) return baseSpeed
-    return baseSpeed * (0.8 + Math.random() * 0.4) // 随机速度波动 20%
+    return baseSpeed * (0.8 + Math.random() * 0.4)
   }
 
   const typeEffect = (timestamp) => {
@@ -169,7 +167,6 @@ function useTyping(options = {}) {
   }
 }
 
-// 使用优化后的打字效果
 const { typingText } = useTyping({
   text: 'Welcome to Cnkrru\'s Blog',
   typingSpeed: 150,
@@ -186,7 +183,7 @@ const checkTimeAndSetTheme = () => {
 
     const body = document.body
     const hour = new Date().getHours()
-    const isNight = hour >= 13  // 与主题切换组件保持一致
+    const isNight = hour >= 13
 
     if (isNight) {
       body.classList.add('dark-theme')
@@ -235,19 +232,6 @@ onMounted(() => {
   margin-bottom: 1rem;
 }
 
-.glow-text {
-  background: var(--hero-gradient-text);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  animation: gradient-shift 3s ease infinite, hello-glow 2s ease-in-out infinite;
-  text-shadow: 0 0 15px rgba(78, 205, 196, 0.4);
-}
-
 .hero-title {
   font-size: clamp(2.5rem, 8vw, 5rem);
   font-weight: 800;
@@ -255,54 +239,12 @@ onMounted(() => {
   line-height: 1.1;
 }
 
-.typing-text {
-  background: var(--hero-gradient-text);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 15px rgba(78, 205, 196, 0.5);
-  animation: gradient-shift 3s ease infinite, typing-glow 2s ease-in-out infinite;
-}
-
 .cursor-blink {
   display: inline-block;
-  color: var(--hero-accent-primary);
-}
-
-@keyframes hello-glow {
-  0%, 100% {
-    text-shadow: 0 0 15px rgba(78, 205, 196, 0.4);
-  }
-  50% {
-    text-shadow: 0 0 25px rgba(78, 205, 196, 0.6);
-  }
-}
-
-@keyframes typing-glow {
-  0%, 100% {
-    text-shadow: 0 0 15px rgba(78, 205, 196, 0.5);
-  }
-  50% {
-    text-shadow: 0 0 25px rgba(78, 205, 196, 0.7);
-  }
-}
-
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 .hero-description {
   font-size: 1.25rem;
-  color: var(--hero-text-muted);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -328,17 +270,8 @@ onMounted(() => {
   background: transparent;
 }
 
-.btn-primary {
-  background: var(--hero-gradient-text);
-  background-size: 200% 100%;
-  color: white;
-  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
-  animation: gradient-shift 3s ease infinite;
-}
-
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6);
 }
 
 .btn-glow {
@@ -347,7 +280,6 @@ onMounted(() => {
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.6s ease, height 0.6s ease;
@@ -364,15 +296,12 @@ onMounted(() => {
 }
 
 .btn-secondary {
-  border: 2px solid rgba(102, 126, 234, 0.5);
-  color: var(--hero-accent-primary);
-  background: rgba(102, 126, 234, 0.05);
+  border: 2px solid;
   backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
-  background: rgba(102, 126, 234, 0.15);
-  border-color: var(--hero-accent-primary);
+  border-color: inherit;
   transform: translateY(-2px);
 }
 
@@ -396,12 +325,10 @@ onMounted(() => {
 
 .left-card {
   flex: 1;
-  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 2rem;
-  border: 1px solid var(--center-card-border-color);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid;
   min-height: 500px;
   display: flex;
   flex-direction: column;
@@ -409,12 +336,10 @@ onMounted(() => {
 
 .right-card {
   flex: 1;
-  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 2rem;
-  border: 1px solid var(--center-card-border-color);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid;
   display: flex;
   flex-direction: column;
   min-height: 500px;
@@ -423,8 +348,6 @@ onMounted(() => {
 .clock-container {
   padding: 1rem;
   border-radius: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--center-card-border-color);
   flex-shrink: 0;
   width: 100%;
   margin-bottom: 1rem;
@@ -434,20 +357,135 @@ onMounted(() => {
   flex: 1;
   padding: 1rem;
   border-radius: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--center-card-border-color);
   min-height: 0;
 }
+</style>
 
-@media (max-width: 768px) {
+<style scoped>
+.glow-text {
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite, hello-glow 2s ease-in-out infinite;
+  text-shadow: 0 0 15px var(--common-color-1);
+}
+
+.typing-text {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite, typing-glow 2s ease-in-out infinite;
+  text-shadow: 0 0 15px var(--common-color-1);
+}
+
+@keyframes hello-glow {
+  0%, 100% {
+    text-shadow: 0 0 15px var(--common-color-1);
+  }
+  50% {
+    text-shadow: 0 0 25px var(--common-color-1);
+  }
+}
+
+@keyframes typing-glow {
+  0%, 100% {
+    text-shadow: 0 0 15px var(--common-color-1);
+  }
+  50% {
+    text-shadow: 0 0 25px var(--common-color-1);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hero-description {
+  color: var(--common-text);
+}
+
+.cursor-blink {
+  color: var(--common-color-1);
+}
+
+.btn-primary {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  color: white;
+  box-shadow: 0 4px 15px var(--common-color-1);
+  animation: gradient-shift 3s ease infinite;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 25px var(--common-color-1);
+}
+
+.btn-glow {
+  background: var(--common-color-2);
+  opacity: 0.3;
+}
+
+.btn-secondary {
+  border-color: var(--common-color-1);
+  color: var(--common-color-1);
+  background: var(--common-color-1);
+  opacity: 0.05;
+}
+
+.btn-secondary:hover {
+  background: var(--common-color-1);
+  opacity: 0.15;
+  border-color: var(--common-color-1);
+}
+
+.left-card {
+  background: var(--common-bg);
+  border-color: var(--common-color-1);
+  box-shadow: 0 8px 32px var(--common-shadow);
+}
+
+.right-card {
+  background: var(--common-bg);
+  border-color: var(--common-color-1);
+  box-shadow: 0 8px 32px var(--common-shadow);
+}
+
+.clock-container {
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+
+.heatmap-container {
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+</style>
+
+<style scoped>
+@media (max-width: var(--md)) {
   .hero-content {
     padding: 4rem 1rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1.5rem;
   }
-  
+
   .hero-buttons {
     flex-direction: column;
     width: 100%;
@@ -474,32 +512,32 @@ onMounted(() => {
     min-height: 400px;
     padding: 1.5rem;
   }
-  
+
   .clock-container,
   .heatmap-container {
     padding: 0.75rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--sm)) {
   .hero-content {
     padding: 3rem 0.5rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1.25rem;
   }
-  
+
   .hero-title {
     font-size: clamp(1.5rem, 6vw, 2.5rem);
   }
-  
+
   .left-card,
   .right-card {
     padding: 1rem;
     min-height: 300px;
   }
-  
+
   .clock-container,
   .heatmap-container {
     padding: 0.75rem;

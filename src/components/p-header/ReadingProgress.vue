@@ -86,6 +86,7 @@ onUnmounted(() => {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .reading-progress-container {
   position: fixed;
@@ -93,15 +94,28 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   height: 3px;
-  background-color: var(--border-color, #e0e0e0);
   z-index: 1001;
 }
 
 .reading-progress-bar {
   height: 100%;
-  background-color: var(--accent-fg, #ff6b9d);
   transition: width 0.2s ease;
   border-radius: 0 3px 3px 0;
-  box-shadow: 0 0 8px var(--accent-fg, #ff6b9d);
 }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.reading-progress-container {
+  background-color: var(--common-color-1);
+}
+
+.reading-progress-bar {
+  background-color: var(--common-hover);
+  box-shadow: 0 0 8px var(--common-shadow);
+}
+</style>
+
+<!-- 响应式设计媒体查询 -->
+<style scoped>
 </style>

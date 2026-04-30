@@ -1,9 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
-const { t } = useI18n()
 
 // 返回首页
 const goHome = () => {
@@ -15,9 +13,9 @@ const goHome = () => {
   <div class="center-card-content">
     <div class="lose-center-card-content">
       <div class="lose-center-content">
-        <h1>{{ t('notFound.title') }}</h1>
-        <p>{{ t('notFound.message') }}</p>
-        <button class="back-home-btn" @click="goHome">{{ t('notFound.backHome') }}</button>
+        <h1>404 页面不存在</h1>
+        <p>您访问的页面不存在，请检查URL是否正确</p>
+        <button class="back-home-btn" @click="goHome">返回首页</button>
       </div>
     </div>
   </div>
@@ -25,6 +23,7 @@ const goHome = () => {
 </template>
 
 <style scoped>
+/* 布局样式 */
 .center-card-content {
     padding: 40px 20px;
     text-align: center;
@@ -36,13 +35,11 @@ const goHome = () => {
 }
 
 .lose-center-content h1 {
-    color: var(--center-card-title-color);
     font-size: 36px;
     margin-bottom: 20px;
 }
 
 .lose-center-content p {
-    color: var(--text-color);
     font-size: 18px;
     margin-bottom: 30px;
     line-height: 1.6;
@@ -51,9 +48,7 @@ const goHome = () => {
 .back-home-btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: 1px solid var(--button-border);
+    border: 1px solid;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
@@ -62,12 +57,34 @@ const goHome = () => {
 }
 
 .back-home-btn:hover {
-    background-color: var(--button-hover-bg);
     transform: translateY(-3px);
 }
+</style>
 
+<style scoped>
+/* 颜色样式 */
+.lose-center-content h1 {
+    color: var(--common-text);
+}
+
+.lose-center-content p {
+    color: var(--common-text);
+}
+
+.back-home-btn {
+    background-color: var(--common-hover);
+    color: var(--common-text);
+    border-color: var(--common-color-1);
+}
+
+.back-home-btn:hover {
+    background-color: var(--common-hover);
+}
+</style>
+
+<style scoped>
 /* 响应式设计媒体查询 */
-@media (max-width: 768px) {
+@media (max-width: var(--md)) {
     .center-card-content {
         padding: 30px 15px;
     }
@@ -88,7 +105,7 @@ const goHome = () => {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--sm)) {
     .center-card-content {
         padding: 20px 10px;
     }

@@ -3,7 +3,7 @@
     <div class="code-header" v-if="language && codeStore.showLanguageBadge">
       <span class="language">{{ language }}</span>
       <div class="header-actions">
-        <CodeCopier v-if="showCopyButton" :code="code" />
+        <CodeRender v-if="showCopyButton" :code="code" />
         <span class="line-count" v-if="showLineNumbers">{{ code.split('\n').length }} lines</span>
       </div>
     </div>
@@ -24,7 +24,7 @@
 
 <script setup>
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
-import CodeCopier from './CodeCopier.vue'
+import CodeRender from './CodeRender.vue'
 import { useCodeStore } from '../../stores'
 
 const props = defineProps({
@@ -160,13 +160,10 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   margin: 16px 0;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 3px solid var(--center-card-border-color);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .code-container:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
 
@@ -175,8 +172,6 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   justify-content: space-between;
   align-items: center;
   padding: 8px 16px;
-  background-color: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
   transition: all 0.3s ease;
 }
 
@@ -189,20 +184,13 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 .language {
   font-size: 12px;
   font-weight: 600;
-  color: var(--text-color);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  background: linear-gradient(45deg, var(--accent-color), var(--accent-color-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .line-count {
   font-size: 10px;
-  color: var(--text-color-muted);
   font-weight: 500;
-  background: var(--card-bg-secondary);
   padding: 2px 6px;
   border-radius: 4px;
 }
@@ -210,7 +198,6 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 .code-content-wrapper {
   position: relative;
   display: flex;
-  background-color: #f8f8f8;
   transition: all 0.3s ease;
 }
 
@@ -223,15 +210,12 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 }
 
 .line-numbers {
-  background-color: #f0f0f0;
-  border-right: 1px solid #e0e0e0;
   padding: 16px 8px;
   text-align: right;
   user-select: none;
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 14px;
   line-height: 1.5;
-  color: #999999;
   transition: all 0.3s ease;
   position: sticky;
   left: 0;
@@ -247,14 +231,12 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 
 .line-number:hover {
   opacity: 1;
-  color: var(--accent-color);
 }
 
 .code-content {
   flex: 1;
   margin: 0;
   padding: 16px;
-  color: #333333;
   overflow-x: auto;
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 14px;
@@ -269,7 +251,6 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(248, 248, 248, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -281,15 +262,12 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 .loading-spinner {
   width: 24px;
   height: 24px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-top-color: var(--accent-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 .loading-text {
   font-size: 12px;
-  color: var(--text-color-muted);
   font-weight: 500;
 }
 
@@ -301,30 +279,6 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 14px;
   line-height: 1.5;
-}
-
-/* 暗色主题适配 */
-:deep(html.dark) .code-content-wrapper {
-  background-color: #1e1e1e;
-}
-
-:deep(html.dark) .line-numbers {
-  background-color: #252526;
-  border-right-color: #3e3e42;
-  color: #858585;
-}
-
-:deep(html.dark) .code-content {
-  color: #d4d4d4;
-}
-
-:deep(html.dark) .loading-overlay {
-  background: rgba(30, 30, 30, 0.9);
-}
-
-:deep(html.dark) .loading-spinner {
-  border-color: rgba(255, 255, 255, 0.1);
-  border-top-color: var(--accent-color);
 }
 
 /* 动画 */
@@ -345,9 +299,105 @@ watch(() => codeStore.lineNumbersEnabled, () => {
     transform: rotate(360deg);
   }
 }
+</style>
 
+<style scoped>
+/* 颜色样式 */
+.code-container {
+  box-shadow: 0 2px 4px var(--common-shadow);
+  border: 3px solid var(--common-color-1);
+}
+
+.code-container:hover {
+  box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+/* 代码头部 */
+.code-header {
+  background-color: var(--common-bg);
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+/* 语言标签 */
+.language {
+  color: var(--common-text);
+  background: var(--common-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 行数统计 */
+.line-count {
+  color: var(--common-text);
+  background: rgba(255, 192, 203, 0.2);
+}
+
+/* 代码内容区 */
+.code-content-wrapper {
+  background-color: rgba(255, 192, 203, 0.05);
+}
+
+/* 行号 */
+.line-numbers {
+  background-color: rgba(255, 192, 203, 0.1);
+  border-right: 1px solid var(--common-color-1);
+  color: var(--common-text);
+  opacity: 0.7;
+}
+
+.line-number:hover {
+  color: var(--common-color-1);
+  opacity: 1;
+}
+
+/* 代码内容 */
+.code-content {
+  color: var(--common-text);
+}
+
+/* 加载遮罩 */
+.loading-overlay {
+  background: rgba(255, 192, 203, 0.1);
+}
+
+.loading-spinner {
+  border: 2px solid rgba(255, 192, 203, 0.3);
+  border-top-color: var(--common-color-1);
+}
+
+.loading-text {
+  color: var(--common-text);
+}
+
+/* 暗色主题适配 */
+:deep(body.dark-theme) .code-content-wrapper {
+  background-color: rgba(58, 170, 231, 0.1);
+}
+
+:deep(body.dark-theme) .line-numbers {
+  background-color: rgba(58, 170, 231, 0.15);
+  border-right-color: var(--common-color-1);
+  color: var(--common-text);
+}
+
+:deep(body.dark-theme) .code-content {
+  color: var(--common-text);
+}
+
+:deep(body.dark-theme) .loading-overlay {
+  background: rgba(58, 170, 231, 0.1);
+}
+
+:deep(body.dark-theme) .loading-spinner {
+  border-color: rgba(58, 170, 231, 0.3);
+  border-top-color: var(--common-color-1);
+}
+</style>
+
+<style scoped>
 /* 响应式设计 */
-@media (max-width: 768px) {
+@media (max-width: var(--md)) {
   .code-container {
     margin: 12px 0;
   }

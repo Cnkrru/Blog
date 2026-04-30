@@ -15,25 +15,24 @@
 .logo-text {
   font-size: 1.75rem;
   font-weight: 800;
-  background: var(--logo-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   letter-spacing: -0.02em;
-  animation: gradient-shift 3s ease infinite, pulse 2s ease-in-out infinite;
-  text-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
 }
 
 .logo-dot {
   font-size: 2rem;
   font-weight: 800;
-  background: var(--logo-gradient);
+}
+</style>
+
+<style scoped>
+.logo-text {
+  background: var(--common-gradient);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: gradient-shift 3s ease infinite, dot-pulse 1.5s ease-in-out infinite;
+  animation: gradient-shift 3s ease infinite, pulse 2s ease-in-out infinite;
+  text-shadow: 0 0 20px var(--common-color-1);
 }
 
 @keyframes gradient-shift {
@@ -51,24 +50,26 @@
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
-    text-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+    text-shadow: 0 0 20px var(--common-color-1);
   }
   50% {
     opacity: 0.9;
-    text-shadow: 0 0 30px rgba(78, 205, 196, 0.5);
+    text-shadow: 0 0 30px var(--common-color-1);
   }
 }
 
-@keyframes dot-pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+.logo-dot {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
 }
+</style>
 
-@media (max-width: 480px) {
+<style scoped>
+@media (max-width: var(--sm)) {
   .logo-text {
     font-size: 1.25rem;
   }

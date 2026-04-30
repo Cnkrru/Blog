@@ -10,7 +10,6 @@ export const useArticlesStore = defineStore('articles', () => {
   const mdModules = {
     ...import.meta.glob('../pages/post/*.md', { query: '?raw', import: 'default', eager: false }),
     ...import.meta.glob('../pages/log/*.md', { query: '?raw', import: 'default', eager: false }),
-    ...import.meta.glob('../pages/command/*.md', { query: '?raw', import: 'default', eager: false }),
     ...import.meta.glob('../pages/project/*.md', { query: '?raw', import: 'default', eager: false }),
   }
 
@@ -50,46 +49,32 @@ export const useArticlesStore = defineStore('articles', () => {
    *   数字 id (0,1,2...)  -> pages/post/post-{id}.md
    *   字符串 id           -> pages/post/{id}.md
    *   changelog           -> pages/log/changelog.md
-   *   terminal            -> pages/command/terminal.md
    *   project-N           -> pages/project/project-{N}.md
    */
   async function loadMarkdown(id) {
-    console.log('loadMarkdown called with id:', id)
     const candidates = [
-      // 数字 id：文章，文件名带 post- 前缀
       `../pages/post/post-${id}.md`,
-      // 字符串 id：文章，直接匹配文件名
       `../pages/post/${id}.md`,
-      // 已带前缀的直接匹配（project-N 等）
       `../pages/project/${id}.md`,
-      // 特殊页
       `../pages/log/${id}.md`,
-      `../pages/command/${id}.md`,
     ]
 
-    console.log('Candidates:', candidates)
-    console.log('mdModules keys:', Object.keys(mdModules))
-
     for (const path of candidates) {
-      console.log('Checking path:', path, 'exists:', !!mdModules[path])
       if (mdModules[path]) {
         try {
-          const raw = await mdModules[path]()
-          console.log('Successfully loaded:', path)
-          return raw
+          return await mdModules[path]()
         } catch (err) {
-          console.error('Error loading', path, ':', err)
+          console.error(`[articlesStore] 加载文件失败 ${path}:`, err)
         }
       }
     }
-    console.log('No matching file found for id:', id)
     return null
   }
 
-  // 计算文章数量，排除 terminal 和 changelog
+  // 计算文章数量，排除 changelog
   const articleCount = computed(() => {
     return articles.value
-      .filter(item => item.id !== 'terminal' && item.id !== 'changelog')
+      .filter(item => item.id !== 'changelog')
       .length
   })
 

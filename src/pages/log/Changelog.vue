@@ -3,12 +3,12 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import BackToTop from '../../components/p-center/BackToTop.vue'
-import ContentLoader from '../../components/content/ContentLoader.vue'
+import ContentRender from '../../components/content/ContentRender.vue'
 import ReadingTime from '../../components/p-center/ReadingTime.vue'
 import Toc from '../../components/p-center/Toc.vue'
 import TocButton from '../../components/p-center/TocButton.vue'
 import PostMenu from '../../components/p-center/PostMenu.vue'
-import Share from '../../components/p-center/Share.vue'
+
 
 import Comment from '../../components/api/Comment.vue'
 
@@ -69,7 +69,6 @@ const toggleToc = () => {
 }
 
 const scrollToTop = () => {
-    // 按照 BackToTop 组件的实现方法，使用 document.querySelector 获取中心卡片内容区域
     const centerCardContent = document.querySelector('.center-card-content');
     if (centerCardContent) {
         centerCardContent.scrollTo({
@@ -81,7 +80,6 @@ const scrollToTop = () => {
 
 const handlePostLoaded = (loadedPost) => {
     post.value = loadedPost
-    // 文章加载完成后滚动到顶部，添加延迟确保内容已完全渲染
     setTimeout(() => {
         scrollToTop()
     }, 100)
@@ -111,7 +109,6 @@ onMounted(() => {
 
 <template>
     <div id="site-stats-container"></div>
-    <!-- 中心卡片头部区域 -->
     <div class="center-head-card">
         <h2>{{ post?.title || '网站更新日志' }}</h2>
         <div class="center-head-card-tools">
@@ -121,15 +118,13 @@ onMounted(() => {
         </div>
     </div>
     
-    <!-- 文章目录卡片 -->
     <Toc v-model:show="showToc" :toc="toc" />
     
     <hr>
     
     <div class="center-card-content" ref="contentCard">
-        <!-- 阅读时间卡片 -->
         <ReadingTime v-if="!loading && !error" />
-        <ContentLoader 
+        <ContentRender 
             :id="postId" 
             type="post"
             @content-loaded="handlePostLoaded"
@@ -139,10 +134,8 @@ onMounted(() => {
             @update:toc="handleTocUpdate"
         />
         
-        
         <hr v-if="!loading && !error">
         
-        <!-- 分享按钮容器 -->
         <Share v-if="!loading && !error" />
         
         <hr v-if="!loading && !error">
@@ -151,19 +144,17 @@ onMounted(() => {
             <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
         </div>
         
-        <!-- 评论区域 -->
         <Comment v-if="!loading && !error" />
     </div>
     <hr>
 </template>
 
 <style scoped>
-/* 加载和错误提示样式 */
+/* 布局样式 */
 .loading-message,
 .error-message {
     text-align: center;
     padding: 50px 0;
-    color: #666;
 }
 
 .center-head-card-tools {
@@ -171,4 +162,16 @@ onMounted(() => {
     justify-content: flex-end;
     align-items: center;
 }
+</style>
+
+<style scoped>
+/* 颜色样式 */
+.loading-message,
+.error-message {
+    color: #666;
+}
+</style>
+
+<style scoped>
+/* 响应式设计媒体查询 */
 </style>

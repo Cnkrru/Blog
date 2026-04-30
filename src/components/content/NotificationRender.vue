@@ -117,6 +117,7 @@ watch(() => isDarkTheme.value, (newValue) => {
 </script>
 
 <style scoped>
+/* 布局样式 */
 .notification-container {
   position: fixed;
   top: 20px;
@@ -128,6 +129,7 @@ watch(() => isDarkTheme.value, (newValue) => {
   pointer-events: none;
 }
 
+/* 通知卡片 */
 .notification {
   display: flex;
   align-items: center;
@@ -136,18 +138,18 @@ watch(() => isDarkTheme.value, (newValue) => {
   border-radius: 8px;
   min-width: 300px;
   max-width: 400px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   animation: slideIn 0.3s ease-out forwards;
-  border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   pointer-events: auto;
   transition: all 0.3s ease;
 }
 
+/* 离开动画 */
 .notification.notification-leaving {
   animation: fadeOut 0.3s ease-in forwards;
 }
 
+/* 通知内容 */
 .notification-content {
   display: flex;
   align-items: center;
@@ -155,6 +157,7 @@ watch(() => isDarkTheme.value, (newValue) => {
   flex: 1;
 }
 
+/* 通知图标 */
 .notification-icon {
   width: 24px;
   height: 24px;
@@ -167,18 +170,18 @@ watch(() => isDarkTheme.value, (newValue) => {
   flex-shrink: 0;
 }
 
+/* 通知消息 */
 .notification-message {
   flex: 1;
   font-size: 14px;
   line-height: 1.4;
-  color: #ffffff;
   word-break: break-word;
 }
 
+/* 关闭按钮 */
 .notification-close {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.8);
   font-size: 18px;
   cursor: pointer;
   padding: 0;
@@ -194,10 +197,10 @@ watch(() => isDarkTheme.value, (newValue) => {
 }
 
 .notification-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
+/* 操作按钮区域 */
 .notification-actions {
   display: flex;
   gap: 8px;
@@ -205,6 +208,7 @@ watch(() => isDarkTheme.value, (newValue) => {
   flex-shrink: 0;
 }
 
+/* 通知按钮 */
 .notification-button {
   padding: 4px 12px;
   border: none;
@@ -212,57 +216,11 @@ watch(() => isDarkTheme.value, (newValue) => {
   font-size: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
   flex-shrink: 0;
 }
 
 .notification-button:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* 通知类型样式 */
-.notification.success {
-  background: linear-gradient(135deg, #52c41a, #73d13d);
-}
-
-.notification.error {
-  background: linear-gradient(135deg, #f5222d, #ff4d4f);
-}
-
-.notification.warning {
-  background: linear-gradient(135deg, #faad14, #ffc53d);
-}
-
-.notification.info {
-  background: linear-gradient(135deg, #1890ff, #40a9ff);
-}
-
-/* 图标样式 */
-.notification.success .notification-icon {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-.notification.error .notification-icon {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-.notification.warning .notification-icon {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-.notification.info .notification-icon {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-/* 暗色主题适配 */
-.notification.notification-dark {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* 动画效果 */
@@ -287,9 +245,123 @@ watch(() => isDarkTheme.value, (newValue) => {
     transform: translateX(100%);
   }
 }
+</style>
 
+<style scoped>
+/* 颜色样式 */
+/* 通知卡片 */
+.notification {
+  border: 1px solid var(--common-color-1);
+  background-color: var(--common-bg);
+  box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+.notification-dark {
+  border: 1px solid var(--common-color-1);
+  background-color: var(--common-bg);
+  box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+/* 通知内容颜色 */
+.notification-content {
+  color: var(--common-text);
+}
+
+.notification-dark .notification-content {
+  color: var(--common-text);
+}
+
+/* 通知图标颜色 */
+.notification-icon {
+  color: var(--common-text);
+}
+
+.notification.success .notification-icon {
+  background-color: #28a745;
+}
+
+.notification.error .notification-icon {
+  background-color: #dc3545;
+}
+
+.notification.warning .notification-icon {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.notification.info .notification-icon {
+  background-color: #17a2b8;
+}
+
+/* 关闭按钮颜色 */
+.notification-close {
+  color: var(--common-color-1);
+  opacity: 0.8;
+}
+
+.notification-dark .notification-close {
+  color: var(--common-color-1);
+  opacity: 0.8;
+}
+
+.notification-close:hover {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+  opacity: 1;
+}
+
+.notification-dark .notification-close:hover {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+  opacity: 1;
+}
+
+/* 操作按钮颜色 */
+.notification-button {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+  border: 1px solid var(--common-color-1);
+}
+
+.notification-dark .notification-button {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+  border: 1px solid var(--common-color-1);
+}
+
+.notification-button:hover {
+  background-color: var(--common-hover);
+  border-color: var(--common-hover);
+  transform: translateY(-1px);
+}
+
+.notification-dark .notification-button:hover {
+  background-color: var(--common-hover);
+  border-color: var(--common-hover);
+  transform: translateY(-1px);
+}
+
+/* 通知类型颜色 */
+.notification.success {
+  border-left: 4px solid #28a745;
+}
+
+.notification.error {
+  border-left: 4px solid #dc3545;
+}
+
+.notification.warning {
+  border-left: 4px solid #ffc107;
+}
+
+.notification.info {
+  border-left: 4px solid #17a2b8;
+}
+</style>
+
+<style scoped>
 /* 响应式设计 */
-@media (max-width: 768px) {
+@media (max-width: var(--md)) {
   .notification-container {
     top: 10px;
     right: 10px;
