@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
 import { copyFileSync, mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
+import { fileURLToPath, URL } from 'node:url'
 
 interface Config {
   domain: string
@@ -54,7 +55,6 @@ const copyJsFilesPlugin: Plugin = {
         try {
           copyFileSync(srcFile, destFile)
         } catch (error) {
-          // 静默处理错误
         }
       }
     })
@@ -76,7 +76,6 @@ const copyVercelConfigPlugin: Plugin = {
   }
 }
 
-// 从外部 JSON 文件读取路由配置
 function getIncludedRoutes(): string[] {
   try {
     const routesConfigPath = resolve(__dirname, 'public/config/routes.json')
@@ -87,7 +86,6 @@ function getIncludedRoutes(): string[] {
   } catch (error) {
     console.error('读取路由配置失败:', error)
   }
-  // 兜底路由
   return [
     '/',
     '/home',
@@ -201,11 +199,15 @@ function generateRss(posts: Post[]): string {
 </rss>`
 }
 
-// https://vite.dev/config/
 export default defineConfig({
   base: '/',
   server: {
     https: false
+  },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   optimizeDeps: {
     exclude: ['*.md']
@@ -270,14 +272,12 @@ export default defineConfig({
         writeFileSync(sitemapPath, sitemap, 'utf8')
         writeFileSync(sitemapPublicPath, sitemap, 'utf8')
       } catch (error) {
-        // 静默处理错误
       }
 
       try {
         writeFileSync(rssPath, rss, 'utf8')
         writeFileSync(rssPublicPath, rss, 'utf8')
       } catch (error) {
-        // 静默处理错误
       }
     }
   }
