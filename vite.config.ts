@@ -1,8 +1,11 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
-import { resolve } from 'path'
+import { resolve, dirname } from 'path'
 import { copyFileSync, mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
+import { fileURLToPath, URL } from 'node:url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 interface Config {
   domain: string
@@ -205,7 +208,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src')
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
   optimizeDeps: {
