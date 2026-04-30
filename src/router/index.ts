@@ -4,52 +4,52 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'Index',
-        component: () => import('@/pages/Index.vue')
+        component: () => import('../pages/Index.vue')
     },
     {
         path: '/home',
         name: 'Home',
-        component: () => import('@/pages/Home.vue')
+        component: () => import('../pages/Home.vue')
     },
     {
         path: '/about',
         name: 'About',
-        component: () => import('@/pages/About/About.vue')
+        component: () => import('../pages/About/About.vue')
     },
     {
         path: '/archives',
         name: 'Archives',
-        component: () => import('@/pages/Archives.vue')
+        component: () => import('../pages/Archives.vue')
     },
     {
         path: '/links',
         name: 'Links',
-        component: () => import('@/pages/Links.vue')
+        component: () => import('../pages/Links.vue')
     },
     {
         path: '/projects',
         name: 'Projects',
-        component: () => import('@/pages/Projects.vue')
+        component: () => import('../pages/Projects.vue')
     },
     {
         path: '/post/:id',
         name: 'Post',
-        component: () => import('@/pages/post/Posts.vue')
+        component: () => import('../pages/post/Posts.vue')
     },
     {
         path: '/project/:id',
         name: 'Project',
-        component: () => import('@/pages/project/Projects.vue')
+        component: () => import('../pages/project/Projects.vue')
     },
     {
         path: '/changelog',
         name: 'Changelog',
-        component: () => import('@/pages/log/Changelog.vue')
+        component: () => import('../pages/log/Changelog.vue')
     },
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
-        component: () => import('@/pages/NotFound.vue')
+        component: () => import('../pages/NotFound.vue')
     }
 ]
 

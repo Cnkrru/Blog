@@ -3,7 +3,6 @@ import vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
 import { copyFileSync, mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
-import { fileURLToPath, URL } from 'node:url'
 
 interface Config {
   domain: string
@@ -206,7 +205,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': resolve(__dirname, 'src')
     }
   },
   optimizeDeps: {
