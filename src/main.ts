@@ -1,7 +1,7 @@
 import { createApp as createVueApp } from 'vue'
 import { createHead } from '@vueuse/head'
 import App from './App.vue'
-import { createAppRouter } from './router'
+import { createAppRouter } from './router/index.js'
 
 import './assets/css/color.css'
 import './assets/css/breakpoint.css'
