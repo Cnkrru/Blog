@@ -30,9 +30,21 @@ const loadPrevNextPosts = async () => {
   if (props.type === 'post') {
     try {
       const searchData = await articlesStore.fetchArticles()
-      const postIndex = searchData.findIndex(item => item.id === props.id)
-      const prevPost = postIndex > 0 ? searchData[postIndex - 1] : null
-      const nextPost = postIndex < searchData.length - 1 ? searchData[postIndex + 1] : null
+      // 先按 ID 排序，排除 changelog
+      const sortedPosts = searchData
+        .filter(item => item.id !== 'changelog')
+        .sort((a, b) => {
+          const idA = isNaN(parseInt(a.id)) ? a.id : parseInt(a.id)
+          const idB = isNaN(parseInt(b.id)) ? b.id : parseInt(b.id)
+          if (typeof idA === 'number' && typeof idB === 'number') {
+            return idA - idB
+          } else {
+            return String(a.id).localeCompare(String(b.id))
+          }
+        })
+      const postIndex = sortedPosts.findIndex(item => item.id === props.id)
+      const prevPost = postIndex > 0 ? sortedPosts[postIndex - 1] : null
+      const nextPost = postIndex < sortedPosts.length - 1 ? sortedPosts[postIndex + 1] : null
       emit('prev-next-posts', { prevPost, nextPost })
     } catch (err) {
       console.error('Failed to load prev/next posts:', err)

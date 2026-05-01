@@ -6,8 +6,8 @@ export const usePostsStore = defineStore('posts', () => {
   const loading = ref(false)
   const error = ref(null)
   const searchKeyword = ref('')
-  const sortBy = ref('date')
-  const sortOrder = ref('desc')
+  const sortBy = ref('id')
+  const sortOrder = ref('asc')
 
   const filteredPosts = computed(() => {
     let filtered = [...posts.value]
@@ -31,11 +31,18 @@ export const usePostsStore = defineStore('posts', () => {
           comparison = a.title.localeCompare(b.title)
           break
         case 'id':
-          comparison = a.id.localeCompare(b.id)
+        default:
+          const idA = isNaN(parseInt(a.id)) ? a.id : parseInt(a.id)
+          const idB = isNaN(parseInt(b.id)) ? b.id : parseInt(b.id)
+          if (typeof idA === 'number' && typeof idB === 'number') {
+            comparison = idA - idB
+          } else {
+            comparison = String(a.id).localeCompare(String(b.id))
+          }
           break
       }
 
-      return sortOrder.value === 'desc' ? comparison : -comparison
+      return sortOrder.value === 'desc' ? -comparison : comparison
     })
 
     return filtered
@@ -81,8 +88,8 @@ export const usePostsStore = defineStore('posts', () => {
 
   const resetFilters = () => {
     searchKeyword.value = ''
-    sortBy.value = 'date'
-    sortOrder.value = 'desc'
+    sortBy.value = 'id'
+    sortOrder.value = 'asc'
   }
 
   return {

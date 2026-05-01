@@ -16,7 +16,7 @@ const router = useRouter()
 const postsStore = usePostsStore()
 
 const searchKeyword = ref('')
-const sortBy = ref('date')
+const sortBy = ref('id')
 
 const posts = computed(() => postsStore.filteredPosts)
 
@@ -100,11 +100,11 @@ onMounted(() => {
           </div>
           <div class="sort-controls">
             <button 
-              @click="handleSortChange('date')"
+              @click="handleSortChange('id')"
               class="sort-btn" 
-              :class="{ active: sortBy === 'date' }"
+              :class="{ active: sortBy === 'id' }"
             >
-              日期 {{ getSortIcon('date') }}
+              ID {{ getSortIcon('id') }}
             </button>
             <button 
               @click="handleSortChange('title')"
