@@ -4,7 +4,6 @@ import App from './App.vue'
 import { createAppRouter } from './router/index.ts'
 
 import './assets/css/color.css'
-import './assets/css/breakpoint.css'
 
 import { pinia } from './stores/index'
 
