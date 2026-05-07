@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import MarkdownRender from '../../components/content/MarkdownRender.vue'
 import GitHub from '../../components/api/GitHub.vue'

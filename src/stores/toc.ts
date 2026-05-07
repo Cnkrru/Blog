@@ -1,28 +1,28 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import type { TocItem } from '../types/index'
 
 export const useTocStore = defineStore('toc', () => {
-  const show = ref(false)
-  const activeId = ref('')
-  const toc = ref([])
-  const lastScrollTime = ref(0)
-  const scrollThrottleDelay = ref(100)
+  const show = ref<boolean>(false)
+  const activeId = ref<string>('')
+  const toc = ref<TocItem[]>([])
+  const lastScrollTime = ref<number>(0)
+  const scrollThrottleDelay = ref<number>(100)
 
-  const hasToc = computed(() => toc.value.length > 0)
+  const hasToc = computed<boolean>(() => toc.value.length > 0)
 
-  const activeItem = computed(() => {
+  const activeItem = computed<TocItem | null>(() => {
     if (!activeId.value) return null
-    return toc.value.find(item => item.id === activeId.value)
+    return toc.value.find(item => item.id === activeId.value) || null
   })
 
-  const tocDepth = computed(() => {
+  const tocDepth = computed<number>(() => {
     if (toc.value.length === 0) return 0
     return Math.max(...toc.value.map(item => item.level))
   })
 
-  const toggleToc = () => {
+  const toggleToc = (): void => {
     show.value = !show.value
-
     try {
       localStorage.setItem('toc_show_preference', show.value.toString())
     } catch (e) {
@@ -30,9 +30,8 @@ export const useTocStore = defineStore('toc', () => {
     }
   }
 
-  const setShow = (newShow) => {
+  const setShow = (newShow: boolean): void => {
     show.value = newShow
-
     try {
       localStorage.setItem('toc_show_preference', newShow.toString())
     } catch (e) {
@@ -40,17 +39,17 @@ export const useTocStore = defineStore('toc', () => {
     }
   }
 
-  const setToc = (newToc) => {
+  const setToc = (newToc: TocItem[]): void => {
     toc.value = newToc
   }
 
-  const setActiveId = (id) => {
+  const setActiveId = (id: string): void => {
     if (id !== activeId.value) {
       activeId.value = id
     }
   }
 
-  const scrollToHeading = (id) => {
+  const scrollToHeading = (id: string): void => {
     const element = document.getElementById(id)
     if (!element) return
 
@@ -60,7 +59,7 @@ export const useTocStore = defineStore('toc', () => {
       document.querySelector('.markdown-content')
     ]
 
-    let container = null
+    let container: Element | null = null
     for (const potentialContainer of scrollContainers) {
       if (potentialContainer && potentialContainer.contains(element)) {
         container = potentialContainer
@@ -72,20 +71,16 @@ export const useTocStore = defineStore('toc', () => {
       const rect = element.getBoundingClientRect()
       const containerRect = container.getBoundingClientRect()
       const relativeTop = rect.top - containerRect.top
-
       container.scrollTo({
         top: container.scrollTop + relativeTop - 20,
         behavior: 'smooth'
       })
     } else {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      })
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
 
-  const loadUserPreference = () => {
+  const loadUserPreference = (): void => {
     try {
       const savedPreference = localStorage.getItem('toc_show_preference')
       if (savedPreference !== null) {
@@ -96,7 +91,7 @@ export const useTocStore = defineStore('toc', () => {
     }
   }
 
-  const reset = () => {
+  const reset = (): void => {
     show.value = false
     activeId.value = ''
     toc.value = []

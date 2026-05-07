@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticlesStore } from '../../stores'
@@ -99,26 +99,6 @@ const performSearch = (query) => {
   }
 
   console.log(`搜索完成: "${query}" - 结果: ${searchResults.value.length} - 耗时: ${duration.toFixed(2)}ms`)
-
-  if (showResults.value) {
-    setTimeout(() => {
-      positionSearchResults()
-    }, 0)
-  }
-}
-
-const positionSearchResults = () => {
-  if (typeof document !== 'undefined') {
-    const searchContainer = document.querySelector('.search-container')
-    const searchResultsEl = document.querySelector('.search-results')
-
-    if (searchContainer && searchResultsEl) {
-      const rect = searchContainer.getBoundingClientRect()
-      searchResultsEl.style.left = `${rect.left}px`
-      searchResultsEl.style.top = `${rect.bottom + 8}px`
-      searchResultsEl.style.width = `${rect.width}px`
-    }
-  }
 }
 
 const handleKeyPress = (e) => {
@@ -164,25 +144,13 @@ onMounted(() => {
   if (typeof document !== 'undefined') {
     document.addEventListener('click', handleClickOutside)
   }
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', handleResize)
-  }
 })
 
 onUnmounted(() => {
   if (typeof document !== 'undefined') {
     document.removeEventListener('click', handleClickOutside)
   }
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', handleResize)
-  }
 })
-
-const handleResize = () => {
-  if (showResults.value) {
-    positionSearchResults()
-  }
-}
 </script>
 
 <template>

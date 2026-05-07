@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import { useArticlesStore } from '../../stores'
 
 const store = useArticlesStore()
 
-const articleCount = computed(() => store.articleCount.toString())
+const articleCount = computed(() => store.totalArticles.toString())
 
 onMounted(async () => {
   await store.fetchArticles()

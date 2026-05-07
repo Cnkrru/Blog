@@ -12,18 +12,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useMathStore, useThemeStore } from '../../stores'
 
-const props = defineProps({
-  latex: {
-    type: String,
-    required: true
-  }
-})
+const props = defineProps<{
+  latex: string
+}>()
 
-const emit = defineEmits(['render-success', 'render-error'])
+const emit = defineEmits<{
+  'render-success': []
+  'render-error': [error: any]
+}>()
 
 const mathRef = ref(null)
 const lastRenderedLatex = ref('')

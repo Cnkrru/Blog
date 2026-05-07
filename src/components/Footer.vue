@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import WebsiteAge from './p-footer/WebsiteAge.vue'
 import Copyright from './p-footer/CopyRight.vue'
 </script>
@@ -38,6 +38,7 @@ import Copyright from './p-footer/CopyRight.vue'
     width: 100%;
     padding: 15px;
     border-radius: 12px;
+    border: 3px solid var(--common-color-1);
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column !important;

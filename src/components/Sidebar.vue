@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Avatar from './p-sidebar/Avatar.vue'
 import WelcomeSaying from './p-sidebar/WelcomeSaying.vue'
 import PageLinks from './p-sidebar/PageLinks.vue'
@@ -49,6 +49,7 @@ import Weather from './api/Weather.vue'
 	height: 600px;
 	border-radius: 8px;
 	padding: 20px;
+    border: 3px solid var(--common-color-1);
     display: flex;
     flex-direction: column;
     justify-content: center;

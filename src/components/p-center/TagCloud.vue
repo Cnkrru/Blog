@@ -1,14 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch, computed, nextTick } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useThemeStore, useTagStore } from '../../stores'
 
-const props = defineProps({
-  articles: {
-    type: Array,
-    default: () => []
-  }
-})
+const props = defineProps<{ articles?: any[] }>()
 
 const showTagCloud = ref(false)
 const selectedTag = ref(null)

@@ -1,22 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 
-const props = defineProps({
-  currentTime: {
-    type: Number,
-    default: 0
-  },
-  duration: {
-    type: Number,
-    default: 0
-  },
-  progressPercent: {
-    type: Number,
-    default: 0
-  }
+const props = withDefaults(defineProps<{ currentTime?: number; duration?: number; progressPercent?: number }>(), {
+  currentTime: 0,
+  duration: 0,
+  progressPercent: 0
 })
 
-const emit = defineEmits(['seek'])
+const emit = defineEmits<{ seek: [percent: number] }>()
 
 const progressBarRef = ref(null)
 let isDragging = false

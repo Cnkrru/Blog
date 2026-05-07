@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 import PlayerControls from './PlayerControls.vue'

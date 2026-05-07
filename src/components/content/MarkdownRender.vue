@@ -39,21 +39,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import MermaidRender from './MermaidRender.vue'
 import KatexRender from './KatexRender.vue'
 import HighlightRender from './HighlightRender.vue'
 import EasterEggAnimation from '../media/EasterEggAnimation.vue'
 
-const props = defineProps({
-  content: {
-    type: String,
-    required: true
-  }
-})
+const props = defineProps<{
+  content: string
+}>()
 
-const emit = defineEmits(['update:toc'])
+const emit = defineEmits<{
+  'update:toc': [toc: any]
+}>()
 
 const markdownContent = ref('')
 const showLightbox = ref(false)

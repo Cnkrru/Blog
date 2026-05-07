@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
@@ -13,6 +13,7 @@ import ArticleNav from '../../components/p-center/ArticleNav.vue'
 import Comment from '../../components/api/Comment.vue'
 import RelatedArticles from '../../components/p-center/RelatedArticles.vue'
 import SiteStats from '../../components/p-center/SiteStats.vue'
+import ShareButton from '../../components/api/ShareButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -219,7 +220,14 @@ onMounted(() => {
         <div class="read-center-card-footer" v-if="!loading && !error">
             <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
         </div>
-        
+
+        <ShareButton
+            v-if="!loading && !error && post"
+            :title="post?.title || ''"
+            :url="`https://cnkrru.top/post/${postId}`"
+            :description="post?.description || ''"
+        />
+
         <Comment v-if="!loading && !error" />
         
         <hr v-if="!loading && !error">

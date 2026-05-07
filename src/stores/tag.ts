@@ -1,32 +1,38 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
+export interface TagStat {
+  tag: string
+  count: number
+  frequency: number
+  lastUsed: number
+}
+
 export const useTagStore = defineStore('tag', () => {
-  const tags = ref([])
-  const tagStats = ref([])
-  const sortBy = ref('frequency')
-  const loading = ref(false)
-  const error = ref(null)
-  const lastLoaded = ref(null)
-  const tagCache = ref(new Map())
+  const tags = ref<string[]>([])
+  const tagStats = ref<TagStat[]>([])
+  const sortBy = ref<'frequency' | 'count' | 'recent' | 'trending'>('frequency')
+  const loading = ref<boolean>(false)
+  const error = ref<string | null>(null)
+  const lastLoaded = ref<Date | null>(null)
+  const tagCache = ref<Map<string, any[]>>(new Map())
 
-  const hasTags = computed(() => tags.value.length > 0)
-  const getTagCount = computed(() => tags.value.length)
-  const getPopularTags = computed(() => tagStats.value.slice(0, 10))
+  const hasTags = computed<boolean>(() => tags.value.length > 0)
+  const getTagCount = computed<number>(() => tags.value.length)
+  const getPopularTags = computed<TagStat[]>(() => tagStats.value.slice(0, 10))
 
-  const loadTags = async (articles) => {
+  const loadTags = async (articles: any[]): Promise<void> => {
     loading.value = true
     error.value = null
 
     try {
-      const tagCounts = new Map()
-      const tagLastUsed = new Map()
+      const tagCounts = new Map<string, number>()
+      const tagLastUsed = new Map<string, number>()
 
       articles.forEach(article => {
         if (article.tags && Array.isArray(article.tags)) {
-          article.tags.forEach(tag => {
+          article.tags.forEach((tag: string) => {
             tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
-
             const currentDate = new Date(article.date).getTime()
             const lastDate = tagLastUsed.get(tag) || 0
             if (currentDate > lastDate) {
@@ -36,7 +42,7 @@ export const useTagStore = defineStore('tag', () => {
         }
       })
 
-      const stats = []
+      const stats: TagStat[] = []
       tagCounts.forEach((count, tag) => {
         stats.push({
           tag,
@@ -48,18 +54,15 @@ export const useTagStore = defineStore('tag', () => {
 
       stats.sort((a, b) => {
         switch (sortBy.value) {
-          case 'frequency':
-            return b.frequency - a.frequency
-          case 'count':
-            return b.count - a.count
-          case 'recent':
-            return b.lastUsed - a.lastUsed
-          case 'trending':
+          case 'frequency': return b.frequency - a.frequency
+          case 'count': return b.count - a.count
+          case 'recent': return b.lastUsed - a.lastUsed
+          case 'trending': {
             const aTrend = a.count * (Date.now() - a.lastUsed) / 1000000
             const bTrend = b.count * (Date.now() - b.lastUsed) / 1000000
             return bTrend - aTrend
-          default:
-            return b.count - a.count
+          }
+          default: return b.count - a.count
         }
       })
 
@@ -74,32 +77,26 @@ export const useTagStore = defineStore('tag', () => {
     }
   }
 
-  const getTagArticles = async (tag, articles) => {
+  const getTagArticles = async (tag: string, articles: any[]): Promise<any[]> => {
     const cacheKey = `tag_articles_${tag}`
     const cachedArticles = tagCache.value.get(cacheKey)
-
-    if (cachedArticles) {
-      return cachedArticles
-    }
+    if (cachedArticles) return cachedArticles
 
     const filteredArticles = articles.filter(article =>
       article.tags && article.tags.includes(tag)
     )
-
     if (filteredArticles.length > 0) {
       tagCache.value.set(cacheKey, filteredArticles)
     }
-
     return filteredArticles
   }
 
-  const getRelatedTags = (tag, limit = 5) => {
+  const getRelatedTags = (_tag: string, _limit: number = 5): string[] => {
     return []
   }
 
-  const setSortBy = (newSortBy) => {
+  const setSortBy = (newSortBy: 'frequency' | 'count' | 'recent' | 'trending'): void => {
     sortBy.value = newSortBy
-
     try {
       localStorage.setItem('tag_sort_preference', newSortBy)
     } catch (e) {
@@ -107,11 +104,11 @@ export const useTagStore = defineStore('tag', () => {
     }
   }
 
-  const resetError = () => {
+  const resetError = (): void => {
     error.value = null
   }
 
-  const clearCache = () => {
+  const clearCache = (): void => {
     tagCache.value.clear()
     try {
       localStorage.removeItem('tag_sort_preference')

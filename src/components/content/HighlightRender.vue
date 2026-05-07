@@ -1,7 +1,10 @@
 <template>
   <div class="code-container" :class="{ 'with-line-numbers': showLineNumbers }">
     <div class="code-header" v-if="language && codeStore.showLanguageBadge">
-      <span class="language">{{ language }}</span>
+      <span class="language-badge">
+        <span class="lang-dot"></span>
+        <span class="lang-text">{{ language }}</span>
+      </span>
       <div class="header-actions">
         <CodeRender v-if="showCopyButton" :code="code" />
         <span class="line-count" v-if="showLineNumbers">{{ code.split('\n').length }} lines</span>
@@ -22,28 +25,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
 import { useCodeStore } from '../../stores'
 
-const props = defineProps({
-  code: {
-    type: String,
-    required: true
-  },
-  language: {
-    type: String,
-    default: 'plaintext'
-  },
-  showLineNumbers: {
-    type: Boolean,
-    default: true
-  },
-  showCopyButton: {
-    type: Boolean,
-    default: true
-  }
+const props = withDefaults(defineProps<{
+  code: string
+  language?: string
+  showLineNumbers?: boolean
+  showCopyButton?: boolean
+}>(), {
+  language: 'plaintext',
+  showLineNumbers: true,
+  showCopyButton: true
 })
 
 const codeRef = ref(null)
@@ -160,11 +155,27 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   margin: 16px 0;
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.code-container::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .code-container:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.01);
+}
+
+.code-container:hover::after {
+  opacity: 1;
 }
 
 .code-header {
@@ -181,11 +192,27 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   gap: 8px;
 }
 
-.language {
+.language-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.lang-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.lang-text {
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  letter-spacing: 0.3px;
 }
 
 .line-count {
@@ -308,8 +335,13 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   border: 3px solid var(--common-color-1);
 }
 
+.code-container::after {
+  box-shadow: 0 0 20px var(--common-color-1), 0 0 40px var(--common-shadow);
+}
+
 .code-container:hover {
-  box-shadow: 0 4px 12px var(--common-shadow);
+  box-shadow: 0 8px 24px var(--common-shadow);
+  border-color: var(--common-hover);
 }
 
 /* 代码头部 */
@@ -319,12 +351,18 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 }
 
 /* 语言标签 */
-.language {
-  color: var(--common-text);
-  background: var(--common-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.language-badge {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+}
+
+.lang-dot {
+  background-color: var(--common-content);
+  opacity: 0.8;
+}
+
+.lang-text {
+  color: var(--common-content);
 }
 
 /* 行数统计 */
@@ -406,7 +444,11 @@ watch(() => codeStore.lineNumbersEnabled, () => {
     padding: 6px 12px;
   }
   
-  .language {
+  .language-badge {
+    padding: 2px 8px;
+  }
+
+  .lang-text {
     font-size: 10px;
   }
   

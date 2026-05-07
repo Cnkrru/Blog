@@ -17,15 +17,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  size: {
-    type: String,
-    default: 'medium',
-    validator: (value) => ['small', 'medium', 'large'].includes(value)
-  }
+const props = withDefaults(defineProps<{ size?: 'small' | 'medium' | 'large' }>(), {
+  size: 'medium'
 })
 
 const hours = ref('00')

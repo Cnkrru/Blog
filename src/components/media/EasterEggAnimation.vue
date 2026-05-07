@@ -1,15 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  text: {
-    type: String,
-    default: '欢迎来到我的博客'
-  },
-  finalText: {
-    type: String,
-    default: '欢迎来到我的博客'
-  }
+const props = withDefaults(defineProps<{ text?: string; finalText?: string }>(), {
+  text: '欢迎来到我的博客',
+  finalText: '欢迎来到我的博客'
 })
 
 const isAnimating = ref(false)

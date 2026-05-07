@@ -1,9 +1,46 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
+interface Song {
+  title: string
+  audio: string
+  artists?: string
+  album?: string
+  albumCover?: string
+  cover?: string
+  lyrics?: string
+  source?: string
+  backupAudio?: string[]
+}
+
+type SurroundMode = 'off' | 'stereo' | '3d' | 'concert' | 'church'
+type EqPreset = 'flat' | 'bass' | 'treble' | 'pop' | 'rock' | 'jazz' | 'classical'
+
+type EqPresets = Record<EqPreset, number[]>
+type EffectSettings = { enabled: boolean; surroundMode: SurroundMode; eqPreset: EqPreset }
+
+interface PlayerState {
+  currentIndex: number
+  currentTime: number
+  isPlaying: boolean
+  volume: number
+  isMuted: boolean
+}
+
 // 3D音效处理器类
 class SpatialAudioProcessor {
-  constructor(audioContext) {
+  audioContext: AudioContext
+  stereoPanner: StereoPannerNode
+  gainNode: GainNode
+  analyser: AnalyserNode
+  filters: BiquadFilterNode[]
+  bands: number
+  isSurroundEnabled: boolean
+  surroundSpeed: number
+  surroundPhase: number
+  animationId: number | null
+
+  constructor(audioContext: AudioContext) {
     this.audioContext = audioContext
     this.stereoPanner = audioContext.createStereoPanner()
     this.gainNode = audioContext.createGain()
@@ -34,7 +71,7 @@ class SpatialAudioProcessor {
     this.animationId = null
   }
 
-  createFilters() {
+  createFilters(): void {
     for (let i = 0; i < this.bands; i++) {
       const filter = this.audioContext.createBiquadFilter()
 
@@ -52,28 +89,22 @@ class SpatialAudioProcessor {
 
       this.filters.push(filter)
     }
-    
+
     // 设置 analyser
     this.analyser.fftSize = 256
     this.analyser.smoothingTimeConstant = 0.8
   }
 
-  // 启动环绕动画
-  startSurroundAnimation() {
+  startSurroundAnimation(): void {
     if (this.animationId) return
 
     const animate = () => {
       if (!this.isSurroundEnabled) return
 
-      // 根据相位计算-pan值，范围-1到1
-      // 使用正弦波实现来回移动
       const pan = Math.sin(this.surroundPhase)
       this.stereoPanner.pan.value = pan
-
-      // 增加相位，实现动画
       this.surroundPhase += 0.05 * this.surroundSpeed
 
-      // 保持相位在0-2π范围内
       if (this.surroundPhase >= Math.PI * 2) {
         this.surroundPhase = 0
       }
@@ -84,23 +115,20 @@ class SpatialAudioProcessor {
     animate()
   }
 
-  // 停止环绕动画
-  stopSurroundAnimation() {
+  stopSurroundAnimation(): void {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId)
       this.animationId = null
     }
-    this.stereoPanner.pan.value = 0 // 重置到中间
+    this.stereoPanner.pan.value = 0
   }
 
-  // 设置环绕角度（开启动态环绕）
-  setSurroundMode(mode) {
+  setSurroundMode(mode: SurroundMode): void {
     if (mode === 'off') {
       this.isSurroundEnabled = false
       this.stopSurroundAnimation()
     } else {
       this.isSurroundEnabled = true
-      // 根据模式调整速度
       switch (mode) {
         case 'stereo':
           this.surroundSpeed = 0.3
@@ -112,7 +140,7 @@ class SpatialAudioProcessor {
           this.surroundSpeed = 0.8
           break
         case 'church':
-          this.surroundSpeed = 0.2 // 教堂模式较慢
+          this.surroundSpeed = 0.2
           break
         default:
           this.surroundSpeed = 0.5
@@ -121,8 +149,8 @@ class SpatialAudioProcessor {
     }
   }
 
-  setEqPreset(preset) {
-    const presets = {
+  setEqPreset(preset: EqPreset): void {
+    const eqPresets: EqPresets = {
       flat: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       bass: [6, 5, 4, 2, 0, 0, 0, 0, 0, 0],
       treble: [0, 0, 0, 0, 0, 2, 4, 5, 6, 6],
@@ -132,19 +160,19 @@ class SpatialAudioProcessor {
       classical: [5, 4, 3, 2, 0, 0, 0, 2, 3, 5]
     }
 
-    const gains = presets[preset] || presets.flat
-    gains.forEach((gain, i) => {
+    const gains = eqPresets[preset] || eqPresets.flat
+    gains.forEach((gain: number, i: number) => {
       if (this.filters[i]) {
         this.filters[i].gain.value = gain
       }
     })
   }
 
-  connect(source) {
+  connect(source: MediaElementAudioSourceNode): void {
     source.connect(this.filters[0])
   }
 
-  setVolume(volume) {
+  setVolume(volume: number): void {
     this.gainNode.gain.value = volume
   }
 }
@@ -152,50 +180,44 @@ class SpatialAudioProcessor {
 const isBrowser = typeof window !== 'undefined'
 
 export const useMusicStore = defineStore('music', () => {
-  // 状态
-  const playlist = ref([])
-  const currentIndex = ref(0)
-  const isPlaying = ref(false)
-  const isPlayerVisible = ref(false)
-  const isPlaylistVisible = ref(false)
-  const volume = ref(0.7)
-  const isMuted = ref(false)
-  const currentTime = ref(0)
-  const duration = ref(0)
-  const isLoading = ref(false)
-  
-  // 音效状态
-  const effectsEnabled = ref(false)
-  const surroundMode = ref('off')
-  const eqPreset = ref('flat')
+  const playlist = ref<Song[]>([])
+  const currentIndex = ref<number>(0)
+  const isPlaying = ref<boolean>(false)
+  const isPlayerVisible = ref<boolean>(false)
+  const isPlaylistVisible = ref<boolean>(false)
+  const volume = ref<number>(0.7)
+  const isMuted = ref<boolean>(false)
+  const currentTime = ref<number>(0)
+  const duration = ref<number>(0)
+  const isLoading = ref<boolean>(false)
 
-  // 音频对象
-  let audio = null
-  let audioContext = null
-  let spatialProcessor = null
-  let saveStateInterval = null
+  const effectsEnabled = ref<boolean>(false)
+  const surroundMode = ref<SurroundMode>('off')
+  const eqPreset = ref<EqPreset>('flat')
 
-  // 计算属性
-  const currentSong = computed(() => playlist.value[currentIndex.value] || null)
-  
-  const progressPercent = computed(() => {
+  let audio: HTMLAudioElement | null = null
+  let audioContext: AudioContext | null = null
+  let spatialProcessor: SpatialAudioProcessor | null = null
+  let saveStateInterval: ReturnType<typeof setInterval> | null = null
+
+  const currentSong = computed<Song | null>(() => playlist.value[currentIndex.value] || null)
+
+  const progressPercent = computed<number>(() => {
     if (duration.value <= 0) return 0
     return (currentTime.value / duration.value) * 100
   })
 
-  // 方法
-  const formatTime = (time) => {
+  const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60)
     const seconds = Math.floor(time % 60)
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
   }
 
-  const savePlayerState = () => {
-    if (!isBrowser) return
-    if (!audio) return
-    const state = {
+  const savePlayerState = (): void => {
+    if (!isBrowser || !audio) return
+    const state: PlayerState = {
       currentIndex: currentIndex.value,
-      currentTime: audio.currentTime,
+      currentTime: audio.currentTime || 0,
       isPlaying: !audio.paused,
       volume: audio.volume,
       isMuted: audio.muted
@@ -203,11 +225,11 @@ export const useMusicStore = defineStore('music', () => {
     try {
       localStorage.setItem('musicPlayerState', JSON.stringify(state))
     } catch (error) {
-      // 静默处理错误
+      // ignore
     }
   }
 
-  const loadPlayerState = () => {
+  const loadPlayerState = (): { currentTime: number; isPlaying: boolean } => {
     if (!isBrowser) return { currentTime: 0, isPlaying: false }
     try {
       const savedState = localStorage.getItem('musicPlayerState')
@@ -219,71 +241,55 @@ export const useMusicStore = defineStore('music', () => {
         return { currentTime: state.currentTime ?? 0, isPlaying: state.isPlaying ?? false }
       }
     } catch (error) {
-      // 静默处理错误
+      // ignore
     }
     return { currentTime: 0, isPlaying: false }
   }
 
-  const loadSong = (index) => {
+  const loadSong = (index: number): void => {
     const song = playlist.value[index]
-    if (!song) return
-
+    if (!song || !audio) return
     isLoading.value = true
-
-    if (audio) {
-      audio.crossOrigin = 'anonymous'
-      loadAudioWithFallback(song)
-    }
+    audio.crossOrigin = 'anonymous'
+    loadAudioWithFallback(song)
   }
 
-  // 应用音效设置
-  const applyEffects = ({ enabled, surroundMode: mode, eqPreset: preset }) => {
+  const applyEffects = ({ enabled, surroundMode: mode, eqPreset: preset }: EffectSettings): void => {
     effectsEnabled.value = enabled
     surroundMode.value = mode
     eqPreset.value = preset
-
     if (!spatialProcessor) return
-
-    // 设置均衡器
     spatialProcessor.setEqPreset(preset)
-
-    // 设置环绕模式（动态或关闭）
     spatialProcessor.setSurroundMode(enabled ? mode : 'off')
   }
 
-  // 初始化3D音效处理器
-  const initSpatialAudio = () => {
+  const initSpatialAudio = (): void => {
     if (!isBrowser) return
     if (!audioContext && audio) {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)()
+      audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
       spatialProcessor = new SpatialAudioProcessor(audioContext)
-      
-      // 将音频连接到音效处理器
       const source = audioContext.createMediaElementSource(audio)
       spatialProcessor.connect(source)
       spatialProcessor.setVolume(volume.value)
     }
   }
 
-  const loadAudioWithFallback = (song) => {
+  const loadAudioWithFallback = (song: Song): void => {
     if (!audio) return
-
     const audioPath = song.audio
     const backupUrls = song.backupAudio || []
     let currentBackupIndex = 0
 
-    const tryLoadUrl = (url) => {
-      audio.src = url
+    const tryLoadUrl = (url: string): void => {
+      audio!.src = url
     }
 
-    const handleError = () => {
+    const handleError = (): void => {
       if (currentBackupIndex < backupUrls.length) {
         currentBackupIndex++
         tryLoadUrl(backupUrls[currentBackupIndex - 1])
       } else {
-        setTimeout(() => {
-          nextSong()
-        }, 1000)
+        setTimeout(() => nextSong(), 1000)
       }
     }
 
@@ -291,113 +297,76 @@ export const useMusicStore = defineStore('music', () => {
     tryLoadUrl(audioPath)
   }
 
-  const togglePlay = () => {
+  const togglePlay = (): void => {
     if (!audio) return
-
-    // 初始化3D音效（需要用户交互后才能创建AudioContext）
-    if (!spatialProcessor) {
-      initSpatialAudio()
-    }
-    
-    // 确保 AudioContext 不是 suspended 状态
+    if (!spatialProcessor) initSpatialAudio()
     if (audioContext && audioContext.state === 'suspended') {
       audioContext.resume()
     }
-
     if (audio.paused) {
-      audio.play().catch(() => {
-        // 播放失败，静默处理
-      })
+      audio.play().catch(() => {})
     } else {
       audio.pause()
     }
-
     savePlayerState()
   }
 
-  const prevSong = () => {
+  const prevSong = (): void => {
     if (playlist.value.length === 0) return
     const wasPlaying = isPlaying.value
     currentIndex.value = (currentIndex.value - 1 + playlist.value.length) % playlist.value.length
     loadSong(currentIndex.value)
-
     if (wasPlaying && audio) {
-      audio.addEventListener('canplay', () => {
-        audio.play().catch(() => {
-          // 播放失败，静默处理
-        })
-      }, { once: true })
+      audio.addEventListener('canplay', () => { audio?.play().catch(() => {}) }, { once: true })
     }
-
     savePlayerState()
   }
 
-  const nextSong = () => {
+  const nextSong = (): void => {
     if (playlist.value.length === 0) return
     const wasPlaying = isPlaying.value
     currentIndex.value = (currentIndex.value + 1) % playlist.value.length
     loadSong(currentIndex.value)
-
     if (wasPlaying && audio) {
-      audio.addEventListener('canplay', () => {
-        audio.play().catch(() => {
-          // 播放失败，静默处理
-        })
-      }, { once: true })
+      audio.addEventListener('canplay', () => { audio?.play().catch(() => {}) }, { once: true })
     }
-
     savePlayerState()
   }
 
-  const togglePlaylist = () => {
+  const togglePlaylist = (): void => {
     isPlaylistVisible.value = !isPlaylistVisible.value
   }
 
-  const closePlaylist = () => {
+  const closePlaylist = (): void => {
     isPlaylistVisible.value = false
   }
 
-  const selectSong = (index) => {
-    // 确保音频对象已初始化
-    if (!audio) {
-      initializePlayer()
-    }
-    
+  const selectSong = (index: number): void => {
+    if (!audio) initializePlayer()
     if (index !== currentIndex.value) {
       const wasPlaying = isPlaying.value
       currentIndex.value = index
       loadSong(currentIndex.value)
-      
       if (wasPlaying && audio) {
-        audio.addEventListener('canplay', () => {
-          audio.play().catch(() => {
-            // 播放失败，静默处理
-          })
-        }, { once: true })
+        audio.addEventListener('canplay', () => { audio?.play().catch(() => {}) }, { once: true })
       }
-      
       savePlayerState()
-    } else {
-      if (audio && audio.paused) {
-        audio.play().catch(() => {
-          // 播放失败，静默处理
-        })
-      } else if (audio) {
-        audio.pause()
-      }
+    } else if (audio?.paused) {
+      audio.play().catch(() => {})
+    } else if (audio) {
+      audio.pause()
     }
   }
 
-  const seek = (percent) => {
+  const seek = (percent: number): void => {
     if (!audio) return
     audio.currentTime = percent * duration.value
   }
 
-  const setVolume = (percent) => {
+  const setVolume = (percent: number): void => {
     if (!audio) return
     audio.volume = percent
     volume.value = percent
-
     if (percent === 0) {
       audio.muted = true
       isMuted.value = true
@@ -405,71 +374,46 @@ export const useMusicStore = defineStore('music', () => {
       audio.muted = false
       isMuted.value = false
     }
-
     savePlayerState()
   }
 
-  const toggleMute = () => {
+  const toggleMute = (): void => {
     if (!audio) return
     audio.muted = !audio.muted
     isMuted.value = audio.muted
     savePlayerState()
   }
 
-  const initializePlayer = () => {
-    if (!isBrowser) return
-    if (!audio) {
-      audio = new Audio()
-
-      audio.addEventListener('timeupdate', () => {
+  const initializePlayer = (): void => {
+    if (!isBrowser || audio) return
+    audio = new Audio()
+    audio.addEventListener('timeupdate', () => {
+      if (audio) {
         currentTime.value = audio.currentTime || 0
         duration.value = audio.duration || 0
-      })
-
-      audio.addEventListener('ended', () => {
-        nextSong()
-      })
-
-      audio.addEventListener('loadedmetadata', () => {
-        duration.value = audio.duration || 0
-      })
-
-      audio.addEventListener('play', () => {
-        isPlaying.value = true
-      })
-
-      audio.addEventListener('pause', () => {
-        isPlaying.value = false
-      })
-
-      audio.addEventListener('canplay', () => {
-        isLoading.value = false
-      })
-    }
-
+      }
+    })
+    audio.addEventListener('ended', () => nextSong())
+    audio.addEventListener('loadedmetadata', () => {
+      if (audio) duration.value = audio.duration || 0
+    })
+    audio.addEventListener('play', () => { isPlaying.value = true })
+    audio.addEventListener('pause', () => { isPlaying.value = false })
+    audio.addEventListener('canplay', () => { isLoading.value = false })
     const savedState = loadPlayerState()
-
     audio.volume = volume.value
     audio.muted = isMuted.value
-
     loadSong(currentIndex.value)
-
     if (savedState.currentTime > 0) {
       audio.addEventListener('loadedmetadata', () => {
-        audio.currentTime = savedState.currentTime
+        if (audio) audio.currentTime = savedState.currentTime
       }, { once: true })
     }
-
-    // 初始化音效处理器（在播放前就准备好）
     initSpatialAudio()
-
-    // 移除自动播放逻辑，确保只有用户点击才播放
-    // 即使 savedState.isPlaying 为 true，也不会自动播放
-
     saveStateInterval = setInterval(savePlayerState, 500)
   }
 
-  const loadMusicConfig = async () => {
+  const loadMusicConfig = async (): Promise<void> => {
     try {
       const response = await fetch('/config/music.json')
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
@@ -481,22 +425,16 @@ export const useMusicStore = defineStore('music', () => {
     }
   }
 
-  const cleanup = () => {
-    if (saveStateInterval) {
-      clearInterval(saveStateInterval)
-    }
-    if (audio) {
-      audio.pause()
-    }
+  const cleanup = (): void => {
+    if (saveStateInterval) clearInterval(saveStateInterval)
+    audio?.pause()
   }
 
-  const getAudio = () => audio
+  const getAudio = (): HTMLAudioElement | null => audio
+  const getAudioContext = (): AudioContext | null => audioContext
+  const getAnalyser = (): AnalyserNode | null => spatialProcessor?.analyser || null
 
-  const getAudioContext = () => audioContext
-  
-  const getAnalyser = () => spatialProcessor ? spatialProcessor.analyser : null
-  
-  const setPlayerVisible = (visible) => {
+  const setPlayerVisible = (visible: boolean): void => {
     isPlayerVisible.value = visible
   }
 

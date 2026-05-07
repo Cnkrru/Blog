@@ -33,14 +33,14 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
 import { useNotificationStore, useThemeStore } from '../../stores'
 
 const notificationStore = useNotificationStore()
 const themeStore = useThemeStore()
 
-const isDarkTheme = computed(() => themeStore.isDarkTheme)
+const isDarkTheme = computed(() => themeStore.isDark)
 const notifications = computed(() => {
   // 添加索引用于动画延迟
   return notificationStore.notifications.map((notification, index) => ({
@@ -83,7 +83,7 @@ defineExpose({
   info,
   remove: removeNotification,
   add: addNotification,
-  clear: notificationStore.clearAllNotifications
+  clear: notificationStore.clearNotifications
 })
 
 // 全局方法
@@ -94,26 +94,17 @@ if (typeof window !== 'undefined') {
     warning,
     info,
     add: addNotification,
-    clear: notificationStore.clearAllNotifications
+    clear: notificationStore.clearNotifications
   }
   
   // 暴露组件实例到window对象
   window.notificationComponent = {
     addNotification,
     removeNotification,
-    clearAll: notificationStore.clearAllNotifications
+    clearAll: notificationStore.clearNotifications
   }
 }
 
-onMounted(() => {
-  // 初始化主题
-  notificationStore.setDarkTheme(isDarkTheme.value)
-})
-
-// 监听主题变化
-watch(() => isDarkTheme.value, (newValue) => {
-  notificationStore.setDarkTheme(newValue)
-})
 </script>
 
 <style scoped>

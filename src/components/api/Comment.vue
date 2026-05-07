@@ -1,54 +1,48 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
 import { useCommentStore, useThemeStore } from '../../stores'
 
 const commentStore = useCommentStore()
 const themeStore = useThemeStore()
 
-const isLoading = computed(() => commentStore.isLoading)
-const isLoaded = computed(() => commentStore.isLoaded)
-const error = computed(() => commentStore.error)
+const isLoading = ref(false)
+const isLoaded = computed(() => commentStore.commentLoaded)
+const error = ref<string | null>(null)
 const commentCount = computed(() => commentStore.commentCount)
-
-// 清理函数
-let cleanupObserver = null
 
 // 监听主题变化
 watch(() => themeStore.isDark, (isDark) => {
-  commentStore.setTheme(isDark)
+  const theme = isDark ? 'dark' : 'light'
+  commentStore.updateGiscusTheme(theme)
 })
 
 onMounted(() => {
-  // 初始化评论系统
-  commentStore.initCommentSystem()
-  
-  // 初始化主题监听
-  cleanupObserver = commentStore.init()
+  // 加载评论偏好设置
+  commentStore.loadPreference()
   
   // 暴露全局方法
   if (typeof window !== 'undefined') {
     window.updateGiscusTheme = commentStore.updateGiscusTheme
-    window.refreshComments = commentStore.refreshComments
   }
   
   // 初始主题设置
   const isDark = themeStore.isDark
-  commentStore.setTheme(isDark)
+  const theme = isDark ? 'dark' : 'light'
+  commentStore.updateGiscusTheme(theme)
+  
+  // 标记评论已加载
+  setTimeout(() => {
+    isLoading.value = false
+    commentStore.setCommentLoaded(true)
+  }, 1000)
 })
 
 onUnmounted(() => {
   // 清理全局方法
   if (typeof window !== 'undefined') {
     delete window.updateGiscusTheme
-    delete window.refreshComments
   }
-  
-  // 清理主题监听
-  if (cleanupObserver) {
-    cleanupObserver()
-  }
-})
-</script>
+})</script>
 
 <template>
     <div class="comment-section">

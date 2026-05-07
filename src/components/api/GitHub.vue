@@ -84,15 +84,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const props = defineProps({
-  username: {
-    type: String,
-    required: true
-  }
-})
+const props = defineProps<{ username: string }>()
 
 const loading = ref(false)
 const error = ref('')

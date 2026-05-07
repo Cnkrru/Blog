@@ -1,24 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useThemeStore } from '../../stores'
 
-const props = defineProps({
-  contentSelector: {
-    type: String,
-    default: '.text-style, .center-card-content, article'
-  },
-  wordsPerMinute: {
-    type: Number,
-    default: 300
-  },
-  codeWordsPerMinute: {
-    type: Number,
-    default: 100
-  },
-  minTime: {
-    type: Number,
-    default: 1
-  }
+const props = withDefaults(defineProps<{
+  contentSelector?: string
+  wordsPerMinute?: number
+  codeWordsPerMinute?: number
+  minTime?: number
+}>(), {
+  contentSelector: '.text-style, .center-card-content, article',
+  wordsPerMinute: 300,
+  codeWordsPerMinute: 100,
+  minTime: 1
 })
 
 const themeStore = useThemeStore()

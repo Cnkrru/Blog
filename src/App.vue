@@ -1,7 +1,7 @@
-<script setup>
-import { ref, onMounted, computed } from 'vue'
+<script setup lang="ts">
+import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useThemeStore } from './stores/index.js'
+import { useThemeStore } from './stores/index'
 import './style.css'
 import Header from './components/Header.vue'
 import Sidebar from './components/Sidebar.vue'
@@ -21,7 +21,6 @@ const themeStore = useThemeStore()
 const isDarkMode = computed(() => themeStore.isDark)
 
 onMounted(() => {
-  // 初始化主题
   themeStore.initTheme()
 })
 </script>
@@ -50,6 +49,7 @@ onMounted(() => {
     </template>
   </div>
 </template>
+
 <!-- 布局样式 -->
 <style scoped>
 .mid-flex {

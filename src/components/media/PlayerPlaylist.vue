@@ -1,20 +1,11 @@
-<script setup>
-defineProps({
-  playlist: {
-    type: Array,
-    default: () => []
-  },
-  currentIndex: {
-    type: Number,
-    default: 0
-  },
-  isVisible: {
-    type: Boolean,
-    default: false
-  }
+<script setup lang="ts">
+withDefaults(defineProps<{ playlist?: any[]; currentIndex?: number; isVisible?: boolean }>(), {
+  playlist: () => [],
+  currentIndex: 0,
+  isVisible: false
 })
 
-const emit = defineEmits(['select', 'close'])
+const emit = defineEmits<{ select: [index: number]; close: [] }>()
 
 const handleSelect = (index) => {
   emit('select', index)

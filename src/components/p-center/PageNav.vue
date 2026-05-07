@@ -1,32 +1,19 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 
-const props = defineProps({
-  type: {
-    type: String,
-    required: true,
-    validator: (value) => ['posts', 'tools', 'projects', 'links'].includes(value)
-  },
-  currentPage: {
-    type: Number,
-    required: true
-  },
-  totalPages: {
-    type: Number,
-    required: true
-  },
-  categories: {
-    type: Array,
-    default: () => []
-  },
-  currentCategory: {
-    type: String,
-    default: ''
-  }
+const props = withDefaults(defineProps<{
+  type: string
+  currentPage: number
+  totalPages: number
+  categories?: any[]
+  currentCategory?: string
+}>(), {
+  categories: () => [],
+  currentCategory: ''
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits<{ change: [page: number] }>()
 
 const showCategoryDropdown = ref(false)
 

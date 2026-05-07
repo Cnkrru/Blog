@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 // Center组件作为内容外壳，不包含具体内容
 </script>
 
@@ -43,6 +43,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    border: 3px solid var(--common-color-1);
 }
 
 /* 头部区域容器 */

@@ -6,7 +6,7 @@ import { createAppRouter } from './router/index.ts'
 import './assets/css/color.css'
 import './assets/css/breakpoint.css'
 
-import { pinia } from './stores/index.js'
+import { pinia } from './stores/index'
 
 import { SpeedInsights } from '@vercel/speed-insights/vue'
 import { Analytics } from '@vercel/analytics/vue'

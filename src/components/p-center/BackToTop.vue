@@ -8,7 +8,17 @@ const isVisible = computed(() => scrollStore.isVisible)
 const isImmersiveReading = ref(false)
 
 const checkImmersiveMode = () => {
+  const was = isImmersiveReading.value
   isImmersiveReading.value = document.body.classList.contains('immersive-reading')
+
+  if (!was && isImmersiveReading.value) {
+    cleanupScrollListener = scrollStore.initScrollListener()
+  } else if (was && !isImmersiveReading.value) {
+    if (cleanupScrollListener) {
+      cleanupScrollListener()
+      cleanupScrollListener = undefined
+    }
+  }
 }
 
 const scrollToTop = (): void => {

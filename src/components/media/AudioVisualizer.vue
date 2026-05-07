@@ -1,16 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useAudioStore } from '../../stores'
 
-const props = defineProps({
-  isPlaying: {
-    type: Boolean,
-    default: false
-  },
-  getAnalyser: {
-    type: Function,
-    default: null
-  }
+const props = withDefaults(defineProps<{ isPlaying?: boolean; getAnalyser?: (() => any) | null }>(), {
+  isPlaying: false,
+  getAnalyser: null
 })
 
 const audioStore = useAudioStore()

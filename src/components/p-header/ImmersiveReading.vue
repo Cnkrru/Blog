@@ -12,15 +12,13 @@ const toggleImmersiveReading = () : void => {
 
 <!-- 布局样式 -->
 <style>
-.left-blank,
-.left-asider-S,
-.left-center-blank,
 .center-S,
-.mid-flex,
-.footer-blank,
-.footer-flex,
-.footer-S {
-    transition: all 0.3s ease;
+.mid-flex {
+    transition: width 0.3s ease, max-width 0.3s ease, padding 0.3s ease;
+}
+
+.center-card {
+    transition: max-height 0.3s ease, height 0.3s ease;
 }
 
 body.immersive-reading .left-blank,

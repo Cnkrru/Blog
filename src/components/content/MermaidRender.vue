@@ -12,18 +12,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import { useMermaidStore, useThemeStore } from '../../stores'
 
-const props = defineProps({
-  code: {
-    type: String,
-    required: true
-  }
-})
+const props = defineProps<{
+  code: string
+}>()
 
-const emit = defineEmits(['render-success', 'render-error'])
+const emit = defineEmits<{
+  'render-success': []
+  'render-error': [error: any]
+}>()
 
 const containerRef = ref(null)
 const lastRenderedCode = ref('')

@@ -1,59 +1,74 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { usePostsStore } from '../../stores'
+import { useArticlesStore } from '../../stores'
 
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false
-  }
-})
+const props = defineProps<{ show?: boolean }>()
 
-const emit = defineEmits(['update:show'])
+const emit = defineEmits<{ 'update:show': [show: boolean] }>()
 
 const router = useRouter()
-const postsStore = usePostsStore()
+const articlesStore = useArticlesStore()
 
 const searchKeyword = ref('')
 const sortBy = ref('id')
+const sortOrder = ref<'asc' | 'desc'>('desc')
 
-const posts = computed(() => postsStore.filteredPosts)
+const filteredPosts = computed(() => {
+  let result = [...articlesStore.articles]
+  
+  if (searchKeyword.value) {
+    const keyword = searchKeyword.value.toLowerCase()
+    result = result.filter(post => 
+      post.title.toLowerCase().includes(keyword) ||
+      post.tags?.some(tag => tag.toLowerCase().includes(keyword))
+    )
+  }
+  
+  result.sort((a, b) => {
+    let comparison = 0
+    if (sortBy.value === 'id') {
+      comparison = Number(a.id) - Number(b.id)
+    } else if (sortBy.value === 'title') {
+      comparison = a.title.localeCompare(b.title, 'zh-CN')
+    }
+    return sortOrder.value === 'desc' ? -comparison : comparison
+  })
+  
+  return result
+})
+
+const posts = computed(() => filteredPosts.value)
 
 const loadPosts = async () => {
-  await postsStore.fetchPosts()
+  await articlesStore.fetchArticles()
 }
 
 const toggleMenu = () => {
   emit('update:show', !props.show)
 }
 
-const navigateToPost = (postId) => {
+const navigateToPost = (postId: string) => {
   router.push(`/post/${postId}`)
   emit('update:show', false)
 }
 
-const handleSearch = () => {
-  postsStore.setSearchKeyword(searchKeyword.value)
-}
-
-const handleSortChange = (newSortBy) => {
+const handleSortChange = (newSortBy: string) => {
   if (sortBy.value === newSortBy) {
-    postsStore.toggleSortOrder()
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
   } else {
     sortBy.value = newSortBy
-    postsStore.setSortBy(newSortBy)
+    sortOrder.value = 'desc'
   }
 }
 
 const clearSearch = () => {
   searchKeyword.value = ''
-  postsStore.setSearchKeyword('')
 }
 
-const getSortIcon = (sortType) => {
+const getSortIcon = (sortType: string) => {
   if (sortBy.value !== sortType) return ''
-  return postsStore.sortOrder === 'desc' ? '↓' : '↑'
+  return sortOrder.value === 'desc' ? '↓' : '↑'
 }
 
 onMounted(() => {

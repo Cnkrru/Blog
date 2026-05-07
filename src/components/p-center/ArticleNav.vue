@@ -38,21 +38,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  prevPost: {
-    type: Object,
-    default: null
-  },
-  nextPost: {
-    type: Object,
-    default: null
-  }
+const props = withDefaults(defineProps<{ prevPost?: any; nextPost?: any }>(), {
+  prevPost: null,
+  nextPost: null
 })
 
-const emit = defineEmits(['navigate'])
+const emit = defineEmits<{ navigate: [post: any] }>()
 
 const loadingPrev = ref(false)
 const loadingNext = ref(false)

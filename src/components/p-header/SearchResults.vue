@@ -1,22 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { escapeHtml, highlightMatch } from '../../utils/helpers'
 
-const props = defineProps({
-  searchText: {
-    type: String,
-    required: true
-  },
-  results: {
-    type: Array,
-    default: () => []
-  },
-  show: {
-    type: Boolean,
-    default: false
-  }
-})
+const props = defineProps<{ searchText: string; results?: any[]; show?: boolean }>()
 
-const emit = defineEmits(['result-click'])
+const emit = defineEmits<{ 'result-click': [item: any] }>()
 
 const handleResultClick = (item) => {
   emit('result-click', item)
@@ -55,13 +42,15 @@ const handleResultClick = (item) => {
 
 <style scoped>
 .search-results {
-  position: fixed;
-  max-width: 90%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
   max-height: 400px;
-  width: 400px;
-  border-radius: 8px;
   overflow-y: auto;
   z-index: 9999;
+  border-radius: 8px;
 }
 
 .search-empty {
@@ -145,9 +134,6 @@ const handleResultClick = (item) => {
 <style scoped>
 @media (max-width: var(--md)) {
   .search-results {
-    position: fixed;
-    left: 10px;
-    right: 10px;
     max-height: 60vh;
   }
 }

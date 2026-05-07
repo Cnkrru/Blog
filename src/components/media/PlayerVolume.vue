@@ -1,18 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 
-const props = defineProps({
-  volume: {
-    type: Number,
-    default: 0.7
-  },
-  isMuted: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<{ volume?: number; isMuted?: boolean }>(), {
+  volume: 0.7,
+  isMuted: false
 })
 
-const emit = defineEmits(['adjust-volume', 'toggle-mute'])
+const emit = defineEmits<{ 'adjust-volume': [percent: number]; 'toggle-mute': [] }>()
 
 const volumeBarRef = ref(null)
 let isDraggingVolume = false

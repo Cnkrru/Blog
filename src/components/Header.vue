@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Logo from './p-header/Logo.vue'
@@ -96,6 +96,7 @@ onMounted(() => {
     padding: 10px 20px;
     margin-bottom: 10px;
     border-radius: 8px;
+    border: 3px solid var(--common-color-1);
     
     display: flex;
     justify-content: space-between;
@@ -134,11 +135,18 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+:deep(.button-style:hover) {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px var(--common-shadow);
 }
 
 :deep(.button-style img) {
     width: 20px;
     height: 20px;
+    transition: transform 0.3s ease;
 }
 </style>
 

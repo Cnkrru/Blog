@@ -1,5 +1,6 @@
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { useArticlesStore } from '../stores'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
@@ -7,7 +8,6 @@ import TagCloud from '../components/p-center/TagCloud.vue'
 
 const store = useArticlesStore()
 
-// SEO 配置
 useHead({
   title: '归档 - Cnkrru\'s Blog',
   meta: [
@@ -31,9 +31,11 @@ useHead({
   ]
 })
 
-const articles = ref([])
-const categories = ref([])
-const expandedCategory = ref(null)
+const articles = ref<any[]>([])
+const categories = ref<any[]>([])
+const expandedCategory = ref<string | null>(null)
+const currentPage = ref(1)
+const itemsPerPage = 5
 
 const loadArticles = async () => {
     try {
@@ -46,8 +48,8 @@ const loadArticles = async () => {
 }
 
 const categorizeArticles = () => {
-    const categoryMap = {}
-    
+    const categoryMap: Record<string, any[]> = {}
+
     articles.value.forEach(article => {
         const category = article.category
         if (category) {
@@ -57,7 +59,7 @@ const categorizeArticles = () => {
             categoryMap[category].push(article)
         }
     })
-    
+
     categories.value = Object.keys(categoryMap).map(category => {
         return {
             name: category,
@@ -70,12 +72,26 @@ const categorizeArticles = () => {
     })
 }
 
-const toggleCategory = (categoryName) => {
+const totalPages = computed(() => {
+    return Math.ceil(categories.value.length / itemsPerPage)
+})
+
+const currentCategories = computed(() => {
+    const startIndex = (currentPage.value - 1) * itemsPerPage
+    return categories.value.slice(startIndex, startIndex + itemsPerPage)
+})
+
+const toggleCategory = (categoryName: string) => {
     if (expandedCategory.value === categoryName) {
         expandedCategory.value = null
     } else {
         expandedCategory.value = categoryName
     }
+}
+
+const changePage = (page: number) => {
+    currentPage.value = page
+    expandedCategory.value = null
 }
 
 onMounted(() => {
@@ -92,7 +108,7 @@ onMounted(() => {
     </div>
     <hr>
     <div class="center-card-content">
-        <template v-for="category in categories" :key="category.name">
+        <template v-for="category in currentCategories" :key="category.name">
             <a href="#" @click.prevent="toggleCategory(category.name)">
                 <div class="index-center-list-card">
                     <div class="index-center-list-card-header">
@@ -107,7 +123,7 @@ onMounted(() => {
                     </div>
                 </div>
             </a>
-            
+
             <div v-if="expandedCategory === category.name" class="category-posts">
                 <template v-for="article in category.posts" :key="article.id">
                     <RouterLink :to="`/post/${article.id}`" class="post-item">
@@ -119,10 +135,31 @@ onMounted(() => {
         </template>
     </div>
     <hr>
+    <div class="simple-pagination">
+        <button
+            class="nav-btn prev-btn"
+            :disabled="currentPage === 1"
+            @click="changePage(currentPage - 1)"
+        >
+            &lt; 上一页
+        </button>
+
+        <span class="page-info">
+            第 {{ currentPage }} / {{ totalPages }} 页
+        </span>
+
+        <button
+            class="nav-btn next-btn"
+            :disabled="currentPage === totalPages"
+            @click="changePage(currentPage + 1)"
+        >
+            下一页 &gt;
+        </button>
+    </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
-/* 布局样式 */
 .center-head-card {
     display: flex;
     justify-content: space-between;
@@ -131,266 +168,116 @@ onMounted(() => {
     gap: 10px;
 }
 
-.index-center-list-card {
-    width: 100%;
-    height: 120px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: 3px solid;
-    transition: border-color 0.3s ease;
-}
-
-.index-center-list-card:hover {
-    transform: translateY(-5px);
-    border-width: 4px;
-}
-
-.index-center-list-card-header {
-    width: 100%;
-    height: 30px;
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.index-center-list-card-content {
-    width: 100%;
-    height: 30px;
-    font-size: 16px;
-    line-height: 1.5;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
 .article-meta-info {
-    width: 100%;
-    height: 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-}
-
-.article-meta-info span {
-    height: 30px;
-    line-height: 30px;
-    margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .category-posts {
-    margin: 10px 0 20px 20px;
-    border-left: 3px solid;
-    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 8px 0;
 }
 
 .post-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
+    padding: 8px 12px;
+    border-radius: 4px;
     text-decoration: none;
+    transition: all 0.2s ease;
     border-bottom: 1px solid;
-    transition: all 0.3s ease;
 }
 
-.post-item:hover {
-    padding-left: 10px;
+.post-item:last-child {
+    border-bottom: none;
 }
 
 .post-title {
-    flex: 1;
+    font-size: 14px;
 }
 
 .post-date {
-    font-size: 0.875rem;
+    font-size: 12px;
     opacity: 0.7;
-    margin-left: 20px;
+    white-space: nowrap;
+    margin-left: 16px;
+}
+
+.simple-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.simple-pagination .nav-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--common-color-1);
+    background: var(--common-color-1);
+    color: var(--common-content);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.simple-pagination .nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.simple-pagination .page-info {
+    color: var(--common-content);
+    font-size: 14px;
 }
 </style>
 
+<!-- 颜色样式 -->
 <style scoped>
-/* 颜色样式 */
-.index-center-list-card {
-    border-color: var(--common-color-1);
-    background-color: var(--common-bg);
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-.index-center-list-card:hover {
-    box-shadow: 0 4px 8px var(--common-shadow);
-}
-
-.index-center-list-card-header {
-    color: var(--common-text);
-}
-
-.index-center-list-card-content {
-    color: var(--common-text);
-}
-
-.article-meta-info span {
-    color: var(--common-text);
-}
-
 .category-posts {
-    border-left-color: var(--common-color-1);
+    background: var(--common-bg);
 }
 
 .post-item {
-    color: var(--common-text);
     border-bottom-color: var(--common-color-1);
+    color: var(--common-text);
 }
 
 .post-item:hover {
-    color: var(--common-hover);
-}
-
-.post-date {
-    color: var(--common-text);
+    background: var(--common-hover);
 }
 </style>
 
+<!-- 响应式设计媒体查询 -->
 <style scoped>
-/* 响应式设计媒体查询 */
-@media (max-width: calc(var(--sm) - 1px)) {
-    .index-center-list-card {
-        height: auto;
-        min-height: 120px;
-        padding: 15px;
-    }
-    
-    .index-center-list-card-header {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 8px;
-    }
-    
-    .index-center-list-card-content {
-        font-size: 14px;
-        height: auto;
-        margin-bottom: 8px;
-    }
-    
-    .article-meta-info {
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-        gap: 5px;
-    }
-    
-    .article-meta-info span {
-        height: auto;
-        line-height: 1.2;
-        margin-bottom: 5px;
-    }
-    
-    .category-posts {
-        margin: 10px 0 15px 10px;
-        padding-left: 10px;
-    }
-    
-    .post-item {
-        padding: 6px 0;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-    
-    .post-date {
-        margin-left: 0;
-        font-size: 0.8rem;
-    }
-}
-
 @media (max-width: var(--sm)) {
-    .index-center-list-card {
-        height: 130px;
+    .simple-pagination {
+        gap: 10px;
         padding: 12px;
     }
-    
-    .index-center-list-card-header {
-        font-size: 18px;
+
+    .simple-pagination .nav-btn {
+        padding: 6px 12px;
+        font-size: 13px;
     }
-    
-    .index-center-list-card-content {
-        font-size: 15px;
+
+    .simple-pagination .page-info {
+        font-size: 13px;
     }
-    
-    .category-posts {
-        margin: 10px 0 18px 15px;
-        padding-left: 15px;
-    }
-    
+
     .post-item {
-        padding: 7px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
     }
-    
+
     .post-date {
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: var(--md)) {
-    .index-center-list-card {
-        height: 120px;
-        padding: 10px;
-    }
-    
-    .index-center-list-card-header {
-        font-size: 20px;
-    }
-    
-    .index-center-list-card-content {
-        font-size: 16px;
-    }
-    
-    .article-meta-info {
-        flex-direction: row;
-        align-items: center;
-        height: 30px;
-    }
-    
-    .article-meta-info span {
-        height: 30px;
-        line-height: 30px;
-        margin-bottom: 10px;
-    }
-    
-    .category-posts {
-        margin: 10px 0 20px 20px;
-        padding-left: 20px;
-    }
-    
-    .post-item {
-        padding: 8px 0;
-        flex-direction: row;
-        align-items: center;
-        gap: 0;
-    }
-    
-    .post-date {
-        margin-left: 20px;
-        font-size: 0.875rem;
-    }
-}
-
-@media (max-width: var(--lg)) {
-    .index-center-list-card {
-        height: 125px;
-    }
-}
-
-@media (max-width: var(--xl)) {
-    .index-center-list-card {
-        height: 130px;
-    }
-}
-
-@media (max-width: var(--2xl)) {
-    .index-center-list-card {
-        height: 135px;
+        margin-left: 0;
     }
 }
 </style>

@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import Announcement from './announcement/Announcement.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 import PageNav from '../components/p-center/PageNav.vue'
-import { useArticlesStore } from '../stores/index.js'
+import { useArticlesStore } from '../stores/index'
 
 const store = useArticlesStore()
 
@@ -106,8 +106,16 @@ onMounted(() => {
     <hr>
     <!-- 中心卡片列表卡片 -->
     <div class="center-card-content">
-        <div v-if="loading" class="loading-message">
-            <p>Loading...</p>
+        <div v-if="loading" class="skeleton-container">
+            <div v-for="n in 5" :key="n" class="skeleton-card">
+                <div class="skeleton-header"></div>
+                <div class="skeleton-divider"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-line medium"></div>
+                    <div class="skeleton-line long"></div>
+                </div>
+            </div>
         </div>
         <div v-else-if="error" class="error-message">
             <p>{{ error }}</p>
@@ -219,6 +227,57 @@ onMounted(() => {
 .empty-message {
     text-align: center;
     padding: 50px 0;
+}
+
+.skeleton-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.skeleton-card {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.skeleton-header {
+    height: 24px;
+    width: 60%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.skeleton-divider {
+    height: 1px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.skeleton-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.skeleton-line {
+    height: 14px;
+    border-radius: 4px;
+}
+
+.skeleton-line.short {
+    width: 80px;
+}
+
+.skeleton-line.medium {
+    width: 140px;
+}
+
+.skeleton-line.long {
+    width: 200px;
 }
 
 /* 分页容器 */
@@ -340,6 +399,30 @@ onMounted(() => {
 /* 分页禁用状态悬停 */
 .pagination .disabled a:hover {
     background-color: var(--common-bg);
+}
+
+.skeleton-card {
+    background: var(--common-bg);
+}
+
+.skeleton-header,
+.skeleton-line {
+    background: linear-gradient(90deg, var(--common-color-1) 25%, var(--common-hover) 50%, var(--common-color-1) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-divider {
+    background: var(--common-color-1);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 </style>
 

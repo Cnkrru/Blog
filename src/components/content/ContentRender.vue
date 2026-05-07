@@ -1,22 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, computed, watch } from 'vue'
 import MarkdownRender from './MarkdownRender.vue'
 import { useContentLoader } from '../../utils/useContentLoader'
 import { useArticlesStore } from '../../stores'
 
-const props = defineProps({
-  id: {
-    type: String,
-    required: true
-  },
-  type: {
-    type: String,
-    required: true,
-    validator: (value) => ['post', 'project'].includes(value)
-  }
-})
+const props = defineProps<{
+  id: string
+  type: 'post' | 'project'
+}>()
 
-const emit = defineEmits(['content-loaded', 'loading', 'error', 'prev-next-posts', 'update:toc'])
+const emit = defineEmits<{
+  'content-loaded': [content: any]
+  'loading': [loading: boolean]
+  'error': [error: string]
+  'prev-next-posts': [prev: any, next: any]
+  'update:toc': [toc: any]
+}>()
 
 // 使用 content loader
 const { content, markdownContent, loading, error: hasError, isLoaded, loadContent, retry } = useContentLoader(props.type, props.id)

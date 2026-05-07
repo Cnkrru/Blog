@@ -25,18 +25,14 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { useClipboardStore } from '../../stores'
+import { useClipboardStore, useNotificationStore } from '../../stores'
 
-const props = defineProps({
-  code: {
-    type: String,
-    required: true
-  }
-})
+const props = defineProps<{ code: string }>()
 
 const clipboardStore = useClipboardStore()
+const notificationStore = useNotificationStore()
 const isCopied = ref(false)
 const isLoading = ref(false)
 const animationClass = ref('')
@@ -66,6 +62,8 @@ const copyCode = async () => {
 
     // 添加到历史记录
     clipboardStore.addToHistory(props.code, true)
+
+    notificationStore.addNotification('代码已复制到剪贴板', { type: 'success', duration: 2000 })
 
     // 3秒后恢复默认状态
     setTimeout(() => {
@@ -101,8 +99,11 @@ const fallbackCopyTextToClipboard = () => {
     const successful = document.execCommand('copy')
     if (successful) {
       isCopied.value = true
-      animationClass.value = 'copied-success'
-      clipboardStore.addToHistory(props.code, true)
+    animationClass.value = 'copied-success'
+
+    clipboardStore.addToHistory(props.code, true)
+
+    notificationStore.addNotification('代码已复制到剪贴板', { type: 'success', duration: 2000 })
       setTimeout(() => {
         isCopied.value = false
         animationClass.value = ''

@@ -1,18 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useArticlesStore, useThemeStore } from '../../stores'
 
-const props = defineProps({
-  currentArticleId: {
-    type: String,
-    required: true
-  },
-  currentArticleCategory: {
-    type: String,
-    required: true
-  }
-})
+const props = defineProps<{ currentArticleId: string; currentArticleCategory: string }>()
 
 const articlesStore = useArticlesStore()
 const themeStore = useThemeStore()

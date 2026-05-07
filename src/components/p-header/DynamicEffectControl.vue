@@ -23,9 +23,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { useDynamicEffectsStore } from '../../stores/index.js'
+import { useDynamicEffectsStore } from '../../stores/index'
 
 const dynamicEffectsStore = useDynamicEffectsStore()
 

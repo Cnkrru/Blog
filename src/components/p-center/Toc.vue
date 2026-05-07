@@ -1,15 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useTocStore, useThemeStore } from '../../stores'
 
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false
-  }
-})
+const props = defineProps<{ show?: boolean }>()
 
-const emit = defineEmits(['update:show'])
+const emit = defineEmits<{ 'update:show': [show: boolean] }>()
 
 const tocStore = useTocStore()
 const themeStore = useThemeStore()

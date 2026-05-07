@@ -1,16 +1,10 @@
-<script setup>
-defineProps({
-  isPlaying: {
-    type: Boolean,
-    default: false
-  },
-  currentSong: {
-    type: Object,
-    default: null
-  }
+<script setup lang="ts">
+withDefaults(defineProps<{ isPlaying?: boolean; currentSong?: any }>(), {
+  isPlaying: false,
+  currentSong: null
 })
 
-const emit = defineEmits(['toggle-play', 'prev', 'next'])
+const emit = defineEmits<{ 'toggle-play': []; prev: []; next: [] }>()
 
 const handleTogglePlay = () => {
   emit('toggle-play')

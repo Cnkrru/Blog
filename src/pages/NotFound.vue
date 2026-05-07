@@ -1,128 +1,283 @@
-<script setup>
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
-// 返回首页
 const goHome = () => {
   router.push('/')
 }
+
+const countdown = ref(10)
+let timer: ReturnType<typeof setInterval> | null = null
+
+onMounted(() => {
+  timer = setInterval(() => {
+    countdown.value--
+    if (countdown.value <= 0) {
+      router.push('/')
+    }
+  }, 1000)
+})
+
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
+})
+
+const floatingDots = Array.from({ length: 20 }, (_, i) => ({
+  id: i,
+  style: {
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animationDelay: `${Math.random() * 3}s`,
+    animationDuration: `${3 + Math.random() * 4}s`,
+    width: `${4 + Math.random() * 8}px`,
+    height: `${4 + Math.random() * 8}px`
+  }
+}))
 </script>
 
 <template>
-  <div class="center-card-content">
-    <div class="lose-center-card-content">
-      <div class="lose-center-content">
-        <h1>404 页面不存在</h1>
-        <p>您访问的页面不存在，请检查URL是否正确</p>
-        <button class="back-home-btn" @click="goHome">返回首页</button>
+  <div class="not-found-wrapper">
+    <div class="floating-dots">
+      <span
+        v-for="dot in floatingDots"
+        :key="dot.id"
+        class="dot"
+        :style="dot.style"
+      ></span>
+    </div>
+
+    <div class="not-found-content">
+      <div class="error-code">
+        <span class="digit">4</span>
+        <span class="digit zero">0</span>
+        <span class="digit">4</span>
       </div>
+
+      <div class="glitch-text">页面不存在</div>
+
+      <p class="sub-text">
+        你来到了没有知识的荒原...
+      </p>
+
+      <div class="actions">
+        <button class="back-btn" @click="goHome">
+          <span class="btn-icon">🏠</span>
+          返回首页
+        </button>
+      </div>
+
+      <p class="countdown-text">
+        {{ countdown }} 秒后自动返回首页
+      </p>
     </div>
   </div>
-  <hr>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
-/* 布局样式 */
-.center-card-content {
-    padding: 40px 20px;
-    text-align: center;
+.not-found-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.lose-center-content {
-    max-width: 600px;
-    margin: 0 auto;
+.floating-dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-.lose-center-content h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  animation: float ease-in-out infinite;
 }
 
-.lose-center-content p {
-    font-size: 18px;
-    margin-bottom: 30px;
-    line-height: 1.6;
+.not-found-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 40px;
 }
 
-.back-home-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    border: 1px solid;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
+.error-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.back-home-btn:hover {
-    transform: translateY(-3px);
+.digit {
+  font-size: 120px;
+  font-weight: 900;
+  line-height: 1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.digit.zero {
+  animation: rotate3d 4s ease-in-out infinite;
+}
+
+.glitch-text {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 4px;
+}
+
+.sub-text {
+  font-size: 16px;
+  margin-bottom: 32px;
+  opacity: 0.7;
+  line-height: 1.6;
+}
+
+.actions {
+  margin-bottom: 24px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: 2px solid;
+  border-radius: 50px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.back-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px var(--common-shadow);
+}
+
+.btn-icon {
+  font-size: 18px;
+}
+
+.countdown-text {
+  font-size: 13px;
+  opacity: 0.5;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-30px) scale(1.5);
+    opacity: 0.6;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes rotate3d {
+  0%, 100% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
 }
 </style>
 
+<!-- 颜色样式 -->
 <style scoped>
-/* 颜色样式 */
-.lose-center-content h1 {
-    color: var(--common-text);
+.not-found-wrapper {
+  background: var(--common-bg);
 }
 
-.lose-center-content p {
-    color: var(--common-text);
+.dot {
+  background: var(--common-color-1);
 }
 
-.back-home-btn {
-    background-color: var(--common-hover);
-    color: var(--common-text);
-    border-color: var(--common-color-1);
+.digit {
+  color: var(--common-color-1);
+  text-shadow: 0 4px 20px var(--common-shadow);
 }
 
-.back-home-btn:hover {
-    background-color: var(--common-hover);
+.glitch-text {
+  color: var(--common-text);
+}
+
+.sub-text {
+  color: var(--common-text);
+}
+
+.back-btn {
+  color: var(--common-color-1);
+  border-color: var(--common-color-1);
+}
+
+.back-btn:hover {
+  background: var(--common-color-1);
+  color: var(--common-content);
+}
+
+.countdown-text {
+  color: var(--common-text);
 }
 </style>
 
+<!-- 响应式设计媒体查询 -->
 <style scoped>
-/* 响应式设计媒体查询 */
 @media (max-width: var(--md)) {
-    .center-card-content {
-        padding: 30px 15px;
-    }
-    
-    .lose-center-content h1 {
-        font-size: 28px;
-        margin-bottom: 15px;
-    }
-    
-    .lose-center-content p {
-        font-size: 16px;
-        margin-bottom: 25px;
-    }
-    
-    .back-home-btn {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
+  .digit {
+    font-size: 80px;
+  }
+
+  .glitch-text {
+    font-size: 22px;
+  }
+
+  .sub-text {
+    font-size: 14px;
+  }
+
+  .not-found-content {
+    padding: 20px;
+  }
 }
 
 @media (max-width: var(--sm)) {
-    .center-card-content {
-        padding: 20px 10px;
-    }
-    
-    .lose-center-content h1 {
-        font-size: 24px;
-        margin-bottom: 12px;
-    }
-    
-    .lose-center-content p {
-        font-size: 14px;
-        margin-bottom: 20px;
-    }
-    
-    .back-home-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
+  .digit {
+    font-size: 60px;
+    gap: 6px;
+  }
+
+  .error-code {
+    gap: 8px;
+  }
+
+  .glitch-text {
+    font-size: 18px;
+  }
+
+  .back-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 }
 </style>

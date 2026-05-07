@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { useContentStore, useArticlesStore } from '../stores/index.js'
+import { useContentStore, useArticlesStore } from '../stores/index'
 import { parseFrontmatter } from '../utils/markdown'
 
 export function useContentLoader(type, id) {

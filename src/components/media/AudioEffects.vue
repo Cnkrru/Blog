@@ -1,23 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useAudioStore } from '../../stores'
 
-const props = defineProps({
-  audioContext: {
-    type: Object,
-    default: null
-  },
-  isPlaying: {
-    type: Boolean,
-    default: false
-  },
-  isVisible: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<{ audioContext?: any; isPlaying?: boolean; isVisible?: boolean }>(), {
+  audioContext: null,
+  isPlaying: false,
+  isVisible: false
 })
 
-const emit = defineEmits(['effect-change', 'close'])
+const emit = defineEmits<{ 'effect-change': [effect: any]; close: [] }>()
 
 const audioStore = useAudioStore()
 
@@ -85,7 +76,7 @@ const closePanel = () => {
 }
 
 onMounted(() => {
-  audioStore.init()
+  audioStore.initAudio()
 })
 
 onUnmounted(() => {
