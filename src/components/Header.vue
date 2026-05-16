@@ -99,10 +99,9 @@ onMounted(() => {
     border: 3px solid var(--common-color-1);
     
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     
     overflow: visible;
 }
@@ -118,7 +117,7 @@ onMounted(() => {
     border-radius: 8px;
     
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     gap: 12px;
     
@@ -202,12 +201,15 @@ body.dark-theme .button-style img {
   }
 
   .header-card {
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
     gap: 4px;
     padding: 6px;
   }
 
   .button-class-card {
+    justify-content: center;
     gap: 4px;
   }
 
@@ -224,8 +226,14 @@ body.dark-theme .button-style img {
 
 @media (max-width: 768px) {
   .header-card {
+    flex-direction: column;
+    justify-content: center;
     padding: 10px;
     gap: 10px;
+  }
+
+  .button-class-card {
+    justify-content: center;
   }
 
   :deep(.button-style) {
