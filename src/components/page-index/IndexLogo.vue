@@ -69,7 +69,7 @@
 </style>
 
 <style scoped>
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .logo-text {
     font-size: 1.25rem;
   }

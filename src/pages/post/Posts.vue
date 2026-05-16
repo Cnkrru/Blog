@@ -14,6 +14,7 @@ import Comment from '../../components/api/Comment.vue'
 import RelatedArticles from '../../components/p-center/RelatedArticles.vue'
 import SiteStats from '../../components/p-center/SiteStats.vue'
 import ShareButton from '../../components/api/ShareButton.vue'
+import Sponsor from '../../components/api/Sponsor.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -64,7 +65,7 @@ useHead({
     },
     {
       property: 'og:image',
-      content: post.value ? (post.value.image || 'https://cnkrru.top/default-image.jpg') : 'https://cnkrru.top/default-image.jpg'
+      content: post.value ? `https://cnkrru.top/og/post-${post.value.id}.svg` : 'https://cnkrru.top/og/default.svg'
     },
     {
       property: 'og:site_name',
@@ -92,7 +93,7 @@ useHead({
     },
     {
       name: 'twitter:image',
-      content: post.value ? (post.value.image || 'https://cnkrru.top/default-image.jpg') : 'https://cnkrru.top/default-image.jpg'
+      content: post.value ? `https://cnkrru.top/og/post-${post.value.id}.svg` : 'https://cnkrru.top/og/default.svg'
     },
     {
       name: 'twitter:site',
@@ -118,7 +119,7 @@ useHead({
           '@type': 'Person',
           'name': post.value.author || '作者名'
         },
-        'image': post.value.image || 'https://cnkrru.top/default-image.jpg',
+        'image': `https://cnkrru.top/og/post-${post.value.id}.svg`,
         'url': `https://cnkrru.top/post/${postId.value}`
       })
     }
@@ -192,8 +193,13 @@ onMounted(() => {
     <Toc v-model:show="showToc" />
     
     <hr>
-    
+
     <div class="center-card-content" ref="contentCard">
+        <!-- 文章封面图 -->
+        <div class="post-cover" v-if="!loading && !error && post">
+          <img :src="`/og/post-${post.id}.svg`" :alt="post.title" class="cover-image" />
+        </div>
+
         <ReadingTime v-if="!loading && !error" />
         <ContentRender 
             :key="postId"
@@ -228,6 +234,8 @@ onMounted(() => {
             :description="post?.description || ''"
         />
 
+        <Sponsor v-if="!loading && !error && post" />
+
         <Comment v-if="!loading && !error" />
         
         <hr v-if="!loading && !error">
@@ -254,7 +262,7 @@ onMounted(() => {
 }
 
 /* 移动端：按钮一行在上，标题一行在下 */
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
     :deep(.center-head-card) {
         flex-direction: column-reverse;
         align-items: flex-start;
@@ -277,6 +285,20 @@ onMounted(() => {
 </style>
 
 <style scoped>
+/* 封面图 */
+.post-cover {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid var(--common-color-1);
+    margin-bottom: 10px;
+}
+
+.cover-image {
+    width: 100%;
+    display: block;
+}
+
 /* 颜色样式 */
 .loading-message,
 .error-message {

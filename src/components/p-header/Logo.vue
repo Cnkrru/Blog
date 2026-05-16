@@ -34,7 +34,7 @@ const router = useRouter()
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .logo-card {
       margin-left: 0;
       margin-right: 0;

@@ -35,7 +35,6 @@ const toggleToc = () => {
         <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
       </svg>
       <span class="btn-text">目录</span>
-      <span v-if="hasToc" class="toc-count">{{ tocStore.toc.length }}</span>
     </button>
   </div>
 </template>
@@ -97,7 +96,7 @@ const toggleToc = () => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .toc-btn {
         padding: 6px 12px;
         font-size: 13px;
@@ -116,7 +115,7 @@ const toggleToc = () => {
     }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     .toc-btn {
         padding: 5px 10px;
         font-size: 12px;

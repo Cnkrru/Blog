@@ -14,6 +14,7 @@ const toggleBtnRef = ref(null)
 const playerCoverRef = ref(null)
 const isEffectsVisible = ref(false)
 const visualizerEnabled = ref(false)
+const isBtnAnimating = ref(false)
 
 const musicStore = useMusicStore()
 
@@ -52,12 +53,14 @@ const applyEffects = (effects) => musicStore.applyEffects(effects)
 const cleanup = () => musicStore.cleanup()
 
 const togglePlayer = () => {
+  isBtnAnimating.value = true
   if (!playerRef.value) return
   playerRef.value.classList.toggle('active')
   if (toggleBtnRef.value) {
     toggleBtnRef.value.classList.toggle('active')
   }
   musicStore.setPlayerVisible(playerRef.value.classList.contains('active'))
+  setTimeout(() => { isBtnAnimating.value = false }, 400)
 }
 
 const handleSeek = (percent) => {
@@ -166,6 +169,7 @@ onUnmounted(() => {
     <div
       class="button-style music-player-btn"
       id="music-player-btn"
+      :class="{ animating: isBtnAnimating }"
       title="音乐播放"
       role="button"
       tabindex="0"
@@ -175,6 +179,7 @@ onUnmounted(() => {
       @click="togglePlayer"
     >
       <img src="../../assets/imgs/svg/music-player.svg" alt="音乐播放">
+      <span v-if="isBtnAnimating" class="emoji-burst">✨</span>
     </div>
 
     <div id="global-music-player" class="global-music-player" ref="playerRef">

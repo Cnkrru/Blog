@@ -7,7 +7,9 @@
         <li ><router-link to="/home" class="page-card"> 首页 </router-link></li>
         <li ><router-link to="/about" class="page-card"> 关于 </router-link></li>
         <li ><router-link to="/archives" class="page-card"> 归档 </router-link></li>
+        <li ><router-link to="/timeline" class="page-card"> 标签 </router-link></li>
         <li ><router-link to="/links" class="page-card"> 友链 </router-link></li>
+        <li ><router-link to="/search" class="page-card"> 搜索 </router-link></li>
         <li ><router-link to="/projects" class="page-card"> 项目 </router-link></li>
         <li ><router-link to="/rss.xml" target="_blank" rel="noopener noreferrer" class="page-card"> RSS </router-link></li>
       </ul>
@@ -18,7 +20,7 @@
 <style scoped>
 .page-list-card {
     width:100%;
-    height: 180px;
+    height: 240px;
     padding: 8px;
     margin-bottom: 5px;
     text-align: center;

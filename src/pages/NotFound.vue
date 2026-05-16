@@ -243,7 +243,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
 
 <!-- 响应式设计媒体查询 -->
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .digit {
     font-size: 80px;
   }
@@ -261,7 +261,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .digit {
     font-size: 60px;
     gap: 6px;

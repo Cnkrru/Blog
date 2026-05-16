@@ -116,17 +116,17 @@ onMounted(() => {
 
 <style scoped>
 /* 响应式设计媒体查询 */
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
     .about-center-card-footer {
         height: 120px;
     }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     /* 保持现有样式 */
 }
 
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .about-center-card-footer {
         height: 100px;
     }

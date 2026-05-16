@@ -2,12 +2,14 @@
   <div
     class="button-style"
     @click="toggleEffect"
+    :class="{ animating: isAnimating }"
     :title="isEffectEnabled ? '关闭动态效果' : '开启动态效果'"
   >
     <img
       src="../../assets/imgs/svg/kaiguan.svg"
       alt="切换动态效果"
     />
+    <span v-if="isAnimating" class="emoji-burst">✨</span>
   </div>
 
   <div
@@ -31,6 +33,7 @@ const dynamicEffectsStore = useDynamicEffectsStore()
 
 const isEffectEnabled = ref(true)
 const isDarkMode = ref(false)
+const isAnimating = ref(false)
 let scriptLoaded = false
 let observer = null
 
@@ -43,6 +46,7 @@ const checkTheme = () => {
 }
 
 const toggleEffect = () => {
+  isAnimating.value = true
   isEffectEnabled.value = !isEffectEnabled.value
 
   if (isBrowser) {
@@ -54,6 +58,8 @@ const toggleEffect = () => {
   } else {
     destroyEffects()
   }
+
+  setTimeout(() => { isAnimating.value = false }, 400)
 }
 
 const initEffects = () => {

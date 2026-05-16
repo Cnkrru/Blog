@@ -19,6 +19,21 @@ body {
     font-family: Arial, "Microsoft YaHei", sans-serif;
     font-size: 16px;
     line-height: 1.5;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%23ff69b4' stroke='%23ffe4ec' stroke-width='0.5'/></svg>") 4 2, auto;
+}
+
+a, button, select, summary, [role="button"], label[for] {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%23ff69b4'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%23ff69b4' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+textarea,
+[contenteditable="true"] {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%23ff69b4'/></svg>") 11 10, text;
 }
 
 a {
@@ -29,10 +44,6 @@ input, button, textarea, select {
     border: none;
     outline: none;
     font: inherit;
-}
-
-button {
-    cursor: pointer;
 }
 
 img {
@@ -49,34 +60,34 @@ hr {
     padding: 0;
 }
 
-@media (max-width: calc(var(--sm) - 1px)) {
-    body {
-        gap: 120px;
+@media (max-width: 480px) {
+    html, body {
+        gap: 4px;
     }
 }
 
-@media (max-width: calc(var(--lg) - 1px)) {
-    body {
-        gap: 15px;
+@media (max-width: 768px) {
+    html, body {
+        gap: 6px;
     }
 }
 
-@media (max-width: calc(var(--xl) - 1px)) {
-    body {
+@media (max-width: 1024px) {
+    html, body {
         gap: 20px;
     }
 }
 
-@media (max-width: calc(var(--2xl) - 1px)) {
-    body {
+@media (max-width: 1280px) {
+    html, body {
         gap: 25px;
     }
 }
 
 /* 应用主题变量 */
 body {
-    background: linear-gradient(to bottom, 
-        var(--common-color-1), 
+    background: linear-gradient(to bottom,
+        var(--common-color-1),
         var(--common-color-2));
     color: var(--common-text);
 
@@ -103,4 +114,38 @@ a:hover {
 .page-list-card {
     background-color: var(--common-bg);
     box-shadow: 0 2px 4px var(--common-shadow);
+}
+
+/* 滚动条娘化 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--common-color-1), var(--common-hover));
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--common-gradient);
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Firefox 滚动条 */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--common-color-1) transparent;
 }

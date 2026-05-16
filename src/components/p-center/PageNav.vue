@@ -323,7 +323,7 @@ const closeDropdown = () => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .page-nav-container {
     padding: 12px;
   }

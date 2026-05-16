@@ -741,7 +741,7 @@ onMounted(() => {
 
 <style scoped>
 /* 响应式设计 */
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .user-card {
         flex-direction: column;
         align-items: center;

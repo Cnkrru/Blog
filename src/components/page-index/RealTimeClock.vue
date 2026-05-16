@@ -194,7 +194,7 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
   .real-time-clock {
     gap: 8px;
   }
@@ -217,7 +217,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .real-time-clock {
     gap: 12px;
   }

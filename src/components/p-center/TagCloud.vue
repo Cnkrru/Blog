@@ -60,6 +60,28 @@ const getRelatedTags = (tag) => {
   return tagStore.getRelatedTags(tag, 5)
 }
 
+const getTagColor = (stat) => {
+  const maxCount = Math.max(...tagStats.value.map(s => s.count), 1)
+  const ratio = stat.count / maxCount
+  const baseHue = isDarkTheme.value ? 270 : 330
+  const hue = baseHue - ratio * 40
+  const sat = 70 + ratio * 30
+  const light = isDarkTheme.value ? 60 + ratio * 15 : 88 - ratio * 18
+  return `hsl(${hue}, ${sat}%, ${light}%)`
+}
+
+const getTagGradient = (stat) => {
+  const maxCount = Math.max(...tagStats.value.map(s => s.count), 1)
+  const ratio = stat.count / maxCount
+  const hue1 = isDarkTheme.value ? 270 : 330
+  const hue2 = isDarkTheme.value ? 300 : 350
+  const sat1 = 70 + ratio * 30
+  const sat2 = 80 + ratio * 20
+  const light1 = isDarkTheme.value ? 60 + ratio * 15 : 88 - ratio * 18
+  const light2 = isDarkTheme.value ? 50 + ratio * 10 : 75 - ratio * 12
+  return `linear-gradient(135deg, hsl(${hue1}, ${sat1}%, ${light1}%), hsl(${hue2}, ${sat2}%, ${light2}%))`
+}
+
 const closeTagCloud = () => {
   showTagCloud.value = false
   selectedTag.value = null
@@ -147,7 +169,9 @@ onMounted(() => {
             :class="['tag', { active: selectedTag === stat.tag }]"
             :style="{ 
               fontSize: `${14 + Math.min(stat.count / 2, 10)}px`,
-              opacity: `${0.7 + Math.min(stat.frequency * 0.3, 0.3)}`,
+              background: getTagGradient(stat),
+              color: isDarkTheme ? '#fff' : '#333',
+              textShadow: isDarkTheme ? '0 0 8px rgba(255,255,255,0.4)' : '0 1px 3px rgba(0,0,0,0.15)',
               animationDelay: `${Math.random() * 0.5}s`
             }"
             :title="`频率: ${stat.frequency.toFixed(2)}, 数量: ${stat.count}, 最后使用: ${new Date(stat.lastUsed).toLocaleDateString()}`"
@@ -166,6 +190,11 @@ onMounted(() => {
                 :key="related.tag"
                 @click="selectTag(related.tag)"
                 class="related-tag"
+                :style="{
+                  background: `linear-gradient(135deg, hsl(${isDarkTheme ? 270 : 330}, 80%, 65%), hsl(${isDarkTheme ? 300 : 350}, 85%, 75%))`,
+                  color: isDarkTheme ? '#fff' : '#333',
+                  textShadow: isDarkTheme ? '0 0 6px rgba(255,255,255,0.3)' : '0 1px 2px rgba(0,0,0,0.1)'
+                }"
                 :title="`相关性: ${related.score.toFixed(2)}`"
               >
                 {{ related.tag }}
@@ -343,7 +372,16 @@ onMounted(() => {
 }
 
 .tag:hover {
-  transform: scale(1.05);
+  transform: scale(1.05) rotate(-2deg);
+  filter: brightness(1.15);
+  box-shadow: 0 4px 12px var(--common-shadow);
+  animation: wiggle 0.3s ease;
+}
+
+@keyframes wiggle {
+  0% { transform: scale(1.05) rotate(-2deg); }
+  50% { transform: scale(1.05) rotate(2deg); }
+  100% { transform: scale(1.05) rotate(-2deg); }
 }
 
 .tag.active {
@@ -467,6 +505,8 @@ onMounted(() => {
 
 .related-tag:hover {
   transform: scale(1.05);
+  filter: brightness(1.1);
+  box-shadow: 0 2px 8px var(--common-shadow);
 }
 
 @keyframes fadeIn {
@@ -554,11 +594,6 @@ onMounted(() => {
   border: 1px solid var(--common-color-1);
 }
 
-.tag {
-  background-color: var(--common-color-1);
-  color: var(--common-text);
-}
-
 .tag:hover {
   background-color: var(--common-hover);
 }
@@ -615,18 +650,20 @@ onMounted(() => {
   color: var(--common-content);
 }
 
-.related-tag {
-  background-color: var(--common-color-1);
-  color: var(--common-text);
-}
-
 .related-tag:hover {
   background-color: var(--common-hover);
 }
-</style>
 
-<style scoped>
-@media (max-width: var(--md)) {
+.tag-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
   .tag-cloud-content {
     width: 95%;
     padding: 20px;
@@ -684,7 +721,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .tag-cloud-content {
     padding: 16px;
   }

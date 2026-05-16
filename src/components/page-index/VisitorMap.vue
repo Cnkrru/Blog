@@ -364,13 +364,13 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .visitor-map {
     height: 400px;
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .visitor-map {
     height: 300px;
   }

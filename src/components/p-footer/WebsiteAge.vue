@@ -1,58 +1,59 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const websiteAge = ref('')
-let updateInterval: NodeJS.Timeout | null = null
+const ageText = ref('')
+let timer: ReturnType<typeof setInterval> | null = null
 
-const padZero = (num: number) => {
-  return num.toString().padStart(2, '0')
-}
+function update() {
+  const start = new Date('2026-03-28T12:00:00').getTime()
+  const diff = Date.now() - start
+  const days = Math.floor(diff / 86400000)
+  const years = Math.floor(days / 365)
+  const remainDays = days % 365
+  const months = Math.floor(remainDays / 30)
+  const rd = remainDays % 30
+  const hours = Math.floor((diff % 86400000) / 3600000)
+  const mins = Math.floor((diff % 3600000) / 60000)
 
-const updateAge = (): void => {
-  const startTime : number = new Date('2026-03-28T12:00:00').getTime()
-  const now : number = Date.now()
-  const diff : number = now - startTime
-
-  const seconds : number = Math.floor(diff / 1000)
-  const minutes : number = Math.floor(seconds / 60)
-  const hours : number = Math.floor(minutes / 60)
-  const days : number = Math.floor(hours / 24)
-  const months : number = Math.floor(days / 30)
-  const years : number = Math.floor(months / 12)
-
-  const displayMonths : number = months % 12
-  const displayDays : number = days % 30
-  const displayHours : number = hours % 24
-  const displayMinutes : number = minutes % 60
-  const displaySeconds : number = seconds % 60
-
-  websiteAge.value = `${years}年${displayMonths}月${displayDays}天 ${padZero(displayHours)}时${padZero(displayMinutes)}分${padZero(displaySeconds)}秒`
+  ageText.value = `${years} 年 ${months} 月 ${rd} 天 ${hours} 时 ${mins} 分`
 }
 
 onMounted(() => {
-  updateAge()
-  updateInterval = setInterval(updateAge, 1000)
+  update()
+  timer = setInterval(update, 60000) // 每分钟刷新
 })
 
 onUnmounted(() => {
-  if (updateInterval) {
-    clearInterval(updateInterval)
-  }
+  if (timer) clearInterval(timer)
 })
-
 </script>
 
 <template>
   <div class="footer-element-card website-age">
-    本站已建立 {{ websiteAge }}
+    <span class="age-icon">⏱</span>
+    <span>本站已运行</span>
+    <span class="age-num">{{ ageText }}</span>
   </div>
 </template>
 
 <style scoped>
 .website-age {
-  width: 100%;
-  text-align: center;
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+.age-icon {
+  font-size: 15px;
+}
+
+.age-num {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 </style>
 
@@ -60,12 +61,18 @@ onUnmounted(() => {
 .website-age {
   color: var(--common-content);
 }
+
+.age-num {
+  color: var(--common-content);
+  opacity: 0.85;
+}
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .website-age {
-    text-align: left;
+    justify-content: flex-start;
+    font-size: 13px;
   }
 }
 </style>

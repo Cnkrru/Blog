@@ -5,7 +5,7 @@
     <link>https://cnkrru.top/</link>
     <description>个人技术博客，分享前端开发、技术学习和生活点滴</description>
     <atom:link href="https://cnkrru.top/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Thu, 07 May 2026 18:23:11 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 16 May 2026 16:52:57 GMT</lastBuildDate>
     <language>zh-CN</language>
 
     
@@ -87,6 +87,14 @@
       <description>详细介绍VitePress-1-快速开始。</description>
       <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
       <guid>https://cnkrru.top/post/9</guid>
+    </item>
+    
+    <item>
+      <title>2026-05-16</title>
+      <link>https://cnkrru.top/post/10</link>
+      <description>今日日记。</description>
+      <pubDate>Sat, 16 May 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/10</guid>
     </item>
     
     <item>

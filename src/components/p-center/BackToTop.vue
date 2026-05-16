@@ -127,7 +127,7 @@ body.dark-theme .back-to-top-btn img {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .back-to-top-btn.immersive {
         bottom: 70px;
         right: 10px;

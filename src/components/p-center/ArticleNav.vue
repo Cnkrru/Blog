@@ -246,7 +246,7 @@ onUnmounted(() => {
 
 <style scoped>
 /* ========== 响应式适配 (Responsive) ========== */
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
   .post-nav-container {
     flex-direction: column;
     gap: 8px;
@@ -272,7 +272,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: var(--sm)) and (max-width: calc(var(--md) - 1px)) {
+@media (min-width: 640px) and (max-width: 767px) {
   .post-nav-container {
     gap: 12px;
     padding: 6px;
@@ -292,7 +292,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: var(--md)) and (max-width: calc(var(--lg) - 1px)) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .post-nav-btn {
     padding: 15px 22px;
     min-height: 70px;
@@ -303,7 +303,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: var(--xl)) and (max-width: var(--2xl)) {
+@media (min-width: 1280px) and (max-width: 1536px) {
   .post-nav-btn {
     padding: 18px 24px;
     min-height: 76px;

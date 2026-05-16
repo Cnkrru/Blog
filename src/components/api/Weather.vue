@@ -291,7 +291,7 @@ onMounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .weather-mini {
     padding: 4px 8px;
     min-width: 80px;

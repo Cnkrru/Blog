@@ -46,7 +46,7 @@ const navigateToChangelog = () => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .welcome-saying-card p {
       font-size: 14px;
   }

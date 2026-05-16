@@ -50,6 +50,7 @@ onUnmounted(() => {
             <h3>评论</h3>
             <span v-if="commentCount > 0" class="comment-count">{{ commentCount }} 条评论</span>
         </div>
+        <p class="comment-hint">想说点什么呢 (´•ω•`)</p>
         <div class="comment-content">
             <!-- 加载状态 -->
             <div v-if="isLoading" class="loading-state">
@@ -238,6 +239,14 @@ onUnmounted(() => {
     background-clip: text;
 }
 
+.comment-hint {
+    text-align: center;
+    font-size: 14px;
+    color: var(--common-color-1);
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
 .comment-count {
     color: var(--common-text);
     background: var(--common-hover);
@@ -288,7 +297,7 @@ onUnmounted(() => {
 <style scoped>
 /*==============================响应式设计查询=============================*/
 /* 超小屏手机 */
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
     .comment-section {
         margin-top: 1rem;
         padding: 1rem;
@@ -309,12 +318,12 @@ onUnmounted(() => {
 }
 
 /* 小屏手机横屏及以下 */
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     /* 保持现有样式 */
 }
 
 /* 平板及以下 */
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     /* 恢复桌面布局 */
     .comment-section {
         margin-top: 2rem;

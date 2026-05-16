@@ -184,7 +184,7 @@ onMounted(() => {
 
 <style scoped>
 /* 响应式设计媒体查询 */
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
     .projects-content {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 10px;
@@ -204,7 +204,7 @@ onMounted(() => {
     }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     .projects-content {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 15px;
@@ -224,7 +224,7 @@ onMounted(() => {
     }
 }
 
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .projects-content {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 20px;
@@ -244,19 +244,19 @@ onMounted(() => {
     }
 }
 
-@media (max-width: var(--lg)) {
+@media (max-width: 1024px) {
     .projects-content {
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
 }
 
-@media (max-width: var(--xl)) {
+@media (max-width: 1280px) {
     .projects-content {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media (max-width: var(--2xl)) {
+@media (max-width: 1536px) {
     .projects-content {
         grid-template-columns: repeat(4, 1fr);
     }

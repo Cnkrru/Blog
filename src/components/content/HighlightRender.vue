@@ -1,7 +1,7 @@
 <template>
   <div class="code-container" :class="{ 'with-line-numbers': showLineNumbers }">
     <div class="code-header" v-if="language && codeStore.showLanguageBadge">
-      <span class="language-badge">
+      <span class="language-badge" :data-lang="language.toLowerCase()">
         <span class="lang-dot"></span>
         <span class="lang-text">{{ language }}</span>
       </span>
@@ -17,6 +17,16 @@
       <pre class="code-content">
         <code ref="codeRef" :class="`language-${language}`">{{ code }}</code>
       </pre>
+      <!-- 行号高亮的 overlay 层 -->
+      <div v-if="showLineNumbers" class="line-highlight-overlay" ref="lineOverlayRef">
+        <div
+          v-for="(_, i) in generateLineNumbers()"
+          :key="i"
+          class="line-highlight-row"
+          @mouseenter="highlightLine(i + 1)"
+          @mouseleave="highlightLine(0)"
+        ></div>
+      </div>
       <div v-if="!isLoaded" class="loading-overlay">
         <div class="loading-spinner"></div>
         <span class="loading-text">Loading syntax highlighting...</span>
@@ -42,7 +52,13 @@ const props = withDefaults(defineProps<{
 })
 
 const codeRef = ref(null)
+const lineOverlayRef = ref(null)
+const highlightedLine = ref(0)
 const codeStore = useCodeStore()
+
+function highlightLine(n: number) {
+  highlightedLine.value = n
+}
 const isLoaded = computed(() => codeStore.isPrismLoaded)
 const showLineNumbers = computed(() => props.showLineNumbers && codeStore.lineNumbersEnabled)
 const showCopyButton = computed(() => props.showCopyButton && codeStore.copyEnabled)
@@ -69,14 +85,14 @@ const loadPrism = () => {
       // 加载常用语言
       const languages = ['javascript', 'typescript', 'css', 'html', 'json', 'python', 'bash', 'vue']
       let loadedCount = 0
-      
+
       const checkComplete = () => {
         if (loadedCount >= languages.length) {
           codeStore.setPrismLoaded(true)
           resolve()
         }
       }
-      
+
       languages.forEach(lang => {
         const langScript = document.createElement('script')
         langScript.src = `https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-${lang}.min.js`
@@ -101,7 +117,7 @@ const loadPrism = () => {
 // 高亮代码
 const highlightCode = async () => {
   if (!codeRef.value) return
-  
+
   if (!isLoaded.value) {
     try {
       await loadPrism()
@@ -110,13 +126,13 @@ const highlightCode = async () => {
       return
     }
   }
-  
+
   // 计算代码统计信息
   const lines = props.code.split('\n').length
   const chars = props.code.length
   codeStore.updateCodeStats(lines, chars)
   codeStore.incrementHighlightCount()
-  
+
   // 使用 Prism.highlightElement
   try {
     window.Prism.highlightElement(codeRef.value)
@@ -226,6 +242,27 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   position: relative;
   display: flex;
   transition: all 0.3s ease;
+}
+
+/* 行高亮 overlay */
+.line-highlight-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  padding: 16px 0;
+}
+
+.line-highlight-row {
+  height: 1.5em;
+  pointer-events: auto;
+  cursor: default;
+}
+
+.line-highlight-row:nth-child(1 of .line-highlight-row) {
+  margin-top: 0;
 }
 
 .code-content-wrapper.loading {
@@ -356,19 +393,43 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   color: var(--common-content);
 }
 
+/* 不同语言颜色 */
+.language-badge[data-lang="javascript"],
+.language-badge[data-lang="js"] { background-color: #f0db4f; color: #1e1e2e; }
+.language-badge[data-lang="typescript"],
+.language-badge[data-lang="ts"] { background-color: #3178c6; color: #fff; }
+.language-badge[data-lang="python"] { background-color: #3776ab; color: #fff; }
+.language-badge[data-lang="html"] { background-color: #e34f26; color: #fff; }
+.language-badge[data-lang="css"] { background-color: #563d7c; color: #fff; }
+.language-badge[data-lang="bash"],
+.language-badge[data-lang="shell"],
+.language-badge[data-lang="sh"] { background-color: #4eaa25; color: #fff; }
+.language-badge[data-lang="json"] { background-color: #b8b8b8; color: #1e1e2e; }
+.language-badge[data-lang="sql"] { background-color: #00618b; color: #fff; }
+.language-badge[data-lang="vue"] { background-color: #41b883; color: #1e1e2e; }
+.language-badge[data-lang="php"] { background-color: #787cb5; color: #fff; }
+.language-badge[data-lang="ruby"] { background-color: #cc342d; color: #fff; }
+.language-badge[data-lang="go"] { background-color: #00add8; color: #fff; }
+.language-badge[data-lang="rust"] { background-color: #dea584; color: #1e1e2e; }
+
 .lang-dot {
-  background-color: var(--common-content);
-  opacity: 0.8;
+  background-color: currentColor;
+  opacity: 0.6;
 }
 
 .lang-text {
-  color: var(--common-content);
+  color: inherit;
 }
 
 /* 行数统计 */
 .line-count {
   color: var(--common-text);
   background: rgba(255, 192, 203, 0.2);
+}
+
+/* 行高亮 */
+.line-highlight-row:hover {
+  background: rgba(255, 192, 203, 0.15);
 }
 
 /* 代码内容区 */
@@ -409,6 +470,10 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 }
 
 /* 暗色主题适配 */
+:deep(body.dark-theme) .line-highlight-row:hover {
+  background: rgba(58, 170, 231, 0.15);
+}
+
 :deep(body.dark-theme) .code-content-wrapper {
   background-color: rgba(58, 170, 231, 0.1);
 }
@@ -435,15 +500,15 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 
 <style scoped>
 /* 响应式设计 */
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .code-container {
     margin: 12px 0;
   }
-  
+
   .code-header {
     padding: 6px 12px;
   }
-  
+
   .language-badge {
     padding: 2px 8px;
   }
@@ -451,21 +516,21 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   .lang-text {
     font-size: 10px;
   }
-  
+
   .code-content {
     padding: 12px;
     font-size: 12px;
   }
-  
+
   .line-numbers {
     padding: 12px 6px;
     font-size: 12px;
   }
-  
+
   .line-number {
     font-size: 10px;
   }
-  
+
   .line-count {
     font-size: 8px;
     padding: 1px 4px;

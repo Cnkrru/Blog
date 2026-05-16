@@ -1,24 +1,38 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const isAnimating = ref(false)
+const router = useRouter()
+
 const toggleImmersiveReading = () : void => {
-  document.body.classList.toggle('immersive-reading');
+  isAnimating.value = true
+  document.body.classList.toggle('immersive-reading')
+  setTimeout(() => { isAnimating.value = false }, 400)
 }
+
+onMounted(() => {
+  router.afterEach(() => {
+    document.body.classList.remove('immersive-reading')
+  })
+})
 </script>
 
 <template>
-  <div class="button-style" @click="toggleImmersiveReading">
+  <div class="button-style immersive-btn" :class="{ animating: isAnimating }" @click="toggleImmersiveReading">
     <img src="../../assets/imgs/svg/book.svg" alt="沉浸式阅读">
+    <span v-if="isAnimating" class="emoji-burst">✨</span>
   </div>
 </template>
 
 <!-- 布局样式 -->
 <style>
-.center-S,
-.mid-flex {
-    transition: width 0.3s ease, max-width 0.3s ease, padding 0.3s ease;
-}
+.immersive-btn {}
 
-.center-card {
-    transition: max-height 0.3s ease, height 0.3s ease;
+@media (max-width: 480px) {
+    .immersive-btn {
+        display: none !important;
+    }
 }
 
 body.immersive-reading .left-blank,
@@ -42,8 +56,8 @@ body.immersive-reading .mid-flex {
 }
 
 body.immersive-reading .center-card {
-    max-height: none;
-    height: auto;
+    max-height: none !important;
+    height: auto !important;
 }
 </style>
 
@@ -54,74 +68,14 @@ body.immersive-reading .center-card {
 
 <!-- 响应式设计媒体查询 -->
 <style>
-@media (max-width: var(--sm)) {
+@media (max-width: 480px) {
     body.immersive-reading .center-S {
-        width: 100%;
-        max-width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
     }
     body.immersive-reading .mid-flex {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-}
-
-@media (max-width: var(--md)) {
-    body.immersive-reading .center-S {
-        width: 90%;
-        max-width: 90%;
-    }
-    body.immersive-reading .mid-flex {
-        padding-left: 15px;
-        padding-right: 15px;
-        align-items: flex-start;
-    }
-    body.immersive-reading .center-card {
-        max-height: none;
-        height: auto;
-    }
-}
-
-@media (max-width: var(--lg)) {
-    body.immersive-reading .center-S {
-        width: 700px;
-        max-width: 700px;
-    }
-    body.immersive-reading .mid-flex {
-        padding-left: 20px;
-        padding-right: 20px;
-        align-items: flex-start;
-    }
-    body.immersive-reading .center-card {
-        max-height: none;
-        height: auto;
-    }
-}
-
-@media (max-width: var(--xl)) {
-    body.immersive-reading .center-S {
-        width: 900px;
-        max-width: 900px;
-    }
-    body.immersive-reading .mid-flex {
-        align-items: flex-start;
-    }
-    body.immersive-reading .center-card {
-        max-height: none;
-        height: auto;
-    }
-}
-
-@media (max-width: var(--2xl)) {
-    body.immersive-reading .center-S {
-        width: 1400px;
-        max-width: 1400px;
-    }
-    body.immersive-reading .mid-flex {
-        align-items: flex-start;
-    }
-    body.immersive-reading .center-card {
-        max-height: none;
-        height: auto;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
     }
 }
 </style>

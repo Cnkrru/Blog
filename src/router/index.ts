@@ -42,6 +42,21 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../pages/project/Projects.vue')
     },
     {
+        path: '/timeline',
+        name: 'Timeline',
+        component: () => import('../pages/Timeline.vue')
+    },
+    {
+        path: '/search',
+        name: 'Search',
+        component: () => import('../pages/SearchPage.vue')
+    },
+    {
+        path: '/links/apply',
+        name: 'LinkApply',
+        component: () => import('../pages/LinkApply.vue')
+    },
+    {
         path: '/changelog',
         name: 'Changelog',
         component: () => import('../pages/log/Changelog.vue')

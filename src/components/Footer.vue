@@ -70,38 +70,30 @@ import Copyright from './p-footer/CopyRight.vue'
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 480px) {
     .footer-S {
         height: auto;
-        padding: 20px 0;
+        padding: 6px 0;
     }
-
     .footer-card {
-        padding: 10px;
+        padding: 6px;
     }
-
     .footer-element-card {
-        width: 90%;
-        padding: 8px;
+        width: 95%;
+        padding: 6px;
     }
 }
 
-@media (max-width: var(--lg)) {
+@media (max-width: 768px) {
     .footer-S {
-        height: 190px;
+        height: auto;
+        padding: 10px 0;
     }
 }
 
-@media (max-width: var(--xl)) {
-    .footer-S {
-        height: 200px;
-    }
-}
-
-@media (max-width: var(--2xl)) {
+@media (min-width: 1281px) {
     .footer-S {
         max-width: 1400px;
-        height: 210px;
     }
 }
 </style>

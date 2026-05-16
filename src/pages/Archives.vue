@@ -11,273 +11,238 @@ const store = useArticlesStore()
 useHead({
   title: '归档 - Cnkrru\'s Blog',
   meta: [
-    { name: 'description', content: 'Cnkrru\'s Blog的所有文章归档，按分类和时间顺序整理，方便查找和阅读' },
-    { name: 'keywords', content: '归档,文章列表,历史文章,博客归档' },
-    { name: 'author', content: 'Cnkrru' },
+    { name: 'description', content: 'Cnkrru\'s Blog的所有文章归档' },
+    { name: 'keywords', content: '归档,文章列表,历史文章' },
     { name: 'robots', content: 'index, follow' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://cnkrru.top/archives' },
     { property: 'og:title', content: '归档 - Cnkrru\'s Blog' },
-    { property: 'og:description', content: 'Cnkrru\'s Blog的所有文章归档，按分类和时间顺序整理，方便查找和阅读' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:url', content: 'https://cnkrru.top/archives' },
-    { name: 'twitter:title', content: '归档 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: 'Cnkrru\'s Blog的所有文章归档，按分类和时间顺序整理，方便查找和阅读' }
+    { name: 'twitter:url', content: 'https://cnkrru.top/archives' }
   ],
-  link: [
-    { rel: 'canonical', href: 'https://cnkrru.top/archives' }
-  ]
+  link: [{ rel: 'canonical', href: 'https://cnkrru.top/archives' }]
 })
 
 const articles = ref<any[]>([])
-const categories = ref<any[]>([])
-const expandedCategory = ref<string | null>(null)
-const currentPage = ref(1)
-const itemsPerPage = 5
+const viewMode = ref<'category' | 'year' | 'month'>('category')
+const expandedKey = ref<string | null>(null)
 
 const loadArticles = async () => {
-    try {
-        const data = await store.fetchArticles()
-        articles.value = data
-        categorizeArticles()
-    } catch (error) {
-        articles.value = []
-    }
+  try {
+    const data = await store.fetchArticles()
+    articles.value = data.sort((a, b) => parseInt(b.id) - parseInt(a.id))
+  } catch { articles.value = [] }
 }
 
-const categorizeArticles = () => {
-    const categoryMap: Record<string, any[]> = {}
-
-    articles.value.forEach(article => {
-        const category = article.category
-        if (category) {
-            if (!categoryMap[category]) {
-                categoryMap[category] = []
-            }
-            categoryMap[category].push(article)
-        }
-    })
-
-    categories.value = Object.keys(categoryMap).map(category => {
-        return {
-            name: category,
-            posts: categoryMap[category].sort((a, b) => {
-                return parseInt(b.id) - parseInt(a.id)
-            })
-        }
-    }).sort((a, b) => {
-        return a.name.localeCompare(b.name)
-    })
-}
-
-const totalPages = computed(() => {
-    return Math.ceil(categories.value.length / itemsPerPage)
+// 按分类
+const categoryGroups = computed(() => {
+  const map: Record<string, any[]> = {}
+  articles.value.forEach(a => {
+    const c = a.category || '未分类'
+    if (!map[c]) map[c] = []
+    map[c].push(a)
+  })
+  return Object.keys(map).sort().map(k => ({ name: k, items: map[k] }))
 })
 
-const currentCategories = computed(() => {
-    const startIndex = (currentPage.value - 1) * itemsPerPage
-    return categories.value.slice(startIndex, startIndex + itemsPerPage)
+// 按年
+const yearGroups = computed(() => {
+  const map: Record<string, any[]> = {}
+  articles.value.forEach(a => {
+    const y = new Date(a.date).getFullYear().toString()
+    if (!map[y]) map[y] = []
+    map[y].push(a)
+  })
+  return Object.keys(map).sort().reverse().map(k => ({ name: k, items: map[k] }))
 })
 
-const toggleCategory = (categoryName: string) => {
-    if (expandedCategory.value === categoryName) {
-        expandedCategory.value = null
-    } else {
-        expandedCategory.value = categoryName
-    }
-}
-
-const changePage = (page: number) => {
-    currentPage.value = page
-    expandedCategory.value = null
-}
-
-onMounted(() => {
-    loadArticles()
+// 按月
+const monthGroups = computed(() => {
+  const map: Record<string, any[]> = {}
+  articles.value.forEach(a => {
+    const d = new Date(a.date)
+    const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    if (!map[k]) map[k] = []
+    map[k].push(a)
+  })
+  return Object.keys(map).sort().reverse().map(k => ({ name: k, items: map[k] }))
 })
+
+const groups = computed(() => {
+  if (viewMode.value === 'year') return yearGroups.value
+  if (viewMode.value === 'month') return monthGroups.value
+  return categoryGroups.value
+})
+
+function toggleGroup(name: string) {
+  expandedKey.value = expandedKey.value === name ? null : name
+}
+
+onMounted(loadArticles)
 </script>
 
 <template>
-    <div id="site-stats-container"></div>
-    <div class="center-head-card">
-        <h2>归档</h2>
-        <ArticleCount />
-        <TagCloud :articles="articles" />
+  <div id="site-stats-container"></div>
+  <div class="center-head-card">
+    <h2>归档</h2>
+    <ArticleCount />
+    <TagCloud :articles="articles" />
+  </div>
+  <hr>
+  <div class="center-card-content">
+    <!-- 模式切换 -->
+    <div class="view-tabs">
+      <button
+        :class="['view-tab', { active: viewMode === 'category' }]"
+        @click="viewMode = 'category'"
+      >按分类</button>
+      <button
+        :class="['view-tab', { active: viewMode === 'year' }]"
+        @click="viewMode = 'year'"
+      >按年</button>
+      <button
+        :class="['view-tab', { active: viewMode === 'month' }]"
+        @click="viewMode = 'month'"
+      >按月</button>
     </div>
-    <hr>
-    <div class="center-card-content">
-        <template v-for="category in currentCategories" :key="category.name">
-            <a href="#" @click.prevent="toggleCategory(category.name)">
-                <div class="index-center-list-card">
-                    <div class="index-center-list-card-header">
-                        {{ category.name }}
-                    </div>
-                    <hr>
-                    <div class="index-center-list-card-content">
-                        <div class="article-meta-info">
-                            <span>文章数量: {{ category.posts.length }}</span>
-                            <span>{{ expandedCategory === category.name ? '收起' : '展开' }}</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
 
-            <div v-if="expandedCategory === category.name" class="category-posts">
-                <template v-for="article in category.posts" :key="article.id">
-                    <RouterLink :to="`/post/${article.id}`" class="post-item">
-                        <span class="post-title">{{ article.title }}</span>
-                        <span class="post-date">{{ article.date }}</span>
-                    </RouterLink>
-                </template>
-            </div>
-        </template>
+    <div v-for="g in groups" :key="g.name" class="arch-group">
+      <a href="#" class="arch-header" @click.prevent="toggleGroup(g.name)">
+        <span class="arch-name">{{ g.name }}</span>
+        <span class="arch-count">{{ g.items.length }} 篇</span>
+        <span class="arch-arrow">{{ expandedKey === g.name ? '▾' : '▸' }}</span>
+      </a>
+
+      <Transition name="fold">
+        <div v-if="expandedKey === g.name" class="arch-list">
+          <RouterLink
+            v-for="a in g.items"
+            :key="a.id"
+            :to="`/post/${a.id}`"
+            class="arch-item"
+          >
+            <span class="arch-title">{{ a.title }}</span>
+            <span class="arch-date">{{ a.date }}</span>
+          </RouterLink>
+        </div>
+      </Transition>
     </div>
-    <hr>
-    <div class="simple-pagination">
-        <button
-            class="nav-btn prev-btn"
-            :disabled="currentPage === 1"
-            @click="changePage(currentPage - 1)"
-        >
-            &lt; 上一页
-        </button>
-
-        <span class="page-info">
-            第 {{ currentPage }} / {{ totalPages }} 页
-        </span>
-
-        <button
-            class="nav-btn next-btn"
-            :disabled="currentPage === totalPages"
-            @click="changePage(currentPage + 1)"
-        >
-            下一页 &gt;
-        </button>
-    </div>
+  </div>
 </template>
 
-<!-- 布局样式 -->
 <style scoped>
 .center-head-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
 }
 
-.article-meta-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
+.view-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
-.category-posts {
-    display: flex;
-    flex-direction: column;
-    padding: 0 0 8px 0;
+.view-tab {
+  padding: 5px 16px;
+  border-radius: 16px;
+  border: 1.5px solid var(--common-color-1);
+  background: transparent;
+  color: var(--common-text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.post-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border-bottom: 1px solid;
+.view-tab.active {
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
-.post-item:last-child {
-    border-bottom: none;
+.arch-group {
+  margin-bottom: 2px;
 }
 
-.post-title {
-    font-size: 14px;
+.arch-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--common-text);
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+  transition: all 0.2s;
 }
 
-.post-date {
-    font-size: 12px;
-    opacity: 0.7;
-    white-space: nowrap;
-    margin-left: 16px;
+.arch-header:hover {
+  background: var(--common-hover);
 }
 
-.simple-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
+.arch-name {
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.simple-pagination .nav-btn {
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: 1px solid var(--common-color-1);
-    background: var(--common-color-1);
-    color: var(--common-content);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 14px;
+.arch-count {
+  font-size: 12px;
+  color: var(--common-text);
+  opacity: 0.5;
+  margin-right: auto;
 }
 
-.simple-pagination .nav-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.arch-arrow {
+  font-size: 12px;
+  color: var(--common-text);
+  opacity: 0.4;
 }
 
-.simple-pagination .page-info {
-    color: var(--common-content);
-    font-size: 14px;
-}
-</style>
-
-<!-- 颜色样式 -->
-<style scoped>
-.category-posts {
-    background: var(--common-bg);
+.arch-list {
+  padding: 4px 0 8px 0;
 }
 
-.post-item {
-    border-bottom-color: var(--common-color-1);
-    color: var(--common-text);
+.arch-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  text-decoration: none;
+  color: var(--common-text);
+  border-bottom: 1px solid var(--common-color-1);
+  opacity: 0.8;
+  transition: all 0.15s;
 }
 
-.post-item:hover {
-    background: var(--common-hover);
+.arch-item:hover {
+  opacity: 1;
+  background: var(--common-bg);
 }
-</style>
 
-<!-- 响应式设计媒体查询 -->
-<style scoped>
-@media (max-width: var(--sm)) {
-    .simple-pagination {
-        gap: 10px;
-        padding: 12px;
-    }
+.arch-title {
+  font-size: 14px;
+}
 
-    .simple-pagination .nav-btn {
-        padding: 6px 12px;
-        font-size: 13px;
-    }
+.arch-date {
+  font-size: 12px;
+  opacity: 0.5;
+  white-space: nowrap;
+  margin-left: 16px;
+}
 
-    .simple-pagination .page-info {
-        font-size: 13px;
-    }
+/* 展开动画 */
+.fold-enter-active,
+.fold-leave-active {
+  transition: all 0.2s ease;
+}
 
-    .post-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2px;
-    }
-
-    .post-date {
-        margin-left: 0;
-    }
+.fold-enter-from,
+.fold-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
 }
 </style>

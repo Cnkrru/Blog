@@ -7,9 +7,6 @@ import './assets/css/color.css'
 
 import { pinia } from './stores/index'
 
-import { SpeedInsights } from '@vercel/speed-insights/vue'
-import { Analytics } from '@vercel/analytics/vue'
-
 interface AppReturn {
   app: ReturnType<typeof createVueApp>
   router: ReturnType<typeof createAppRouter>
@@ -25,9 +22,6 @@ export function createApp(): AppReturn {
 
   vueApp.use(router)
   vueApp.use(pinia)
-
-  vueApp.component('SpeedInsights', SpeedInsights)
-  vueApp.component('Analytics', Analytics)
 
   return { app: vueApp, router, head }
 }

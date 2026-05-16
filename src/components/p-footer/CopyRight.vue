@@ -30,7 +30,7 @@ onMounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .copyright {
     text-align: left;
   }

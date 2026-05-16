@@ -72,13 +72,13 @@ import WelcomeNotification from '../components/api/WelcomeNotification.vue'
 
 <!-- 响应式设计媒体查询 -->
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .navbar {
     padding: 1.5rem 1.5rem;
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .navbar {
     padding: 1rem 1rem;
     flex-direction: column;
@@ -92,7 +92,7 @@ import WelcomeNotification from '../components/api/WelcomeNotification.vue'
 }
 
 /* 防止移动端横向滚动 */
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .hero-container {
     overflow-x: hidden;
   }

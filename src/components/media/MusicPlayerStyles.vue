@@ -551,7 +551,7 @@
 </style>
 
 <style>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .player-content {
         padding: 12px 16px;
         gap: 16px;
@@ -605,7 +605,7 @@
     }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     .player-content {
         flex-wrap: wrap;
         padding: 12px;

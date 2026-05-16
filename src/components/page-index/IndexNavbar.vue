@@ -142,7 +142,7 @@ const navigateTo = (path) => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .nav-menu {
     gap: 1.5rem;
   }
@@ -153,7 +153,7 @@ const navigateTo = (path) => {
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .nav-menu {
     gap: 0.75rem;
     flex-wrap: wrap;

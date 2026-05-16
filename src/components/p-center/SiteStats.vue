@@ -179,7 +179,7 @@ watch(() => isDarkTheme.value, () => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .site-stats-card {
     padding: 16px;
   }
@@ -207,7 +207,7 @@ watch(() => isDarkTheme.value, () => {
   
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .site-stats-card {
     padding: 12px;
   }

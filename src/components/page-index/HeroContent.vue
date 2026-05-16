@@ -477,7 +477,7 @@ onMounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .hero-content {
     padding: 4rem 1rem;
   }
@@ -519,7 +519,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .hero-content {
     padding: 3rem 0.5rem;
   }

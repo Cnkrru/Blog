@@ -37,10 +37,32 @@
       </div>
     </div>
   </div>
+
+  <!-- 选中文字引用弹出 -->
+  <Teleport to="body">
+    <div
+      v-if="showQuotePopup"
+      class="quote-popup"
+      :style="{ left: quotePopupPos.x + 'px', top: quotePopupPos.y + 'px' }"
+      @click.stop
+    >
+      <button v-if="!quoteCopied" class="quote-btn" @click="copyQuote">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        引用
+      </button>
+      <span v-else class="quote-done">已复制</span>
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import MermaidRender from './MermaidRender.vue'
 import KatexRender from './KatexRender.vue'
 import HighlightRender from './HighlightRender.vue'
@@ -49,6 +71,9 @@ import EasterEggAnimation from '../media/EasterEggAnimation.vue'
 const props = defineProps<{
   content: string
 }>()
+
+const route = useRoute()
+const postId = computed(() => route.params.id as string || '')
 
 const emit = defineEmits<{
   'update:toc': [toc: any]
@@ -499,6 +524,75 @@ const addImageClickListeners = () => {
   }, 100)
 }
 
+// 选中文字引用功能
+const showQuotePopup = ref(false)
+const quotePopupPos = ref({ x: 0, y: 0 })
+const selectedText = ref('')
+const quoteCopied = ref(false)
+
+function handleTextSelection(e: MouseEvent) {
+  // 确保点击在 markdown 内容区域
+  const target = e.target as HTMLElement
+  if (!target.closest('.markdown-content')) {
+    setTimeout(() => { showQuotePopup.value = false }, 200)
+    return
+  }
+
+  // 延迟获取选择，确保浏览器已完成选择
+  setTimeout(() => {
+    const sel = window.getSelection()
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      showQuotePopup.value = false
+      return
+    }
+    const text = sel.toString().trim()
+    if (text.length < 5) {
+      showQuotePopup.value = false
+      return
+    }
+    selectedText.value = text
+    quotePopupPos.value = {
+      x: e.clientX,
+      y: e.clientY - 10
+    }
+    showQuotePopup.value = true
+    quoteCopied.value = false
+  }, 10)
+}
+
+function copyQuote() {
+  const source = postId.value
+    ? `https://cnkrru.top/post/${postId.value}`
+    : 'https://cnkrru.top'
+  const quote = `> ${selectedText.value}\n>\n> — From: ${source}`
+  navigator.clipboard.writeText(quote).then(() => {
+    quoteCopied.value = true
+    setTimeout(() => {
+      showQuotePopup.value = false
+      quoteCopied.value = false
+    }, 1500)
+  }).catch(() => {
+    // 降级
+    const ta = document.createElement('textarea')
+    ta.value = quote
+    ta.style.cssText = 'position:fixed;left:-9999px'
+    document.body.appendChild(ta)
+    ta.select()
+    document.execCommand('copy')
+    document.body.removeChild(ta)
+    quoteCopied.value = true
+    setTimeout(() => {
+      showQuotePopup.value = false
+      quoteCopied.value = false
+    }, 1500)
+  })
+}
+
+function closeQuotePopup() {
+  showQuotePopup.value = false
+  quoteCopied.value = false
+}
+
 // 灯箱操作
 const openLightbox = (index) => {
   currentImageIndex.value = index
@@ -523,6 +617,12 @@ const nextImage = () => {
 
 onMounted(() => {
   renderMarkdown()
+  // 监听文本选择
+  document.addEventListener('mouseup', handleTextSelection)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mouseup', handleTextSelection)
 })
 
 watch(() => props.content, () => {
@@ -531,6 +631,49 @@ watch(() => props.content, () => {
 </script>
 
 <style>
+/* 引用弹出气泡 */
+.quote-popup {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  z-index: 5000;
+  padding: 4px 6px;
+  border-radius: 8px;
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+  box-shadow: 0 4px 16px var(--common-shadow);
+  animation: quoteFadeIn 0.15s ease;
+}
+
+.quote-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: var(--common-color-1);
+  color: var(--common-content);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quote-btn:hover {
+  background: var(--common-hover);
+}
+
+.quote-done {
+  font-size: 12px;
+  color: #28a745;
+  padding: 6px 12px;
+  font-weight: 600;
+}
+
+@keyframes quoteFadeIn {
+  from { opacity: 0; transform: translate(-50%, calc(-100% + 8px)); }
+  to { opacity: 1; transform: translate(-50%, -100%); }
+}
+
 /* 确保Markdown内容可见 */
 .markdown-content {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -854,7 +997,7 @@ watch(() => props.content, () => {
 
 <style>
 /* 响应式设计 */
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .markdown-content {
     padding: 0.5rem;
   }

@@ -479,7 +479,7 @@ onMounted(async () => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .heatmap-header {
     flex-direction: column;
     gap: 1rem;
@@ -497,7 +497,7 @@ onMounted(async () => {
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .heatmap-grid {
     gap: 3px;
     max-width: 250px;

@@ -328,7 +328,7 @@ onUnmounted(() => {
 
 <style scoped>
 /* 响应式设计 */
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .math-container {
     padding: 15px;
   }
@@ -343,7 +343,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .math-container {
     padding: 12px;
     margin: 15px 0;

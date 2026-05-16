@@ -26,10 +26,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useClipboardStore, useNotificationStore } from '../../stores'
 
 const props = defineProps<{ code: string }>()
+
+const route = useRoute()
+const postId = computed(() => route.params.id as string || '')
 
 const clipboardStore = useClipboardStore()
 const notificationStore = useNotificationStore()
@@ -53,8 +57,13 @@ const copyCode = async () => {
   animationClass.value = 'copying'
 
   try {
+    // 附加来源注释
+    const codeWithSource = postId.value
+      ? `${props.code}\n// From: https://cnkrru.top/post/${postId.value}`
+      : props.code
+
     // 使用浏览器原生Clipboard API
-    await navigator.clipboard.writeText(props.code)
+    await navigator.clipboard.writeText(codeWithSource)
 
     // 显示复制成功状态
     isCopied.value = true
@@ -82,8 +91,12 @@ const copyCode = async () => {
 
 // 降级复制方法
 const fallbackCopyTextToClipboard = () => {
+  const codeWithSource = postId.value
+    ? `${props.code}\n// From: https://cnkrru.top/post/${postId.value}`
+    : props.code
+
   const textArea = document.createElement('textarea')
-  textArea.value = props.code
+  textArea.value = codeWithSource
 
   // 确保文本区域不在屏幕上显示
   textArea.style.position = 'fixed'
@@ -286,7 +299,7 @@ onMounted(() => {
 }
 
 /* 响应式设计 */
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .copy-button {
         padding: 3px 6px;
         font-size: 10px;
@@ -357,7 +370,7 @@ onMounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .copy-button {
         padding: 3px 6px;
         font-size: 10px;

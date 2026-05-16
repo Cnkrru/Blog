@@ -84,10 +84,10 @@ onMounted(() => {
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
           <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
         </svg>
-        文章菜单
+        菜单
       </button>
     </div>
-    
+
     <!-- 文章菜单卡片 -->
     <div class="post-menu-card" :class="{ active: show }">
       <div class="post-menu-card-header">
@@ -423,7 +423,7 @@ onMounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
     .post-menu-card {
         width: 240px;
         max-height: 60vh;
@@ -470,7 +470,7 @@ onMounted(() => {
     }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     .post-menu-card {
         width: 260px;
         max-height: 65vh;
@@ -507,7 +507,7 @@ onMounted(() => {
     }
 }
 
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .post-menu-card {
         width: 300px;
         max-height: 70vh;
@@ -544,19 +544,19 @@ onMounted(() => {
     }
 }
 
-@media (max-width: var(--lg)) {
+@media (max-width: 1024px) {
     .post-menu-card {
         width: 320px;
     }
 }
 
-@media (max-width: var(--xl)) {
+@media (max-width: 1280px) {
     .post-menu-card {
         width: 340px;
     }
 }
 
-@media (max-width: var(--2xl)) {
+@media (max-width: 1536px) {
     .post-menu-card {
         width: 360px;
     }

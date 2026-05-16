@@ -112,6 +112,13 @@ const handleKeyPress = (e) => {
       return
     }
 
+    if (query) {
+      router.push(`/search?q=${encodeURIComponent(query)}`)
+      searchText.value = ''
+      showResults.value = false
+      return
+    }
+
     if (searchResults.value.length > 0) {
       router.push(`/post/${searchResults.value[0].id}`)
       searchText.value = ''
@@ -209,26 +216,26 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .search-card {
       width: 80%;
       max-width: none;
   }
 }
 
-@media (max-width: var(--lg)) {
+@media (max-width: 1024px) {
   .search-card {
       max-width: 400px;
   }
 }
 
-@media (max-width: var(--xl)) {
+@media (max-width: 1280px) {
   .search-card {
       max-width: 500px;
   }
 }
 
-@media (max-width: var(--2xl)) {
+@media (max-width: 1536px) {
   .search-card {
       max-width: 600px;
   }

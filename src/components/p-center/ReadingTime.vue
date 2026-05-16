@@ -237,7 +237,7 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
     .reading-time-container {
         padding: 8px 12px;
         margin: 8px 0;
@@ -270,7 +270,7 @@ onUnmounted(() => {
     
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     .reading-time-container {
         padding: 9px 13px;
         margin: 9px 0;
@@ -294,7 +294,7 @@ onUnmounted(() => {
     
 }
 
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .reading-time-container {
         padding: 10px 15px;
         margin: 10px 0;

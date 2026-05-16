@@ -2,10 +2,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const isMenuOpen = ref(false)
+const isAnimating = ref(false)
 
 const toggleMobileMenu = () => {
+  isAnimating.value = true
   isMenuOpen.value = !isMenuOpen.value
   updateDOM()
+  setTimeout(() => { isAnimating.value = false }, 400)
 }
 
 const closeMobileMenu = () => {
@@ -61,9 +64,11 @@ onUnmounted(() => {
     <div 
       class="button-style mobile-menu-toggle" 
       id="mobile-menu-toggle" 
+      :class="{ animating: isAnimating }"
       @click="toggleMobileMenu"
     >
       <img src="../../assets/imgs/svg/order.svg" alt="菜单">
+      <span v-if="isAnimating" class="emoji-burst">✨</span>
     </div>
     
     <!-- 移动端菜单遮罩层 -->
@@ -106,47 +111,31 @@ onUnmounted(() => {
 
 <!-- 响应式设计媒体查询 -->
 <style scoped>
-@media (max-width: calc(var(--sm) - 1px)) {
-  .mobile-menu-toggle {
-      display: none;
-  }
-}
-
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .mobile-menu-container {
     display: block;
   }
   .mobile-menu-toggle {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
 
   .mobile-menu-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 999;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
   }
 
   .mobile-menu-overlay.active {
-      display: block;
+    display: block;
   }
-}
-
-@media (max-width: var(--lg)) {
-    .mobile-menu-toggle {
-        display: none;
-    }
-    
-    .mobile-menu-overlay {
-        display: none;
-    }
 }
 </style>

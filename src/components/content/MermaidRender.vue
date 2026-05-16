@@ -314,7 +314,7 @@ watch(() => isDarkTheme.value, () => {
 
 <style scoped>
 /* 响应式设计 */
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .mermaid-container {
     padding: 15px;
   }
@@ -325,7 +325,7 @@ watch(() => isDarkTheme.value, () => {
   }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
   .mermaid-container {
     padding: 12px;
     margin: 15px 0;

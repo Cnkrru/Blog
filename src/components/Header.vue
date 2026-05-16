@@ -99,9 +99,10 @@ onMounted(() => {
     border: 3px solid var(--common-color-1);
     
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     
     overflow: visible;
 }
@@ -117,7 +118,7 @@ onMounted(() => {
     border-radius: 8px;
     
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     gap: 12px;
     
@@ -141,6 +142,31 @@ onMounted(() => {
 :deep(.button-style:hover) {
     transform: scale(1.15);
     box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+:deep(.button-style.animating) {
+    animation: buttonSpinBounce 0.4s ease;
+}
+
+:deep(.emoji-burst) {
+    position: absolute;
+    font-size: 20px;
+    animation: emojiBurst 0.4s ease;
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes buttonSpinBounce {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes emojiBurst {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, calc(-50% - 20px)) scale(1.5); }
 }
 
 :deep(.button-style img) {
@@ -168,95 +194,63 @@ body.dark-theme .button-style img {
 
 <!-- 响应式设计媒体查询 -->
 <style scoped>
-@media (max-width: var(--sm)) {
+@media (max-width: 480px) {
   .header-flex {
     flex-direction: row;
     justify-content: center;
-    height: 200px;
-    align-items: center;
-  }  
-
-    /* 调整头部卡片 */
-  .header-card {
-      gap: 5px;
-    }
-  
-  .button-class-card {
-        gap: 5px;
-    }
-}
-
-@media (max-width: var(--md)) {
-  .header-card {
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    height: auto;
+    padding: 4px;
   }
-  
+
+  .header-card {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 6px;
+  }
+
   .button-class-card {
-      gap: 10px;
+    gap: 4px;
   }
 
   :deep(.button-style) {
-      width: 36px;
-      height: 36px;
+    width: 32px;
+    height: 32px;
   }
 
   :deep(.button-style img) {
-      width: 18px;
-      height: 18px;
+    width: 16px;
+    height: 16px;
   }
 }
 
-@media (max-width: var(--lg)) {
-    .header-flex {
-        padding: 20px;
-        height: 100px;
-    }
+@media (max-width: 768px) {
+  .header-card {
+    padding: 10px;
+    gap: 10px;
+  }
 
-      /* 调整板块高度 */
-    .header-S {
-        height: 60px;
-    }
+  :deep(.button-style) {
+    width: 36px;
+    height: 36px;
+  }
 
-    .header-card {
-        height: 65px;
-        padding: 10px 30px;
-        flex-direction: row;
-        gap: 16px;
-    }
+  :deep(.button-style img) {
+    width: 18px;
+    height: 18px;
+  }
 }
 
-@media (max-width: var(--xl)) {    
-    .header-flex {
-        padding: 10px;
-        height: 100px;
-    }
-
-    .header-card {
-        height: 65px;
-        padding: 10px 30px;
-        flex-direction: row;
-        gap: 16px;
-    }
-
-        /* 调整头部卡片 */
-    .header-card {
-        gap: 16px;
-    }
-    
-    /* 调整板块高度 */
-    .header-S {
-        height: 65px;
-    }
+@media (max-width: 1024px) {
+  .header-flex {
+    padding: 12px;
+  }
+  .header-card {
+    padding: 10px 20px;
+  }
 }
 
-@media (max-width: var(--2xl)) {
-    /* 调整板块高度 */
-    .header-S {
-        max-width: 1400px;
-        height: 70px;
-    }
+@media (min-width: 1280px) {
+  .header-S {
+    max-width: 1400px;
+  }
 }
 </style>

@@ -295,7 +295,7 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: calc(var(--sm) - 1px)) {
+@media (max-width: 639px) {
     .related-articles-container {
         padding: 12px;
         margin: 15px 0;
@@ -325,7 +325,7 @@ onUnmounted(() => {
     }
 }
 
-@media (max-width: var(--sm)) {
+@media (max-width: 640px) {
     .related-articles-container {
         padding: 13px;
         margin: 18px 0;
@@ -349,7 +349,7 @@ onUnmounted(() => {
     }
 }
 
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
     .related-articles-container {
         padding: 15px;
         margin: 20px 0;

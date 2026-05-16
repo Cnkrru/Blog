@@ -112,33 +112,55 @@
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 480px) {
     .center-S {
         width: 100%;
-        padding: 0 10px;
+        padding: 0;
+    }
+    .center-card {
+        height: auto;
+        max-height: none;
+        min-height: calc(100vh - 200px);
+        padding: 6px;
+        border-width: 2px;
+    }
+    .center-header-area :deep(.center-card-content) {
+        padding: 6px 2px;
     }
 }
 
-@media (max-width: var(--lg)) {
+@media (max-width: 768px) {
     .center-S {
-        width: calc(100% - 20% - 20px);
+        width: 100%;
         padding: 0;
+    }
+    .center-card {
+        height: auto;
+        min-height: 500px;
+        padding: 8px;
+        border-width: 2px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .center-S {
+        width: calc(100% - 20% - 15px);
+    }
+    .center-card {
+        height: 550px;
+    }
+}
+
+@media (max-width: 1280px) {
+    .center-S {
+        width: calc(100% - 18% - 20px);
     }
     .center-card {
         height: 600px;
     }
 }
 
-@media (max-width: var(--xl)) {
-    .center-S {
-        width: 1000px;
-    }
-    .center-card {
-        height: 650px;
-    }
-}
-
-@media (max-width: var(--2xl)) {
+@media (min-width: 1281px) {
     .center-S {
         width: 1200px;
     }

@@ -132,7 +132,7 @@ const handleResultClick = (item) => {
 </style>
 
 <style scoped>
-@media (max-width: var(--md)) {
+@media (max-width: 768px) {
   .search-results {
     max-height: 60vh;
   }
