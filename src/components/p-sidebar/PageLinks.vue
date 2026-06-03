@@ -25,6 +25,11 @@
     margin-bottom: 5px;
     text-align: center;
     overflow-y: auto;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 .page-list-card ul {
@@ -44,31 +49,49 @@
     display: block;
     width: 100%;
     height: fit-content;
-    padding: 6px;
-    margin-bottom: 4px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition:
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
     cursor: pointer;
 }
 
 .page-card:hover {
-    transform: translateY(-5px);
-    border-left-width: 6px;
+    transform: translateY(-2px);
+    border-color: var(--common-color-1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 </style>
 
 <!-- 颜色样式 -->
 <style scoped>
 .page-card {
-    background-color: var(--common-color-1);
-    border: 2px solid var(--common-color-2);
-    box-shadow: var(--common-shadow);
-    color: var(--common-content);
+    background: rgba(255, 255, 255, 0.3);
+    color: var(--common-text);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+body.dark-theme .page-card {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .page-card:hover {
-    box-shadow: var(--common-shadow);
-    background-color: var(--common-hover);
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-theme .page-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 </style>
 

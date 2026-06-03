@@ -5,7 +5,6 @@ interface Weather {
   temperature: number;
   weatherCode: number;
   weatherText: string;
-  weatherIcon: string;
 }
 
 interface IPData {
@@ -31,17 +30,6 @@ const locationInfo = ref<{ city: string, country: string }>({
   country: ''
 })
 
-const weatherIcons: Record<string, string> = {
-  sunny: '☀️',
-  partly_cloudy: '⛅',
-  cloudy: '☁️',
-  rainy: '️',
-  snowy: '❄️',
-  thunderstorm: '⛈️',
-  foggy: '🌫️',
-  unknown: '🌡️',
-}
-
 const cityNames: Record<string, string> = {
   'Beijing': '北京', 'Shanghai': '上海', 'Guangzhou': '广州', 'Shenzhen': '深圳',
   'Hangzhou': '杭州', 'Nanjing': '南京', 'Wuhan': '武汉', 'Chengdu': '成都',
@@ -58,19 +46,6 @@ const cityNames: Record<string, string> = {
 const getCityName = (city: string): string => {
   if (!city) return '未知'
   return cityNames[city] || city
-}
-
-const getWeatherIcon = (code: number): string => {
-  if (code === 0) return weatherIcons.sunny
-  if (code <= 3) return weatherIcons.partly_cloudy
-  if (code <= 49) return weatherIcons.foggy
-  if (code <= 59) return weatherIcons.rainy
-  if (code <= 69) return weatherIcons.snowy
-  if (code <= 79) return weatherIcons.rainy
-  if (code <= 82) return weatherIcons.rainy
-  if (code <= 86) return weatherIcons.snowy
-  if (code <= 99) return weatherIcons.thunderstorm
-  return weatherIcons.unknown
 }
 
 const getWeatherText = (code: number): string => {
@@ -189,8 +164,7 @@ const fetchLocationAndWeather = async (): Promise<void> => {
       weather.value = {
         temperature: Math.round(weatherData.current.temperature_2m),
         weatherCode: weatherData.current.weather_code,
-        weatherText: getWeatherText(weatherData.current.weather_code),
-        weatherIcon: getWeatherIcon(weatherData.current.weather_code)
+        weatherText: getWeatherText(weatherData.current.weather_code)
       }
     }
   } 
@@ -200,8 +174,7 @@ const fetchLocationAndWeather = async (): Promise<void> => {
     weather.value = {
       temperature: 20,
       weatherCode: 0,
-      weatherText: '晴',
-      weatherIcon: weatherIcons.sunny
+      weatherText: '晴'
     }
     locationInfo.value = {
       city: '北京',
@@ -224,7 +197,72 @@ onMounted(() => {
     </div>
 
     <div v-else-if="weather" class="weather-content">
-      <span class="weather-icon">{{ weather.weatherIcon }}</span>
+      <svg class="weather-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 晴天 -->
+        <template v-if="weather.weatherCode === 0">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </template>
+        <!-- 多云 -->
+        <template v-else-if="weather.weatherCode <= 3">
+          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+        </template>
+        <!-- 雾 -->
+        <template v-else-if="weather.weatherCode <= 49">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+          <line x1="3" y1="14" x2="21" y2="14"/>
+          <line x1="13" y1="18" x2="21" y2="18"/>
+        </template>
+        <!-- 毛毛雨/小雨 -->
+        <template v-else-if="weather.weatherCode <= 59">
+          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+          <line x1="8" y1="18" x2="8.01" y2="18"/>
+          <line x1="12" y1="18" x2="12.01" y2="18"/>
+          <line x1="16" y1="18" x2="16.01" y2="18"/>
+        </template>
+        <!-- 小雪 -->
+        <template v-else-if="weather.weatherCode <= 69">
+          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+          <circle cx="8" cy="19" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="16" cy="19" r="1" fill="currentColor" stroke="none"/>
+        </template>
+        <!-- 大雨/暴雨 -->
+        <template v-else-if="weather.weatherCode <= 82">
+          <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+          <line x1="8" y1="18" x2="8.01" y2="18"/>
+          <line x1="12" y1="18" x2="12.01" y2="18"/>
+          <line x1="16" y1="18" x2="16.01" y2="18"/>
+          <line x1="8" y1="22" x2="8.01" y2="22"/>
+          <line x1="12" y1="22" x2="12.01" y2="22"/>
+          <line x1="16" y1="22" x2="16.01" y2="22"/>
+        </template>
+        <!-- 暴雪 -->
+        <template v-else-if="weather.weatherCode <= 86">
+          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+          <circle cx="8" cy="18" r="1.5" fill="currentColor" stroke="none"/>
+          <circle cx="14" cy="18" r="1.5" fill="currentColor" stroke="none"/>
+          <circle cx="11" cy="22" r="1.5" fill="currentColor" stroke="none"/>
+        </template>
+        <!-- 雷暴 -->
+        <template v-else-if="weather.weatherCode <= 99">
+          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+          <polygon points="13 12 10 16 13 16 12 20 16 14 13 14 14 12" fill="currentColor" stroke="none"/>
+        </template>
+        <!-- 兜底 -->
+        <template v-else>
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+        </template>
+      </svg>
       <span class="weather-temp">{{ weather.temperature }}°</span>
       <span class="weather-city">{{ locationInfo.city }}</span>
     </div>
@@ -234,12 +272,12 @@ onMounted(() => {
 <style scoped>
 .weather-mini {
   min-width: 90px;
-  padding: 6px 10px;
-  border-radius: 20px;
+  padding: 6px 12px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  border: 1px solid transparent;
 }
 
 .weather-loading {
@@ -257,7 +295,9 @@ onMounted(() => {
 }
 
 .weather-icon {
-  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .weather-temp {
@@ -271,22 +311,32 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  opacity: 0.7;
 }
 </style>
 
 <style scoped>
 .weather-mini {
-  background: var(--common-bg);
-  color: var(--common-content);
-  border: 2px solid var(--common-bg);
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--common-text);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.dark-theme .weather-mini {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.weather-icon {
+  color: var(--common-color-1);
 }
 
 .weather-temp {
-  color: var(--common-color-1);
+  color: var(--common-text);
 }
 
 .weather-city {
-  color: var(--common-color-1);
+  color: var(--common-text);
 }
 </style>
 

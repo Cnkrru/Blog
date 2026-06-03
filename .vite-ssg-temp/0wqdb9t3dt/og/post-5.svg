@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b9d"/>
+      <stop offset="100%" style="stop-color:#c44dff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- 装饰圆 -->
+  <circle cx="1050" cy="100" r="200" fill="rgba(255,107,157,0.08)"/>
+  <circle cx="100" cy="550" r="150" fill="rgba(196,77,255,0.06)"/>
+  <circle cx="1150" cy="480" r="100" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- 顶部横线 -->
+  <rect x="60" y="80" width="80" height="4" rx="2" fill="url(#accent)"/>
+
+  <!-- 标题 -->
+  <text x="60" y="150" font-size="42" font-weight="bold" fill="#ffffff">Frontend-沉浸阅读组件</text>
+
+  <!-- 标签 -->
+  <foreignObject x="56" y="220" width="1088" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Arial,sans-serif;">
+      <span style="display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #ff99bb;color:#ff99bb;font-size:14px;margin-right:8px;margin-bottom:8px;">前端</span><span style="display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #ff99bb;color:#ff99bb;font-size:14px;margin-right:8px;margin-bottom:8px;">组件</span>
+    </div>
+  </foreignObject>
+
+  <!-- 底部信息 -->
+  <text x="60" y="570" font-size="20" fill="rgba(255,255,255,0.5)">Cnkrru's Blog</text>
+  <text x="60" y="595" font-size="14" fill="rgba(255,255,255,0.35)">2026-04-19</text>
+</svg>

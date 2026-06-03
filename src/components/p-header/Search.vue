@@ -186,7 +186,7 @@ onUnmounted(() => {
   height: 40px;
   margin: 0;
   padding: 0 16px;
-  border-radius: 8px;
+  border-radius: 20px;
   display: flex;
   flex: 1;
   justify-content: center;
@@ -205,8 +205,15 @@ onUnmounted(() => {
 
 <style scoped>
 .search-card {
-  border: 2px solid var(--common-color-1);
-  background-color: var(--common-bg);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.dark-theme .search-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .search-card input {

@@ -254,7 +254,7 @@ if (typeof window !== 'undefined') {
   color: var(--common-text);
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 .notif-btn:hover {

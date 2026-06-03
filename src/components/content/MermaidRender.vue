@@ -199,7 +199,7 @@ watch(() => isDarkTheme.value, () => {
   overflow: auto;
   position: relative;
   clear: both;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .mermaid-container-dark {

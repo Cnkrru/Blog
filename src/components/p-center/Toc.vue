@@ -225,6 +225,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <Teleport to="body">
   <div class="toc-card" :class="{ active: show }">
     <div class="toc-card-header">
       <h3>文章目录</h3>
@@ -306,6 +307,7 @@ onUnmounted(() => {
       <div v-if="!toc.length" class="toc-empty">暂无目录</div>
     </div>
   </div>
+  </Teleport>
 </template>
 
 <style scoped>
@@ -316,18 +318,29 @@ onUnmounted(() => {
   transform: translate(100%, -50%);
   width: 280px;
   max-height: 70vh;
-  border-radius: 12px 0 0 12px;
+  border-radius: 16px 0 0 16px;
   z-index: 999;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
-  box-shadow: -4px 4px 12px var(--common-shadow);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    -4px 4px 16px rgba(0, 0, 0, 0.08),
+    -1px 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .toc-card {
+  background-color: rgba(21, 7, 60, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .toc-card.active {
   transform: translate(0, -50%);
-  box-shadow: -6px 6px 20px var(--common-shadow);
+  box-shadow:
+    -6px 6px 24px rgba(0, 0, 0, 0.12),
+    -2px 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .toc-card-header {
@@ -368,7 +381,7 @@ onUnmounted(() => {
   color: var(--common-text);
   cursor: pointer;
   font-size: 16px;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
 }
 
 .toc-close-btn:hover {
@@ -391,7 +404,7 @@ onUnmounted(() => {
   background: transparent;
   color: var(--common-text);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .toc-tb-btn:hover {
@@ -417,7 +430,7 @@ onUnmounted(() => {
 .toc-item {
   margin-bottom: 2px;
   border-radius: 4px;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease;
 }
 
 .toc-link {
@@ -426,17 +439,25 @@ onUnmounted(() => {
   gap: 4px;
   padding: 5px 8px;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--common-text);
   font-size: 13px;
   line-height: 1.4;
-  transition: all 0.15s;
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease,
+    color 0.15s ease,
+    border-left-color 0.15s ease;
   cursor: pointer;
 }
 
 .toc-link:hover {
-  background-color: var(--common-bg);
+  background-color: rgba(255, 192, 203, 0.1);
   transform: translateX(3px);
+}
+
+body.dark-theme .toc-link:hover {
+  background-color: rgba(58, 170, 231, 0.1);
 }
 
 .toc-item.active > .toc-link {

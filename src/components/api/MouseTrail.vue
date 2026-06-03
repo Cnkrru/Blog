@@ -96,11 +96,13 @@ const updateTrail = (timestamp) => {
   animationId = requestAnimationFrame(updateTrail)
 }
 
-// 处理鼠标移动
+// 处理鼠标/触摸移动
 const handleMouseMove = (e) => {
   if (!isBrowser.value || !isEnabled.value) return
-  mouseX = e.clientX
-  mouseY = e.clientY
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY
+  mouseX = clientX
+  mouseY = clientY
 }
 
 // 处理鼠标离开
@@ -115,11 +117,20 @@ mouseMoveHandler = throttle(handleMouseMove, 10)
 onMounted(() => {
   isBrowser.value = true
   document.addEventListener('mousemove', mouseMoveHandler)
+  document.addEventListener('touchmove', mouseMoveHandler)
   document.addEventListener('mouseleave', handleMouseLeave)
   animationId = requestAnimationFrame(updateTrail)
-  
-  // 监听主题变化
+
   mouseStore.setDarkTheme(isDarkTheme.value)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousemove', mouseMoveHandler)
+  document.removeEventListener('touchmove', mouseMoveHandler)
+  document.removeEventListener('mouseleave', handleMouseLeave)
+  if (animationId) {
+    cancelAnimationFrame(animationId)
+  }
 })
 
 onUnmounted(() => {

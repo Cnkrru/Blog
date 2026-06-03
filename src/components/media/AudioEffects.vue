@@ -1,70 +1,86 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
-import { useAudioStore } from '../../stores'
+import { ref, watch, computed } from 'vue'
+import { useMusicStore } from '../../stores'
 
-const props = withDefaults(defineProps<{ audioContext?: any; isPlaying?: boolean; isVisible?: boolean }>(), {
+const props = withDefaults(defineProps<{ audioContext?: any; isPlaying?: boolean; isVisible?: boolean; visualizerEnabled?: boolean }>(), {
   audioContext: null,
   isPlaying: false,
-  isVisible: false
+  isVisible: false,
+  visualizerEnabled: false
 })
 
 const emit = defineEmits<{ 'effect-change': [effect: any]; close: [] }>()
 
-const audioStore = useAudioStore()
+const musicStore = useMusicStore()
 
-const effectsEnabled = computed(() => audioStore.effectsEnabled)
-const visualizerEnabled = computed(() => audioStore.visualizerEnabled)
-const currentSurroundMode = computed(() => audioStore.currentSurroundMode)
-const currentEqPreset = computed(() => audioStore.currentEqPreset)
-const surroundModes = computed(() => audioStore.surroundModes)
-const eqPresets = computed(() => audioStore.eqPresets)
+const effectsEnabled = computed(() => {
+  console.log('[AudioEffects] effectsEnabled changed:', musicStore.effectsEnabled)
+  return musicStore.effectsEnabled
+})
+const currentSurroundMode = computed(() => {
+  console.log('[AudioEffects] surroundMode changed:', musicStore.surroundMode)
+  return musicStore.surroundMode
+})
+const currentEqPreset = computed(() => {
+  console.log('[AudioEffects] eqPreset changed:', musicStore.eqPreset)
+  return musicStore.eqPreset
+})
 
 const isExpanded = ref(false)
 
-const toggleVisualizer = () => {
-  audioStore.toggleVisualizer()
-  emit('effect-change', {
-    enabled: audioStore.effectsEnabled,
-    surroundMode: audioStore.surroundMode,
-    eqPreset: audioStore.eqPreset,
-    visualizerEnabled: audioStore.visualizerEnabled
-  })
-}
+// 硬编码选项，musicStore 没有暴露 surroundModes 和 eqPresets
+const surroundModes = [
+  { value: 'off', label: '关闭' },
+  { value: 'hall', label: '大厅' },
+  { value: 'room', label: '房间' },
+  { value: 'stadium', label: '体育场' },
+]
+const eqPresets = [
+  { value: 'flat', label: '标准' },
+  { value: 'pop', label: '流行' },
+  { value: 'rock', label: '摇滚' },
+  { value: 'classical', label: '古典' },
+  { value: 'jazz', label: '爵士' },
+  { value: 'bass', label: '低音增强' },
+]
 
 const toggleEffects = () => {
-  audioStore.toggleEffects()
   emit('effect-change', {
-    enabled: audioStore.effectsEnabled,
-    surroundMode: audioStore.surroundMode,
-    eqPreset: audioStore.eqPreset,
-    visualizerEnabled: audioStore.visualizerEnabled
+    enabled: !effectsEnabled.value,
+    surroundMode: currentSurroundMode.value,
+    eqPreset: currentEqPreset.value,
   })
 }
 
-const changeSurroundMode = (mode) => {
-  audioStore.setSurroundMode(mode)
+const isVizEnabled = computed(() => props.visualizerEnabled)
+
+const toggleVisualizer = () => {
   emit('effect-change', {
-    enabled: audioStore.effectsEnabled,
+    enabled: effectsEnabled.value,
+    surroundMode: currentSurroundMode.value,
+    eqPreset: currentEqPreset.value,
+    visualizerEnabled: !isVizEnabled.value,
+  })
+}
+
+const changeSurroundMode = (mode: string) => {
+  emit('effect-change', {
+    enabled: true,
     surroundMode: mode,
-    eqPreset: audioStore.eqPreset,
-    visualizerEnabled: audioStore.visualizerEnabled
+    eqPreset: currentEqPreset.value,
   })
 }
 
-const changeEqPreset = (preset) => {
-  audioStore.setEqPreset(preset)
+const changeEqPreset = (preset: string) => {
   emit('effect-change', {
-    enabled: audioStore.effectsEnabled,
-    surroundMode: audioStore.surroundMode,
+    enabled: true,
+    surroundMode: currentSurroundMode.value,
     eqPreset: preset,
-    visualizerEnabled: audioStore.visualizerEnabled
   })
 }
 
 watch(() => props.isPlaying, (playing) => {
-  if (!playing) {
-    isExpanded.value = false
-  }
+  if (!playing) isExpanded.value = false
 })
 
 watch(() => props.isVisible, (visible) => {
@@ -74,71 +90,54 @@ watch(() => props.isVisible, (visible) => {
 const closePanel = () => {
   emit('close')
 }
-
-onMounted(() => {
-  audioStore.initAudio()
-})
-
-onUnmounted(() => {
-})
 </script>
 
 <template>
   <div class="audio-effects" :class="{ expanded: isExpanded, enabled: effectsEnabled }">
-    <div v-show="isExpanded" class="effects-panel">
+    <div v-show="isExpanded" class="effects-panel" @click.stop>
       <div class="effects-header">
         <h4>音效设置</h4>
         <div class="header-actions">
-          <button class="enable-btn" :class="{ active: effectsEnabled }" @click="toggleEffects">
+          <button class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects">
             {{ effectsEnabled ? '已启用' : '已关闭' }}
           </button>
-          <button class="close-btn" @click="closePanel" title="关闭">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" fill="none"/>
-            </svg>
+          <button class="close-btn" @click="closePanel">
+            <img src="../../assets/imgs/svg/close.svg" alt="" width="14" height="14">
           </button>
         </div>
       </div>
 
-      <div class="effects-content" :class="{ disabled: !effectsEnabled }">
+      <div class="effects-body">
         <div class="effect-section">
           <div class="visualizer-toggle">
-            <label class="effect-label">音频可视化</label>
-            <button class="visualizer-btn" :class="{ active: visualizerEnabled }" @click="toggleVisualizer">
-              {{ visualizerEnabled ? '已开启' : '已关闭' }}
-            </button>
+            <span class="effect-label">音频可视化</span>
+            <button class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer">{{ isVizEnabled ? '已开启' : '已关闭' }}</button>
           </div>
         </div>
 
         <div class="effect-section">
-          <label class="effect-label">环绕模式</label>
-          <div class="surround-modes">
+          <span class="effect-label">环绕模式</span>
+          <div class="btn-group">
             <button
               v-for="mode in surroundModes"
               :key="mode.value"
-              class="mode-btn"
-              :class="{ active: currentSurroundMode === mode.value }"
+              class="chip-btn"
+              :style="currentSurroundMode === mode.value ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeSurroundMode(mode.value)"
-              :disabled="!effectsEnabled"
-            >
-              {{ mode.label }}
-            </button>
+            >{{ mode.label }}</button>
           </div>
         </div>
 
         <div class="effect-section">
-          <label class="effect-label">均衡器</label>
-          <div class="eq-presets">
+          <span class="effect-label">均衡器</span>
+          <div class="btn-group">
             <button
               v-for="preset in eqPresets"
               :key="preset.value"
-              class="preset-btn"
-              :class="{ active: currentEqPreset === preset.value }"
+              class="chip-btn"
+              :style="currentEqPreset === preset.value ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeEqPreset(preset.value)"
-              :disabled="!effectsEnabled"
-            >
-              {{ preset.label }}
-            </button>
+            >{{ preset.label }}</button>
           </div>
         </div>
       </div>
@@ -153,68 +152,38 @@ onUnmounted(() => {
   align-items: center;
 }
 
-.effects-toggle-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.effects-toggle-btn:hover {
-  transform: scale(1.1);
-}
-
-.effects-toggle-btn.active {
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}
-
-.effects-toggle-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
 .effects-panel {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 280px;
+  width: 300px;
   border-radius: 16px;
-  padding: 16px;
-  backdrop-filter: blur(10px);
+  padding: 20px;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid;
-  animation: fadeIn 0.3s ease;
-  z-index: 1000;
+  animation: fadeIn 0.25s ease;
+  z-index: 10000;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 .effects-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
   border-bottom: 1px solid;
 }
 
 .effects-header h4 {
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
 }
 
@@ -225,49 +194,46 @@ onUnmounted(() => {
 }
 
 .enable-btn {
-  padding: 4px 12px;
-  border-radius: 12px;
-  border: none;
+  padding: 4px 14px;
+  border-radius: 14px;
+  border: 1px solid;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .close-btn {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .close-btn:hover {
+  transform: scale(1.1) rotate(90deg);
 }
 
-.enable-btn.active {
-}
-
-.effects-content.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+.effects-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .effect-section {
-  margin-bottom: 16px;
-}
-
-.effect-section:last-child {
-  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .effect-label {
-  display: block;
   font-size: 12px;
-  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .visualizer-toggle {
@@ -276,145 +242,129 @@ onUnmounted(() => {
   align-items: center;
 }
 
-.visualizer-btn {
-  padding: 6px 16px;
-  border-radius: 16px;
+.toggle-btn {
+  padding: 4px 14px;
+  border-radius: 14px;
   border: 1px solid;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.visualizer-btn:hover {
-}
-
-.visualizer-btn.active {
-  border-color: transparent;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-.surround-modes,
-.eq-presets {
+.btn-group {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.mode-btn,
-.preset-btn {
-  padding: 6px 12px;
-  border-radius: 16px;
+.chip-btn {
+  padding: 5px 12px;
+  border-radius: 14px;
   border: 1px solid;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.mode-btn:hover,
-.preset-btn:hover {
-}
-
-.mode-btn.active,
-.preset-btn.active {
-  border-color: transparent;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-.mode-btn:disabled,
-.preset-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 </style>
 
 <style scoped>
-.effects-toggle-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: #888;
-}
-
-.effects-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.effects-toggle-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
 .effects-panel {
-  background: rgba(30, 30, 50, 0.95);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+body.dark-theme .effects-panel {
+  background: rgba(21, 7, 60, 0.9);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .effects-header {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
 }
 
-.effects-header h4 {
-  color: #fff;
+body.dark-theme .effects-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
+
+.effects-header h4 { color: var(--common-text); }
 
 .enable-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: #888;
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--common-text);
 }
 
-.close-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: #888;
-}
-
-.close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+body.dark-theme .enable-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .enable-btn.active {
-  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-  color: white;
+  background: var(--common-color-1);
+  border-color: var(--common-color-1);
+  color: #fff;
 }
 
-.effect-label {
-  color: #aaa;
+.close-btn {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--common-text);
 }
 
-.visualizer-btn {
-  background: rgba(255, 255, 255, 0.05);
+body.dark-theme .close-btn { background: rgba(255, 255, 255, 0.08); }
+.close-btn:hover { background: rgba(0, 0, 0, 0.1); }
+body.dark-theme .close-btn:hover { background: rgba(255, 255, 255, 0.15); }
+
+.effect-label { color: var(--common-text); opacity: 0.6; }
+
+.toggle-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--common-text);
+}
+
+body.dark-theme .toggle-btn {
+  background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.1);
-  color: #ccc;
 }
 
-.visualizer-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.2);
+.toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: var(--common-color-1);
 }
 
-.visualizer-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.toggle-btn.active {
+  background: var(--common-color-1);
+  border-color: var(--common-color-1);
+  color: #fff;
 }
 
-.mode-btn,
-.preset-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #ccc;
+.chip-btn {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: var(--common-text);
 }
 
-.mode-btn:hover,
-.preset-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.2);
+body.dark-theme .chip-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
-.mode-btn.active,
-.preset-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.chip-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: var(--common-color-1);
 }
-</style>
 
-<style scoped>
+body.dark-theme .chip-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--common-color-1);
+}
+
+.chip-btn.active {
+  background: var(--common-color-1);
+  border-color: var(--common-color-1);
+  color: #fff;
+}
 </style>

@@ -46,15 +46,14 @@ import Weather from './api/Weather.vue'
     /* 左侧边栏卡片样式 */
 .left-asider-card {
     width: 200px;
-	height: 600px;
-	border-radius: 8px;
-	padding: 20px;
-    border: 3px solid var(--common-color-1);
+    height: 680px;
+    border-radius: 14px;
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 25px;
+    gap: 22px;
 }
 </style>
 
@@ -84,7 +83,7 @@ import Weather from './api/Weather.vue'
         width: 100%;
         height: 100%;
         min-height: auto;
-        border-radius: 0 8px 8px 0;
+        border-radius: 0 14px 14px 0;
         padding: 15px;
         gap: 16px;
         overflow-y: auto;
@@ -99,6 +98,7 @@ import Weather from './api/Weather.vue'
     .left-asider-card {
         width: 180px;
         height: auto;
+        border-radius: 14px;
     }
 }
 
@@ -109,6 +109,7 @@ import Weather from './api/Weather.vue'
     }
     .left-asider-card {
         width: 200px;
+        border-radius: 14px;
     }
 }
 
@@ -116,7 +117,7 @@ import Weather from './api/Weather.vue'
 @media (min-width: 1281px) {
     .left-asider-card {
         width: 210px;
-        height: 600px;
+        height: 680px;
     }
 }
 </style>

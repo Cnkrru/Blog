@@ -99,7 +99,7 @@ watch(() => props.url, () => {
 }
 
 :deep(.a2a_kit a) {
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 :deep(.a2a_kit a:hover) {

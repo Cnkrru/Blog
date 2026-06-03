@@ -254,7 +254,7 @@ onMounted(() => {
     border-radius: 12px;
     padding: 24px;
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .github-loading,
@@ -281,7 +281,7 @@ onMounted(() => {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .retry-button:hover {
@@ -364,7 +364,7 @@ onMounted(() => {
     text-decoration: none;
     border-radius: 6px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .profile-link:hover {
@@ -400,7 +400,7 @@ onMounted(() => {
     padding: 16px;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
     border: 1px solid transparent;
 }
 

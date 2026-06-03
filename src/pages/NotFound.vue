@@ -155,7 +155,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
   border-radius: 50px;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   background: transparent;
 }
 

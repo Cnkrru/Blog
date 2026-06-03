@@ -128,19 +128,30 @@ onMounted(() => {
 .project-card {
     display: block;
     padding: 20px;
-    border-radius: 8px;
-    border: 3px solid;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition:
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
     height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .project-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.06);
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
-    border-width: 4px;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: var(--common-color-1);
 }
 
 .project-name {
@@ -161,14 +172,7 @@ onMounted(() => {
 <style scoped>
 /* 颜色样式 */
 .project-card {
-    border-color: var(--common-color-1);
-    background-color: var(--common-bg);
     color: var(--common-text);
-    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-}
-
-.project-card:hover {
-    box-shadow: 0 4px 8px var(--common-shadow);
 }
 
 .project-name {

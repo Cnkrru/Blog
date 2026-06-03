@@ -7,9 +7,7 @@
       :disabled="!prevPost"
     >
       <span class="post-nav-btn-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
+        <img src="../../assets/imgs/svg/chevron-left.svg" alt="" width="20" height="20">
       </span>
       <div class="post-nav-btn-text">
         <span class="post-nav-btn-label">上一篇</span>
@@ -29,9 +27,7 @@
         <span class="post-nav-btn-title">{{ nextPost?.title || '暂无' }}</span>
       </div>
       <span class="post-nav-btn-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <img src="../../assets/imgs/svg/chevron-right-stroke.svg" alt="" width="20" height="20">
       </span>
       <div v-if="loadingNext" class="post-nav-loading"></div>
     </button>
@@ -218,29 +214,34 @@ onUnmounted(() => {
 <style scoped>
 /* ========== 样式与主题 (Theme) ========== */
 .post-nav-container {
-  background: var(--common-bg);
-  border: 1px solid var(--common-color-1);
+  background: transparent;
+  border: none;
 }
 
 .post-nav-btn {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-2);
-  color: var(--common-content);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--common-text);
+}
+
+body.dark-theme .post-nav-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .post-nav-btn:hover {
-  background-color: var(--common-hover);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.55);
+  border-color: var(--common-color-1);
 }
 
-.post-nav-btn:not(.disabled):active {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+body.dark-theme .post-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .post-nav-btn-label,
 .post-nav-btn-title {
-  color: var(--common-content);
+  color: var(--common-text);
 }
 </style>
 

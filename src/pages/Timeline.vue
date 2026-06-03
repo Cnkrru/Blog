@@ -203,9 +203,8 @@ onMounted(async () => {
           @click="selectTag(stat.tag)"
           :class="['tag-item', { active: selectedTag === stat.tag }]"
           :style="{
-            fontSize: `${14 + Math.min(stat.count / 2, 10)}px`,
-            background: getTagGradient(stat),
-            color: isDarkTheme ? '#fff' : '#333',
+            fontSize: `${13 + Math.min(stat.count / 2, 8)}px`,
+            opacity: 0.55 + Math.min(stat.count / Math.max(...tagStats.map((s: any) => s.count), 1), 1) * 0.45,
           }"
           :title="`频率: ${(stat as any).frequency?.toFixed(2)}, 数量: ${stat.count}`"
         >
@@ -369,16 +368,21 @@ onMounted(async () => {
 .search-input {
   width: 100%;
   padding: 8px 36px 8px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--common-color-1);
-  background: var(--common-bg);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.4);
   color: var(--common-text);
   font-size: 13px;
 }
 
+body.dark-theme .search-input {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .search-input:focus {
   outline: none;
-  border-color: var(--common-hover);
+  border-color: var(--common-color-1);
 }
 
 .clear-btn {
@@ -408,19 +412,25 @@ onMounted(async () => {
 }
 
 .sort-btn {
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 14px;
-  border: 1px solid var(--common-color-1);
-  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.4);
   color: var(--common-text);
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
+}
+
+body.dark-theme .sort-btn {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .sort-btn.active {
   background: var(--common-color-1);
-  color: var(--common-content);
+  color: #fff;
+  border-color: var(--common-color-1);
 }
 
 /* 标签云 */
@@ -429,32 +439,54 @@ onMounted(async () => {
   flex-wrap: wrap;
   gap: 10px;
   padding: 16px;
-  border-radius: 10px;
-  background: var(--common-bg);
-  border: 1px solid var(--common-color-1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   min-height: 60px;
   align-items: flex-start;
   align-content: flex-start;
 }
 
+body.dark-theme .tag-cloud {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
 .tag-item {
-  padding: 5px 12px;
-  border-radius: 18px;
+  padding: 5px 14px;
+  border-radius: 16px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s;
+  color: var(--common-text);
+  background: rgba(255, 192, 203, 0.12);
+  border: 1px solid rgba(255, 192, 203, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   animation: tagFadeIn 0.4s ease;
+}
+
+body.dark-theme .tag-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .tag-item:hover {
   transform: scale(1.06);
-  filter: brightness(1.1);
+  background: rgba(255, 192, 203, 0.25);
+  border-color: var(--common-color-1);
+}
+
+body.dark-theme .tag-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .tag-item.active {
   font-weight: 700;
-  box-shadow: 0 2px 8px var(--common-shadow);
-  transform: scale(1.08);
+  background: var(--common-color-1);
+  color: #fff;
+  border-color: var(--common-color-1);
+  box-shadow: 0 2px 12px var(--common-shadow);
+  transform: scale(1.06);
 }
 
 .tag-num {
@@ -480,9 +512,14 @@ onMounted(async () => {
 .selected-tag-info {
   margin-top: 12px;
   padding: 10px 14px;
-  border-radius: 8px;
-  background: var(--common-bg);
-  border: 1px solid var(--common-color-1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .selected-tag-info {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .selected-tag-header {
@@ -506,16 +543,21 @@ onMounted(async () => {
 .sel-clear {
   padding: 2px 10px;
   border-radius: 12px;
-  border: 1px solid var(--common-color-1);
-  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.4);
   color: var(--common-text);
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+}
+
+body.dark-theme .sel-clear {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .sel-clear:hover {
   background: var(--common-color-1);
+  color: #fff;
 }
 
 .related-tags-row {
@@ -537,13 +579,18 @@ onMounted(async () => {
   border-radius: 12px;
   font-size: 11px;
   cursor: pointer;
-  background: var(--common-color-1);
-  color: var(--common-content);
-  transition: all 0.2s;
+  background: rgba(255, 192, 203, 0.2);
+  color: var(--common-text);
+  border: 1px solid rgba(255, 192, 203, 0.25);
+}
+
+body.dark-theme .related-chip {
+  background: rgba(58, 170, 231, 0.15);
+  border-color: rgba(58, 170, 231, 0.2);
 }
 
 .related-chip:hover {
-  filter: brightness(1.15);
+  background: rgba(255, 192, 203, 0.4);
 }
 
 /* 时间线上方 */
@@ -556,17 +603,22 @@ onMounted(async () => {
 .zoom-btn {
   padding: 3px 14px;
   border-radius: 14px;
-  border: 1.5px solid var(--common-color-1);
-  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.4);
   color: var(--common-text);
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+}
+
+body.dark-theme .zoom-btn {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .zoom-btn.active {
   background: var(--common-color-1);
-  color: var(--common-content);
+  color: #fff;
+  border-color: var(--common-color-1);
 }
 
 .zoom-controls {
@@ -654,7 +706,7 @@ onMounted(async () => {
   margin-top: 20px;
   margin-right: 8px;
   margin-left: -28px;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 .tl-card:hover .tl-card-connector {
@@ -665,15 +717,23 @@ onMounted(async () => {
 .tl-card-body {
   flex: 1;
   padding: 10px 14px;
-  border-radius: 8px;
-  border: 2px solid var(--common-color-1);
-  background: var(--common-bg);
-  transition: all 0.2s;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+body.dark-theme .tl-card-body {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .tl-card:hover .tl-card-body {
-  border-color: var(--common-hover);
+  border-color: rgba(0, 0, 0, 0.12);
   box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+body.dark-theme .tl-card:hover .tl-card-body {
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .tl-card-header {
@@ -766,10 +826,15 @@ onMounted(async () => {
 /* 数据统计面板 */
 .stats-panel {
   padding: 16px;
-  border-radius: 10px;
-  background: var(--common-bg);
-  border: 1px solid var(--common-color-1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   margin-top: 12px;
+}
+
+body.dark-theme .stats-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .stats-summary {
@@ -784,9 +849,14 @@ onMounted(async () => {
   min-width: 80px;
   text-align: center;
   padding: 12px 8px;
-  border-radius: 8px;
-  background: var(--common-bg);
-  border: 1px solid var(--common-color-1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.dark-theme .stat-box {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .stat-num {

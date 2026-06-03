@@ -1,50 +1,70 @@
 <template>
   <div class="scroll-indicator">
-    <div class="scroll-line"></div>
-    <span class="scroll-text">Scroll</span>
+    <div class="scroll-mouse">
+      <div class="scroll-wheel"></div>
+    </div>
+    <span class="scroll-text">SCROLL</span>
   </div>
 </template>
 
-<script setup lang="ts">
-</script>
-
-<!-- 布局样式 -->
 <style scoped>
 .scroll-indicator {
   position: absolute;
-  bottom: 3rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   z-index: 10;
 }
 
-.scroll-line {
-  width: 2px;
-  height: 60px;
+.scroll-mouse {
+  width: 24px;
+  height: 38px;
+  border-radius: 12px;
+  border: 2px solid;
+  position: relative;
+}
+
+.scroll-wheel {
+  width: 4px;
+  height: 8px;
+  border-radius: 2px;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollWheel 2s ease-in-out infinite;
+}
+
+@keyframes scrollWheel {
+  0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 0.3; transform: translateX(-50%) translateY(8px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .scroll-text {
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  font-weight: 500;
 }
 </style>
 
-<!-- 颜色样式 -->
 <style scoped>
-.scroll-line {
-  background: linear-gradient(to bottom, var(--common-color-1), transparent);
+.scroll-mouse {
+  border-color: var(--common-text);
+  opacity: 0.3;
+}
+
+.scroll-wheel {
+  background: var(--common-text);
+  opacity: 0.3;
 }
 
 .scroll-text {
   color: var(--common-text);
+  opacity: 0.3;
 }
-</style>
-
-<!-- 响应式设计媒体查询 -->
-<style scoped>
 </style>

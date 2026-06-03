@@ -36,22 +36,20 @@ import Copyright from './p-footer/CopyRight.vue'
 
 .footer-card {
     width: 100%;
-    padding: 15px;
-    border-radius: 12px;
-    border: 3px solid var(--common-color-1);
-    backdrop-filter: blur(10px);
+    padding: 16px 24px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column !important;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 }
 
 .footer-element-card {
     width: 80% !important;
-    margin-bottom: 5px !important;;
-    border-radius: 8px;
-    padding: 10px;
-    transition: all 0.3s ease;
+    border-radius: 14px;
+    padding: 8px 20px;
+    border: 1px solid;
+    font-size: 13px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,12 +58,15 @@ import Copyright from './p-footer/CopyRight.vue'
 </style>
 
 <style scoped>
-.footer-card {
-    background-color: var(--common-bg);
+.footer-element-card {
+    background: rgba(255, 192, 203, 0.15);
+    border-color: rgba(255, 192, 203, 0.25);
+    color: var(--common-text);
 }
 
-.footer-element-card {
-    background-color: var(--common-color-1);
+body.dark-theme .footer-element-card {
+    background: rgba(58, 170, 231, 0.1);
+    border-color: rgba(58, 170, 231, 0.2);
 }
 </style>
 

@@ -131,9 +131,9 @@ const closeDropdown = () => {
 .page-nav-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 8px;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
   position: relative;
 }
 
@@ -146,15 +146,26 @@ const closeDropdown = () => {
 
 .nav-btn {
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
   font-size: 14px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .nav-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.nav-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .prev-btn, .next-btn {
@@ -170,11 +181,19 @@ const closeDropdown = () => {
 
 .page-btn {
   padding: 8px 14px;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
   font-size: 14px;
   min-width: 80px;
+}
+
+.page-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .right-section {
@@ -209,9 +228,13 @@ const closeDropdown = () => {
   min-width: 220px;
   max-height: 400px;
   overflow-y: auto;
-  border-radius: 8px;
+  border-radius: 12px;
   z-index: 1000;
   animation: slideUp 0.2s ease;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
 }
 
 @keyframes slideUp {
@@ -244,7 +267,7 @@ const closeDropdown = () => {
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
   font-size: 14px;
   text-align: left;
 }
@@ -272,36 +295,64 @@ const closeDropdown = () => {
 
 <style scoped>
 .nav-btn {
-  border: 1px solid var(--common-color-1);
-  background: var(--common-color-1);
-  color: var(--common-content);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 192, 203, 0.85);
+  color: #333;
+}
+
+body.dark-theme .nav-btn {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(58, 170, 231, 0.85);
+  color: #fff;
 }
 
 .page-btn {
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border: 1px solid var(--common-color-1);
+  background: rgba(255, 192, 203, 0.25);
+  color: var(--common-text);
+  border: 1px solid rgba(255, 192, 203, 0.3);
+}
+
+body.dark-theme .page-btn {
+  background: rgba(58, 170, 231, 0.15);
+  border: 1px solid rgba(58, 170, 231, 0.2);
 }
 
 .page-btn.active {
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border-color: var(--common-color-1);
+  background: rgba(255, 192, 203, 0.85);
+  color: #333;
+  border-color: rgba(255, 192, 203, 0.85);
+}
+
+body.dark-theme .page-btn.active {
+  background: rgba(58, 170, 231, 0.85);
+  color: #fff;
+  border-color: rgba(58, 170, 231, 0.85);
 }
 
 .dropdown-card {
-  background: var(--common-bg);
-  border: 1px solid var(--common-color-1);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+body.dark-theme .dropdown-card {
+  background: rgba(21, 7, 60, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .dropdown-header {
   color: var(--common-color-1);
   border-bottom: 1px solid var(--common-color-1);
-  background: var(--common-bg);
 }
 
 .dropdown-item {
-  color: var(--common-color-1);
+  color: var(--common-text);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 192, 203, 0.1);
+}
+
+body.dark-theme .dropdown-item:hover {
+  background-color: rgba(58, 170, 231, 0.1);
 }
 
 .item-number {
@@ -314,45 +365,85 @@ const closeDropdown = () => {
 }
 
 .page-info {
-  color: var(--common-content);
+  color: var(--common-text);
 }
 
 .current-category {
-  color: var(--common-content);
+  color: var(--common-text);
 }
 </style>
 
 <style scoped>
 @media (max-width: 768px) {
   .page-nav-container {
-    padding: 12px;
+    padding: 10px;
   }
 
   .pagination-bar {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .right-section {
-    width: 100%;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
   }
 
   .prev-btn, .next-btn {
-    min-width: 80px;
-    padding: 6px 12px;
+    min-width: 0;
+    padding: 6px 14px;
     font-size: 13px;
   }
 
   .page-btn {
-    padding: 6px 10px;
+    padding: 6px 12px;
     font-size: 13px;
     min-width: auto;
   }
 
   .nav-btn {
-    padding: 6px 12px;
+    padding: 6px 14px;
     font-size: 13px;
+  }
+
+  .right-section {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .page-info {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-nav-container {
+    padding: 8px 6px;
+    gap: 6px;
+  }
+
+  .pagination-bar {
+    gap: 6px;
+  }
+
+  .prev-btn, .next-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 16px;
+  }
+
+  .page-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  .nav-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 16px;
+  }
+
+  .dropdown-card {
+    min-width: 180px;
+    bottom: calc(100% + 4px);
   }
 }
 </style>

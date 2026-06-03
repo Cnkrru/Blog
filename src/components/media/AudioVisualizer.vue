@@ -2,13 +2,13 @@
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useAudioStore } from '../../stores'
 
-const props = withDefaults(defineProps<{ isPlaying?: boolean; getAnalyser?: (() => any) | null }>(), {
+const props = withDefaults(defineProps<{ isPlaying?: boolean; enabled?: boolean; getAnalyser?: (() => any) | null }>(), {
   isPlaying: false,
+  enabled: false,
   getAnalyser: null
 })
 
-const audioStore = useAudioStore()
-const enabled = computed(() => audioStore.visualizerEnabled)
+const enabled = computed(() => props.enabled)
 
 const canvasRef = ref(null)
 const isInitialized = ref(false)

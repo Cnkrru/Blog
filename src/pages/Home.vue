@@ -185,24 +185,40 @@ onMounted(() => loadArticles())
 .post-card {
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
+  border-radius: 14px;
   overflow: hidden;
-  border: 2px solid var(--common-color-1);
-  background: var(--common-bg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   text-decoration: none;
   color: inherit;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .post-card {
+  background: rgba(21, 7, 60, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .post-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 28px var(--common-shadow);
-  border-color: var(--common-hover);
+  transform: translateY(-4px);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.10),
+    0 0 0 1px rgba(255, 192, 203, 0.15);
+  border-color: rgba(255, 192, 203, 0.3);
 }
 
 .post-card.pinned {
-  border-color: var(--common-hover);
-  border-width: 2px;
+  border-color: rgba(255, 192, 203, 0.4);
+  border-width: 1px;
 }
 
 .card-cover {

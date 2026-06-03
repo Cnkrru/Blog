@@ -84,7 +84,7 @@ watch(() => props.type, () => loadContentData())
     
     <!-- 错误状态 -->
     <div v-else-if="error" class="error-message">
-      <div class="error-icon">⚠️</div>
+      <div class="error-icon"><img src="../../assets/imgs/svg/warning.svg" alt="" width="40" height="40"></div>
       <p>{{ error }}</p>
       <button class="retry-button" @click="retry">重试</button>
     </div>
@@ -174,7 +174,7 @@ watch(() => props.type, () => loadContentData())
   padding: 8px 16px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   font-weight: 500;
   margin-top: 8px;
 }

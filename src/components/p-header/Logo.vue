@@ -1,3 +1,5 @@
+<!-- review完成 -->
+
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
@@ -21,9 +23,16 @@ const router = useRouter()
 }
 
 .logo-card h1 {
-    font-size: 24px;
-    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
     white-space: nowrap;
+    transition: opacity 0.2s ease;
+}
+
+.logo-card h1:hover {
+    opacity: 0.8;
 }
 </style>
 

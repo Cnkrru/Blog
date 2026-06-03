@@ -4,7 +4,6 @@ import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { useArticlesStore } from '../stores'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
-import TagCloud from '../components/p-center/TagCloud.vue'
 
 const store = useArticlesStore()
 
@@ -88,7 +87,6 @@ onMounted(loadArticles)
   <div class="center-head-card">
     <h2>归档</h2>
     <ArticleCount />
-    <TagCloud :articles="articles" />
   </div>
   <hr>
   <div class="center-card-content">
@@ -148,14 +146,19 @@ onMounted(loadArticles)
 }
 
 .view-tab {
-  padding: 5px 16px;
-  border-radius: 16px;
-  border: 1.5px solid var(--common-color-1);
+  padding: 5px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--common-color-1);
   background: transparent;
   color: var(--common-text);
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .view-tab.active {
@@ -172,16 +175,26 @@ onMounted(loadArticles)
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 12px;
   text-decoration: none;
   color: var(--common-text);
-  background: var(--common-bg);
-  border: 1px solid var(--common-color-1);
-  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .arch-header:hover {
-  background: var(--common-hover);
+  background: rgba(255, 192, 203, 0.15);
+  transform: translateY(-1px);
+}
+
+body.dark-theme .arch-header:hover {
+  background: rgba(58, 170, 231, 0.12);
 }
 
 .arch-name {
@@ -215,7 +228,7 @@ onMounted(loadArticles)
   color: var(--common-text);
   border-bottom: 1px solid var(--common-color-1);
   opacity: 0.8;
-  transition: all 0.15s;
+  transition: background-color 0.15s ease, color 0.15s ease, opacity 0.12s ease;
 }
 
 .arch-item:hover {
@@ -237,7 +250,7 @@ onMounted(loadArticles)
 /* 展开动画 */
 .fold-enter-active,
 .fold-leave-active {
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 .fold-enter-from,

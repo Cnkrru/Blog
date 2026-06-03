@@ -157,7 +157,7 @@ onMounted(() => {
   cursor: pointer;
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .easter-egg-trigger-btn:hover:not(:disabled) {

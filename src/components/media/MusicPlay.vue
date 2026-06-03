@@ -84,16 +84,6 @@ const handleEffectsChange = (effects) => {
 
 const toggleEffects = () => {
   isEffectsVisible.value = !isEffectsVisible.value
-  if (!isEffectsVisible.value) {
-    // 关闭时自动关闭音效
-    effectsEnabled.value = false
-    handleEffectsChange({
-      enabled: false,
-      surroundMode: 'off',
-      eqPreset: 'flat',
-      visualizerEnabled: visualizerEnabled.value
-    })
-  }
 }
 
 const onClickOutside = (e) => {
@@ -160,11 +150,6 @@ onUnmounted(() => {
 <template>
   <MusicPlayerStyles />
   <div>
-    <AudioVisualizer
-      :is-playing="isPlaying"
-      :get-analyser="getAnalyser"
-      :enabled="visualizerEnabled"
-    />
 
     <div
       class="button-style music-player-btn"
@@ -182,84 +167,97 @@ onUnmounted(() => {
       <span v-if="isBtnAnimating" class="emoji-burst">✨</span>
     </div>
 
-    <div id="global-music-player" class="global-music-player" ref="playerRef">
-      <div class="player-content">
-        <div class="player-cover">
-          <img id="player-cover" src="" alt="封面">
-        </div>
-        <div class="player-meta">
-          <h4 id="player-title">未选择歌曲</h4>
-          <p id="player-artist">未知艺术家</p>
-        </div>
-        <PlayerProgress
-          :current-time="currentTime"
-          :duration="duration"
-          :progress-percent="progressPercent"
-          @seek="handleSeek"
-        />
-        <PlayerControls
-          :is-playing="isPlaying"
-          :current-song="currentSong"
-          @toggle-play="togglePlay"
-          @prev="prevSong"
-          @next="nextSong"
-        />
-        <PlayerVolume
-          :volume="volume"
-          :is-muted="isMuted"
-          @adjust-volume="handleVolumeChange"
-          @toggle-mute="toggleMute"
-        />
-        <div class="player-list">
-          <button
-            type="button"
-            class="control-btn list-btn"
-            aria-label="音乐列表"
-            title="音乐列表"
-            @click="togglePlaylist"
-          >
-            <img src="../../assets/imgs/svg/playlist.svg" alt="音乐列表">
-          </button>
-        </div>
-        <div class="player-effects">
-          <button
-            type="button"
-            class="control-btn effects-btn"
-            :class="{ active: isEffectsVisible || effectsEnabled }"
-            aria-label="音效"
-            title="音效设置"
-            @click="toggleEffects"
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-              <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4" stroke="currentColor" stroke-width="2" fill="none"/>
-            </svg>
-          </button>
+    <Teleport to="body">
+      <AudioVisualizer
+        :is-playing="isPlaying"
+        :get-analyser="getAnalyser"
+        :enabled="visualizerEnabled"
+      />
+      <div id="global-music-player" class="global-music-player" ref="playerRef">
+        <div class="player-content">
+
+          <!-- 第一行：封面 + 信息 + 按钮 + 音量 -->
+          <div class="player-top-row">
+            <div class="player-cover">
+              <img id="player-cover" src="" alt="封面">
+            </div>
+            <div class="player-meta">
+              <h4 id="player-title">未选择歌曲</h4>
+              <p id="player-artist">未知艺术家</p>
+            </div>
+            <PlayerControls
+              :is-playing="isPlaying"
+              :current-song="currentSong"
+              @toggle-play="togglePlay"
+              @prev="prevSong"
+              @next="nextSong"
+            />
+            <div class="player-extra">
+              <PlayerVolume
+                :volume="volume"
+                :is-muted="isMuted"
+                @adjust-volume="handleVolumeChange"
+                @toggle-mute="toggleMute"
+              />
+              <div class="player-list">
+                <button
+                  type="button"
+                  class="control-btn list-btn"
+                  aria-label="音乐列表"
+                  title="音乐列表"
+                  @click="togglePlaylist"
+                >
+                  <img src="../../assets/imgs/svg/playlist.svg" alt="音乐列表">
+                </button>
+              </div>
+              <div class="player-effects">
+                <button
+                  type="button"
+                  class="control-btn effects-btn"
+                  :class="{ active: isEffectsVisible || effectsEnabled }"
+                  aria-label="音效"
+                  title="音效设置"
+                  @click="toggleEffects"
+                >
+                  <img src="../../assets/imgs/svg/effects.svg" alt="" width="18" height="18">
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 第二行：进度条 -->
+          <PlayerProgress
+            :current-time="currentTime"
+            :duration="duration"
+            :progress-percent="progressPercent"
+            @seek="handleSeek"
+          />
         </div>
       </div>
-    </div>
 
-    <AudioEffects
-      :audio-context="getAudioContext()"
-      :is-playing="isPlaying"
-      :is-visible="isEffectsVisible"
-      @effect-change="handleEffectsChange"
-      @close="toggleEffects"
-    />
-
-    <PlayerPlaylist
-      :playlist="playlist"
-      :current-index="currentIndex"
-      :is-visible="isPlaylistVisible"
-      @select="handleSelectSong"
-      @close="closePlaylist"
-    />
+      <PlayerPlaylist
+        :playlist="playlist"
+        :current-index="currentIndex"
+        :is-visible="isPlaylistVisible"
+        @select="handleSelectSong"
+        @close="closePlaylist"
+      />
+      <AudioEffects
+        :audio-context="getAudioContext()"
+        :is-playing="isPlaying"
+        :is-visible="isEffectsVisible"
+        :visualizer-enabled="visualizerEnabled"
+        @effect-change="handleEffectsChange"
+        @close="toggleEffects"
+      />
+    </Teleport>
   </div>
 </template>
 
 <!-- 布局样式 -->
 <style scoped>
 .button-style {
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   cursor: pointer;
 }
 </style>

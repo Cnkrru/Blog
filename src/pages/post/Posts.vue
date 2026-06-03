@@ -182,8 +182,10 @@ onMounted(() => {
 <template>
     <div id="site-stats-container"></div>
     <div class="center-head-card">
-        <h2>{{ post?.title || '文章详情' }}</h2>
-        <div class="center-head-card-tools">
+        <div class="center-head-title">
+            <h2>{{ post?.title || '文章详情' }}</h2>
+        </div>
+        <div class="center-head-tools">
             <BackToTop />
             <PostMenu v-model:show="showPostMenu" />
             <TocButton v-model:show="showToc" />
@@ -253,33 +255,33 @@ onMounted(() => {
     padding: 50px 0;
 }
 
-.center-head-card-tools {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-shrink: 0;
-    gap: 6px;
+.center-head-title {
+    flex: 1;
+    min-width: 0;
 }
 
-/* 移动端：按钮一行在上，标题一行在下 */
+.center-head-tools {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 8px;
+    margin-left: 16px;
+}
+
+/* 移动端 */
 @media (max-width: 639px) {
-    :deep(.center-head-card) {
-        flex-direction: column-reverse;
-        align-items: flex-start;
-        gap: 6px;
+    .center-head-title {
+        width: 100%;
     }
 
     :deep(.center-head-card h2) {
-        width: 100%;
-        height: auto;
-        font-size: 16px;
+        font-size: 15px;
         line-height: 1.4;
         white-space: normal;
     }
 
-    .center-head-card-tools {
-        width: 100%;
-        justify-content: flex-start;
+    .center-head-tools {
+        gap: 6px;
     }
 }
 </style>
@@ -288,10 +290,15 @@ onMounted(() => {
 /* 封面图 */
 .post-cover {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    border: 3px solid var(--common-color-1);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .post-cover {
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .cover-image {

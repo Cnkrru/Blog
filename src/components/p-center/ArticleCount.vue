@@ -13,6 +13,7 @@ onMounted(async () => {
 
 <template>
   <button class="article-count-btn">
+    <img class="count-icon" src="../../assets/imgs/svg/file-text.svg" alt="">
     <span>共 {{ articleCount }} 篇文章</span>
   </button>
 </template>
@@ -20,24 +21,40 @@ onMounted(async () => {
 <!-- 布局样式 -->
 <style scoped>
 .article-count-btn {
-  font-size: 14px;
-  font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
   cursor: default;
-  transition: all 0.3s ease;
+}
+
+.count-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }
 </style>
 
 <!-- 颜色样式 -->
 <style scoped>
 .article-count-btn {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-1);
-  color: var(--common-content);
+  background: rgba(255, 192, 203, 0.2);
+  color: var(--common-text);
+  border: 1px solid rgba(255, 192, 203, 0.3);
+}
+
+body.dark-theme .article-count-btn {
+  background: rgba(58, 170, 231, 0.15);
+  border: 1px solid rgba(58, 170, 231, 0.25);
+}
+
+.count-icon {
+  color: var(--common-color-1);
 }
 </style>
 

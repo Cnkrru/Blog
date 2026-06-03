@@ -48,9 +48,10 @@ const handleResultClick = (item) => {
   right: 0;
   margin-top: 8px;
   max-height: 400px;
+  min-width: 280px;
   overflow-y: auto;
-  z-index: 9999;
-  border-radius: 8px;
+  z-index: 10000;
+  border-radius: 12px;
 }
 
 .search-empty {
@@ -65,8 +66,18 @@ const handleResultClick = (item) => {
 
 .search-result-item {
   padding: 12px 16px;
-  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  margin: 2px 4px;
+  transition: background-color 0.15s ease, transform 0.15s ease;
   cursor: pointer;
+}
+
+.search-result-item:first-child {
+  border-radius: 10px 10px 8px 8px;
+}
+
+.search-result-item:last-child {
+  border-radius: 8px 8px 10px 10px;
 }
 
 .result-title {
@@ -86,7 +97,7 @@ const handleResultClick = (item) => {
 
 .tag {
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 11px;
   margin-right: 4px;
   display: inline-block;
@@ -95,8 +106,18 @@ const handleResultClick = (item) => {
 
 <style scoped>
 .search-results {
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.10);
+}
+
+body.dark-theme .search-results {
+  background-color: rgba(21, 7, 60, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .search-empty {
@@ -109,12 +130,16 @@ const handleResultClick = (item) => {
 }
 
 .search-result-item {
-  background-color: var(--common-bg);
+  background-color: transparent;
   color: var(--common-text);
 }
 
 .search-result-item:hover {
-  background-color: var(--common-hover);
+  background-color: rgba(255, 192, 203, 0.15);
+}
+
+body.dark-theme .search-result-item:hover {
+  background-color: rgba(58, 170, 231, 0.12);
 }
 
 .result-title {
@@ -126,8 +151,12 @@ const handleResultClick = (item) => {
 }
 
 .tag {
-  background-color: var(--common-color-1);
+  background-color: rgba(255, 192, 203, 0.25);
   color: var(--common-text);
+}
+
+body.dark-theme .tag {
+  background-color: rgba(58, 170, 231, 0.2);
 }
 </style>
 

@@ -1,47 +1,44 @@
+<!-- review完成 -->
+
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const isMenuOpen = ref(false)
-const isAnimating = ref(false)
 
+//切换移动端侧边栏状态
 const toggleMobileMenu = () => {
-  isAnimating.value = true
+  //反转移动端侧边栏标志位
   isMenuOpen.value = !isMenuOpen.value
-  updateDOM()
-  setTimeout(() => { isAnimating.value = false }, 400)
-}
 
-const closeMobileMenu = () => {
-  isMenuOpen.value = false
-  updateDOM()
-}
-
-const updateDOM = () => {
   const leftAsider = document.querySelector('.left-asider-S')
   const mobileMenuOverlay = document.getElementById('mobile-menu-overlay')
   
   if (leftAsider && mobileMenuOverlay) {
-    if (isMenuOpen.value) {
-      leftAsider.classList.add('active')
-      mobileMenuOverlay.classList.add('active')
-    } else {
-      leftAsider.classList.remove('active')
+    if (isMenuOpen.value) 
+    {
+      leftAsider.classList.add('active')              //加入左侧边栏
+      mobileMenuOverlay.classList.add('active')       //加入遮盖层
+    } 
+    else 
+    {
+      leftAsider.classList.remove('active')           //移除
       mobileMenuOverlay.classList.remove('active')
     }
   }
 }
 
+
 // 点击遮罩层关闭菜单
 const handleOverlayClick = (event) => {
   if (event.target.id === 'mobile-menu-overlay') {
-    closeMobileMenu()
+    toggleMobileMenu()
   }
 }
 
 // 监听 ESC 键关闭菜单
 const handleKeydown = (event) => {
   if (event.key === 'Escape' && isMenuOpen.value) {
-    closeMobileMenu()
+    toggleMobileMenu()
   }
 }
 
@@ -68,7 +65,6 @@ onUnmounted(() => {
       @click="toggleMobileMenu"
     >
       <img src="../../assets/imgs/svg/order.svg" alt="菜单">
-      <span v-if="isAnimating" class="emoji-burst">✨</span>
     </div>
     
     <!-- 移动端菜单遮罩层 -->
@@ -92,7 +88,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999;
+  z-index: 1001;
   display: none;
 }
 
@@ -104,7 +100,9 @@ onUnmounted(() => {
 <!-- 颜色样式 -->
 <style scoped>
 .mobile-menu-overlay {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 /* 按钮颜色由 Header.vue 统一管理 */
 </style>
@@ -130,8 +128,7 @@ onUnmounted(() => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 1001;
   }
 
   .mobile-menu-overlay.active {

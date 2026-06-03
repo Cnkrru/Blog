@@ -93,21 +93,16 @@ watch(() => isDarkTheme.value, () => {
 <style scoped>
 .site-stats-card {
   border-radius: 12px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  margin: 20px 0;
-  transition: all 0.3s ease;
-}
-
-.site-stats-card:hover {
-  transform: translateY(-2px);
+  padding: 16px;
+  margin: 16px 0;
 }
 
 .stats-title {
-  margin: 0 0 16px 0;
-  font-size: 1.2rem;
+  margin: 0 0 12px 0;
+  font-size: 15px;
   font-weight: 600;
   text-align: center;
+  color: var(--common-text);
 }
 
 .stats-container {
@@ -153,28 +148,41 @@ watch(() => isDarkTheme.value, () => {
 
 <style scoped>
 .site-stats-card {
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.stats-title {
-  color: var(--common-color-1);
+body.dark-theme .site-stats-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .stats-item {
-  background-color: var(--common-color-1);
+  background: rgba(255, 192, 203, 0.15);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 192, 203, 0.2);
+}
+
+body.dark-theme .stats-item {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .stats-label {
-  color: var(--common-content);
+  color: var(--common-text);
+  opacity: 0.7;
 }
 
 .stats-value {
-  color: var(--common-content);
+  color: var(--common-color-1);
 }
 
 .stats-divider {
-  background-color: var(--common-color-1);
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .stats-divider {
+  background-color: rgba(255, 255, 255, 0.06);
 }
 </style>
 

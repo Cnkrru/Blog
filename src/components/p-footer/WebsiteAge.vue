@@ -30,7 +30,7 @@ onUnmounted(() => {
 
 <template>
   <div class="footer-element-card website-age">
-    <span class="age-icon">⏱</span>
+    <img src="../../assets/imgs/svg/history.svg" alt="" width="15" height="15" class="age-icon">
     <span>本站已运行</span>
     <span class="age-num">{{ ageText }}</span>
   </div>
@@ -48,7 +48,10 @@ onUnmounted(() => {
 }
 
 .age-icon {
-  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 .age-num {
@@ -59,12 +62,12 @@ onUnmounted(() => {
 
 <style scoped>
 .website-age {
-  color: var(--common-content);
+  color: var(--common-text);
 }
 
 .age-num {
-  color: var(--common-content);
-  opacity: 0.85;
+  color: var(--common-color-1);
+  font-weight: 600;
 }
 </style>
 

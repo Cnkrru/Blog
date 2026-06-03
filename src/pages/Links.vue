@@ -190,19 +190,36 @@ onMounted(() => {
 .link-card {
     display: block;
     padding: 20px;
-    border-radius: 8px;
-    border: 3px solid;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition:
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
     height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .link-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.06);
 }
 
 .link-card:hover {
-    transform: translateY(-5px);
-    border-width: 4px;
+    transform: translateY(-3px);
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.06),
+        0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: rgba(255, 192, 203, 0.25);
+}
+
+body.dark-theme .link-card:hover {
+    border-color: rgba(58, 170, 231, 0.25);
 }
 
 .link-name {
@@ -243,7 +260,7 @@ onMounted(() => {
     text-decoration: none;
     border: 1px solid;
     border-radius: 4px;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
     cursor: pointer;
 }
 
@@ -273,15 +290,20 @@ onMounted(() => {
   font-size: 13px;
   color: var(--common-color-1);
   text-decoration: none;
-  padding: 6px 16px;
-  border-radius: 16px;
+  padding: 6px 18px;
+  border-radius: 20px;
   border: 1px solid var(--common-color-1);
-  transition: all 0.2s;
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .apply-link:hover {
   background: var(--common-color-1);
   color: var(--common-content);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--common-shadow);
 }
 </style>
 
@@ -374,14 +396,7 @@ onMounted(() => {
 
 /* 颜色样式 */
 .link-card {
-    border-color: var(--common-color-1);
-    background-color: var(--common-bg);
     color: var(--common-text);
-    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-}
-
-.link-card:hover {
-    box-shadow: 0 4px 8px var(--common-shadow);
 }
 
 .link-name {
@@ -394,27 +409,38 @@ onMounted(() => {
 
 .pagination a {
     color: var(--common-text);
-    background-color: var(--common-bg);
-    border-color: var(--common-color-1);
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+}
+
+body.dark-theme .pagination a {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .pagination a:hover {
-    background-color: var(--common-hover);
+    background: rgba(255, 192, 203, 0.2);
+}
+
+body.dark-theme .pagination a:hover {
+    background: rgba(58, 170, 231, 0.15);
 }
 
 .pagination .active a {
-    background-color: var(--common-hover);
-    color: var(--common-text);
-    border-color: var(--common-hover);
+    background: var(--common-color-1);
+    color: #fff;
+    border-color: var(--common-color-1);
 }
 
 .pagination .disabled a {
-    background-color: var(--common-bg);
+    background: transparent;
     color: var(--common-text);
+    opacity: 0.4;
 }
 
 .pagination .disabled a:hover {
-    background-color: var(--common-bg);
+    background: transparent;
 }
 </style>
 

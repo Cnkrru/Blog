@@ -18,14 +18,10 @@ onMounted(() => {
 .copyright {
   width: 100%;
   text-align: center;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-</style>
-
-<style scoped>
-.copyright {
-  color: var(--common-content);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--common-text);
+  opacity: 0.7;
 }
 </style>
 

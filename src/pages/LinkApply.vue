@@ -141,7 +141,7 @@ async function submitForm() {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 .submit-btn:hover {

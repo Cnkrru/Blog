@@ -26,15 +26,7 @@ const toggleToc = () => {
       :class="{ active: tocStore.show }"
       :title="tocStore.show ? '关闭目录' : '打开目录'"
     >
-      <svg 
-        viewBox="0 0 24 24" 
-        xmlns="http://www.w3.org/2000/svg" 
-        fill="currentColor"
-        :class="{ active: tocStore.show }"
-      >
-        <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
-      </svg>
-      <span class="btn-text">目录</span>
+      <img src="../../assets/imgs/svg/toc-list.svg" alt="" width="18" height="18" class="toc-icon">
     </button>
   </div>
 </template>
@@ -46,24 +38,20 @@ const toggleToc = () => {
 }
 
 .toc-btn {
-    font-size: 14px;
-    font-weight: bold;
-    padding: 8px 16px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
-.toc-btn svg {
-    width: 18px;
-    height: 18px;
-    margin-right: 6px;
-    transition: all 0.3s ease;
+.toc-icon {
+    width: 16px;
+    height: 16px;
 }
 
 .toc-count {
@@ -74,24 +62,31 @@ const toggleToc = () => {
     padding: 2px 6px;
     border-radius: 10px;
     margin-left: 6px;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 </style>
 
 <style scoped>
 .toc-btn {
-    background-color: var(--common-color-1);
-    color: var(--common-content); 
-    border: 1px solid var(--common-color-1);
+    background: rgba(255, 192, 203, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.toc-btn svg {
-    fill: var(--common-content);
+body.dark-theme .toc-btn {
+    background: rgba(58, 170, 231, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toc-icon {
+    filter: brightness(0) invert(1) !important;
+}
+
+.toc-btn:hover {
+    transform: scale(1.08);
 }
 
 .toc-count {
-    color: var(--common-text);
-    border: 1px solid var(--common-color-1);
+    display: none;
 }
 </style>
 
@@ -102,7 +97,7 @@ const toggleToc = () => {
         font-size: 13px;
     }
     
-    .toc-btn svg {
+    .toc-icon {
         width: 16px;
         height: 16px;
         margin-right: 4px;
@@ -121,7 +116,7 @@ const toggleToc = () => {
         font-size: 12px;
     }
     
-    .toc-btn svg {
+    .toc-icon {
         width: 14px;
         height: 14px;
     }

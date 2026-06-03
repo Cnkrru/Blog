@@ -148,19 +148,17 @@ onMounted(() => {
 <style scoped>
 .copy-button {
     border-radius: 8px;
-    padding: 4px 8px;
-    font-size: 12px;
+    padding: 4px 10px;
+    font-size: 11px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: bold;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    min-width: 70px;
-    position: relative;
-    overflow: hidden;
+    min-width: 60px;
+    border: 1px solid;
 }
 
 .copy-button::before {
@@ -225,7 +223,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: 4px;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .status-text .copy-icon,
@@ -316,24 +314,23 @@ onMounted(() => {
 <style scoped>
 /* 复制按钮颜色 */
 .copy-button {
-    background-color: var(--common-color-1);
-    border: 1px solid var(--common-color-1);
-    color: var(--common-content);
-    box-shadow: 0 2px 8px var(--common-shadow);
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: var(--common-text);
 }
 
-.copy-button::before {
-    background: linear-gradient(
-        120deg,
-        transparent 30%,
-        rgba(255, 255, 255, 0.2) 50%,
-        transparent 70%
-    );
+body.dark-theme .copy-button {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .copy-button:hover {
-    background-color: var(--common-hover);
-    box-shadow: 0 6px 16px var(--common-shadow);
+    background: rgba(255, 192, 203, 0.2);
+    border-color: var(--common-color-1);
+}
+
+body.dark-theme .copy-button:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .copy-button:focus {

@@ -36,7 +36,7 @@ const toggleTheme = () => {
 <style scoped>
 .theme-toggle-btn {
   position: relative;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .theme-toggle-btn.animating {

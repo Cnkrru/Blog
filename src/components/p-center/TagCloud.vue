@@ -109,7 +109,8 @@ onMounted(() => {
       <span class="button-text">标签云</span>
       <span class="tag-count">{{ tags.length }}</span>
     </button>
-    
+
+    <Teleport to="body">
     <div v-if="showTagCloud" class="tag-cloud-modal">
       <div class="tag-cloud-content" :class="{ 'dark-theme': isDarkTheme }">
         <div class="tag-cloud-header">
@@ -218,6 +219,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    </Teleport>
   </div>
 </template>
 
@@ -230,9 +232,12 @@ onMounted(() => {
 .tag-cloud-button {
   font-size: 16px;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -241,6 +246,7 @@ onMounted(() => {
 
 .tag-cloud-button:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 12px var(--common-shadow);
 }
 
 .button-icon {
@@ -274,7 +280,7 @@ onMounted(() => {
 }
 
 .tag-cloud-content {
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 24px;
   width: 90%;
   max-width: 600px;
@@ -310,7 +316,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   position: relative;
 }
 
@@ -325,10 +331,10 @@ onMounted(() => {
 
 .search-input {
   width: 100%;
-  padding: 10px 40px 10px 12px;
-  border-radius: 8px;
+  padding: 10px 40px 10px 14px;
+  border-radius: 12px;
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .search-input:focus {
@@ -346,7 +352,7 @@ onMounted(() => {
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 50%;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 .tag-cloud {
@@ -361,14 +367,20 @@ onMounted(() => {
 }
 
 .tag {
-  padding: 6px 12px;
-  border-radius: 18px;
+  padding: 6px 14px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
   font-weight: 500;
   position: relative;
   overflow: hidden;
   animation: tagFadeIn 0.5s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .tag:hover {
@@ -412,7 +424,7 @@ onMounted(() => {
   align-items: center;
   padding: 12px 0;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   position: relative;
   overflow: hidden;
 }
@@ -449,7 +461,7 @@ onMounted(() => {
   gap: 8px;
   margin-bottom: 16px;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   flex-wrap: wrap;
 }
 
@@ -460,16 +472,20 @@ onMounted(() => {
 }
 
 .sort-button {
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 16px;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
   white-space: nowrap;
 }
 
 .sort-button:hover {
   transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .tag-header {
@@ -499,7 +515,7 @@ onMounted(() => {
   border-radius: 14px;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
   white-space: nowrap;
 }
 
@@ -544,19 +560,36 @@ onMounted(() => {
 
 <style scoped>
 .tag-cloud-button {
-  background-color: var(--common-color-1);
-  color: var(--common-content);
-  border: 2px solid var(--common-color-1);
+  background-color: rgba(255, 192, 203, 0.85);
+  color: #333;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+body.dark-theme .tag-cloud-button {
+  background-color: rgba(58, 170, 231, 0.85);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tag-count {
-  color: var(--common-content);
-  background-color: var(--common-color-1);
+  color: var(--common-text);
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
 }
 
 .tag-cloud-content {
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+body.dark-theme .tag-cloud-content {
+  background-color: rgba(21, 7, 60, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .tag-cloud-header {

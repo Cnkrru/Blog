@@ -90,19 +90,20 @@ onMounted(() => {
 
     /* 页眉卡片设计 */
 .header-card {
+    position: relative;
+    z-index: 100;
     width: 100%;
     height: 100%;
 
     padding: 10px 20px;
     margin-bottom: 10px;
-    border-radius: 8px;
-    border: 3px solid var(--common-color-1);
-    
+    border-radius: 14px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    
+
     overflow: visible;
 }
 
@@ -128,19 +129,35 @@ onMounted(() => {
 
 /* 功能按钮设计 */
 :deep(.button-style) {
-    width:40px;
-    height: 40px;
-    border-radius: 25%;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition:
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+body.dark-theme :deep(.button-style) {
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 :deep(.button-style:hover) {
-    transform: scale(1.15);
-    box-shadow: 0 4px 12px var(--common-shadow);
+    transform: scale(1.08);
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 :deep(.button-style.animating) {
@@ -178,17 +195,24 @@ onMounted(() => {
 <!-- 颜色样式 -->
 <style>
 .button-style {
-    background-color: var(--common-color-1);
-    border-color: var(--common-color-1);
+    background-color: rgba(255, 192, 203, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+body.dark-theme .button-style {
+    background-color: rgba(58, 170, 231, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 按钮图标始终白色 */
 .button-style img {
-    filter: invert(1);
+    filter: brightness(0) invert(1) !important;
 }
 
 body.dark-theme .button-style img {
-    filter: invert(0);
+    filter: brightness(0) invert(1) !important;
 }
+
 </style>
 
 <!-- 响应式设计媒体查询 -->
@@ -214,13 +238,13 @@ body.dark-theme .button-style img {
   }
 
   :deep(.button-style) {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
 
   :deep(.button-style img) {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 }
 
@@ -237,13 +261,13 @@ body.dark-theme .button-style img {
   }
 
   :deep(.button-style) {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
   }
 
   :deep(.button-style img) {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 }
 

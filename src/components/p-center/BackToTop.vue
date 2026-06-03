@@ -62,25 +62,37 @@ onUnmounted(() => {
 
 <style scoped>
 .back-to-top-btn {
-    width: 40px;
-    height: 40px;
-    
-    border-radius: 25%;
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     cursor: pointer;
-    transition: all 0.3s ease;
-    
+    transition:
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.10),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
 .back-to-top-btn:hover {
     transform: scale(1.1);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .back-to-top-btn img {
@@ -113,17 +125,19 @@ onUnmounted(() => {
 
 <style scoped>
 .back-to-top-btn {
-    background-color: var(--common-color-1);
-    border-color: var(--common-color-1);
+    background-color: rgba(255, 192, 203, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+body.dark-theme .back-to-top-btn {
+    background-color: rgba(58, 170, 231, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .back-to-top-btn img {
-    filter: invert(1);
+    filter: brightness(0) invert(1) !important;
 }
 
-body.dark-theme .back-to-top-btn img {
-    filter: invert(0);
-}
 </style>
 
 <style scoped>

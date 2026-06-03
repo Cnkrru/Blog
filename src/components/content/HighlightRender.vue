@@ -168,30 +168,14 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 <style scoped>
 .code-container {
   width: 100%;
-  margin: 16px 0;
-  border-radius: 8px;
+  margin: 12px 0;
+  border-radius: 10px;
   overflow: hidden;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
-.code-container::after {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: 10px;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-  z-index: -1;
-}
-
 .code-container:hover {
-  transform: translateY(-3px) scale(1.01);
-}
-
-.code-container:hover::after {
-  opacity: 1;
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
 .code-header {
@@ -199,7 +183,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   justify-content: space-between;
   align-items: center;
   padding: 8px 16px;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .header-actions {
@@ -214,7 +198,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   gap: 6px;
   padding: 3px 10px;
   border-radius: 12px;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .lang-dot {
@@ -241,7 +225,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 .code-content-wrapper {
   position: relative;
   display: flex;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 /* 行高亮 overlay */
@@ -280,7 +264,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 14px;
   line-height: 1.5;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   position: sticky;
   left: 0;
   z-index: 10;
@@ -305,7 +289,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 14px;
   line-height: 1.5;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 /* 加载状态 */
@@ -368,29 +352,33 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 <style scoped>
 /* 颜色样式 */
 .code-container {
-  box-shadow: 0 2px 4px var(--common-shadow);
-  border: 3px solid var(--common-color-1);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.code-container::after {
-  box-shadow: 0 0 20px var(--common-color-1), 0 0 40px var(--common-shadow);
-}
-
-.code-container:hover {
-  box-shadow: 0 8px 24px var(--common-shadow);
-  border-color: var(--common-hover);
+body.dark-theme .code-container {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 /* 代码头部 */
 .code-header {
-  background-color: var(--common-bg);
-  border-bottom: 1px solid var(--common-color-1);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .code-header {
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 /* 语言标签 */
 .language-badge {
-  background-color: var(--common-color-1);
-  color: var(--common-content);
+  background: var(--common-color-1);
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 8px;
 }
 
 /* 不同语言颜色 */

@@ -47,12 +47,7 @@
       @click.stop
     >
       <button v-if="!quoteCopied" class="quote-btn" @click="copyQuote">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-        </svg>
+        <img src="../../assets/imgs/svg/file-text.svg" alt="" width="14" height="14">
         引用
       </button>
       <span v-else class="quote-done">已复制</span>
@@ -655,7 +650,7 @@ watch(() => props.content, () => {
   color: var(--common-content);
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 .quote-btn:hover {
@@ -742,9 +737,16 @@ watch(() => props.content, () => {
 .markdown-content pre {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  padding: 1rem;
-  border-radius: 3px;
+  padding: 14px 16px;
+  border-radius: 10px;
   overflow-x: auto;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .markdown-content pre {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .markdown-content pre code {
@@ -857,7 +859,7 @@ watch(() => props.content, () => {
   padding: 8px 16px;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   font-weight: bold;
 }
 
@@ -925,8 +927,8 @@ watch(() => props.content, () => {
   color: var(--common-text);
 }
 
-.markdown-content pre {
-  background-color: rgba(255, 192, 203, 0.1);
+body.dark-theme .markdown-content pre {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 /* 引用颜色 */

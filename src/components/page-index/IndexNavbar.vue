@@ -55,14 +55,27 @@ const navigateTo = (path) => {
   position: relative;
   display: inline-block;
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: 14px;
   font-weight: 500;
-  padding: 0.5rem 0;
-  transition: all 0.3s ease;
+  padding: 6px 0;
+  transition: color 0.2s ease;
 }
 
 .nav-link:hover {
-  transform: translateY(-2px);
+  color: var(--common-color-1);
+  opacity: 1;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link-underline {
+  display: none;
 }
 
 .nav-link-text {
@@ -87,53 +100,13 @@ const navigateTo = (path) => {
 
 <style scoped>
 .nav-link {
-  background: var(--common-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 3s ease infinite;
-  text-shadow: 0 0 10px var(--common-color-1);
-}
-
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes nav-glow {
-  0%, 100% {
-    text-shadow: 0 0 10px var(--common-color-1);
-  }
-  50% {
-    text-shadow: 0 0 15px var(--common-color-1);
-  }
-}
-
-@keyframes nav-glow-hover {
-  0%, 100% {
-    text-shadow: 0 0 20px var(--common-color-1);
-  }
-  50% {
-    text-shadow: 0 0 30px var(--common-color-1);
-  }
+  color: var(--common-text);
+  opacity: 0.7;
 }
 
 .nav-link:hover {
-  background: var(--common-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 20px var(--common-color-1);
-  animation: gradient-shift 3s ease infinite, nav-glow-hover 1s ease-in-out infinite;
+  color: var(--common-color-1);
+  opacity: 1;
 }
 
 .nav-link-underline {

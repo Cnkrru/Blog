@@ -104,9 +104,7 @@ onUnmounted(() => {
               </div>
             </div>
             <span class="related-article-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+              <img src="../../assets/imgs/svg/chevron-right-stroke.svg" alt="" width="16" height="16">
             </span>
           </RouterLink>
         </div>
@@ -123,9 +121,15 @@ onUnmounted(() => {
 
 .related-articles-container {
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     border-radius: 12px;
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .related-articles-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.05);
 }
 
 .related-articles-title {
@@ -141,8 +145,9 @@ onUnmounted(() => {
 }
 
 .related-article-item {
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
     animation: fadeInUp 0.3s ease forwards;
     opacity: 0;
 }
@@ -170,7 +175,7 @@ onUnmounted(() => {
     gap: 12px;
     padding: 10px;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .related-article-content {
@@ -221,14 +226,14 @@ onUnmounted(() => {
     padding: 1px 6px;
     font-size: 10px;
     border-radius: 3px;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .related-article-arrow {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .related-article-arrow svg {
@@ -242,33 +247,27 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-.related-articles-container {
-    background-color: var(--common-bg);
-    border: 2px solid var(--common-color-1);
-}
-
 .related-articles-title {
     color: var(--common-text);
 }
 
 .related-article-item:hover {
-    background-color: var(--common-hover);
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .related-article-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .related-article-link {
     color: var(--common-text);
 }
 
-.related-article-link:hover {
-    background-color: var(--common-hover);
-}
-
 .related-article-category {
     background-color: var(--common-color-1);
-}
-
-.related-article-link:hover .related-article-title {
-    color: var(--common-text);
+    color: #fff;
 }
 
 .related-article-meta {
@@ -276,13 +275,13 @@ onUnmounted(() => {
 }
 
 .tag {
-    background-color: var(--common-bg);
+    background: rgba(0, 0, 0, 0.04);
     color: var(--common-text);
+    border-radius: 4px;
 }
 
-.related-article-link:hover .tag {
-    background-color: var(--common-color-1);
-    color: white;
+body.dark-theme .tag {
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .related-article-arrow {

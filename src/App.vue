@@ -15,7 +15,6 @@ import NotificationRender from './components/content/NotificationRender.vue'
 import MouseTrail from './components/api/MouseTrail.vue'
 import ConsoleEasterEgg from './components/media/ConsoleEasterEgg.vue'
 import ContextMenu from './components/p-center/ContextMenu.vue'
-import ScrollEasterEgg from './components/p-center/ScrollEasterEgg.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -71,7 +70,6 @@ onMounted(() => {
     <NotificationRender />
     <ConsoleEasterEgg />
     <ContextMenu />
-    <ScrollEasterEgg />
     <MouseTrail />
     <template v-if="!isIndexPage && !isTerminalPage">
       <Live2dWidget />
@@ -105,8 +103,9 @@ onMounted(() => {
 .page-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--common-color-1), var(--common-hover), #ff6b9d);
-  transition: width 0.25s ease;
-  box-shadow: 0 0 10px var(--common-color-1);
+  transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-shadow: 0 0 12px var(--common-color-1), 0 0 4px var(--common-color-1);
+  border-radius: 0 2px 2px 0;
 }
 </style>
 
@@ -120,13 +119,13 @@ onMounted(() => {
     justify-content: center;
     align-items: flex-start;
     flex-direction: row;
-    gap: 20px;
+    gap: 24px;
     flex: 1;
 }
 
 @media (max-width: 480px) {
     .mid-flex {
-        gap: 0;
+        gap: 6px;
         padding: 0;
         flex: 1;
     }
@@ -134,7 +133,7 @@ onMounted(() => {
 
 @media (max-width: 768px) {
     .mid-flex {
-        gap: 0;
+        gap: 10px;
         padding: 0;
     }
 }

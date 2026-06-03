@@ -38,12 +38,21 @@ const currentPath = computed(() => route.path)
   left: 0;
   right: 0;
   height: 56px;
-  background: var(--common-bg);
-  border-top: 2px solid var(--common-color-1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
   z-index: 900;
   justify-content: space-around;
   align-items: center;
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+body.dark-theme .mobile-nav {
+  background: rgba(21, 7, 60, 0.85);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 639px) {
@@ -60,14 +69,23 @@ const currentPath = computed(() => route.path)
   text-decoration: none;
   color: var(--common-text);
   opacity: 0.5;
-  transition: all 0.2s;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   padding: 4px 12px;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 .mn-item.active {
   opacity: 1;
   color: var(--common-color-1);
+  background-color: rgba(255, 192, 203, 0.15);
+  transform: translateY(-2px);
+}
+
+body.dark-theme .mn-item.active {
+  background-color: rgba(58, 170, 231, 0.15);
 }
 
 .mn-icon {

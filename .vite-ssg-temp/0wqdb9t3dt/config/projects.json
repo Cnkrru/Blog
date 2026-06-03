@@ -1,0 +1,15 @@
+[
+  {
+    "id": "0",
+    "name": "Vue Blog",
+    "title": "Vue Blog",
+    "category": "前端",
+    "tags": ["Vue", "博客"],
+    "description": "基于Vue 3的个人博客系统，支持Markdown文章、主题切换、国际化等功能",
+    "keywords": "Vue 3,博客系统,前端项目",
+    "author": "Cnkrru",
+    "seoTitle": "Vue Blog - 个人博客系统",
+    "path": "./html/projects/project-0.html",
+    "date": "2026-04-15"
+  }
+]

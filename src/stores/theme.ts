@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useThemeStore = defineStore('theme', () => {
-  const currentTheme = ref<'light' | 'dark'>('light')
-  const isAutoSwitch = ref<boolean>(true)
+  const currentTheme = ref<'light' | 'dark'>('dark')
+  const isAutoSwitch = ref<boolean>(false)
   const hasUserPreference = ref<boolean>(false)
 
   const isDark = computed<boolean>(() => currentTheme.value === 'dark')
@@ -47,8 +47,7 @@ export const useThemeStore = defineStore('theme', () => {
       isAutoSwitch.value = auto !== false
       hasUserPreference.value = true
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      currentTheme.value = prefersDark ? 'dark' : 'light'
+      currentTheme.value = 'dark'
     }
     if (currentTheme.value === 'dark') {
       document.body.classList.add('dark-theme')
@@ -71,8 +70,8 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   const resetToDefault = (): void => {
-    currentTheme.value = 'light'
-    isAutoSwitch.value = true
+    currentTheme.value = 'dark'
+    isAutoSwitch.value = false
     hasUserPreference.value = false
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('theme-preference')

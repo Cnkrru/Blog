@@ -16,9 +16,11 @@ html, body {
 }
 
 body {
-    font-family: Arial, "Microsoft YaHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%23ff69b4' stroke='%23ffe4ec' stroke-width='0.5'/></svg>") 4 2, auto;
 }
 
@@ -86,15 +88,28 @@ hr {
 
 /* 应用主题变量 */
 body {
-    background: linear-gradient(to bottom,
-        var(--common-color-1),
-        var(--common-color-2));
+    background: url('./assets/imgs/background.jpg') center/cover no-repeat fixed;
     color: var(--common-text);
 
     min-height: 100vh;
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 0;
+    pointer-events: none;
+}
+
+body.dark-theme::before {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#app {
+    position: relative;
+    z-index: 1;
 }
 
 a {
@@ -105,15 +120,38 @@ a:hover {
     color: var(--common-hover);
 }
 
-/* 卡片类元素 */
+/* 全局卡片毛玻璃风格 */
 .header-card,
-.left-asider-card,
-.center-card,
 .footer-card,
 .footer-element-card,
+.left-asider-card,
+.center-card,
 .page-list-card {
-    background-color: var(--common-bg);
-    box-shadow: 0 2px 4px var(--common-shadow);
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 2px 6px rgba(0, 0, 0, 0.06),
+        0 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+body.dark-theme .header-card,
+body.dark-theme .footer-card,
+body.dark-theme .footer-element-card,
+body.dark-theme .left-asider-card,
+body.dark-theme .center-card,
+body.dark-theme .page-list-card {
+    background-color: rgba(21, 7, 60, 0.5);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.10),
+        0 2px 6px rgba(0, 0, 0, 0.14),
+        0 8px 24px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* 滚动条娘化 */
@@ -132,6 +170,11 @@ a:hover {
     border-radius: 10px;
     border: 2px solid transparent;
     background-clip: content-box;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -148,4 +191,39 @@ a:hover {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--common-color-1) transparent;
+}
+
+/* SVG 图标暗色主题统一变白（封面图除外，封面图在亮色下反转） */
+body:not(.dark-theme) img[src*="/og/"] {
+    filter: invert(1);
+}
+
+body.dark-theme img[src$=".svg"]:not([src*="/og/"]) {
+    filter: invert(1);
+}
+
+/* ============================== 移动端触摸优化 ============================== */
+@media (pointer: coarse) {
+    /* 增大点击区域，防止误触 */
+    .nav-btn, .page-btn, .control-btn, .chip-btn, .toggle-btn,
+    .sort-btn, .view-tab, .zoom-btn, .post-menu-btn,
+    .back-to-top-btn, .toc-btn, .announcement-btn, .article-count-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* 触摸按下反馈 */
+    button:active, a:active {
+        opacity: 0.7;
+    }
+
+    /* 禁用 hover 效果在移动端（避免 sticky hover） */
+    @media (hover: none) {
+        .post-card:hover, .link-card:hover, .project-card:hover,
+        .glass-card:hover, .tl-card-body:hover, .tl-card:hover,
+        .page-card:hover, .control-btn:hover, .nav-btn:hover,
+        .arch-header:hover {
+            transform: none !important;
+        }
+    }
 }

@@ -127,61 +127,48 @@ onUnmounted(() => {
 }
 
 .clock-card {
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  border-radius: 14px;
   text-align: center;
-  transition: all 0.3s ease;
-}
-
-.clock-card:hover {
-  transform: translateY(-4px);
+  border: 1px solid;
 }
 
 .card-number {
   line-height: 1;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
 }
 
 .card-label {
   font-weight: 500;
+  font-size: 12px;
+  opacity: 0.5;
 }
 
 .clock-separator {
-  font-weight: bold;
+  font-weight: 300;
   line-height: 1;
 }
 </style>
 
 <style scoped>
 .clock-card {
-  background: var(--common-bg);
-  box-shadow: 0 4px 12px var(--common-shadow);
-  border: 1px solid var(--common-color-1);
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.clock-card:hover {
-  box-shadow: 0 6px 20px var(--common-shadow);
-  border-color: var(--common-color-1);
+body.dark-theme .clock-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .card-number {
-  background: var(--common-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 3s ease infinite;
+  color: var(--common-text);
 }
 
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+body.dark-theme .card-number {
+  color: #fff;
 }
 
 .card-label {
@@ -190,6 +177,7 @@ onUnmounted(() => {
 
 .clock-separator {
   color: var(--common-text);
+  opacity: 0.4;
 }
 </style>
 

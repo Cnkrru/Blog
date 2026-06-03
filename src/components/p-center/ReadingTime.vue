@@ -121,13 +121,7 @@ onUnmounted(() => {
       <!-- 字数统计 -->
       <div class="word-count-section">
         <span class="word-count-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
+          <img src="../../assets/imgs/svg/file-text.svg" alt="" width="16" height="16">
         </span>
         <span class="word-count-text">
           字数统计: {{ readingTime.totalWords }} 字
@@ -140,10 +134,7 @@ onUnmounted(() => {
       <!-- 阅读时间 -->
       <div class="reading-time-section">
         <span class="reading-time-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
+          <img src="../../assets/imgs/svg/clock.svg" alt="" width="16" height="16">
         </span>
         <span class="reading-time-text">
           预计阅读时间: {{ formatTime(readingTime) }}
@@ -161,12 +152,28 @@ onUnmounted(() => {
 
 .reading-time-container {
     width: 100%;
-    padding: 10px 15px;
-    border-radius: 20px;
+    padding: 8px 14px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: all 0.3s ease;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.word-count-text {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.word-count-detail {
+    font-size: 11px;
+    opacity: 0.55;
+}
+
+.reading-time-text {
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .word-count-section {
@@ -211,40 +218,26 @@ onUnmounted(() => {
 
 <style scoped>
 .reading-time-container {
-    background-color: var(--common-bg);
-    border: 2px solid var(--common-color-1);
-}
-
-.word-count-icon {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     color: var(--common-text);
 }
 
-.word-count-text {
-    color: var(--common-text);
-}
-
-.word-count-detail {
-    color: var(--common-text);
-}
-
-.reading-time-icon {
-    color: var(--common-text);
-}
-
-.reading-time-text {
-    color: var(--common-text);
+body.dark-theme .reading-time-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 </style>
 
 <style scoped>
 @media (max-width: 639px) {
     .reading-time-container {
-        padding: 8px 12px;
-        margin: 8px 0;
-        border-radius: 16px;
+        padding: 8px 10px;
+        margin: 6px 0;
+        border-radius: 8px;
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 6px;
     }
     
     .word-count-section {

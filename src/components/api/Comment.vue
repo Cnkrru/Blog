@@ -60,7 +60,7 @@ onUnmounted(() => {
             
             <!-- 错误状态 -->
             <div v-else-if="error" class="error-state">
-                <div class="error-icon">⚠️</div>
+                <div class="error-icon"><img src="../../assets/imgs/svg/warning.svg" alt="" width="32" height="32"></div>
                 <span class="error-text">{{ error }}</span>
                 <button class="retry-button" @click="commentStore.initCommentSystem">重试</button>
             </div>
@@ -76,14 +76,9 @@ onUnmounted(() => {
 
 /* 评论区域容器 */
 .comment-section {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.comment-section:hover {
-    transform: translateY(-2px);
+    margin-top: 1.5rem;
+    padding: 16px;
+    border-radius: 12px;
 }
 
 /* 评论标题 */
@@ -91,23 +86,22 @@ onUnmounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
     border-bottom: 1px solid;
 }
 
 .comment-header h3 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 15px;
     font-weight: 600;
 }
 
 .comment-count {
-    font-size: 0.9rem;
+    font-size: 12px;
     font-weight: 500;
-    padding: 2px 8px;
+    padding: 2px 10px;
     border-radius: 12px;
-    transition: all 0.3s ease;
 }
 
 /* 评论内容 */
@@ -171,7 +165,7 @@ onUnmounted(() => {
     padding: 6px 12px;
     font-size: 14px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
     font-weight: 500;
 }
 
@@ -194,7 +188,7 @@ onUnmounted(() => {
     width: 100% !important;
     min-height: 400px;
     border: none;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 /* 动画 */
@@ -222,21 +216,26 @@ onUnmounted(() => {
 <style scoped>
 /* 评论区域颜色 */
 .comment-section {
-    background-color: var(--common-bg);
-    border: 1px solid var(--common-color-1);
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.dark-theme .comment-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.06);
 }
 
 /* 评论标题 */
 .comment-header {
-    border-bottom: 1px solid var(--common-color-1);
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .comment-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .comment-header h3 {
     color: var(--common-text);
-    background: linear-gradient(45deg, var(--common-color-1), var(--common-color-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .comment-hint {

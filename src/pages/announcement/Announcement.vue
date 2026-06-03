@@ -40,38 +40,36 @@ onUnmounted(() => {
 <template>
   <div>
     <button class="announcement-btn" @click="openAnnouncement">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-      </svg>
+      <img src="../../assets/imgs/svg/announcement.svg" alt="" width="16" height="16">
       <span>公告</span>
     </button>
-    
-    <transition name="modal">
-      <div v-if="showModal" class="modal-overlay" @click="closeAnnouncement">
-        <transition name="modal-content">
-          <div class="modal-content" @click.stop>
-            <div class="modal-header">
-              <h3>网站公告</h3>
-              <button class="modal-close" @click="closeAnnouncement">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20">
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div v-if="loading" class="loading-message">
-                <div class="loading-spinner"></div>
-                <p>加载公告中...</p>
+
+    <Teleport to="body">
+      <transition name="modal">
+        <div v-if="showModal" class="modal-overlay" @click="closeAnnouncement">
+          <transition name="modal-content">
+            <div class="modal-content" @click.stop>
+              <div class="modal-header">
+                <h3>网站公告</h3>
+                <button class="modal-close" @click="closeAnnouncement">
+                  <img src="../../assets/imgs/svg/close.svg" alt="" width="20" height="20">
+                </button>
               </div>
-              <MarkdownRender v-else :content="announcementContent" />
+              <div class="modal-body">
+                <div v-if="loading" class="loading-message">
+                  <div class="loading-spinner"></div>
+                  <p>加载公告中...</p>
+                </div>
+                <MarkdownRender v-else :content="announcementContent" />
+              </div>
+              <div class="modal-footer">
+                <button class="modal-btn" @click="closeAnnouncement">确定</button>
+              </div>
             </div>
-            <div class="modal-footer">
-              <button class="modal-btn" @click="closeAnnouncement">确定</button>
-            </div>
-          </div>
-        </transition>
-      </div>
-    </transition>
+          </transition>
+        </div>
+      </transition>
+    </Teleport>
   </div>
 </template>
 
@@ -81,23 +79,25 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 16px;
-    border: 2px solid;
-    border-radius: 8px;
+    padding: 6px 16px;
+    border: 1px solid;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    font-weight: bold;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .announcement-btn svg {
-    width: 18px;
-    height: 18px;
-    margin-right: 6px;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    flex-shrink: 0;
 }
 
 .announcement-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--common-shadow);
 }
 
 .modal-overlay {
@@ -113,8 +113,8 @@ onUnmounted(() => {
 }
 
 .modal-content {
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 24px;
     max-width: 500px;
     width: 90%;
     border: 1px solid;
@@ -124,7 +124,7 @@ onUnmounted(() => {
 
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
 }
 
 .modal-enter-from,
@@ -134,7 +134,7 @@ onUnmounted(() => {
 
 .modal-content-enter-active,
 .modal-content-leave-active {
-  transition: all 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
 }
 
 .modal-content-enter-from,
@@ -171,28 +171,41 @@ onUnmounted(() => {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
     border-bottom: 1px solid;
 }
 
 .modal-header h3 {
     margin: 0;
+    font-size: 17px;
+    font-weight: 600;
 }
 
 .modal-close {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: none;
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.05);
     border: none;
     cursor: pointer;
     border-radius: 50%;
-    transition: all 0.3s ease;
+    color: var(--common-text);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+body.dark-theme .modal-close {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1) rotate(90deg);
+}
+
+body.dark-theme .modal-close:hover {
+    background: rgba(255, 255, 255, 0.18);
 }
 
 .modal-body {
@@ -216,61 +229,71 @@ onUnmounted(() => {
 }
 
 .modal-btn {
-    border: 1px solid;
-    padding: 8px 16px;
-    border-radius: 4px;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 14px;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .modal-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--common-shadow);
 }
 </style>
 
 <style scoped>
 /* 颜色样式 */
 .announcement-btn {
-    background-color: var(--common-color-1);
-    border-color: var(--common-color-1);
-    color: var(--common-content);
-    box-shadow: 0 2px 8px var(--common-shadow);
+    background: rgba(255, 192, 203, 0.2);
+    border-color: rgba(255, 192, 203, 0.3);
+    color: var(--common-text);
+}
+
+body.dark-theme .announcement-btn {
+    background: rgba(58, 170, 231, 0.15);
+    border-color: rgba(58, 170, 231, 0.25);
 }
 
 .announcement-btn:hover {
-    background-color: var(--common-hover);
-    box-shadow: 0 4px 12px var(--common-shadow);
+    background: rgba(255, 192, 203, 0.35);
+}
+
+body.dark-theme .announcement-btn:hover {
+    background: rgba(58, 170, 231, 0.28);
 }
 
 .modal-overlay {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .modal-content {
-    background: var(--common-bg);
-    border-color: var(--common-color-1);
-    box-shadow: 0 4px 12px var(--common-shadow);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
 }
 
-.loading-spinner {
-    border-color: var(--common-color-1);
-    border-top-color: var(--common-hover);
+body.dark-theme .modal-content {
+    background: rgba(30, 15, 60, 0.94);
+    border-color: rgba(255, 255, 255, 0.06);
 }
 
 .modal-header {
-    border-bottom-color: var(--common-color-1);
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .modal-header h3 {
     color: var(--common-text);
-}
-
-.modal-close {
-    color: var(--common-text);
-}
-
-.modal-close:hover {
-    background-color: var(--common-hover);
 }
 
 .modal-body {
@@ -278,17 +301,20 @@ onUnmounted(() => {
 }
 
 .modal-footer {
-    border-top-color: var(--common-color-1);
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .modal-footer {
+    border-top-color: rgba(255, 255, 255, 0.08);
 }
 
 .modal-btn {
-    background: var(--common-hover);
-    color: var(--common-text);
-    border-color: var(--common-color-1);
+    background: var(--common-color-1);
+    color: #fff;
 }
 
 .modal-btn:hover {
-    background: var(--common-hover);
+    filter: brightness(1.1);
 }
 </style>
 

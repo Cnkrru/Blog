@@ -2,15 +2,16 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-const isAnimating = ref(false)
+const isImmersiveReading = ref(false)
 const router = useRouter()
 
 const toggleImmersiveReading = () : void => {
-  isAnimating.value = true
-  document.body.classList.toggle('immersive-reading')
-  setTimeout(() => { isAnimating.value = false }, 400)
+  isImmersiveReading.value = true                           //沉浸阅读标志置为true
+  document.body.classList.toggle('immersive-reading')       //切换bodyCSS样式(功能实现)
+//   setTimeout(() => { isAnimating.value = false }, 400)      //超时时间设置为400ms
 }
 
+//路由切换，沉浸阅读功能的生命周期结束
 onMounted(() => {
   router.afterEach(() => {
     document.body.classList.remove('immersive-reading')
@@ -19,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="button-style immersive-btn" :class="{ animating: isAnimating }" @click="toggleImmersiveReading">
+  <div class="button-style immersive-btn" @click="toggleImmersiveReading">
     <img src="../../assets/imgs/svg/book.svg" alt="沉浸式阅读">
     <span v-if="isAnimating" class="emoji-burst">✨</span>
   </div>
@@ -27,7 +28,6 @@ onMounted(() => {
 
 <!-- 布局样式 -->
 <style>
-.immersive-btn {}
 
 @media (max-width: 480px) {
     .immersive-btn {

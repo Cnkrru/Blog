@@ -81,21 +81,17 @@ onMounted(() => {
     <!-- 文章菜单按钮 -->
     <div class="post-menu-btn-container">
       <button class="post-menu-btn" @click="toggleMenu">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-          <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
-        </svg>
-        菜单
+        <img src="../../assets/imgs/svg/menu.svg" alt="" width="18" height="18">
       </button>
     </div>
 
     <!-- 文章菜单卡片 -->
+    <Teleport to="body">
     <div class="post-menu-card" :class="{ active: show }">
       <div class="post-menu-card-header">
         <h3>文章菜单</h3>
         <button class="post-menu-close-btn" @click="toggleMenu">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-          </svg>
+          <img src="../../assets/imgs/svg/close.svg" alt="" width="20" height="20">
         </button>
       </div>
       <div class="post-menu-card-content">
@@ -146,6 +142,7 @@ onMounted(() => {
         </ul>
       </div>
     </div>
+    </Teleport>
   </div>
 </template>
 
@@ -158,10 +155,11 @@ onMounted(() => {
     width: 300px;
     max-height: 70vh;
     border-right: none;
-    border-radius: 12px 0 0 12px;
+    border-radius: 16px 0 0 16px;
     z-index: 999;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
 }
 
 .post-menu-card.active {
@@ -203,7 +201,7 @@ onMounted(() => {
     border: none;
     cursor: pointer;
     border-radius: 50%;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .post-menu-card-content {
@@ -226,7 +224,7 @@ onMounted(() => {
     padding: 8px 32px 8px 12px;
     border-radius: 6px;
     font-size: 14px;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .menu-search-input:focus {
@@ -249,7 +247,7 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 .sort-controls {
@@ -263,7 +261,7 @@ onMounted(() => {
     border-radius: 6px;
     font-size: 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
 .post-list {
@@ -275,7 +273,7 @@ onMounted(() => {
 .post-list-item {
     padding: 8px 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
     display: flex;
     align-items: center;
     border-radius: 6px;
@@ -326,33 +324,49 @@ onMounted(() => {
 }
 
 .post-menu-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    font-weight: bold;
+    flex-shrink: 0;
+    background: rgba(255, 192, 203, 0.85);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.dark-theme .post-menu-btn {
+    background: rgba(58, 170, 231, 0.85);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.post-menu-btn img {
+    filter: brightness(0) invert(1) !important;
 }
 
 .post-menu-btn:hover {
-    transform: translateY(-2px);
+    transform: scale(1.08);
 }
 
-.post-menu-btn svg {
-    width: 18px;
-    height: 18px;
-    margin-right: 6px;
+.post-menu-btn span {
+    display: none;
 }
+
 </style>
 
 <style scoped>
 .post-menu-card {
-    background-color: var(--common-bg);
-    border: 1px solid var(--common-color-1);
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .post-menu-card {
+    background: rgba(21, 7, 60, 0.88);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .post-menu-card-header h3 {
@@ -364,9 +378,15 @@ onMounted(() => {
 }
 
 .menu-search-input {
-    background-color: var(--common-bg);
+    background: rgba(255, 255, 255, 0.5);
     color: var(--common-text);
-    border: 1px solid var(--common-color-1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+}
+
+body.dark-theme .menu-search-input {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .menu-clear-search-btn {
@@ -374,47 +394,38 @@ onMounted(() => {
 }
 
 .sort-btn {
-    background-color: var(--common-color-1);
+    background: rgba(255, 255, 255, 0.5);
     color: var(--common-text);
-    border: 1px solid var(--common-color-1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.sort-btn:hover {
-    background-color: var(--common-hover);
+body.dark-theme .sort-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .sort-btn.active {
-    background-color: var(--common-hover);
+    background: var(--common-color-1);
+    color: #fff;
+    border-color: var(--common-color-1);
 }
 
 .post-list-item:hover {
-    background-color: var(--common-hover);
+    background: rgba(255, 192, 203, 0.1);
 }
 
-.post-id {
-    color: var(--common-text);
+body.dark-theme .post-list-item:hover {
+    background: rgba(255, 255, 255, 0.04);
 }
 
-.post-title {
-    color: var(--common-text);
-}
-
-.post-date {
-    color: var(--common-content);
-}
+.post-id { color: var(--common-text); }
+.post-title { color: var(--common-text); }
+.post-date { color: var(--common-text); opacity: 0.5; }
 
 .post-menu-btn {
     background-color: var(--common-color-1);
     color: var(--common-content);
     border: 1px solid var(--common-color-1);
-}
-
-.post-menu-btn:hover {
-    background-color: var(--common-hover);
-}
-
-.post-menu-btn svg {
-    fill: var(--common-content);
 }
 
 .post-menu-close-btn svg {

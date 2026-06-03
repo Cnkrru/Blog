@@ -36,14 +36,13 @@
 /* 主体部分卡片设计 */
 .center-card {
     width: 100%;
-    max-height: 600px;
-    height: 600px;
-    padding: 20px;
-    border-radius: 8px;
+    max-height: 680px;
+    height: 680px;
+    padding: 14px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 3px solid var(--common-color-1);
 }
 
 /* 头部区域容器 */
@@ -51,6 +50,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    gap: 6px;
     overflow: hidden;
 }
 
@@ -58,77 +58,88 @@
 .center-header-area :deep(.center-head-card) {
     flex-shrink: 0;
     width: 100%;
+    padding: 8px 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 /* 内容区域 - 可滚动 */
 .center-header-area :deep(.center-card-content) {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 14px;
+    border-radius: 10px;
 }
 </style>
 
 <style scoped>
-/* 中心卡片内容区域背景 */
-:deep(.center-card-content) {
-    background-color: var(--common-bg);
-}
-
-/* 中心卡片头部区域样式 */
+/* 头部区域 — 略深一点的半透明 */
 :deep(.center-head-card) {
-    background-color: var(--common-bg);
-    transition: background-color 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-/* 中心卡片头部标题样式 */
+body.dark-theme :deep(.center-head-card) {
+    background-color: rgba(21, 7, 60, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* 内容区域 — 最浅，保证文字可读 */
+:deep(.center-card-content) {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+body.dark-theme :deep(.center-card-content) {
+    background-color: rgba(21, 7, 60, 0.25);
+}
+
+/* 头部标题 */
 :deep(.center-head-card h2) {
-    color: var(--common-color-1);
-    transition: color 0.3s ease;
+    color: var(--common-text);
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
 }
 
-/* 中心卡片内部hr样式 */
+body.dark-theme :deep(.center-head-card h2) {
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+}
+
+/* 分割线 */
 :deep(.center-card-content hr) {
     border: none;
     height: 1px;
-    background-color: var(--common-color-1);
-    margin: 10px 0;
-    transition: background-color 0.3s ease;
+    background: linear-gradient(90deg, transparent, var(--common-color-1), transparent);
+    margin: 8px 0;
+    opacity: 0.3;
 }
 
-/* 中心卡片中直接的hr样式 */
 :deep(.center-card hr) {
     border: none;
     height: 1px;
-    background-color: var(--common-color-1);
-    margin: 10px 0;
-    transition: background-color 0.3s ease;
+    background: linear-gradient(90deg, transparent, var(--common-color-1), transparent);
+    margin: 8px 0;
+    opacity: 0.3;
 }
 
-/* 中心卡片内部边框样式 */
+/* 内部带边框卡片 — 加深边框，与毛玻璃背景有区分度 */
 :deep(.center-card-bordered) {
-    border: 2px solid var(--common-color-1);
-    transition: border-color 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+body.dark-theme :deep(.center-card-bordered) {
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 </style>
 
 <style scoped>
-@media (max-width: 480px) {
-    .center-S {
-        width: 100%;
-        padding: 0;
-    }
-    .center-card {
-        height: auto;
-        max-height: none;
-        min-height: calc(100vh - 200px);
-        padding: 6px;
-        border-width: 2px;
-    }
-    .center-header-area :deep(.center-card-content) {
-        padding: 6px 2px;
-    }
-}
-
 @media (max-width: 768px) {
     .center-S {
         width: 100%;
@@ -137,8 +148,51 @@
     .center-card {
         height: auto;
         min-height: 500px;
+        padding: 10px;
+        border-radius: 14px;
+    }
+    .center-header-area {
+        gap: 6px;
+    }
+    .center-header-area :deep(.center-head-card) {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px 12px;
+    }
+    .center-header-area :deep(.center-head-card h2) {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .center-S {
+        width: 100%;
+        padding: 0;
+    }
+    .center-card {
+        height: auto;
+        max-height: none;
+        min-height: calc(100vh - 180px);
+        padding: 6px;
+        border-radius: 10px;
+    }
+    .center-header-area {
+        gap: 4px;
+    }
+    .center-header-area :deep(.center-head-card) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 10px;
+    }
+    .center-header-area :deep(.center-head-card h2) {
+        font-size: 15px;
+        width: 100%;
+    }
+    .center-header-area :deep(.center-card-content) {
         padding: 8px;
-        border-width: 2px;
+        border-radius: 8px;
     }
 }
 
@@ -147,7 +201,8 @@
         width: calc(100% - 20% - 15px);
     }
     .center-card {
-        height: 550px;
+        height: 580px;
+        border-radius: 14px;
     }
 }
 
@@ -156,7 +211,8 @@
         width: calc(100% - 18% - 20px);
     }
     .center-card {
-        height: 600px;
+        height: 640px;
+        border-radius: 16px;
     }
 }
 
@@ -165,7 +221,7 @@
         width: 1200px;
     }
     .center-card {
-        height: 600px;
+        height: 680px;
     }
 }
 </style>
