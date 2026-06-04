@@ -48,44 +48,48 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <button 
-        class="back-to-top-btn" 
+    <button
+        v-if="!isImmersiveReading"
+        class="back-to-top-btn"
         @click="scrollToTop"
-        :class="{ 
-            'visible': !isImmersiveReading || isVisible,
-            'immersive': isImmersiveReading 
-        }"
     >
         <img src="../../assets/imgs/svg/arrow-up.svg" alt="返回顶部">
     </button>
+    <Teleport to="body">
+        <button
+            v-if="isImmersiveReading"
+            class="back-to-top-btn immersive visible"
+            @click="scrollToTop"
+        >
+            <img src="../../assets/imgs/svg/arrow-up.svg" alt="返回顶部">
+        </button>
+    </Teleport>
 </template>
 
 <style scoped>
 .back-to-top-btn {
     width: 38px;
     height: 38px;
-
     border-radius: 50%;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     cursor: pointer;
-    transition:
-        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.2s ease,
-        opacity 0.25s ease,
-        visibility 0.25s ease;
-
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     box-shadow:
         0 2px 6px rgba(0, 0, 0, 0.10),
         inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.back-to-top-btn.immersive {
+    position: fixed;
+    bottom: 24px;
+    right: 34px;
+    z-index: 9998;
 }
 
 .back-to-top-btn:hover {
@@ -98,28 +102,6 @@ onUnmounted(() => {
 .back-to-top-btn img {
     width: 20px;
     height: 20px;
-    transition: filter 0.3s ease;
-}
-
-.back-to-top-btn.immersive {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    z-index: 9998;
-    
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-}
-
-.back-to-top-btn.immersive.visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.back-to-top-btn.immersive:hover {
-    transform: scale(1.1) translateY(0);
 }
 </style>
 
@@ -143,15 +125,22 @@ body.dark-theme .back-to-top-btn {
 <style scoped>
 @media (max-width: 768px) {
     .back-to-top-btn.immersive {
-        bottom: 70px;
-        right: 10px;
+        bottom: 16px;
+        right: 26px;
         width: 36px;
         height: 36px;
     }
-    
+
     .back-to-top-btn.immersive img {
         width: 18px;
         height: 18px;
+    }
+}
+
+@media (max-width: 639px) {
+    .back-to-top-btn.immersive {
+        bottom: 72px;
+        right: 22px;
     }
 }
 </style>

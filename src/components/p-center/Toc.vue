@@ -251,9 +251,7 @@ onUnmounted(() => {
                 class="toc-arrow"
                 @click.prevent.stop="toggleCollapse(node.id)"
               >
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" :class="{ rot: !node.collapsed }">
-                  <polygon points="8,4 16,12 8,20"/>
-                </svg>
+                <img src="../../assets/imgs/svg/chevron-right.svg" alt="" width="10" height="10" class="toc-arrow-icon" :class="{ rot: !node.collapsed }">
               </span>
               <span v-else class="toc-arrow-blank"></span>
               <span class="toc-num">{{ node.numbering }}</span>
@@ -274,9 +272,7 @@ onUnmounted(() => {
                       class="toc-arrow"
                       @click.prevent.stop="toggleCollapse(child.id)"
                     >
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" :class="{ rot: !child.collapsed }">
-                        <polygon points="8,4 16,12 8,20"/>
-                      </svg>
+                      <img src="../../assets/imgs/svg/chevron-right.svg" alt="" width="10" height="10" class="toc-arrow-icon" :class="{ rot: !child.collapsed }">
                     </span>
                     <span v-else class="toc-arrow-blank"></span>
                     <span class="toc-num">{{ child.numbering }}</span>
@@ -321,218 +317,204 @@ onUnmounted(() => {
   border-radius: 16px 0 0 16px;
   z-index: 999;
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow:
-    -4px 4px 16px rgba(0, 0, 0, 0.08),
-    -1px 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
 }
 
 body.dark-theme .toc-card {
-  background-color: rgba(21, 7, 60, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(21, 7, 60, 0.88);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .toc-card.active {
   transform: translate(0, -50%);
-  box-shadow:
-    -6px 6px 24px rgba(0, 0, 0, 0.12),
-    -2px 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .toc-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--common-color-1);
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme .toc-card-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .toc-card-header h3 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--common-text);
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.header-actions { display: flex; align-items: center; gap: 8px; }
 
 .toc-count {
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 10px;
   color: var(--common-text);
-  border: 1px solid var(--common-color-1);
+  opacity: 0.5;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .toc-count {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .toc-close-btn {
-  width: 26px;
-  height: 26px;
+  width: 26px; height: 26px;
   border-radius: 50%;
   border: none;
-  background: none;
+  background: rgba(0, 0, 0, 0.05);
   color: var(--common-text);
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
+body.dark-theme .toc-close-btn { background: rgba(255, 255, 255, 0.08); }
+
 .toc-close-btn:hover {
-  background-color: var(--common-color-1);
+  background: rgba(0, 0, 0, 0.1);
   transform: rotate(90deg);
 }
+
+body.dark-theme .toc-close-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
 .toc-toolbar {
   display: flex;
   justify-content: flex-end;
-  padding: 4px 16px;
-  border-bottom: 1px solid var(--common-color-1);
+  padding: 4px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
+
+body.dark-theme .toc-toolbar { border-bottom-color: rgba(255, 255, 255, 0.06); }
 
 .toc-tb-btn {
   font-size: 11px;
-  padding: 2px 10px;
-  border-radius: 10px;
-  border: 1px solid var(--common-color-1);
+  padding: 3px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   background: transparent;
   color: var(--common-text);
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.toc-tb-btn:hover {
-  background: var(--common-color-1);
-}
+body.dark-theme .toc-tb-btn { border-color: rgba(255, 255, 255, 0.1); }
+
+.toc-tb-btn:hover { background: rgba(0, 0, 0, 0.06); }
+body.dark-theme .toc-tb-btn:hover { background: rgba(255, 255, 255, 0.08); }
 
 .toc-card-content {
-  padding: 8px 12px;
-  max-height: calc(70vh - 80px);
+  padding: 6px 8px;
+  max-height: calc(70vh - 90px);
   overflow-y: auto;
 }
 
-.toc-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.toc-children {
-  margin: 0;
-}
+.toc-list { list-style: none; padding: 0; margin: 0; }
+.toc-children { margin: 0; }
 
 .toc-item {
-  margin-bottom: 2px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+  margin-bottom: 1px;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
 }
 
 .toc-link {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 5px 8px;
+  gap: 6px;
+  padding: 6px 10px;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--common-text);
   font-size: 13px;
   line-height: 1.4;
-  transition:
-    background-color 0.15s ease,
-    transform 0.15s ease,
-    color 0.15s ease,
-    border-left-color 0.15s ease;
+  transition: background-color 0.12s ease, color 0.12s ease;
   cursor: pointer;
 }
 
 .toc-link:hover {
-  background-color: rgba(255, 192, 203, 0.1);
-  transform: translateX(3px);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 body.dark-theme .toc-link:hover {
-  background-color: rgba(58, 170, 231, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .toc-item.active > .toc-link {
-  background-color: var(--common-bg);
+  background: rgba(255, 192, 203, 0.15);
   color: var(--common-color-1);
-  font-weight: 700;
-  border-left: 3px solid var(--common-color-1);
+  font-weight: 600;
 }
 
-/* 缩进 */
-.lv-1 > .toc-link { padding-left: 8px; }
-.lv-2 > .toc-link { padding-left: 12px; }
-.lv-3 > .toc-link { padding-left: 16px; }
+body.dark-theme .toc-item.active > .toc-link {
+  background: rgba(58, 170, 231, 0.15);
+}
 
-/* 箭头 */
+.lv-1 > .toc-link { padding-left: 12px; }
+.lv-2 > .toc-link { padding-left: 20px; }
+.lv-3 > .toc-link { padding-left: 28px; }
+
 .toc-arrow {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   cursor: pointer;
-  color: var(--common-text);
-  opacity: 0.5;
-  transition: opacity 0.2s;
+  opacity: 0.35;
+  transition: opacity 0.15s;
 }
 
-.toc-arrow:hover {
-  opacity: 1;
-}
+.toc-arrow:hover { opacity: 0.7; }
 
-.toc-arrow svg {
+.toc-arrow-icon {
   transition: transform 0.2s ease;
+  opacity: 0.6;
 }
 
-.toc-arrow svg.rot {
+.toc-arrow-icon.rot {
   transform: rotate(90deg);
 }
 
-.toc-arrow-blank {
-  width: 16px;
-  flex-shrink: 0;
-}
+.toc-arrow-blank { width: 16px; flex-shrink: 0; }
 
 .toc-num {
-  font-size: 11px;
-  min-width: 24px;
+  font-size: 10px;
+  min-width: 20px;
   text-align: right;
   color: var(--common-text);
-  opacity: 0.5;
+  opacity: 0.35;
   flex-shrink: 0;
 }
 
-.toc-item.active .toc-num {
-  opacity: 1;
-  color: var(--common-color-1);
-}
+.toc-item.active .toc-num { opacity: 0.7; color: var(--common-color-1); }
 
-.toc-text {
-  flex: 1;
-  word-break: break-word;
-}
+.toc-text { flex: 1; word-break: break-word; }
 
 .toc-empty {
   text-align: center;
   padding: 24px 0;
   color: var(--common-text);
-  opacity: 0.4;
+  opacity: 0.35;
   font-size: 13px;
 }
 
 @media (max-width: 768px) {
-  .toc-card { width: 240px; max-height: 60vh; }
+  .toc-card { width: 260px; max-height: 60vh; }
   .toc-card-content { max-height: calc(60vh - 80px); }
-  .toc-link { font-size: 12px; padding: 4px 6px; }
+  .toc-link { font-size: 12px; padding: 5px 8px; }
 }
 </style>

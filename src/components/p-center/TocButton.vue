@@ -78,7 +78,11 @@ body.dark-theme .toc-btn {
 }
 
 .toc-icon {
-    filter: brightness(0) invert(1) !important;
+    filter: brightness(0) invert(1);
+}
+
+body.dark-theme .toc-icon {
+    filter: brightness(0) invert(1);
 }
 
 .toc-btn:hover {
@@ -91,42 +95,14 @@ body.dark-theme .toc-btn {
 </style>
 
 <style scoped>
-@media (max-width: 768px) {
-    .toc-btn {
-        padding: 6px 12px;
-        font-size: 13px;
-    }
-    
-    .toc-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 4px;
-    }
-    
-    .toc-count {
-        font-size: 10px;
-        padding: 1px 4px;
-        margin-left: 4px;
-    }
-}
-
 @media (max-width: 640px) {
     .toc-btn {
-        padding: 5px 10px;
-        font-size: 12px;
+        width: 32px;
+        height: 32px;
     }
-    
     .toc-icon {
         width: 14px;
         height: 14px;
-    }
-    
-    .btn-text {
-        display: none;
-    }
-    
-    .toc-count {
-        margin-left: 2px;
     }
 }
 </style>
