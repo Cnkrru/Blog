@@ -7,6 +7,7 @@
       </span>
       <div class="header-actions">
         <CodeRender v-if="showCopyButton" :code="code" />
+        <CodePreview v-if="language && (language.toLowerCase() === 'html' || language.toLowerCase() === 'htmlembedded')" :code="code" />
         <span class="line-count" v-if="showLineNumbers">{{ code.split('\n').length }} lines</span>
       </div>
     </div>
@@ -38,6 +39,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
+import CodePreview from './CodePreview.vue'
 import { useCodeStore } from '../../stores'
 
 const props = withDefaults(defineProps<{

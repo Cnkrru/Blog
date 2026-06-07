@@ -166,7 +166,7 @@ onMounted(() => {
     </div>
     <hr>
     <div class="apply-link-wrap">
-      <RouterLink to="/links/apply" class="apply-link">📬 申请友链</RouterLink>
+      <RouterLink to="/links/apply" class="apply-link"><img src="../assets/imgs/svg/mail.svg" alt="" width="15" height="15" class="apply-icon">申请友链</RouterLink>
     </div>
 
     <PageNav
@@ -291,6 +291,9 @@ body.dark-theme .link-card:hover {
 }
 
 .apply-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 13px;
   color: var(--common-color-1);
   text-decoration: none;
@@ -302,6 +305,7 @@ body.dark-theme .link-card:hover {
     box-shadow 0.2s ease,
     background-color 0.2s ease;
 }
+.apply-icon { width: 15px; height: 15px; flex-shrink: 0; }
 
 .apply-link:hover {
   background: var(--common-color-1);

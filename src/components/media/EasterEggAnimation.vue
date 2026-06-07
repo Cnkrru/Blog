@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const props = withDefaults(defineProps<{ text?: string; finalText?: string }>(), {
   text: '欢迎来到我的博客',
@@ -8,242 +8,137 @@ const props = withDefaults(defineProps<{ text?: string; finalText?: string }>(),
 
 const isAnimating = ref(false)
 const showFinalText = ref(false)
-const overlayRef = ref(null)
-const backdropRef = ref(null)
+const chars = ref<{ char: string; x: number; y: number; opacity: number; id: number }[]>([])
+let charId = 0
 
-const easeOutBounce = (t) => {
-  if (t < 1 / 2.75) {
-    return 7.5625 * t * t
-  } else if (t < 2 / 2.75) {
-    return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75
-  } else if (t < 2.5 / 2.75) {
-    return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375
-  } else {
-    return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375
-  }
-}
-
-const animateCharFall = (element, targetY) => {
-  const startY = -150
-  const duration = 1000
-  const startTime = performance.now()
-
-  const animate = (currentTime) => {
-    const elapsed = currentTime - startTime
-    const progress = Math.min(elapsed / duration, 1)
-    const currentY = startY + (targetY - startY) * easeOutBounce(progress)
-    element.style.top = currentY + 'px'
-
-    if (progress < 1) {
-      requestAnimationFrame(animate)
-    } else {
-      setTimeout(() => {
-        element.style.opacity = '0'
-        element.style.transition = 'opacity 0.5s ease'
-      }, 300)
-    }
-  }
-
-  requestAnimationFrame(animate)
-}
-
-const triggerEasterEgg = () => {
+function triggerEasterEgg() {
   if (isAnimating.value) return
-
   isAnimating.value = true
   showFinalText.value = false
+  chars.value = []
 
-  const overlay = overlayRef.value
-  const backdrop = backdropRef.value
-  if (!overlay || !backdrop) return
-  
-  const existingChars = overlay.querySelectorAll('.falling-char')
-  existingChars.forEach(char => char.remove())
-  
-  backdrop.style.display = 'block'
-  overlay.style.display = 'flex'
+  const arr = props.text.split('')
+  const vw = window.innerWidth
+  const charW = Math.min(140, (vw - 40) / arr.length)
+  const totalW = arr.length * charW
+  const startX = (vw - totalW) / 2
 
-  const chars = props.text.split('')
-  const viewportWidth = window.innerWidth
-  const viewportHeight = window.innerHeight
-  const charWidth = 150
-  const totalWidth = chars.length * charWidth
-  const startX = (viewportWidth - totalWidth) / 2
-
-  chars.forEach((char, index) => {
-    const charElement = document.createElement('div')
-    charElement.className = 'falling-char'
-    charElement.textContent = char
-    
-    charElement.style.cssText = `
-      position: absolute;
-      font-size: 144px;
-      font-weight: 800;
-      background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
-      background-size: 400% 400%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-family: 'Courier New', Courier, monospace;
-      animation: gradient-shift 3s ease infinite;
-      left: ${startX + index * charWidth}px;
-      top: -150px;
-      opacity: 0;
-    `
-    overlay.appendChild(charElement)
-
+  arr.forEach((c, i) => {
+    const x = startX + i * charW + charW / 2
     setTimeout(() => {
-      charElement.style.opacity = '1'
-      animateCharFall(charElement, viewportHeight / 2)
-    }, index * 100 + 500)
+      chars.value.push({ char: c, x, y: -80, opacity: 1, id: charId++ })
+      setTimeout(() => {
+        chars.value = chars.value.map(ch => ch.id === charId - 1 ? { ...ch, y: window.innerHeight / 2 } : ch)
+      }, 50)
+    }, i * 80 + 200)
   })
 
   setTimeout(() => {
-    showFinalText.value = true
+    chars.value = []
     setTimeout(() => {
-      isAnimating.value = false
+      showFinalText.value = true
       setTimeout(() => {
-        backdrop.style.display = 'none'
-        overlay.style.display = 'none'
         showFinalText.value = false
-      }, 2000)
-    }, 1000)
-  }, chars.length * 100 + 1500)
+        isAnimating.value = false
+      }, 2500)
+    }, 200)
+  }, arr.length * 80 + 1400)
 }
 
-onMounted(() => {
-  if (overlayRef.value) {
-    overlayRef.value.style.display = 'none'
-  }
-  if (backdropRef.value) {
-    backdropRef.value.style.display = 'none'
-  }
-})
+onMounted(() => {})
 </script>
 
 <template>
-  <div class="easter-egg-wrapper">
-    <button
-      class="easter-egg-trigger-btn"
-      @click="triggerEasterEgg"
-      :disabled="isAnimating"
-    >
+  <div class="egg-wrap">
+    <button class="egg-btn" @click="triggerEasterEgg" :disabled="isAnimating">
       {{ isAnimating ? '...' : '点击一下试试?' }}
     </button>
-    
-    <div ref="backdropRef" class="animation-backdrop"></div>
-    <div ref="overlayRef" class="animation-overlay">
-      <div v-if="showFinalText" class="final-text">
-        {{ finalText }}
+
+    <Teleport to="body">
+      <div v-if="isAnimating" class="egg-backdrop"></div>
+      <div v-if="isAnimating" class="egg-overlay">
+        <div
+          v-for="ch in chars"
+          :key="ch.id"
+          class="egg-char"
+          :style="{ left: ch.x + 'px', top: ch.y + 'px', opacity: ch.opacity }"
+        >{{ ch.char }}</div>
+        <div v-if="showFinalText" class="egg-final">{{ finalText }}</div>
       </div>
-    </div>
+    </Teleport>
   </div>
 </template>
 
-<!-- 布局样式 -->
 <style scoped>
-.easter-egg-wrapper {
-  margin: 20px 0;
+.egg-wrap {
   display: flex;
   justify-content: center;
-  align-items: center;
+  padding: 10px 0;
 }
-
-.easter-egg-trigger-btn {
-  padding: 15px 40px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
+.egg-btn {
+  padding: 8px 28px;
+  border-radius: 24px;
+  border: 1px solid;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: bold;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background-color 0.2s ease;
+  background: rgba(255, 192, 203, 0.2);
+  border-color: rgba(255, 192, 203, 0.35);
+  color: var(--common-text);
 }
-
-.easter-egg-trigger-btn:hover:not(:disabled) {
+body.dark-theme .egg-btn {
+  background: rgba(58, 170, 231, 0.15);
+  border-color: rgba(58, 170, 231, 0.25);
+}
+.egg-btn:hover:not(:disabled) {
   transform: translateY(-2px);
+  background: rgba(255, 192, 203, 0.4);
+  box-shadow: 0 4px 12px var(--common-shadow);
 }
-
-.easter-egg-trigger-btn:disabled {
-  opacity: 0.6;
+body.dark-theme .egg-btn:hover:not(:disabled) {
+  background: rgba(58, 170, 231, 0.3);
+}
+.egg-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
-
-.animation-backdrop {
+.egg-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9998;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99998;
   pointer-events: none;
 }
-
-.animation-overlay {
+.egg-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  z-index: 99999;
   pointer-events: none;
-  z-index: 9999;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
-
-.final-text {
-  font-size: 144px;
+.egg-char {
+  position: fixed;
+  font-size: clamp(60px, 10vw, 140px);
   font-weight: 800;
-  background-size: 400% 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 24px;
-  text-align: center;
-  font-family: 'Courier New', Courier, monospace;
-  animation: gradient-shift 3s ease infinite;
+  color: var(--common-color-1);
+  transform: translate(-50%, -50%);
+  transition: top 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  text-shadow: 0 0 40px rgba(255, 192, 203, 0.4);
+  will-change: top;
 }
-
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.egg-final {
+  font-size: clamp(40px, 8vw, 100px);
+  font-weight: 800;
+  color: var(--common-color-1);
+  text-shadow: 0 0 60px rgba(255, 192, 203, 0.5);
+  animation: egg-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);
 }
-</style>
-
-<!-- 颜色样式 -->
-<style scoped>
-.easter-egg-trigger-btn {
-  background-color: var(--common-hover);
-  color: var(--common-content);
+@keyframes egg-pop {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
-
-.easter-egg-trigger-btn:hover:not(:disabled) {
-  background-color: var(--common-hover);
-  box-shadow: 0 4px 8px var(--common-shadow);
-}
-
-.animation-backdrop {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.final-text {
-  background: var(--common-gradient);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 3s ease infinite;
-}
-</style>
-
-<!-- 响应式设计媒体查询 -->
-<style scoped>
 </style>

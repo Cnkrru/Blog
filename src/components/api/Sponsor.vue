@@ -12,27 +12,21 @@ const loadConfig = async () => {
   } catch {}
 }
 
-const toggleModal = () => {
-  showModal.value = !showModal.value
-}
+const toggleModal = () => { showModal.value = !showModal.value }
+const closeModal = () => { showModal.value = false }
 
-const closeModal = () => {
-  showModal.value = false
-}
-
+onMounted(loadConfig)
 if (typeof window !== 'undefined') {
   window.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Escape' && showModal.value) closeModal()
   })
 }
-
-onMounted(loadConfig)
 </script>
 
 <template>
   <div v-if="sponsor.enabled" class="sponsor-wrap">
-    <button class="sponsor-btn" @click="toggleModal" title="赞赏">
-      <img src="../../assets/imgs/svg/heart.svg" alt="" width="16" height="16">
+    <button class="sponsor-btn" @click="toggleModal">
+      <img src="../../assets/imgs/svg/heart.svg" alt="" width="16" height="16" class="sp-btn-icon">
       赞赏
     </button>
 
@@ -47,25 +41,15 @@ onMounted(loadConfig)
             <p class="sponsor-msg">{{ sponsor.message }}</p>
 
             <div class="sponsor-tabs">
-              <button
-                :class="['sp-tab', { active: activeTab === 'wechat' }]"
-                @click="activeTab = 'wechat'"
-              >微信</button>
-              <button
-                :class="['sp-tab', { active: activeTab === 'alipay' }]"
-                @click="activeTab = 'alipay'"
-              >支付宝</button>
+              <button :class="['sp-tab', { active: activeTab === 'wechat' }]" @click="activeTab = 'wechat'">微信</button>
+              <button :class="['sp-tab', { active: activeTab === 'alipay' }]" @click="activeTab = 'alipay'">支付宝</button>
             </div>
 
             <div class="sponsor-qr">
-              <img
-                :src="activeTab === 'wechat' ? sponsor.wechat : sponsor.alipay"
-                :alt="activeTab === 'wechat' ? '微信赞赏码' : '支付宝收款码'"
-                class="qr-image"
-              />
+              <img :src="activeTab === 'wechat' ? sponsor.wechat : sponsor.alipay" :alt="activeTab === 'wechat' ? '微信赞赏码' : '支付宝收款码'" class="qr-image" />
             </div>
 
-            <p class="sponsor-thanks">感谢你的支持 ✨</p>
+            <p class="sponsor-thanks">感谢你的支持</p>
           </div>
         </div>
       </Transition>
@@ -73,36 +57,29 @@ onMounted(loadConfig)
   </div>
 </template>
 
+<!-- 布局 -->
 <style scoped>
-.sponsor-wrap {
-  display: inline-flex;
-}
-
+.sponsor-wrap { display: flex; justify-content: center; }
 .sponsor-btn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 18px;
-  border-radius: 8px;
-  border: 2px solid var(--common-color-1);
-  background: var(--common-color-1);
-  color: var(--common-content);
-  font-size: 14px;
-  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.25s ease, opacity 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
-
-.sponsor-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px var(--common-shadow);
-}
+.sponsor-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--common-shadow); }
+.sp-btn-icon { filter: brightness(0) invert(1); }
 
 .sponsor-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -110,113 +87,84 @@ onMounted(loadConfig)
 }
 
 .sponsor-modal {
-  background: var(--common-bg);
-  border-radius: 14px;
-  padding: 28px;
+  border-radius: 18px;
+  padding: 28px 24px 20px;
   width: 340px;
   max-width: 92vw;
-  border: 2px solid var(--common-color-1);
-  box-shadow: 0 16px 48px var(--common-shadow);
   text-align: center;
+  border: 1px solid;
 }
 
-.sponsor-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.sponsor-header h3 {
-  margin: 0;
-  font-size: 18px;
-  color: var(--common-text);
-}
-
+.sponsor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.sponsor-header h3 { margin: 0; font-size: 17px; font-weight: 600; }
 .sponsor-close {
-  background: none;
+  width: 28px; height: 28px;
+  border-radius: 50%;
   border: none;
-  font-size: 24px;
-  color: var(--common-text);
+  font-size: 18px;
   cursor: pointer;
-  line-height: 1;
-}
-
-.sponsor-msg {
-  font-size: 13px;
-  color: var(--common-text);
-  opacity: 0.7;
-  margin-bottom: 16px;
-}
-
-.sponsor-tabs {
   display: flex;
-  gap: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid var(--common-color-1);
-  margin-bottom: 18px;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
+.sponsor-close:hover { transform: scale(1.1) rotate(90deg); }
 
-.sp-tab {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  background: transparent;
-  color: var(--common-text);
-  font-size: 13px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
-}
+.sponsor-msg { font-size: 13px; margin-bottom: 14px; opacity: 0.6; }
 
-.sp-tab.active {
-  background: var(--common-color-1);
-  color: var(--common-content);
-}
+.sponsor-tabs { display: flex; gap: 0; border-radius: 10px; overflow: hidden; border: 1px solid; margin-bottom: 16px; }
+.sp-tab { flex: 1; padding: 8px; border: none; background: transparent; font-size: 13px; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
 
-.sponsor-qr {
-  padding: 8px;
-  background: #fff;
-  border-radius: 8px;
-}
-
-.qr-image {
-  width: 100%;
-  max-height: 260px;
-  object-fit: contain;
-  display: block;
-}
-
-.sponsor-thanks {
-  margin-top: 14px;
-  font-size: 13px;
-  color: var(--common-text);
-  opacity: 0.5;
-}
+.sponsor-qr { padding: 10px; background: #fff; border-radius: 12px; }
+.qr-image { width: 100%; max-height: 240px; object-fit: contain; display: block; }
+.sponsor-thanks { margin-top: 12px; font-size: 12px; opacity: 0.4; }
 
 .modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.25s ease;
-}
-
+.modal-fade-leave-active { transition: opacity 0.25s ease; }
 .modal-fade-enter-active .sponsor-modal,
-.modal-fade-leave-active .sponsor-modal {
-  transition: transform 0.25s ease;
+.modal-fade-leave-active .sponsor-modal { transition: transform 0.25s ease; }
+.modal-fade-enter-from { opacity: 0; }
+.modal-fade-enter-from .sponsor-modal { transform: scale(0.92) translateY(12px); }
+.modal-fade-leave-to { opacity: 0; }
+.modal-fade-leave-to .sponsor-modal { transform: scale(0.92) translateY(12px); }
+</style>
+
+<!-- 颜色 -->
+<style scoped>
+.sponsor-btn {
+  background: rgba(255, 192, 203, 0.85);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #333;
+}
+body.dark-theme .sponsor-btn {
+  background: rgba(58, 170, 231, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
-.modal-fade-enter-from {
-  opacity: 0;
+.sponsor-modal {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+body.dark-theme .sponsor-modal {
+  background: rgba(21, 7, 60, 0.92);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
-.modal-fade-enter-from .sponsor-modal {
-  transform: scale(0.92) translateY(12px);
-}
+.sponsor-header h3 { color: var(--common-text); }
+.sponsor-close { background: rgba(0, 0, 0, 0.05); color: var(--common-text); }
+body.dark-theme .sponsor-close { background: rgba(255, 255, 255, 0.08); }
+.sponsor-close:hover { background: rgba(0, 0, 0, 0.1); }
+body.dark-theme .sponsor-close:hover { background: rgba(255, 255, 255, 0.15); }
 
-.modal-fade-leave-to {
-  opacity: 0;
-}
+.sponsor-msg { color: var(--common-text); }
+.sponsor-tabs { border-color: rgba(0, 0, 0, 0.08); }
+body.dark-theme .sponsor-tabs { border-color: rgba(255, 255, 255, 0.1); }
+.sp-tab { color: var(--common-text); }
+.sp-tab.active { background: var(--common-color-1); color: #fff; }
 
-.modal-fade-leave-to .sponsor-modal {
-  transform: scale(0.92) translateY(12px);
-}
+.sponsor-thanks { color: var(--common-text); }
 </style>

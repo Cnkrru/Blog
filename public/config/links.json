@@ -91,7 +91,28 @@
     "url": "https://vuejs.org/"
   },
   {
+    "id": "14",
+    "name": "生日祝福",
+    "category": "个人",
+    "description": "个人生日祝福网站",
+    "url": "https://birthday.cnkrru.top"
+  },
+  {
     "id": "15",
+    "name": "个人笔记",
+    "category": "个人",
+    "description": "个人笔记站点",
+    "url": "https://notes.cnkrru.top"
+  },
+  {
+    "id": "16",
+    "name": "导航站",
+    "category": "个人",
+    "description": "个人导航站点",
+    "url": "https://nav.cnkrru.top"
+  },
+  {
+    "id": "17",
     "name": "Steam",
     "category": "官网",
     "description": "Steam官网",
