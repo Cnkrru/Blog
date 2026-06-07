@@ -11,7 +11,7 @@ const form = ref({ name: '', url: '', description: '', email: '' })
 const submitted = ref(false)
 const submitting = ref(false)
 
-const formspreeId = 'YOUR_FORM_ID' // 替换为你的 Formspree form ID
+const formspreeId = 'xkoajadl'
 
 async function submitForm() {
   submitting.value = true
@@ -72,6 +72,7 @@ async function submitForm() {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .center-head-card {
   display: flex;
@@ -86,28 +87,17 @@ async function submitForm() {
   padding: 40px 20px;
 }
 .s-icon { font-size: 40px; }
-.success-card h3 {
-  margin: 12px 0 8px;
-   color: var(--common-text);
-   
-}
-.success-card p {
-  color: var(--common-text); opacity: 0.6;
-   font-size: 14px;
-   
-}
+.success-card h3 { margin: 12px 0 8px; }
 
 .apply-form {
-  max-width: 500px;
+  max-width: 480px;
   margin: 0 auto;
 }
 
 .form-desc {
   font-size: 13px;
-  color: var(--common-text);
-  opacity: 0.6;
-  margin-bottom: 24px;
   text-align: center;
+  margin-bottom: 24px;
 }
 
 .field {
@@ -119,45 +109,61 @@ async function submitForm() {
 
 .field span {
   font-size: 13px;
-  color: var(--common-text);
-  opacity: 0.7;
   margin-left: 2px;
 }
 
 .field input {
+  width: 100%;
   padding: 10px 14px;
-  border-radius: 8px;
-  border: 1.5px solid var(--common-color-1);
-  background: var(--common-bg);
-  color: var(--common-text);
+  border-radius: 12px;
+  border: 1px solid;
   font-size: 14px;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .field input:focus {
   outline: none;
-  border-color: var(--common-hover);
 }
 
 .submit-btn {
   width: 100%;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 24px;
   border: none;
-  background: var(--common-color-1);
-  color: var(--common-content);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
 }
 
-.submit-btn:hover {
-  opacity: 0.9;
+.submit-btn:hover { transform: translateY(-1px); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.success-card h3 { color: var(--common-text); }
+.success-card p { color: var(--common-text); opacity: 0.55; font-size: 14px; }
+
+.form-desc { color: var(--common-text); opacity: 0.55; }
+.field span { color: var(--common-text); opacity: 0.6; }
+
+.field input {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--common-text);
+}
+body.dark-theme .field input {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.field input:focus {
+  border-color: var(--common-color-1);
+  box-shadow: 0 0 0 3px rgba(255, 192, 203, 0.12);
 }
 
-.submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.submit-btn {
+  background: var(--common-color-1);
+  color: #fff;
 }
 </style>

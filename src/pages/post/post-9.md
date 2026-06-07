@@ -63,4 +63,4 @@ keywords: VitePress, 快速开始
 - 部署VitePress
    选择一个服务器部署，比如GitHub Pages
 ---
-> 如有建议，请联系我,邮箱:3253884026@qq.com
+> 如有建议，请联系我，邮箱：3253884026@qq.com

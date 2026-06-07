@@ -51,5 +51,7 @@ const updateAge = (): void => {
 let updateInterval: NodeJS.Timeout | null = setInterval(updateAge, 1000)
 
 ```
+
 ---
-> 如有建议，请联系我,邮箱:3253884026@qq.com
+
+> 如有建议，请联系我，邮箱：3253884026@qq.com
