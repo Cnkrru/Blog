@@ -7,8 +7,8 @@ description: 详细介绍VitePress-1-快速开始。
 keywords: VitePress, 快速开始
 ---
 ### 准备工作
->- 安装Node.js
->- 安装git bash(不强求但推荐)
+> - 安装Node.js
+> - 安装git bash(不强求但推荐)
 ---
 
 ### 构建步骤

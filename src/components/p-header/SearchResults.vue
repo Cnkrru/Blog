@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { escapeHtml, highlightMatch } from '../../utils/helpers'
 
-const props = defineProps<{ searchText: string; results?: any[]; show?: boolean }>()
+const props = defineProps<{
+  searchText: string;
+   results?: any[];
+   show?: boolean 
+}>()
 
 const emit = defineEmits<{ 'result-click': [item: any] }>()
 

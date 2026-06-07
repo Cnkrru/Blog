@@ -123,20 +123,6 @@ onMounted(() => {
     flex: 1;
 }
 
-@media (max-width: 480px) {
-    .mid-flex {
-        gap: 6px;
-        padding: 0;
-        flex: 1;
-    }
-}
-
-@media (max-width: 768px) {
-    .mid-flex {
-        gap: 10px;
-        padding: 0;
-    }
-}
 </style>
 
 <!-- 颜色样式 -->

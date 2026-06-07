@@ -120,9 +120,13 @@ onMounted(() => {
 <style scoped>
 /* 布局样式 */
 .projects-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
+}
+.projects-content > * {
+    flex: 1 1 300px;
+    max-width: 100%;
 }
 
 .project-card {

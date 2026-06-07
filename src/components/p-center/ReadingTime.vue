@@ -144,10 +144,11 @@ onUnmounted(() => {
   </div>
 </template>
 
+<!-- 布局样式 -->
 <style scoped>
 .reading-time-wrapper {
     width: 100%;
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .reading-time-container {
@@ -158,22 +159,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 8px;
-}
-
-.word-count-text {
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.word-count-detail {
-    font-size: 11px;
-    opacity: 0.55;
-}
-
-.reading-time-text {
-    font-size: 13px;
-    font-weight: 500;
+    gap: 10px;
 }
 
 .word-count-section {
@@ -183,130 +169,80 @@ onUnmounted(() => {
     flex-wrap: wrap;
 }
 
-.word-count-icon {
-    width: 16px;
-    height: 16px;
+.word-count-icon,
+.reading-time-icon {
+    width: 14px;
+    height: 14px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
 }
 
-.word-count-text {
-    font-size: 14px;
+.word-count-icon img,
+.reading-time-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.word-count-text,
+.reading-time-text {
+    font-size: 13px;
     font-weight: 500;
+    line-height: 1;
 }
 
 .word-count-detail {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .reading-time-section {
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-.reading-time-icon {
-    width: 16px;
-    height: 16px;
     flex-shrink: 0;
-}
-
-.reading-time-text {
-    font-size: 14px;
-    font-weight: 500;
 }
 </style>
 
+<!-- 颜色样式 -->
 <style scoped>
 .reading-time-container {
     background: rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(0, 0, 0, 0.06);
     color: var(--common-text);
 }
-
 body.dark-theme .reading-time-container {
     background: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.08);
 }
+.word-count-detail {
+    opacity: 0.55;
+}
 </style>
 
+<!-- 响应式 -->
 <style scoped>
 @media (max-width: 639px) {
     .reading-time-container {
-        padding: 8px 10px;
-        margin: 6px 0;
+        padding: 6px 10px;
         border-radius: 8px;
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
     }
-    
     .word-count-section {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
+        gap: 3px;
     }
-    
-    .word-count-detail {
-        font-size: 11px;
-    }
-    
     .word-count-text,
     .reading-time-text {
         font-size: 12px;
     }
-    
     .word-count-icon,
     .reading-time-icon {
-        width: 14px;
-        height: 14px;
-    }
-    
-}
-
-@media (max-width: 640px) {
-    .reading-time-container {
-        padding: 9px 13px;
-        margin: 9px 0;
-        border-radius: 18px;
-    }
-    
-    .word-count-detail {
-        font-size: 11px;
-    }
-    
-    .word-count-text,
-    .reading-time-text {
-        font-size: 13px;
-    }
-    
-    .word-count-icon,
-    .reading-time-icon {
-        width: 15px;
-        height: 15px;
-    }
-    
-}
-
-@media (max-width: 768px) {
-    .reading-time-container {
-        padding: 10px 15px;
-        margin: 10px 0;
-        border-radius: 20px;
-    }
-    
-    .word-count-detail {
-        font-size: 12px;
-    }
-    
-    .word-count-text,
-    .reading-time-text {
-        font-size: 14px;
-    }
-    
-    .word-count-icon,
-    .reading-time-icon {
-        width: 16px;
-        height: 16px;
+        width: 13px;
+        height: 13px;
     }
 }
 </style>

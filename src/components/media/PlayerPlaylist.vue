@@ -1,5 +1,9 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ playlist?: any[]; currentIndex?: number; isVisible?: boolean }>(), {
+withDefaults(defineProps<{
+  playlist?: any[];
+   currentIndex?: number;
+   isVisible?: boolean 
+}>(), {
   playlist: () => [],
   currentIndex: 0,
   isVisible: false

@@ -86,8 +86,16 @@ async function submitForm() {
   padding: 40px 20px;
 }
 .s-icon { font-size: 40px; }
-.success-card h3 { margin: 12px 0 8px; color: var(--common-text); }
-.success-card p { color: var(--common-text); opacity: 0.6; font-size: 14px; }
+.success-card h3 {
+  margin: 12px 0 8px;
+   color: var(--common-text);
+   
+}
+.success-card p {
+  color: var(--common-text); opacity: 0.6;
+   font-size: 14px;
+   
+}
 
 .apply-form {
   max-width: 500px;

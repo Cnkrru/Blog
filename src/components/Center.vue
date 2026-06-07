@@ -148,19 +148,22 @@ body.dark-theme :deep(.center-card-bordered) {
     .center-card {
         height: auto;
         min-height: 500px;
-        padding: 10px;
-        border-radius: 14px;
+        padding: 6px;
+        border-radius: 12px;
     }
     .center-header-area {
-        gap: 6px;
+        gap: 4px;
     }
     .center-header-area :deep(.center-head-card) {
         flex-wrap: wrap;
-        gap: 8px;
-        padding: 8px 12px;
+        gap: 6px;
+        padding: 6px 10px;
     }
     .center-header-area :deep(.center-head-card h2) {
-        font-size: 16px;
+        font-size: 15px;
+    }
+    .center-header-area :deep(.center-card-content) {
+        padding: 10px;
     }
 }
 
@@ -172,26 +175,26 @@ body.dark-theme :deep(.center-card-bordered) {
     .center-card {
         height: auto;
         max-height: none;
-        min-height: calc(100vh - 180px);
-        padding: 6px;
+        min-height: calc(100vh - 160px);
+        padding: 3px;
         border-radius: 10px;
     }
     .center-header-area {
-        gap: 4px;
+        gap: 3px;
     }
     .center-header-area :deep(.center-head-card) {
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
-        padding: 6px 10px;
-        border-radius: 10px;
+        gap: 4px;
+        padding: 5px 8px;
+        border-radius: 8px;
     }
     .center-header-area :deep(.center-head-card h2) {
-        font-size: 15px;
+        font-size: 14px;
         width: 100%;
     }
     .center-header-area :deep(.center-card-content) {
-        padding: 8px;
+        padding: 6px;
         border-radius: 8px;
     }
 }
@@ -199,6 +202,7 @@ body.dark-theme :deep(.center-card-bordered) {
 @media (max-width: 1024px) {
     .center-S {
         width: calc(100% - 20% - 15px);
+        max-width: 100%;
     }
     .center-card {
         height: 580px;

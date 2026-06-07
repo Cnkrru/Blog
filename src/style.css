@@ -62,15 +62,28 @@ hr {
     padding: 0;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     html, body {
-        gap: 4px;
+        gap: 0;
+    }
+    .mid-flex {
+        padding: 0 5%;
+    }
+    .mid-flex .center-S {
+        width: 100% !important;
+        max-width: 100%;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     html, body {
-        gap: 6px;
+        gap: 0;
+    }
+    .mid-flex {
+        padding: 0 3%;
+    }
+    .mid-flex .center-S {
+        width: 100% !important;
     }
 }
 

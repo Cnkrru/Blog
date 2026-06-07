@@ -665,8 +665,16 @@ watch(() => props.content, () => {
 }
 
 @keyframes quoteFadeIn {
-  from { opacity: 0; transform: translate(-50%, calc(-100% + 8px)); }
-  to { opacity: 1; transform: translate(-50%, -100%); }
+  from {
+  opacity: 0;
+   transform: translate(-50%, calc(-100% + 8px));
+   
+}
+  to {
+  opacity: 1;
+   transform: translate(-50%, -100%);
+   
+}
 }
 
 /* 确保Markdown内容可见 */

@@ -182,9 +182,13 @@ onMounted(() => {
 <style scoped>
 /* 布局样式 */
 .links-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
+}
+.links-content > * {
+    flex: 1 1 300px;
+    max-width: 100%;
 }
 
 .link-card {

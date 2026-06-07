@@ -420,7 +420,11 @@ body.dark-theme .post-list-item:hover {
 
 .post-id { color: var(--common-text); }
 .post-title { color: var(--common-text); }
-.post-date { color: var(--common-text); opacity: 0.5; }
+.post-date {
+  color: var(--common-text);
+   opacity: 0.5;
+   
+}
 
 .post-menu-btn {
     background-color: var(--common-color-1);

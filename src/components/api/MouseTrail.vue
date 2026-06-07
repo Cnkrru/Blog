@@ -7,9 +7,11 @@ let mouseX = 0
 let mouseY = 0
 let animationId = null
 let lastUpdate = 0
+let lastMoveTime = 0
 const isBrowser = ref(false)
 let charIdCounter = 0
 let mouseMoveHandler = null
+const IDLE_TIMEOUT = 300 // 鼠标静止 300ms 后不生成新粒子
 
 const mouseStore = useMouseStore()
 const themeStore = useThemeStore()
@@ -81,7 +83,9 @@ const updateTrail = (timestamp) => {
     return char
   }).filter(Boolean)
 
-  if (trail.value.length < trailLength.value) {
+  // 鼠标静止时跳过生成新粒子
+  const idle = timestamp - lastMoveTime > IDLE_TIMEOUT
+  if (!idle && trail.value.length < trailLength.value) {
     trail.value.push({
       id: charIdCounter++,
       char: getRandomChar(),
@@ -103,6 +107,7 @@ const handleMouseMove = (e) => {
   const clientY = e.touches ? e.touches[0].clientY : e.clientY
   mouseX = clientX
   mouseY = clientY
+  lastMoveTime = performance.now()
 }
 
 // 处理鼠标离开
@@ -127,14 +132,6 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('mousemove', mouseMoveHandler)
   document.removeEventListener('touchmove', mouseMoveHandler)
-  document.removeEventListener('mouseleave', handleMouseLeave)
-  if (animationId) {
-    cancelAnimationFrame(animationId)
-  }
-})
-
-onUnmounted(() => {
-  document.removeEventListener('mousemove', mouseMoveHandler)
   document.removeEventListener('mouseleave', handleMouseLeave)
   if (animationId) {
     cancelAnimationFrame(animationId)

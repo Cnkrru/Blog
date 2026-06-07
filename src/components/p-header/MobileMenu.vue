@@ -68,11 +68,13 @@ onUnmounted(() => {
     </div>
     
     <!-- 移动端菜单遮罩层 -->
-    <div 
-      class="mobile-menu-overlay" 
-      id="mobile-menu-overlay" 
-      @click="handleOverlayClick"
-    ></div>
+    <Teleport to="body">
+      <div
+        class="mobile-menu-overlay"
+        id="mobile-menu-overlay"
+        @click="handleOverlayClick"
+      ></div>
+    </Teleport>
   </div>
 </template>
 
@@ -88,7 +90,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1001;
+  z-index: 999;
   display: none;
 }
 
@@ -125,10 +127,10 @@ onUnmounted(() => {
     display: none;
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1001;
+    left: 260px;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
   }
 
   .mobile-menu-overlay.active {

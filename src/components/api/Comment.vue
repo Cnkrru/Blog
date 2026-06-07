@@ -17,24 +17,20 @@ watch(() => themeStore.isDark, (isDark) => {
 })
 
 onMounted(() => {
-  // 加载评论偏好设置
   commentStore.loadPreference()
-  
-  // 暴露全局方法
+  commentStore.initCommentSystem()
+
   if (typeof window !== 'undefined') {
     window.updateGiscusTheme = commentStore.updateGiscusTheme
   }
-  
-  // 初始主题设置
-  const isDark = themeStore.isDark
-  const theme = isDark ? 'dark' : 'light'
+
+  const theme = themeStore.isDark ? 'dark' : 'light'
   commentStore.updateGiscusTheme(theme)
-  
-  // 标记评论已加载
+
   setTimeout(() => {
     isLoading.value = false
     commentStore.setCommentLoaded(true)
-  }, 1000)
+  }, 1500)
 })
 
 onUnmounted(() => {

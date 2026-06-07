@@ -4,7 +4,11 @@ withDefaults(defineProps<{ isPlaying?: boolean; currentSong?: any }>(), {
   currentSong: null
 })
 
-const emit = defineEmits<{ 'toggle-play': []; prev: []; next: [] }>()
+const emit = defineEmits<{
+  'toggle-play': [];
+   prev: [];
+   next: [] 
+}>()
 
 const handleTogglePlay = () => {
   emit('toggle-play')

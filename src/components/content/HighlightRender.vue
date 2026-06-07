@@ -383,22 +383,74 @@ body.dark-theme .code-header {
 
 /* 不同语言颜色 */
 .language-badge[data-lang="javascript"],
-.language-badge[data-lang="js"] { background-color: #f0db4f; color: #1e1e2e; }
+.language-badge[data-lang="js"] {
+  background-color: #f0db4f;
+   color: #1e1e2e;
+   
+}
 .language-badge[data-lang="typescript"],
-.language-badge[data-lang="ts"] { background-color: #3178c6; color: #fff; }
-.language-badge[data-lang="python"] { background-color: #3776ab; color: #fff; }
-.language-badge[data-lang="html"] { background-color: #e34f26; color: #fff; }
-.language-badge[data-lang="css"] { background-color: #563d7c; color: #fff; }
+.language-badge[data-lang="ts"] {
+  background-color: #3178c6;
+   color: #fff;
+   
+}
+.language-badge[data-lang="python"] {
+  background-color: #3776ab;
+   color: #fff;
+   
+}
+.language-badge[data-lang="html"] {
+  background-color: #e34f26;
+   color: #fff;
+   
+}
+.language-badge[data-lang="css"] {
+  background-color: #563d7c;
+   color: #fff;
+   
+}
 .language-badge[data-lang="bash"],
 .language-badge[data-lang="shell"],
-.language-badge[data-lang="sh"] { background-color: #4eaa25; color: #fff; }
-.language-badge[data-lang="json"] { background-color: #b8b8b8; color: #1e1e2e; }
-.language-badge[data-lang="sql"] { background-color: #00618b; color: #fff; }
-.language-badge[data-lang="vue"] { background-color: #41b883; color: #1e1e2e; }
-.language-badge[data-lang="php"] { background-color: #787cb5; color: #fff; }
-.language-badge[data-lang="ruby"] { background-color: #cc342d; color: #fff; }
-.language-badge[data-lang="go"] { background-color: #00add8; color: #fff; }
-.language-badge[data-lang="rust"] { background-color: #dea584; color: #1e1e2e; }
+.language-badge[data-lang="sh"] {
+  background-color: #4eaa25;
+   color: #fff;
+   
+}
+.language-badge[data-lang="json"] {
+  background-color: #b8b8b8;
+   color: #1e1e2e;
+   
+}
+.language-badge[data-lang="sql"] {
+  background-color: #00618b;
+   color: #fff;
+   
+}
+.language-badge[data-lang="vue"] {
+  background-color: #41b883;
+   color: #1e1e2e;
+   
+}
+.language-badge[data-lang="php"] {
+  background-color: #787cb5;
+   color: #fff;
+   
+}
+.language-badge[data-lang="ruby"] {
+  background-color: #cc342d;
+   color: #fff;
+   
+}
+.language-badge[data-lang="go"] {
+  background-color: #00add8;
+   color: #fff;
+   
+}
+.language-badge[data-lang="rust"] {
+  background-color: #dea584;
+   color: #1e1e2e;
+   
+}
 
 .lang-dot {
   background-color: currentColor;

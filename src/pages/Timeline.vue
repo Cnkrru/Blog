@@ -370,19 +370,14 @@ onMounted(async () => {
   padding: 8px 36px 8px 12px;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.4);
-  color: var(--common-text);
   font-size: 13px;
 }
 
 body.dark-theme .search-input {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--common-color-1);
 }
 
 .clear-btn {
@@ -390,11 +385,9 @@ body.dark-theme .search-input {
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
   border: none;
   font-size: 14px;
   cursor: pointer;
-  color: var(--common-text);
   padding: 2px 6px;
   border-radius: 50%;
 }
@@ -407,30 +400,21 @@ body.dark-theme .search-input {
 
 .sort-label {
   font-size: 12px;
-  color: var(--common-text);
-  opacity: 0.6;
 }
 
 .sort-btn {
   padding: 4px 12px;
   border-radius: 14px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.4);
-  color: var(--common-text);
   font-size: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
 body.dark-theme .sort-btn {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .sort-btn.active {
-  background: var(--common-color-1);
-  color: #fff;
-  border-color: var(--common-color-1);
 }
 
 /* 标签云 */
@@ -440,7 +424,6 @@ body.dark-theme .sort-btn {
   gap: 10px;
   padding: 16px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.35);
   border: 1px solid rgba(0, 0, 0, 0.04);
   min-height: 60px;
   align-items: flex-start;
@@ -448,8 +431,6 @@ body.dark-theme .sort-btn {
 }
 
 body.dark-theme .tag-cloud {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .tag-item {
@@ -457,55 +438,38 @@ body.dark-theme .tag-cloud {
   border-radius: 16px;
   cursor: pointer;
   font-weight: 500;
-  color: var(--common-text);
-  background: rgba(255, 192, 203, 0.12);
   border: 1px solid rgba(255, 192, 203, 0.2);
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   animation: tagFadeIn 0.4s ease;
 }
 
 body.dark-theme .tag-item {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .tag-item:hover {
   transform: scale(1.06);
-  background: rgba(255, 192, 203, 0.25);
-  border-color: var(--common-color-1);
 }
 
 body.dark-theme .tag-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .tag-item.active {
   font-weight: 700;
-  background: var(--common-color-1);
-  color: #fff;
-  border-color: var(--common-color-1);
-  box-shadow: 0 2px 12px var(--common-shadow);
   transform: scale(1.06);
 }
 
 .tag-num {
   font-size: 0.75em;
-  opacity: 0.7;
 }
 
 .tag-empty {
   width: 100%;
   text-align: center;
   padding: 30px;
-  color: var(--common-text);
-  opacity: 0.4;
   font-style: italic;
 }
 
 @keyframes tagFadeIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
 }
 
 /* 选中标签信息 */
@@ -513,13 +477,10 @@ body.dark-theme .tag-item:hover {
   margin-top: 12px;
   padding: 10px 14px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.35);
   border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 body.dark-theme .selected-tag-info {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .selected-tag-header {
@@ -531,33 +492,24 @@ body.dark-theme .selected-tag-info {
 
 .sel-label {
   font-size: 14px;
-  color: var(--common-text);
 }
 
 .sel-count {
   font-size: 12px;
-  color: var(--common-text);
-  opacity: 0.6;
 }
 
 .sel-clear {
   padding: 2px 10px;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.4);
-  color: var(--common-text);
   font-size: 12px;
   cursor: pointer;
 }
 
 body.dark-theme .sel-clear {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .sel-clear:hover {
-  background: var(--common-color-1);
-  color: #fff;
 }
 
 .related-tags-row {
@@ -570,8 +522,6 @@ body.dark-theme .sel-clear {
 
 .related-label {
   font-size: 12px;
-  color: var(--common-text);
-  opacity: 0.6;
 }
 
 .related-chip {
@@ -579,18 +529,13 @@ body.dark-theme .sel-clear {
   border-radius: 12px;
   font-size: 11px;
   cursor: pointer;
-  background: rgba(255, 192, 203, 0.2);
-  color: var(--common-text);
   border: 1px solid rgba(255, 192, 203, 0.25);
 }
 
 body.dark-theme .related-chip {
-  background: rgba(58, 170, 231, 0.15);
-  border-color: rgba(58, 170, 231, 0.2);
 }
 
 .related-chip:hover {
-  background: rgba(255, 192, 203, 0.4);
 }
 
 /* 时间线上方 */
@@ -604,21 +549,14 @@ body.dark-theme .related-chip {
   padding: 3px 14px;
   border-radius: 14px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.4);
-  color: var(--common-text);
   font-size: 12px;
   cursor: pointer;
 }
 
 body.dark-theme .zoom-btn {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .zoom-btn.active {
-  background: var(--common-color-1);
-  color: #fff;
-  border-color: var(--common-color-1);
 }
 
 .zoom-controls {
@@ -639,7 +577,6 @@ body.dark-theme .zoom-btn {
   bottom: 0;
   width: 3px;
   border-radius: 2px;
-  background: linear-gradient(180deg, var(--common-color-1), var(--common-hover), var(--common-color-1));
 }
 
 .tl-group {
@@ -660,9 +597,7 @@ body.dark-theme .zoom-btn {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--common-color-1);
   border: 3px solid var(--common-bg);
-  box-shadow: 0 0 6px var(--common-color-1);
   flex-shrink: 0;
   z-index: 2;
 }
@@ -670,13 +605,10 @@ body.dark-theme .zoom-btn {
 .tl-label-text {
   font-size: 16px;
   font-weight: 700;
-  color: var(--common-text);
 }
 
 .tl-count {
   font-size: 12px;
-  color: var(--common-text);
-  opacity: 0.5;
 }
 
 .tl-cards {
@@ -689,7 +621,6 @@ body.dark-theme .zoom-btn {
   display: flex;
   align-items: stretch;
   text-decoration: none;
-  color: inherit;
   transition: transform 0.2s;
 }
 
@@ -700,8 +631,6 @@ body.dark-theme .zoom-btn {
 .tl-card-connector {
   width: 20px;
   height: 2px;
-  background: var(--common-color-1);
-  opacity: 0.4;
   flex-shrink: 0;
   margin-top: 20px;
   margin-right: 8px;
@@ -711,7 +640,6 @@ body.dark-theme .zoom-btn {
 
 .tl-card:hover .tl-card-connector {
   width: 26px;
-  opacity: 0.8;
 }
 
 .tl-card-body {
@@ -719,21 +647,15 @@ body.dark-theme .zoom-btn {
   padding: 10px 14px;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.35);
 }
 
 body.dark-theme .tl-card-body {
-  border-color: rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.03);
 }
 
 .tl-card:hover .tl-card-body {
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 4px 12px var(--common-shadow);
 }
 
 body.dark-theme .tl-card:hover .tl-card-body {
-  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .tl-card-header {
@@ -746,13 +668,10 @@ body.dark-theme .tl-card:hover .tl-card-body {
 .tl-card-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--common-text);
 }
 
 .tl-card-date {
   font-size: 11px;
-  color: var(--common-text);
-  opacity: 0.5;
   white-space: nowrap;
   margin-left: 12px;
 }
@@ -767,8 +686,6 @@ body.dark-theme .tl-card:hover .tl-card-body {
   font-size: 11px;
   padding: 1px 8px;
   border-radius: 10px;
-  background: var(--common-color-1);
-  color: var(--common-content);
 }
 
 .tl-tag {
@@ -776,7 +693,6 @@ body.dark-theme .tl-card:hover .tl-card-body {
   padding: 1px 8px;
   border-radius: 10px;
   border: 1px solid var(--common-color-1);
-  color: var(--common-text);
 }
 
 /* Skeleton */
@@ -796,8 +712,6 @@ body.dark-theme .tl-card:hover .tl-card-body {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--common-color-1);
-  opacity: 0.3;
   flex-shrink: 0;
 }
 
@@ -805,10 +719,8 @@ body.dark-theme .tl-card:hover .tl-card-body {
   flex: 1;
   height: 56px;
   border-radius: 8px;
-  background: linear-gradient(90deg, var(--common-color-1) 25%, var(--common-hover) 50%, var(--common-color-1) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
-  opacity: 0.15;
 }
 
 @keyframes shimmer {
@@ -819,22 +731,17 @@ body.dark-theme .tl-card:hover .tl-card-body {
 .empty-tl {
   text-align: center;
   padding: 40px;
-  color: var(--common-text);
-  opacity: 0.5;
 }
 
 /* 数据统计面板 */
 .stats-panel {
   padding: 16px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.35);
   border: 1px solid rgba(0, 0, 0, 0.04);
   margin-top: 12px;
 }
 
 body.dark-theme .stats-panel {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .stats-summary {
@@ -850,34 +757,27 @@ body.dark-theme .stats-panel {
   text-align: center;
   padding: 12px 8px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 body.dark-theme .stat-box {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .stat-num {
   display: block;
   font-size: 24px;
   font-weight: 700;
-  color: var(--common-color-1);
 }
 
 .stat-label {
   display: block;
   font-size: 11px;
-  color: var(--common-text);
-  opacity: 0.6;
   margin-top: 4px;
 }
 
 .chart-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--common-text);
   margin-bottom: 14px;
 }
 
@@ -903,13 +803,154 @@ body.dark-theme .stat-box {
   width: 80%;
   max-width: 40px;
   border-radius: 4px 4px 0 0;
-  background: linear-gradient(180deg, var(--common-color-1), var(--common-hover));
   transition: height 0.4s ease;
   min-height: 4px;
 }
 
 .bar-label {
   font-size: 10px;
+}
+</style>
+
+<!-- 颜色样式 -->
+<style scoped>
+.search-input {
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--common-text);
+}
+body.dark-theme .search-input {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.sort-btn {
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--common-text);
+}
+body.dark-theme .sort-btn {
+  background: rgba(255, 255, 255, 0.04);
+}
+.sort-btn.active {
+  background: var(--common-color-1);
+  color: #fff;
+  border-color: var(--common-color-1);
+}
+.tag-cloud {
+  background: rgba(255, 255, 255, 0.35);
+}
+body.dark-theme .tag-cloud {
+  background: rgba(255, 255, 255, 0.03);
+}
+.tag-item {
+  color: var(--common-text);
+  background: rgba(255, 192, 203, 0.12);
+  border: 1px solid rgba(255, 192, 203, 0.2);
+}
+body.dark-theme .tag-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.tag-item:hover {
+  background: rgba(255, 192, 203, 0.25);
+  border-color: var(--common-color-1);
+}
+body.dark-theme .tag-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.tag-item.active {
+  background: var(--common-color-1);
+  color: #fff;
+  border-color: var(--common-color-1);
+  box-shadow: 0 2px 12px var(--common-shadow);
+}
+.selected-tag-info {
+  background: rgba(255, 255, 255, 0.35);
+}
+body.dark-theme .selected-tag-info {
+  background: rgba(255, 255, 255, 0.03);
+}
+.sel-clear {
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--common-text);
+}
+body.dark-theme .sel-clear {
+  background: rgba(255, 255, 255, 0.04);
+}
+.sel-clear:hover {
+  background: var(--common-color-1);
+  color: #fff;
+}
+.related-chip {
+  background: rgba(255, 192, 203, 0.2);
+  color: var(--common-text);
+  border: 1px solid rgba(255, 192, 203, 0.25);
+}
+body.dark-theme .related-chip {
+  background: rgba(58, 170, 231, 0.15);
+  border-color: rgba(58, 170, 231, 0.2);
+}
+.zoom-btn {
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--common-text);
+}
+body.dark-theme .zoom-btn {
+  background: rgba(255, 255, 255, 0.04);
+}
+.zoom-btn.active {
+  background: var(--common-color-1);
+  color: #fff;
+  border-color: var(--common-color-1);
+}
+.tl-dot {
+  background: var(--common-color-1);
+  box-shadow: 0 0 6px var(--common-color-1);
+}
+.tl-card-body {
+  background: rgba(255, 255, 255, 0.35);
+}
+body.dark-theme .tl-card-body {
+  background: rgba(255, 255, 255, 0.03);
+}
+.tl-card:hover .tl-card-body {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px var(--common-shadow);
+}
+body.dark-theme .tl-card:hover .tl-card-body {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.stats-panel {
+  background: rgba(255, 255, 255, 0.35);
+}
+body.dark-theme .stats-panel {
+  background: rgba(255, 255, 255, 0.03);
+}
+.stat-box {
+  background: rgba(255, 255, 255, 0.5);
+}
+body.dark-theme .stat-box {
+  background: rgba(255, 255, 255, 0.04);
+}
+.stat-num {
+  color: var(--common-color-1);
+}
+.tl-card-title {
+  color: var(--common-text);
+}
+.tl-card-date {
+  color: var(--common-text);
+  opacity: 0.5;
+}
+.tl-cat {
+  background: var(--common-color-1);
+  color: var(--common-content);
+}
+.tl-tag {
+  border: 1px solid var(--common-color-1);
+  color: var(--common-text);
+}
+.tl-label-text {
+  color: var(--common-text);
+}
+.bar-label {
   color: var(--common-text);
   opacity: 0.5;
 }

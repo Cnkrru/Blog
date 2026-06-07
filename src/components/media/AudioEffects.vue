@@ -2,7 +2,11 @@
 import { ref, watch, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 
-const props = withDefaults(defineProps<{ audioContext?: any; isPlaying?: boolean; isVisible?: boolean; visualizerEnabled?: boolean }>(), {
+const props = withDefaults(defineProps<{
+  audioContext?: any; isPlaying?: boolean;
+   isVisible?: boolean;
+   visualizerEnabled?: boolean 
+}>(), {
   audioContext: null,
   isPlaying: false,
   isVisible: false,
@@ -168,8 +172,16 @@ const closePanel = () => {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
-  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  from {
+  opacity: 0;
+   transform: translate(-50%, -50%) scale(0.92);
+   
+}
+  to   {
+  opacity: 1;
+   transform: translate(-50%, -50%) scale(1);
+   
+}
 }
 
 .effects-header {
@@ -317,7 +329,11 @@ body.dark-theme .close-btn { background: rgba(255, 255, 255, 0.08); }
 .close-btn:hover { background: rgba(0, 0, 0, 0.1); }
 body.dark-theme .close-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
-.effect-label { color: var(--common-text); opacity: 0.6; }
+.effect-label {
+  color: var(--common-text);
+   opacity: 0.6;
+   
+}
 
 .toggle-btn {
   background: rgba(0, 0, 0, 0.04);

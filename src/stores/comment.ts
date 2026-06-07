@@ -30,13 +30,45 @@ export const useCommentStore = defineStore('comment', () => {
   }
 
   const updateGiscusTheme = (theme: string): void => {
+    const isDark = document.body.classList.contains('dark-theme')
+    const themeUrl = isDark
+      ? 'https://cnkrru.github.io/static/giscus-theme-dark.css'
+      : 'https://cnkrru.github.io/static/giscus-theme-light.css'
     const giscusFrame = document.querySelector('iframe.giscus-frame') as HTMLIFrameElement | null
     if (giscusFrame?.contentWindow) {
       giscusFrame.contentWindow.postMessage(
-        { giscus: { setConfig: { theme } } },
+        { giscus: { setConfig: { theme: themeUrl } } },
         'https://giscus.app'
       )
     }
+  }
+
+  const initCommentSystem = (): void => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return
+    const existing = document.querySelector('.giscus, script[src*=\"giscus\"]')
+    if (existing) return
+
+    const script = document.createElement('script')
+    script.src = 'https://giscus.app/client.js'
+    script.setAttribute('data-repo', 'Cnkrru/Blog')
+    script.setAttribute('data-repo-id', '')
+    script.setAttribute('data-category', 'General')
+    script.setAttribute('data-category-id', '')
+    script.setAttribute('data-mapping', 'pathname')
+    script.setAttribute('data-strict', '0')
+    script.setAttribute('data-reactions-enabled', '1')
+    script.setAttribute('data-emit-metadata', '0')
+    script.setAttribute('data-input-position', 'bottom')
+    const isDark = document.body.classList.contains('dark-theme')
+    script.setAttribute('data-theme', isDark
+      ? 'https://cnkrru.github.io/static/giscus-theme-dark.css'
+      : 'https://cnkrru.github.io/static/giscus-theme-light.css')
+    script.setAttribute('data-lang', 'zh-CN')
+    script.setAttribute('crossorigin', 'anonymous')
+    script.async = true
+
+    const container = document.querySelector('.comment-container')
+    if (container) container.appendChild(script)
   }
 
   const savePreference = (): void => {
@@ -71,6 +103,7 @@ export const useCommentStore = defineStore('comment', () => {
     setCommentCount,
     incrementCommentCount,
     toggleExpanded,
+    initCommentSystem,
     updateGiscusTheme,
     savePreference,
     loadPreference

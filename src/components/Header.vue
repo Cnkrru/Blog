@@ -181,8 +181,16 @@ body.dark-theme :deep(.button-style) {
 }
 
 @keyframes emojiBurst {
-    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    100% { opacity: 0; transform: translate(-50%, calc(-50% - 20px)) scale(1.5); }
+    0% {
+  opacity: 1;
+   transform: translate(-50%, -50%) scale(1);
+   
+}
+    100% {
+  opacity: 0;
+   transform: translate(-50%, calc(-50% - 20px)) scale(1.5);
+   
+}
 }
 
 :deep(.button-style img) {

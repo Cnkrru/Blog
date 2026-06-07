@@ -2,7 +2,11 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const showEasterEgg = ref(false)
-const hearts = ref<{ id: number; left: number; emoji: string }[]>([])
+const hearts = ref<{
+  id: number;
+   left: number;
+   emoji: string 
+}[]>([])
 const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '💘', '💝']
 let heartId = 0
 

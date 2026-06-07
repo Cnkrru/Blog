@@ -40,9 +40,21 @@
 }
 
 @keyframes scrollWheel {
-  0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  50% { opacity: 0.3; transform: translateX(-50%) translateY(8px); }
-  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  0% {
+  opacity: 1;
+   transform: translateX(-50%) translateY(0);
+   
+}
+  50% {
+  opacity: 0.3;
+   transform: translateX(-50%) translateY(8px);
+   
+}
+  100% {
+  opacity: 1;
+   transform: translateX(-50%) translateY(0);
+   
+}
 }
 
 .scroll-text {

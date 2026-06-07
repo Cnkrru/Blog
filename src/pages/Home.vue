@@ -177,9 +177,13 @@ onMounted(() => loadArticles())
 
 /* 文章卡片网格 */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 16px;
+}
+.card-grid > * {
+  flex: 1 1 calc(33.333% - 11px);
+  min-width: 260px;
 }
 
 .post-card {
@@ -187,37 +191,17 @@ onMounted(() => loadArticles())
   flex-direction: column;
   border-radius: 14px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   text-decoration: none;
-  color: inherit;
   transition:
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 4px 8px rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .post-card {
-  background: rgba(21, 7, 60, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow 0.3s ease;
 }
 
 .post-card:hover {
   transform: translateY(-4px);
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.06),
-    0 8px 20px rgba(0, 0, 0, 0.10),
-    0 0 0 1px rgba(255, 192, 203, 0.15);
-  border-color: rgba(255, 192, 203, 0.3);
 }
 
 .post-card.pinned {
-  border-color: rgba(255, 192, 203, 0.4);
   border-width: 1px;
 }
 
@@ -226,7 +210,6 @@ body.dark-theme .post-card {
   width: 100%;
   aspect-ratio: 1.91 / 1;
   overflow: hidden;
-  background: var(--common-bg);
 }
 
 .card-cover img {
@@ -255,7 +238,6 @@ body.dark-theme .post-card {
   font-size: 15px;
   font-weight: 700;
   line-height: 1.4;
-  color: var(--common-text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -265,7 +247,6 @@ body.dark-theme .post-card {
 .card-date {
   margin: 0;
   font-size: 12px;
-  color: var(--common-text);
   opacity: 0.5;
 }
 
@@ -280,16 +261,12 @@ body.dark-theme .post-card {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 10px;
-  background: var(--common-color-1);
-  color: var(--common-content);
 }
 
 .card-tag {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 10px;
-  border: 1px solid var(--common-color-1);
-  color: var(--common-text);
 }
 
 /* 置顶 */
@@ -300,7 +277,6 @@ body.dark-theme .post-card {
 .pinned-label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--common-text);
   opacity: 0.6;
   margin-bottom: 10px;
 }
@@ -309,28 +285,28 @@ body.dark-theme .post-card {
   margin: 16px 0;
   border: none;
   height: 1px;
-  background: var(--common-color-1);
-  opacity: 0.3;
 }
 
 /* Skeleton */
 .skel-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 16px;
+}
+.skel-grid > * {
+  flex: 1 1 calc(33.333% - 11px);
+  min-width: 260px;
 }
 
 .skel-card {
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid var(--common-color-1);
   opacity: 0.3;
 }
 
 .skel-img {
   width: 100%;
   aspect-ratio: 1.91 / 1;
-  background: var(--common-color-1);
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
@@ -341,7 +317,6 @@ body.dark-theme .post-card {
 .skel-line {
   height: 14px;
   border-radius: 4px;
-  background: var(--common-color-1);
   animation: shimmer 1.5s ease-in-out infinite;
   margin-bottom: 8px;
 }
@@ -359,30 +334,64 @@ body.dark-theme .post-card {
 .empty-msg {
   text-align: center;
   padding: 50px 0;
-  color: var(--common-text);
 }
 </style>
 
 <!-- 颜色样式 -->
 <style scoped>
+.post-card {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.04);
+  color: inherit;
+}
+body.dark-theme .post-card {
+  background: rgba(21, 7, 60, 0.5);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.post-card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.10), 0 0 0 1px rgba(255,192,203,0.15);
+  border-color: rgba(255, 192, 203, 0.3);
+}
+.post-card.pinned { border-color: rgba(255, 192, 203, 0.4); }
+.card-cover { background: var(--common-bg); }
+.card-title { color: var(--common-text); }
+.card-date { color: var(--common-text); }
+.card-cat {
+  background: var(--common-color-1);
+  color: var(--common-content);
+}
+.card-tag {
+  border: 1px solid var(--common-color-1);
+  color: var(--common-text);
+}
+.pinned-label { color: var(--common-text); }
+.section-divider {
+  background: var(--common-color-1);
+  opacity: 0.3;
+}
+.skel-card { border: 1px solid var(--common-color-1); }
+.skel-img { background: var(--common-color-1); }
+.skel-line { background: var(--common-color-1); }
+.err-msg, .empty-msg { color: var(--common-text); }
 </style>
 
 <!-- 响应式 -->
 <style scoped>
 @media (max-width: 768px) {
-  .card-grid,
-  .skel-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  .card-grid > *,
+  .skel-grid > * {
+    flex: 1 1 calc(50% - 6px);
   }
   .card-title { font-size: 14px; }
 }
 
 @media (max-width: 639px) {
-  .card-grid,
-  .skel-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+  .card-grid > *,
+  .skel-grid > * {
+    flex: 1 1 100%;
   }
   .card-cover {
     aspect-ratio: 2 / 1;

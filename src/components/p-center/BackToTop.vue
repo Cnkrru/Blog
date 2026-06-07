@@ -26,15 +26,16 @@ const scrollToTop = (): void => {
 }
 
 let cleanupScrollListener: (() => void) | undefined
+let observer: MutationObserver | null = null
 
 onMounted(() => {
   checkImmersiveMode()
-  
-  const observer = new MutationObserver(() => {
+
+  observer = new MutationObserver(() => {
     checkImmersiveMode()
   })
   observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-  
+
   if (isImmersiveReading.value) {
     cleanupScrollListener = scrollStore.initScrollListener()
   }
@@ -43,6 +44,10 @@ onMounted(() => {
 onUnmounted(() => {
   if (cleanupScrollListener) {
     cleanupScrollListener()
+  }
+  if (observer) {
+    observer.disconnect()
+    observer = null
   }
 })
 </script>

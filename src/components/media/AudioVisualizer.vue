@@ -2,7 +2,11 @@
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useAudioStore } from '../../stores'
 
-const props = withDefaults(defineProps<{ isPlaying?: boolean; enabled?: boolean; getAnalyser?: (() => any) | null }>(), {
+const props = withDefaults(defineProps<{
+  isPlaying?: boolean;
+   enabled?: boolean;
+   getAnalyser?: (() => any) | null 
+}>(), {
   isPlaying: false,
   enabled: false,
   getAnalyser: null
