@@ -76,25 +76,9 @@
 </style>
 
 <style scoped>
-/* 头部区域 — 略深一点的半透明 */
+/* 头部区域 — 背景由全局主题（ink/sakura.css）按 --glass-alpha 驱动，此处仅保留阴影/边框层次 */
 :deep(.center-head-card) {
-    background-color: rgba(255, 255, 255, 0.55);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-body.dark-theme :deep(.center-head-card) {
-    background-color: rgba(21, 7, 60, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* 内容区域 — 最浅，保证文字可读 */
-:deep(.center-card-content) {
-    background-color: rgba(255, 255, 255, 0.35);
-}
-
-body.dark-theme :deep(.center-card-content) {
-    background-color: rgba(21, 7, 60, 0.25);
 }
 
 /* 头部标题 */

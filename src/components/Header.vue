@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
 import Logo from './p-header/Logo.vue'
 import ThemeToggle from './p-header/ThemeToggle.vue'
 import ImmersiveReading from './p-header/ImmersiveReading.vue'
@@ -8,7 +9,6 @@ import ReadingProgress from './p-header/ReadingProgress.vue'
 import Search from './p-header/Search.vue'
 import MusicPlay from './media/MusicPlay.vue'
 import MobileMenu from './p-header/MobileMenu.vue'
-
 import DynamicEffectControl from './p-header/DynamicEffectControl.vue'
 
 const router = useRouter()
@@ -202,25 +202,36 @@ body.dark-theme :deep(.button-style) {
 
 <!-- 颜色样式 -->
 <style>
-.button-style {
+/* 水墨风：按钮宣纸暖白底，朱砂描边 */
+[data-style="ink"] .button-style {
+    background-color: rgba(251, 248, 240, 0.85);
+    border: 1px solid rgba(74, 60, 40, 0.18);
+}
+
+[data-style="ink"] body.dark-theme .button-style {
+    background-color: rgba(38, 34, 28, 0.85);
+    border: 1px solid rgba(245, 241, 232, 0.14);
+}
+
+/* 樱粉风：沿用原粉色/蓝色 */
+[data-style="sakura"] .button-style {
     background-color: rgba(255, 192, 203, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-body.dark-theme .button-style {
+[data-style="sakura"] body.dark-theme .button-style {
     background-color: rgba(58, 170, 231, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 按钮图标始终白色 */
+/* 按钮图标：亮色黑色，暗色白色，保证对比清晰 */
 .button-style img {
-    filter: brightness(0) invert(1) !important;
+    filter: brightness(0) !important;
 }
 
 body.dark-theme .button-style img {
     filter: brightness(0) invert(1) !important;
 }
-
 </style>
 
 <!-- 响应式设计媒体查询 -->

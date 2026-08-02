@@ -1,66 +1,89 @@
 import { createRouter, createWebHistory, createMemoryHistory, Router, RouteRecordRaw } from 'vue-router'
 
+/*
+* id:路由插件参数
+* fn:接收路径，名称，页面根组件三个参数组成的json，来挂载各个页面的路由
+*/
 const routes: RouteRecordRaw[] = [
+    // index页面
     {
         path: '/',
         name: 'Index',
         component: () => import('../pages/index.vue')
     },
+    // home页面
     {
         path: '/home',
         name: 'Home',
         component: () => import('../pages/Home.vue')
     },
+    // 关于页面
     {
         path: '/about',
         name: 'About',
         component: () => import('../pages/About/About.vue')
     },
+    // 归档页面
     {
         path: '/archives',
         name: 'Archives',
         component: () => import('../pages/Archives.vue')
     },
+    // 友链页面
     {
         path: '/links',
         name: 'Links',
         component: () => import('../pages/Links.vue')
     },
+    // 项目页面
     {
         path: '/projects',
         name: 'Projects',
         component: () => import('../pages/Projects.vue')
     },
+    // 文章详情页面
     {
         path: '/post/:id',
         name: 'Post',
         component: () => import('../pages/post/Posts.vue')
     },
+    // 项目详情页面
     {
         path: '/project/:id',
         name: 'Project',
         component: () => import('../pages/project/Projects.vue')
     },
+    // 标签页面
     {
         path: '/timeline',
         name: 'Timeline',
         component: () => import('../pages/Timeline.vue')
     },
+    // 搜索页面
     {
         path: '/search',
         name: 'Search',
         component: () => import('../pages/SearchPage.vue')
     },
+    // 友链申请页面
     {
         path: '/links/apply',
         name: 'LinkApply',
         component: () => import('../pages/LinkApply.vue')
     },
+    // 设置页面
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import('../pages/Settings.vue')
+    },
+    // 更新日志页面
     {
         path: '/changelog',
         name: 'Changelog',
         component: () => import('../pages/log/Changelog.vue')
     },
+    // 404页面
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
@@ -68,32 +91,37 @@ const routes: RouteRecordRaw[] = [
     }
 ]
 
+// 根据环境选择要返回的历史记录
 const createAppHistory = (): ReturnType<typeof createWebHistory> | ReturnType<typeof createMemoryHistory> => {
     if (import.meta.env.SSR) {
         return createMemoryHistory()
-    } else {
+    } 
+    else {
         return createWebHistory()
     }
 }
 
-type ScrollBehaviorReturn = void | boolean | {
-    left: number
-    top: number
-    behavior: ScrollBehavior
-}
+// 返回顶部滚动参数（垃圾代码）
+// type ScrollBehaviorReturn = void | boolean | {
+//     left: number
+//     top: number
+//     behavior: ScrollBehavior
+// }
 
+// 返回顶部，控制中心内容卡片返回顶部
 const scrollToTop = (): void => {
     if (typeof document !== 'undefined') {
         const el = document.querySelector('.center-card-content')
         if (el) {
-            el.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            })
+            el.scrollTo({top: 0,behavior: 'smooth'})
         }
     }
 }
 
+/*
+* id:路由插件
+* fn:导出路由创建函数给main.ts使用
+*/
 export function createAppRouter(): Router {
     const router = createRouter({
         history: createAppHistory(),

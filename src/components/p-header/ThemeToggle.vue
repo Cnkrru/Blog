@@ -13,7 +13,6 @@ const toggleTheme = () => {
     isAnimating.value = false
   }, 400)
 }
-
 </script>
 
 <template>

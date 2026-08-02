@@ -1,3 +1,10 @@
+/*==============================================================
+ * 全局基础样式（与风格/布局无关）
+ * 风格与布局拆分到 assets/css/themes/* 与 assets/css/layouts/*
+ * 由 <html data-style> 与 <html data-layout> 激活，见对应文件。
+ * 这四个文件在 main.ts 中通过 JS import 引入（避免 PostCSS @import 路径问题）。
+ *==============================================================*/
+
 /*==============================初始化==============================*/
 * {
     margin: 0;
@@ -21,25 +28,27 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%23ff69b4' stroke='%23ffe4ec' stroke-width='0.5'/></svg>") 4 2, auto;
 }
 
-a, button, select, summary, [role="button"], label[for] {
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%23ff69b4'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%23ff69b4' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
+/* 应用背景图与主题文字色（变量由 themes/* 提供） */
+body {
+    background: url('./assets/imgs/background.jpg') center/cover no-repeat fixed;
+    color: var(--common-text);
+    min-height: 100vh;
 }
 
-input[type="text"],
-input[type="search"],
-input[type="password"],
-input[type="email"],
-input[type="url"],
-textarea,
-[contenteditable="true"] {
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%23ff69b4'/></svg>") 11 10, text;
+#app {
+    position: relative;
+    z-index: 1;
 }
 
 a {
     text-decoration: none;
+    color: var(--common-text);
+}
+
+a:hover {
+    color: var(--common-hover);
 }
 
 input, button, textarea, select {
@@ -62,6 +71,7 @@ hr {
     padding: 0;
 }
 
+/*==============================移动端基础响应式==============================*/
 @media (max-width: 768px) {
     html, body {
         gap: 0;
@@ -99,75 +109,7 @@ hr {
     }
 }
 
-/* 应用主题变量 */
-body {
-    background: url('./assets/imgs/background.jpg') center/cover no-repeat fixed;
-    color: var(--common-text);
-
-    min-height: 100vh;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.5);
-    z-index: 0;
-    pointer-events: none;
-}
-
-body.dark-theme::before {
-    background: rgba(0, 0, 0, 0.6);
-}
-
-#app {
-    position: relative;
-    z-index: 1;
-}
-
-a {
-    color: var(--common-text);
-}
-
-a:hover {
-    color: var(--common-hover);
-}
-
-/* 全局卡片毛玻璃风格 */
-.header-card,
-.footer-card,
-.footer-element-card,
-.left-asider-card,
-.center-card,
-.page-list-card {
-    background-color: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.04),
-        0 2px 6px rgba(0, 0, 0, 0.06),
-        0 8px 24px rgba(0, 0, 0, 0.08);
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-body.dark-theme .header-card,
-body.dark-theme .footer-card,
-body.dark-theme .footer-element-card,
-body.dark-theme .left-asider-card,
-body.dark-theme .center-card,
-body.dark-theme .page-list-card {
-    background-color: rgba(21, 7, 60, 0.5);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.10),
-        0 2px 6px rgba(0, 0, 0, 0.14),
-        0 8px 24px rgba(0, 0, 0, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* 滚动条娘化 */
+/*==============================滚动条（使用主题变量，风格无关）==============================*/
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -206,7 +148,7 @@ body.dark-theme ::-webkit-scrollbar-thumb {
     scrollbar-color: var(--common-color-1) transparent;
 }
 
-/* SVG 图标暗色主题统一变白（封面图除外，封面图在亮色下反转） */
+/*==============================SVG 图标暗色主题统一变白==============================*/
 body:not(.dark-theme) img[src*="/og/"] {
     filter: invert(1);
 }
@@ -215,9 +157,8 @@ body.dark-theme img[src$=".svg"]:not([src*="/og/"]) {
     filter: invert(1);
 }
 
-/* ============================== 移动端触摸优化 ============================== */
+/*==============================移动端触摸优化==============================*/
 @media (pointer: coarse) {
-    /* 增大点击区域，防止误触 */
     .nav-btn, .page-btn, .control-btn, .chip-btn, .toggle-btn,
     .sort-btn, .view-tab, .zoom-btn, .post-menu-btn,
     .back-to-top-btn, .toc-btn, .announcement-btn, .article-count-btn {
@@ -225,12 +166,10 @@ body.dark-theme img[src$=".svg"]:not([src*="/og/"]) {
         min-height: 44px;
     }
 
-    /* 触摸按下反馈 */
     button:active, a:active {
         opacity: 0.7;
     }
 
-    /* 禁用 hover 效果在移动端（避免 sticky hover） */
     @media (hover: none) {
         .post-card:hover, .link-card:hover, .project-card:hover,
         .glass-card:hover, .tl-card-body:hover, .tl-card:hover,

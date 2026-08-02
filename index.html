@@ -5,6 +5,33 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>vue-blog</title>
+    <!-- 主题预应用：在 CSS/JS 生效前同步写入 data-* 与玻璃变量，消除首屏闪烁(FOUC) -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme-preference');
+          var theme = 'dark', style = 'ink', layout = 'card', glass = 0.78;
+          if (saved) {
+            var p = JSON.parse(saved);
+            theme = p.theme || 'dark';
+            style = p.style || 'ink';
+            layout = p.layout || 'card';
+            glass = typeof p.glass === 'number' ? p.glass : (style === 'sakura' ? 0.55 : 0.78);
+          }
+          var d = document.documentElement;
+          d.setAttribute('data-theme', theme);
+          d.setAttribute('data-style', style);
+          d.setAttribute('data-layout', layout);
+          d.style.setProperty('--glass-alpha', String(glass));
+          // body 在脚本之后才解析，延迟补 dark-theme 类（CSS 用 body.dark-theme 分流）
+          function applyBodyClass() {
+            if (theme === 'dark') document.body.classList.add('dark-theme');
+          }
+          if (document.body) applyBodyClass();
+          else document.addEventListener('DOMContentLoaded', applyBodyClass);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>

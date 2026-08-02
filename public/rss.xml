@@ -5,7 +5,7 @@
     <link>https://cnkrru.top/</link>
     <description>个人技术博客，分享前端开发、技术学习和生活点滴</description>
     <atom:link href="https://cnkrru.top/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Wed, 03 Jun 2026 17:33:36 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 31 Jul 2026 09:23:38 GMT</lastBuildDate>
     <language>zh-CN</language>
 
     
@@ -98,11 +98,27 @@
     </item>
     
     <item>
+      <title>导航站点从Docsify迁移至VitePress</title>
+      <link>https://cnkrru.top/post/12</link>
+      <description>将个人导航站点从Docsify v4迁移至VitePress的完整记录，包含旧配置存档、迁移原因以及VitePress配置详情。</description>
+      <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/12</guid>
+    </item>
+    
+    <item>
       <title>网站更新日志</title>
       <link>https://cnkrru.top/post/changelog</link>
       <description>记录网站的更新历史和功能变更</description>
       <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
       <guid>https://cnkrru.top/post/changelog</guid>
+    </item>
+    
+    <item>
+      <title>git常用指令</title>
+      <link>https://cnkrru.top/post/11</link>
+      <description>记录一些常用git指令</description>
+      <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/11</guid>
     </item>
     
   </channel>

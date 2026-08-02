@@ -1,0 +1,172 @@
+/*==============================================================
+ * 风格方案 B：樱粉（粉色基调 / 梦幻渐变）—— 原始配色
+ * 通过 <html data-style="sakura"> 激活
+ *==============================================================*/
+
+/* 变量（亮色 · 樱粉 / 暗色 · 夜樱紫） */
+[data-style="sakura"] {
+  --common-color-1: #e8758f;        /* 樱粉主色（比浅粉更有对比，作文字/边框清晰） */
+  --common-color-2: #fff5f8;        /* 樱白 */
+  --common-bg: #fdeef3;             /* 樱雾底 */
+  --common-text: #4a3a40;           /* 淡墨粉褐，柔和可读 */
+  --common-content: #4a3a40;         /* 卡片上的正文色（粉褐，保证白底可读） */
+  --common-hover: #d65f7c;          /* 深樱 */
+  --common-shadow: rgba(199, 115, 145, 0.16);   /* 暖粉阴影 */
+  --common-cursor: #e8758f;         /* 樱粉指针 */
+  --common-gradient: linear-gradient(90deg, #f9c5d1, #f7a8c0, #c9a0e0, #f7a8c0, #f9c5d1);
+  --glass-r: 255; --glass-g: 250; --glass-b: 252; /* 樱白亮面 RGB */
+}
+[data-style="sakura"].dark-theme,
+[data-style="sakura"] body.dark-theme {
+  --common-color-1: #e58fb0;        /* 夜樱粉（保持粉调，不跳蓝） */
+  --common-color-2: #2a1a3a;        /* 夜紫 */
+  --common-bg: #1a0f2e;             /* 夜樱深紫 */
+  --common-text: #f3e8f0;           /* 淡粉白 */
+  --common-hover: #e58fb0;
+  --common-content: #f3e8f0;        /* 卡片上的正文色（暗色淡粉白，保证深底可读） */
+  --common-shadow: rgba(0, 0, 0, 0.32);
+  --common-cursor: #e58fb0;
+  --common-gradient: linear-gradient(90deg, #d56b9a, #9a6cc9, #c77fd0, #9a6cc9, #d56b9a);
+  --glass-r: 37; --glass-g: 22; --glass-b: 56; /* 夜紫面 RGB */
+}
+
+/* 鼠标指针：粉色 */
+[data-style="sakura"] body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%23ff69b4' stroke='%23ffe4ec' stroke-width='0.5'/></svg>") 4 2, auto;
+}
+[data-style="sakura"] a, [data-style="sakura"] button, [data-style="sakura"] select, [data-style="sakura"] summary, [data-style="sakura"] [role="button"], [data-style="sakura"] label[for] {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%23ff69b4'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%23ff69b4' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
+}
+[data-style="sakura"] input[type="text"],
+[data-style="sakura"] input[type="search"],
+[data-style="sakura"] input[type="password"],
+[data-style="sakura"] input[type="email"],
+[data-style="sakura"] input[type="url"],
+[data-style="sakura"] textarea,
+[data-style="sakura"] [contenteditable="true"] {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%23ff69b4'/></svg>") 11 10, text;
+}
+
+/* 遮罩：原始纯半透明（无纹理） */
+[data-style="sakura"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 0;
+  pointer-events: none;
+}
+[data-style="sakura"] body.dark-theme::before {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* 全局卡片 - 原始毛玻璃（冷白 / 蓝紫） */
+[data-style="sakura"] .header-card,
+[data-style="sakura"] .footer-card,
+[data-style="sakura"] .footer-element-card,
+[data-style="sakura"] .left-asider-card,
+[data-style="sakura"] .center-card,
+[data-style="sakura"] .page-list-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 2px 6px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+[data-style="sakura"] body.dark-theme .header-card,
+[data-style="sakura"] body.dark-theme .footer-card,
+[data-style="sakura"] body.dark-theme .footer-element-card,
+[data-style="sakura"] body.dark-theme .left-asider-card,
+[data-style="sakura"] body.dark-theme .center-card,
+[data-style="sakura"] body.dark-theme .page-list-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.10),
+    0 2px 6px rgba(0, 0, 0, 0.14),
+    0 8px 24px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 樱粉国风增强：标题花瓣渐变下划线（樱粉 → 淡紫晕染） */
+[data-style="sakura"] h1,
+[data-style="sakura"] h2,
+[data-style="sakura"] h3,
+[data-style="sakura"] h4,
+[data-style="sakura"] h5,
+[data-style="sakura"] h6 {
+  position: relative;
+}
+[data-style="sakura"] h1::after,
+[data-style="sakura"] h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 64%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--common-color-1) 0%, rgba(201, 160, 224, 0.5) 70%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(0.6px);
+  opacity: 0.6;
+}
+
+/* 链接樱粉晕染悬停 */
+[data-style="sakura"] a:hover {
+  color: var(--common-color-1);
+  text-shadow: 0 0 8px rgba(232, 117, 143, 0.25);
+}
+
+/* 分隔线樱粉晕开 */
+[data-style="sakura"] hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--common-shadow), transparent);
+  margin: 16px 0;
+}
+
+/* 引用块樱粉左侧点缀 */
+[data-style="sakura"] blockquote {
+  border-left: 4px solid var(--common-color-1);
+  background: rgba(232, 117, 143, 0.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 18px;
+  margin: 16px 0;
+}
+
+/* 内部小卡片（Center 标题区 / 内容区 / 侧边栏子卡）接入玻璃透明度变量 */
+[data-style="sakura"] .center-head-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.08));
+  box-shadow: 0 1px 3px rgba(199, 115, 145, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+[data-style="sakura"] .center-card-content {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.10));
+}
+[data-style="sakura"] body.dark-theme .center-head-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.10));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+[data-style="sakura"] body.dark-theme .center-card-content {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.12));
+}
+[data-style="sakura"] .page-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+[data-style="sakura"] body.dark-theme .page-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 小屏隐藏花瓣下划线，避免拥挤 */
+@media (max-width: 768px) {
+  [data-style="sakura"] h1::after,
+  [data-style="sakura"] h2::after {
+    display: none;
+  }
+}

@@ -46,7 +46,7 @@ onUnmounted(() => {
             <h3>评论</h3>
             <span v-if="commentCount > 0" class="comment-count">{{ commentCount }} 条评论</span>
         </div>
-        <p class="comment-hint">想说点什么呢 (´•ω•`)</p>
+        <p class="comment-hint"> 想说点什么呢……</p>
         <div class="comment-content">
             <!-- 加载状态 -->
             <div v-if="isLoading" class="loading-state">

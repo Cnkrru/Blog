@@ -11,6 +11,7 @@
         <li ><router-link to="/links" class="page-card"> 友链 </router-link></li>
         <li ><router-link to="/search" class="page-card"> 搜索 </router-link></li>
         <li ><router-link to="/projects" class="page-card"> 项目 </router-link></li>
+        <li ><router-link to="/settings" class="page-card"> 设置 </router-link></li>
         <li ><router-link to="/rss.xml" target="_blank" rel="noopener noreferrer" class="page-card"> RSS </router-link></li>
       </ul>
   </div>

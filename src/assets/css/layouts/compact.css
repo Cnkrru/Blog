@@ -1,0 +1,101 @@
+/*==============================================================
+ * 布局方案 B：无空隙（compact）
+ * 通过 <html data-layout="compact"> 激活，覆盖 card 布局基线。
+ * 四大区域（Header / Sidebar / Center / Footer）紧贴拼接成连续整体，
+ * 保留卡片式视觉，仅去掉区域之间的空隙与相接处的圆角，外缘保留圆角。
+ * 仅桌面端（>=1025px）生效。
+ *==============================================================*/
+@media (min-width: 1025px) {
+  /* 统一三大区域容器宽度，去掉左右留白，贴满视口 */
+  html[data-layout="compact"] .header-S,
+  html[data-layout="compact"] .mid-flex,
+  html[data-layout="compact"] .footer-S {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 垂直方向：去区域外间距，外缘圆角 */
+  html[data-layout="compact"] .header-flex {
+    padding: 0;
+  }
+  html[data-layout="compact"] .header-card {
+    margin-bottom: 0;
+    border-radius: 18px 18px 0 0;
+  }
+  html[data-layout="compact"] .footer-flex {
+    padding: 0;
+  }
+  html[data-layout="compact"] .footer-card {
+    border-radius: 0 0 18px 18px;
+  }
+
+  /* 水平方向：Sidebar 与 Center 紧贴，中间以朱砂线分隔 */
+  html[data-layout="compact"] .mid-flex {
+    gap: 0;
+    align-items: stretch;
+  }
+  html[data-layout="compact"] .left-asider-S {
+    width: 220px;
+  }
+  html[data-layout="compact"] .left-asider-card {
+    width: 100%;
+    border-radius: 0;
+    border-right: 1px solid var(--common-color-1);
+  }
+  html[data-layout="compact"] .center-S {
+    width: auto;
+    flex: 1;
+  }
+  html[data-layout="compact"] .center-container {
+    max-width: none;
+  }
+  html[data-layout="compact"] .center-card {
+    border-radius: 0;
+  }
+
+  /* center 内部：标题区与内容区之间的空隙也去掉 */
+  html[data-layout="compact"] .center-header-area {
+    gap: 0;
+  }
+  html[data-layout="compact"] .center-card .center-head-card {
+    border-radius: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--common-color-1);
+  }
+  html[data-layout="compact"] .center-card .center-card-content {
+    border-radius: 0;
+  }
+}
+
+/* 移动端（<=1024px）：同样无空隙，仅 Header / Center / Footer 紧贴拼接
+   侧边栏保持滑出式交互不变 */
+@media (max-width: 1024px) {
+  html[data-layout="compact"] .header-flex {
+    padding: 0;
+  }
+  html[data-layout="compact"] .header-card {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+  html[data-layout="compact"] .center-card {
+    border-radius: 0;
+  }
+  html[data-layout="compact"] .center-header-area {
+    gap: 0;
+  }
+  html[data-layout="compact"] .center-card .center-head-card {
+    border-radius: 0;
+    margin: 0;
+  }
+  html[data-layout="compact"] .center-card .center-card-content {
+    border-radius: 0;
+  }
+  html[data-layout="compact"] .footer-flex {
+    padding: 0;
+  }
+  html[data-layout="compact"] .footer-card {
+    border-radius: 0;
+  }
+}

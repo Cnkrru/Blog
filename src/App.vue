@@ -109,20 +109,18 @@ onMounted(() => {
 }
 </style>
 
-<!-- 布局样式 -->
+<!-- 布局样式：.mid-flex 基础 flex 布局兜底（card 在 769-1024px 区间无 layout 文件覆盖，需此处兜底）。
+     尺寸/间隙的最终值由 layouts/card.css（>=1025）与 layouts/compact.css（全宽度）以
+     html[data-layout] 前缀覆盖，其选择器权重高于此处 scoped，故不会冲突。 -->
 <style scoped>
 .mid-flex {
-    max-width: 1400px;
     width: 100%;
-    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: row;
-    gap: 24px;
     flex: 1;
 }
-
 </style>
 
 <!-- 颜色样式 -->

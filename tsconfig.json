@@ -1,26 +1,46 @@
 {
   "compilerOptions": {
+    // 输出构建标准
     "target": "ES2020",
+
     "useDefineForClassFields": true,
+    // 导包写法import
     "module": "ESNext",
+    // 调用库
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    // 跳过.d.ts文件检查
     "skipLibCheck": true,
+    // 模拟打包
     "moduleResolution": "bundler",
+    // 允许import导入ts时写扩展名
     "allowImportingTsExtensions": true,
+    // 允许import导入json
     "resolveJsonModule": true,
+    // 模块隔离，按照文件单独编译
     "isolatedModules": true,
+    // TS只做类型检查，实际编译由vite来
     "noEmit": true,
+    // 支持jsx写法
     "jsx": "preserve",
-    "strict": false,
-    "noUnusedLocals": false,
+    // 启动ts严格检查
+    "strict": true,
+    // 检查未使用变量
+    "noUnusedLocals": true,
+    // 不检查函数参数
     "noUnusedParameters": false,
+    // 检查switch是否存在缺少break泄露
     "noFallthroughCasesInSwitch": true,
+    // 部署根路径未‘.’
     "baseUrl": ".",
+    // 顶层路径映射
     "paths": {
       "@/*": ["src/*"]
     },
+    // 引入ts全局变量
     "types": ["vite/client", "node"]
   },
+  // 编译文件src文件夹下的所有ts、d.ts、tsx、vue、index.ts文件
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.ts"],
+  // 引用node配置文件，作为vite配置
   "references": [{ "path": "./tsconfig.node.json" }]
 }

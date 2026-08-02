@@ -168,6 +168,24 @@
     "seoTitle": "2026-05-16 - 日记"
   },
   {
+    "id": "12",
+    "title": "导航站点从Docsify迁移至VitePress",
+    "category": "前端",
+    "tags": [
+      "前端",
+      "VitePress",
+      "Docsify",
+      "导航站",
+      "站点迁移"
+    ],
+    "path": "./html/posts/post-12.html",
+    "date": "2026-07-29",
+    "description": "将个人导航站点从Docsify v4迁移至VitePress的完整记录，包含旧配置存档、迁移原因以及VitePress配置详情。",
+    "keywords": "Docsify, VitePress, 导航站, 站点迁移, 静态站点生成器, SSG",
+    "author": "Cnkrru",
+    "seoTitle": "导航站点从Docsify迁移至VitePress - 技术分享"
+  },
+  {
     "id": "changelog",
     "title": "网站更新日志",
     "category": "其他",
@@ -180,5 +198,19 @@
     "keywords": "更新日志,网站更新,功能变更",
     "author": "Cnkrru",
     "seoTitle": "网站更新日志 - 我的博客"
+  },
+  {
+    "id": "11",
+    "title": "git常用指令",
+    "category": "git",
+    "tags": [
+      "git"
+    ],
+    "path": "./html/posts/post-11.html",
+    "date": "2026-07-03",
+    "description": "记录一些常用git指令",
+    "keywords": "git",
+    "author": "Cnkrru",
+    "seoTitle": "git指令集"    
   }
 ]
