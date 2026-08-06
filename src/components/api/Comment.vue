@@ -10,10 +10,9 @@ const isLoaded = computed(() => commentStore.commentLoaded)
 const error = ref<string | null>(null)
 const commentCount = computed(() => commentStore.commentCount)
 
-// 监听主题变化
-watch(() => themeStore.isDark, (isDark) => {
-  const theme = isDark ? 'dark' : 'light'
-  commentStore.updateGiscusTheme(theme)
+// 监听主题和风格变化，同步更新 Giscus 评论样式
+watch([() => themeStore.isDark, () => themeStore.currentStyle], () => {
+  commentStore.updateGiscusTheme('')
 })
 
 onMounted(() => {
@@ -23,9 +22,6 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     window.updateGiscusTheme = commentStore.updateGiscusTheme
   }
-
-  const theme = themeStore.isDark ? 'dark' : 'light'
-  commentStore.updateGiscusTheme(theme)
 
   setTimeout(() => {
     isLoading.value = false

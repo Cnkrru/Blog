@@ -931,7 +931,7 @@ body.dark-theme .markdown-content pre {
 
 /* 代码颜色 */
 .markdown-content code {
-  background-color: rgba(255, 192, 203, 0.2);
+  background-color: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   color: var(--common-text);
 }
 
@@ -942,7 +942,7 @@ body.dark-theme .markdown-content pre {
 /* 引用颜色 */
 .markdown-content blockquote {
   border-left: 4px solid var(--common-color-1);
-  background-color: rgba(255, 192, 203, 0.1);
+  background-color: color-mix(in srgb, var(--common-color-1) 10%, transparent);
   color: var(--common-text);
 }
 
@@ -959,11 +959,11 @@ body.dark-theme .markdown-content pre {
 }
 
 .markdown-content th {
-  background-color: rgba(255, 192, 203, 0.1);
+  background-color: color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
 .markdown-content tr:nth-child(even) {
-  background-color: rgba(255, 192, 203, 0.05);
+  background-color: color-mix(in srgb, var(--common-color-1) 5%, transparent);
 }
 
 /* 分隔线颜色 */

@@ -378,7 +378,7 @@ body.dark-theme .code-header {
 /* 语言标签 */
 .language-badge {
   background: var(--common-color-1);
-  color: #fff;
+  color: var(--common-content);
   border-radius: 6px;
   padding: 2px 8px;
 }
@@ -466,22 +466,22 @@ body.dark-theme .code-header {
 /* 行数统计 */
 .line-count {
   color: var(--common-text);
-  background: rgba(255, 192, 203, 0.2);
+  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
 }
 
 /* 行高亮 */
 .line-highlight-row:hover {
-  background: rgba(255, 192, 203, 0.15);
+  background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
 }
 
 /* 代码内容区 */
 .code-content-wrapper {
-  background-color: rgba(255, 192, 203, 0.05);
+  background-color: color-mix(in srgb, var(--common-color-1) 5%, transparent);
 }
 
 /* 行号 */
 .line-numbers {
-  background-color: rgba(255, 192, 203, 0.1);
+  background-color: color-mix(in srgb, var(--common-color-1) 10%, transparent);
   border-right: 1px solid var(--common-color-1);
   color: var(--common-text);
   opacity: 0.7;
@@ -499,11 +499,11 @@ body.dark-theme .code-header {
 
 /* 加载遮罩 */
 .loading-overlay {
-  background: rgba(255, 192, 203, 0.1);
+  background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
 .loading-spinner {
-  border: 2px solid rgba(255, 192, 203, 0.3);
+  border: 2px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
   border-top-color: var(--common-color-1);
 }
 
@@ -511,33 +511,6 @@ body.dark-theme .code-header {
   color: var(--common-text);
 }
 
-/* 暗色主题适配 */
-:deep(body.dark-theme) .line-highlight-row:hover {
-  background: rgba(58, 170, 231, 0.15);
-}
-
-:deep(body.dark-theme) .code-content-wrapper {
-  background-color: rgba(58, 170, 231, 0.1);
-}
-
-:deep(body.dark-theme) .line-numbers {
-  background-color: rgba(58, 170, 231, 0.15);
-  border-right-color: var(--common-color-1);
-  color: var(--common-text);
-}
-
-:deep(body.dark-theme) .code-content {
-  color: var(--common-text);
-}
-
-:deep(body.dark-theme) .loading-overlay {
-  background: rgba(58, 170, 231, 0.1);
-}
-
-:deep(body.dark-theme) .loading-spinner {
-  border-color: rgba(58, 170, 231, 0.3);
-  border-top-color: var(--common-color-1);
-}
 </style>
 
 <style scoped>

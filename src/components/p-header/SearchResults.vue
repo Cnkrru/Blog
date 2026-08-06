@@ -110,7 +110,7 @@ const handleResultClick = (item) => {
 
 <style scoped>
 .search-results {
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -120,7 +120,6 @@ const handleResultClick = (item) => {
 }
 
 body.dark-theme .search-results {
-  background-color: rgba(21, 7, 60, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -139,11 +138,7 @@ body.dark-theme .search-results {
 }
 
 .search-result-item:hover {
-  background-color: rgba(255, 192, 203, 0.15);
-}
-
-body.dark-theme .search-result-item:hover {
-  background-color: rgba(58, 170, 231, 0.12);
+  background-color: color-mix(in srgb, var(--common-color-1) 15%, transparent);
 }
 
 .result-title {
@@ -155,12 +150,8 @@ body.dark-theme .search-result-item:hover {
 }
 
 .tag {
-  background-color: rgba(255, 192, 203, 0.25);
+  background-color: color-mix(in srgb, var(--common-color-1) 25%, transparent);
   color: var(--common-text);
-}
-
-body.dark-theme .tag {
-  background-color: rgba(58, 170, 231, 0.2);
 }
 </style>
 

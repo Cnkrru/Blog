@@ -1,5 +1,24 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useThemeStore } from './theme'
+
+const GISCUS_CSS_BASE = 'https://cnkrru.github.io/static'
+
+function getGiscusThemeUrl(): string {
+  const themeStore = useThemeStore()
+  const isDark = themeStore.isDark
+  const style = themeStore.currentStyle
+
+  if (style === 'ink') {
+    return isDark
+      ? `${GISCUS_CSS_BASE}/giscus-ink-dark.css`
+      : `${GISCUS_CSS_BASE}/giscus-ink-light.css`
+  }
+  // sakura
+  return isDark
+    ? `${GISCUS_CSS_BASE}/giscus-sakura-dark.css`
+    : `${GISCUS_CSS_BASE}/giscus-sakura-light.css`
+}
 
 export const useCommentStore = defineStore('comment', () => {
   const commentLoaded = ref<boolean>(false)
@@ -29,11 +48,8 @@ export const useCommentStore = defineStore('comment', () => {
     isExpanded.value = !isExpanded.value
   }
 
-  const updateGiscusTheme = (theme: string): void => {
-    const isDark = document.body.classList.contains('dark-theme')
-    const themeUrl = isDark
-      ? 'https://cnkrru.github.io/static/giscus-theme-dark.css'
-      : 'https://cnkrru.github.io/static/giscus-theme-light.css'
+  const updateGiscusTheme = (_theme: string): void => {
+    const themeUrl = getGiscusThemeUrl()
     const giscusFrame = document.querySelector('iframe.giscus-frame') as HTMLIFrameElement | null
     if (giscusFrame?.contentWindow) {
       giscusFrame.contentWindow.postMessage(
@@ -59,10 +75,7 @@ export const useCommentStore = defineStore('comment', () => {
     script.setAttribute('data-reactions-enabled', '1')
     script.setAttribute('data-emit-metadata', '0')
     script.setAttribute('data-input-position', 'bottom')
-    const isDark = document.body.classList.contains('dark-theme')
-    script.setAttribute('data-theme', isDark
-      ? 'https://cnkrru.github.io/static/giscus-theme-dark.css'
-      : 'https://cnkrru.github.io/static/giscus-theme-light.css')
+    script.setAttribute('data-theme', getGiscusThemeUrl())
     script.setAttribute('data-lang', 'zh-CN')
     script.setAttribute('crossorigin', 'anonymous')
     script.async = true

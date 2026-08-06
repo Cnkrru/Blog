@@ -132,25 +132,19 @@ if (typeof window !== 'undefined') {
 <!-- 颜色 -->
 <style scoped>
 .sponsor-btn {
-  background: rgba(255, 192, 203, 0.85);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #333;
-}
-body.dark-theme .sponsor-btn {
-  background: rgba(58, 170, 231, 0.85);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: var(--common-color-1);
+  border-color: color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  color: var(--common-content);
 }
 
 .sponsor-modal {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-color: rgba(0, 0, 0, 0.06);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
 }
 body.dark-theme .sponsor-modal {
-  background: rgba(21, 7, 60, 0.92);
   border-color: rgba(255, 255, 255, 0.06);
 }
 
@@ -164,7 +158,7 @@ body.dark-theme .sponsor-close:hover { background: rgba(255, 255, 255, 0.15); }
 .sponsor-tabs { border-color: rgba(0, 0, 0, 0.08); }
 body.dark-theme .sponsor-tabs { border-color: rgba(255, 255, 255, 0.1); }
 .sp-tab { color: var(--common-text); }
-.sp-tab.active { background: var(--common-color-1); color: #fff; }
+.sp-tab.active { background: var(--common-color-1); color: var(--common-content); }
 
 .sponsor-thanks { color: var(--common-text); }
 </style>

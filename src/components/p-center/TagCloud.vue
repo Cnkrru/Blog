@@ -560,25 +560,19 @@ onMounted(() => {
 
 <style scoped>
 .tag-cloud-button {
-  background-color: rgba(255, 192, 203, 0.85);
-  color: #333;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-body.dark-theme .tag-cloud-button {
-  background-color: rgba(58, 170, 231, 0.85);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 .tag-count {
   color: var(--common-text);
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: color-mix(in srgb, var(--common-color-1) 30%, transparent);
   border-radius: 12px;
 }
 
 .tag-cloud-content {
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -588,7 +582,6 @@ body.dark-theme .tag-cloud-button {
 }
 
 body.dark-theme .tag-cloud-content {
-  background-color: rgba(21, 7, 60, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 

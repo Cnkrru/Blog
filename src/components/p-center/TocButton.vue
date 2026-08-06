@@ -68,25 +68,17 @@ const toggleToc = () => {
 
 <style scoped>
 .toc-btn {
-    background: rgba(255, 192, 203, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-body.dark-theme .toc-btn {
-    background: rgba(58, 170, 231, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--common-color-1);
+    border: 1px solid var(--common-color-1);
 }
 
 .toc-icon {
     filter: brightness(0) invert(1);
 }
 
-body.dark-theme .toc-icon {
-    filter: brightness(0) invert(1);
-}
-
 .toc-btn:hover {
     transform: scale(1.08);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--common-color-1) 35%, transparent);
 }
 
 .toc-count {

@@ -256,17 +256,12 @@ if (typeof window !== 'undefined') {
 <!-- 颜色样式 -->
 <style scoped>
 .notification {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--common-shadow);
   border-left: 4px solid var(--common-color-1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-body.dark-theme .notification {
-  background: rgba(21, 7, 60, 0.9);
-  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px var(--common-shadow);
 }
 
 .notification.success { border-left-color: #22c55e; }
@@ -295,17 +290,13 @@ body.dark-theme .notification {
 .notif-close { color: var(--common-text); }
 
 .notif-btn {
-  border-color: rgba(0, 0, 0, 0.1);
+  border-color: var(--common-shadow);
   color: var(--common-text);
-}
-
-body.dark-theme .notif-btn {
-  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .notif-btn:hover {
   background: var(--common-color-1);
-  color: #fff;
+  color: var(--common-content);
   border-color: var(--common-color-1);
 }
 </style>

@@ -134,11 +134,8 @@ body.dark-theme .run-btn {
   border-color: rgba(255, 255, 255, 0.08);
 }
 .run-btn:hover {
-  background: rgba(255, 192, 203, 0.2);
+  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   border-color: var(--common-color-1);
-}
-body.dark-theme .run-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .preview-window {
@@ -148,18 +145,18 @@ body.dark-theme .run-btn:hover {
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 body.dark-theme .preview-window {
-  background: rgba(21, 7, 60, 0.92);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   border-color: rgba(255, 255, 255, 0.08);
 }
 
 .preview-header {
   background: var(--common-color-1);
-  color: #fff;
+  color: var(--common-content);
 }
 
 .preview-close {
   background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: var(--common-content);
 }
 .preview-close:hover { background: rgba(255, 255, 255, 0.35); }
 </style>

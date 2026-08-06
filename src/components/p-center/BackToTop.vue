@@ -85,9 +85,9 @@ onUnmounted(() => {
     visibility: visible;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.10),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+    background: var(--common-color-1);
+    border: 1px solid var(--common-color-1);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 .back-to-top-btn.immersive {
@@ -99,32 +99,14 @@ onUnmounted(() => {
 
 .back-to-top-btn:hover {
     transform: scale(1.1);
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.15),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
 
 .back-to-top-btn img {
     width: 20px;
     height: 20px;
+    filter: brightness(0) invert(1);
 }
-</style>
-
-<style scoped>
-.back-to-top-btn {
-    background-color: rgba(255, 192, 203, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-body.dark-theme .back-to-top-btn {
-    background-color: rgba(58, 170, 231, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.back-to-top-btn img {
-    filter: brightness(0) invert(1) !important;
-}
-
 </style>
 
 <style scoped>

@@ -153,8 +153,116 @@ bool file_exists(const std::string& path)       //取文件地址
 ## map
 > 标准库
 > Cpp的kv库，对标py的字典（不如py灵活）
+> 如果是有序map，则为红黑树，如果是无序map，则为kv表
 ```Cpp
 
-std::map<std::string,int> kv                //创建一个名为kv的map映射表，表k为string类型，v为int类型
+// 有序map
+std::map<std::string,int> kv;                //创建一个名为kv的map映射表，表k为string类型，v为int类型
+
+// 方法
+kv['key'] = 1;                              //k-v的数据类型受到显示
+kv.insert({'key',1});                       //insert方法
+kv.erase('key');                            //erase方法
+kv.size();                                  //size方法
+kv.empty();                                 //empty方法
+kv.clear();                                 //clear方法
+if (m.find("key") != m.end())               //find方法返回迭代器
+    fmt::print("找到了\n");
+// 遍历，begin，end表示有序map的0/end
+for (auto it = m.begin(); it != m.end(); ++it)
+    fmt::print("{}: {}\n", it->first, it->second);    
+
+// 无序map
+std::unordered_map<std::string,int> kv;
+```
+---
+## set
+> 标准库
+> 集合，对标py的set集合,不同点在于Cpp的集合可以修改
+```Cpp
+
+// 有序集合
+std::set<int> set = [1,2,3]             // 不管你放入的元素是什么顺序，自带排序，py的集合也有这种特点
+
+// 方法
+set.insert(<>);
+set.erase(<>);
+set.size();
+set.empty();
+set.clear();
+
+// 无序集合 <unordered_set>库
+std::unordered_set<int> un_set = [1,2,3]        // 无序，哈希表
 
 ```
+---
+## sstream
+> 标准库
+> 用于字符串拼接与转换，iss流出（空格分）。oss流入（转str）
+1. 拼接
+    - 这个用fmt库更优雅，不用这个，标准库：std::ostringstream     OSS,输出字符串流
+```Cpp
+std::ostringstream oss;                             // 创建字符串流
+oss<<'<字符串>'<< <数字> <<'<字符串>';               // 流入字符串
+std::string res = oss.str();                        // 将字符流转换为字符串
+```    
+2. 字符串转数字
+```Cpp
+std::istringstream iss("42 3.14 hello");            // iss流出字符串
+int i;
+double d;
+std::string s;
+
+iss >> i;    // i = 42
+iss >> d;    // d = 3.14
+iss >> s;    // s = "hello"
+```
+3. 数字转字符串
+    - oss
+    - 'std::to_String(<数字>)'
+4. 字符串拆分
+```Cpp
+
+// 1. 符号拆分
+std::string line = "apple,banana,cherry";
+std::string token;
+std::vector<std::string> tokens;
+
+// 按逗号拆分
+std::istringstream iss(line);
+while (std::getline(iss, token, ','))       // 以，为结尾为一行拆分iss流，取token存入数组
+    tokens.push_back(token);    
+
+// 2. 空格拆分
+std::istringstream iss("hello world foo bar");
+std::string word;
+while (iss >> word)
+    fmt::print("{}\n", word);               // iss流遇到空格自带划分
+```
+---
+## vector
+> 标准库
+> 动态数组，对标py的数组
+```Cpp
+
+std::vector<int> list = {1，2，3，4}                                // 一维数组
+std::vector<std::vector<int>> grid(3, std::vector<int>(4, 0));      // 二维数组
+
+// 方法
+list.sort(list.begin(),list.end());     // 从头到尾排序
+list.push_back(<数字>);                 // 尾部压入数字
+list.pop_back(<数字>);                  // 尾部弹出数字
+list.insert(<参数>);                    // 插入数字
+list.erase(<参数>);                     // 删除数字
+list.clear();                           // 清空
+list.size();                            // 查询数组大小
+list.empty();                           // 判断是否为空
+list.capacity();                        // 计算已分配的内存能容纳多少数
+list.reserve(<参数>);                   // 预分配空间
+list.resize(<参数>);                    // 改变内存大小
+list.shrink_to_fit();                   // 释放多余内存
+// 遍历
+for (size_t i = 0; i < v.size(); i++)
+    fmt::print("[{}]={} ", i, v[i]);
+```
+---

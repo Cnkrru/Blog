@@ -38,7 +38,7 @@ const currentPath = computed(() => route.path)
   left: 0;
   right: 0;
   height: 56px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-top: 0.5px solid rgba(0, 0, 0, 0.1);
@@ -48,11 +48,6 @@ const currentPath = computed(() => route.path)
   justify-content: space-around;
   align-items: center;
   padding-bottom: env(safe-area-inset-bottom);
-}
-
-body.dark-theme .mobile-nav {
-  background: rgba(21, 7, 60, 0.85);
-  border-top: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 639px) {
@@ -80,12 +75,8 @@ body.dark-theme .mobile-nav {
 .mn-item.active {
   opacity: 1;
   color: var(--common-color-1);
-  background-color: rgba(255, 192, 203, 0.15);
+  background-color: color-mix(in srgb, var(--common-color-1) 15%, transparent);
   transform: translateY(-2px);
-}
-
-body.dark-theme .mn-item.active {
-  background-color: rgba(58, 170, 231, 0.15);
 }
 
 .mn-icon {

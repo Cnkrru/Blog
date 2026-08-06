@@ -12,7 +12,6 @@ import ArticleNav from '../components/p-center/ArticleNav.vue'
 
 import Comment from '../components/api/Comment.vue'
 import RelatedArticles from '../components/p-center/RelatedArticles.vue'
-import SiteStats from '../components/p-center/SiteStats.vue'
 import ShareButton from '../components/api/ShareButton.vue'
 import Sponsor from '../components/api/Sponsor.vue'
 
@@ -242,7 +241,7 @@ onMounted(() => {
         
         <hr v-if="!loading && !error">
         
-        <SiteStats v-if="!loading && !error" />
+        <!--        <SiteStats v-if="!loading && !error" />-->
     </div>
     <hr>
 </template>

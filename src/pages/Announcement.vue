@@ -187,7 +187,7 @@ onUnmounted(() => {
     justify-content: center;
     width: 30px;
     height: 30px;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--common-shadow);
     border: none;
     cursor: pointer;
     border-radius: 50%;
@@ -195,17 +195,8 @@ onUnmounted(() => {
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-body.dark-theme .modal-close {
-    background: rgba(255, 255, 255, 0.1);
-}
-
 .modal-close:hover {
-    background: rgba(0, 0, 0, 0.1);
     transform: scale(1.1) rotate(90deg);
-}
-
-body.dark-theme .modal-close:hover {
-    background: rgba(255, 255, 255, 0.18);
 }
 
 .modal-body {
@@ -247,22 +238,13 @@ body.dark-theme .modal-close:hover {
 <style scoped>
 /* 颜色样式 */
 .announcement-btn {
-    background: rgba(255, 192, 203, 0.2);
-    border-color: rgba(255, 192, 203, 0.3);
+    background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
+    border-color: color-mix(in srgb, var(--common-color-1) 30%, transparent);
     color: var(--common-text);
 }
 
-body.dark-theme .announcement-btn {
-    background: rgba(58, 170, 231, 0.15);
-    border-color: rgba(58, 170, 231, 0.25);
-}
-
 .announcement-btn:hover {
-    background: rgba(255, 192, 203, 0.35);
-}
-
-body.dark-theme .announcement-btn:hover {
-    background: rgba(58, 170, 231, 0.28);
+    background: color-mix(in srgb, var(--common-color-1) 35%, transparent);
 }
 
 .modal-overlay {
@@ -272,24 +254,15 @@ body.dark-theme .announcement-btn:hover {
 }
 
 .modal-content {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-color: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-}
-
-body.dark-theme .modal-content {
-    background: rgba(30, 15, 60, 0.94);
-    border-color: rgba(255, 255, 255, 0.06);
+    border-color: var(--common-shadow);
+    box-shadow: 0 16px 48px var(--common-shadow);
 }
 
 .modal-header {
-    border-bottom-color: rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .modal-header {
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: var(--common-shadow);
 }
 
 .modal-header h3 {
@@ -301,16 +274,12 @@ body.dark-theme .modal-header {
 }
 
 .modal-footer {
-    border-top-color: rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .modal-footer {
-    border-top-color: rgba(255, 255, 255, 0.08);
+    border-top-color: var(--common-shadow);
 }
 
 .modal-btn {
     background: var(--common-color-1);
-    color: #fff;
+    color: var(--common-content);
 }
 
 .modal-btn:hover {

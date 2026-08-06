@@ -102,7 +102,7 @@ const closePanel = () => {
       <div class="effects-header">
         <h4>音效设置</h4>
         <div class="header-actions">
-          <button class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects">
+          <button class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects">
             {{ effectsEnabled ? '已启用' : '已关闭' }}
           </button>
           <button class="close-btn" @click="closePanel">
@@ -115,7 +115,7 @@ const closePanel = () => {
         <div class="effect-section">
           <div class="visualizer-toggle">
             <span class="effect-label">音频可视化</span>
-            <button class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer">{{ isVizEnabled ? '已开启' : '已关闭' }}</button>
+            <button class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer">{{ isVizEnabled ? '已开启' : '已关闭' }}</button>
           </div>
         </div>
 
@@ -126,7 +126,7 @@ const closePanel = () => {
               v-for="mode in surroundModes"
               :key="mode.value"
               class="chip-btn"
-              :style="currentSurroundMode === mode.value ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}"
+              :style="currentSurroundMode === mode.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeSurroundMode(mode.value)"
             >{{ mode.label }}</button>
           </div>
@@ -139,7 +139,7 @@ const closePanel = () => {
               v-for="preset in eqPresets"
               :key="preset.value"
               class="chip-btn"
-              :style="currentEqPreset === preset.value ? { background: 'var(--common-color-1)', color: '#fff', borderColor: 'var(--common-color-1)' } : {}"
+              :style="currentEqPreset === preset.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeEqPreset(preset.value)"
             >{{ preset.label }}</button>
           </div>
@@ -289,7 +289,7 @@ const closePanel = () => {
 }
 
 body.dark-theme .effects-panel {
-  background: rgba(21, 7, 60, 0.9);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   border-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -317,7 +317,7 @@ body.dark-theme .enable-btn {
 .enable-btn.active {
   background: var(--common-color-1);
   border-color: var(--common-color-1);
-  color: #fff;
+  color: var(--common-content);
 }
 
 .close-btn {
@@ -354,7 +354,7 @@ body.dark-theme .toggle-btn {
 .toggle-btn.active {
   background: var(--common-color-1);
   border-color: var(--common-color-1);
-  color: #fff;
+  color: var(--common-content);
 }
 
 .chip-btn {
@@ -381,6 +381,6 @@ body.dark-theme .chip-btn:hover {
 .chip-btn.active {
   background: var(--common-color-1);
   border-color: var(--common-color-1);
-  color: #fff;
+  color: var(--common-content);
 }
 </style>

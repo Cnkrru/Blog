@@ -43,14 +43,9 @@ onMounted(async () => {
 <!-- 颜色样式 -->
 <style scoped>
 .article-count-btn {
-  background: rgba(255, 192, 203, 0.2);
+  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   color: var(--common-text);
-  border: 1px solid rgba(255, 192, 203, 0.3);
-}
-
-body.dark-theme .article-count-btn {
-  background: rgba(58, 170, 231, 0.15);
-  border: 1px solid rgba(58, 170, 231, 0.25);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 .count-icon {

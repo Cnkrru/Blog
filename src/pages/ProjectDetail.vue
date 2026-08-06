@@ -12,7 +12,6 @@ import PostMenu from '../components/p-center/PostMenu.vue'
 
 import Comment from '../components/api/Comment.vue'
 import ArticleNav from '../components/p-center/ArticleNav.vue'
-import SiteStats from '../components/p-center/SiteStats.vue'
 
 const route = useRoute()
 const projectId = computed(() => route.params.id)
@@ -182,7 +181,7 @@ const handleError = (err) => {
         
         <hr v-if="!loading && !error">
         
-        <SiteStats v-if="!loading && !error" />
+        <!--        <SiteStats v-if="!loading && !error" />-->
     </div>
     <hr>
 </template>

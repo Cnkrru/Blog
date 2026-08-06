@@ -59,14 +59,9 @@ import Copyright from './p-footer/CopyRight.vue'
 
 <style scoped>
 .footer-element-card {
-    background: rgba(255, 192, 203, 0.15);
-    border-color: rgba(255, 192, 203, 0.25);
+    background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
+    border-color: color-mix(in srgb, var(--common-color-1) 25%, transparent);
     color: var(--common-text);
-}
-
-body.dark-theme .footer-element-card {
-    background: rgba(58, 170, 231, 0.1);
-    border-color: rgba(58, 170, 231, 0.2);
 }
 </style>
 

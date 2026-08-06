@@ -213,15 +213,10 @@ body.dark-theme :deep(.button-style) {
     border: 1px solid rgba(245, 241, 232, 0.14);
 }
 
-/* 樱粉风：沿用原粉色/蓝色 */
+/* 樱粉风：通过 CSS 变量自适应亮/暗主题 */
 [data-style="sakura"] .button-style {
-    background-color: rgba(255, 192, 203, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-[data-style="sakura"] body.dark-theme .button-style {
-    background-color: rgba(58, 170, 231, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--common-color-1);
+    border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 /* 按钮图标：亮色黑色，暗色白色，保证对比清晰 */

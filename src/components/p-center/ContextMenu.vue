@@ -120,11 +120,7 @@ onUnmounted(() => {
 }
 
 .menu-item:hover {
-  background: rgba(255, 192, 203, 0.12);
-}
-
-body.dark-theme .menu-item:hover {
-  background: rgba(58, 170, 231, 0.12);
+  background: color-mix(in srgb, var(--common-color-1) 12%, transparent);
 }
 
 .menu-label {
@@ -134,13 +130,12 @@ body.dark-theme .menu-item:hover {
 
 <style scoped>
 .anime-context-menu {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   border-color: rgba(0, 0, 0, 0.06);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 body.dark-theme .anime-context-menu {
-  background: rgba(21, 7, 60, 0.88);
   border-color: rgba(255, 255, 255, 0.06);
 }
 

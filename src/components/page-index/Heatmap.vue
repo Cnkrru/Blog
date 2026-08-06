@@ -11,20 +11,62 @@
     </div>
 
     <div class="heatmap-header">
-      <div class="year-selector">
-        <select v-model="selectedYear" @change="updateHeatmapData" :disabled="isLoading">
-          <option v-for="year in years" :key="year" :value="year">
-            {{ year }}年
-          </option>
-        </select>
+      <!-- 年份下拉 -->
+      <div class="custom-select" ref="yearSelectRef">
+        <button
+          class="select-trigger"
+          :class="{ active: yearDropdownOpen }"
+          @click="toggleYearDropdown"
+          :disabled="isLoading"
+        >
+          <span class="select-value">{{ selectedYear }}年</span>
+          <span class="select-arrow" :class="{ rotated: yearDropdownOpen }"></span>
+        </button>
+        <Teleport to="body">
+          <transition name="dropdown">
+            <ul v-if="yearDropdownOpen" class="dropdown-menu" :style="yearMenuStyle" @click.stop>
+              <li
+                v-for="year in years"
+                :key="year"
+                class="dropdown-item"
+                :class="{ active: selectedYear === year }"
+                @click="selectYear(year)"
+              >
+                {{ year }}年
+              </li>
+            </ul>
+          </transition>
+        </Teleport>
       </div>
+
       <h3 class="heatmap-title">文章发布热力图</h3>
-      <div class="month-selector">
-        <select v-model="selectedMonth" @change="onMonthChange" :disabled="isLoading">
-          <option v-for="(month, index) in months" :key="index" :value="index + 1">
-            {{ month }}
-          </option>
-        </select>
+
+      <!-- 月份下拉 -->
+      <div class="custom-select" ref="monthSelectRef">
+        <button
+          class="select-trigger"
+          :class="{ active: monthDropdownOpen }"
+          @click="toggleMonthDropdown"
+          :disabled="isLoading"
+        >
+          <span class="select-value">{{ months[selectedMonth - 1] }}</span>
+          <span class="select-arrow" :class="{ rotated: monthDropdownOpen }"></span>
+        </button>
+        <Teleport to="body">
+          <transition name="dropdown">
+            <ul v-if="monthDropdownOpen" class="dropdown-menu" :style="monthMenuStyle" @click.stop>
+              <li
+                v-for="(month, index) in months"
+                :key="index"
+                class="dropdown-item"
+                :class="{ active: selectedMonth === index + 1 }"
+                @click="selectMonth(index + 1)"
+              >
+                {{ month }}
+              </li>
+            </ul>
+          </transition>
+        </Teleport>
       </div>
     </div>
 
@@ -35,7 +77,7 @@
           :key="index"
           class="heatmap-cell"
           :class="[
-            day.hasArticle ? (isDarkMode ? 'heatmap-has-article-dark' : 'heatmap-has-article') : (isDarkMode ? 'heatmap-no-article-dark' : 'heatmap-no-article')
+            day.hasArticle ? 'heatmap-has-article' : 'heatmap-no-article'
           ]"
           :title="`${day.date}: ${day.hasArticle ? '有文章' : '无文章'}`"
         ></div>
@@ -48,8 +90,8 @@
     <div class="heatmap-legend">
       <span class="legend-text">无文章</span>
       <div class="legend-cells">
-        <div class="legend-cell" :class="isDarkMode ? 'no-article-dark' : 'no-article'"></div>
-        <div class="legend-cell" :class="isDarkMode ? 'has-article-dark' : 'has-article'"></div>
+        <div class="legend-cell no-article"></div>
+        <div class="legend-cell has-article"></div>
       </div>
       <span class="legend-text">有文章</span>
     </div>
@@ -57,11 +99,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useThemeStore } from '../../stores'
 
 const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDark)
 
 const selectedYear = ref(new Date().getFullYear())
 const selectedMonth = ref(new Date().getMonth() + 1)
@@ -76,6 +117,86 @@ const months = ref([
 ])
 const yearData = ref([])
 const currentMonthData = ref([])
+
+// 自定义下拉菜单状态
+const yearDropdownOpen = ref(false)
+const monthDropdownOpen = ref(false)
+const yearSelectRef = ref<HTMLElement | null>(null)
+const monthSelectRef = ref<HTMLElement | null>(null)
+const yearMenuStyle = ref<Record<string, string>>({})
+const monthMenuStyle = ref<Record<string, string>>({})
+
+const positionMenu = async (selectRef: typeof yearSelectRef, menuStyle: typeof yearMenuStyle) => {
+  await nextTick()
+  const el = selectRef.value
+  if (el) {
+    const rect = el.getBoundingClientRect()
+    menuStyle.value = {
+      minWidth: `${rect.width}px`,
+      top: `${rect.bottom + 4}px`,
+      left: `${rect.left}px`,
+      position: 'fixed',
+      zIndex: '10001'
+    }
+  }
+}
+
+const toggleYearDropdown = async () => {
+  yearDropdownOpen.value = !yearDropdownOpen.value
+  if (yearDropdownOpen.value) {
+    monthDropdownOpen.value = false
+    await positionMenu(yearSelectRef, yearMenuStyle)
+  }
+}
+
+const toggleMonthDropdown = async () => {
+  monthDropdownOpen.value = !monthDropdownOpen.value
+  if (monthDropdownOpen.value) {
+    yearDropdownOpen.value = false
+    await positionMenu(monthSelectRef, monthMenuStyle)
+  }
+}
+
+const selectYear = async (year: number) => {
+  selectedYear.value = year
+  yearDropdownOpen.value = false
+  await updateHeatmapData()
+}
+
+const selectMonth = (month: number) => {
+  selectedMonth.value = month
+  monthDropdownOpen.value = false
+  onMonthChange()
+}
+
+const closeDropdowns = () => {
+  yearDropdownOpen.value = false
+  monthDropdownOpen.value = false
+}
+
+const handleClickOutside = (e: MouseEvent) => {
+  if (!yearSelectRef.value?.contains(e.target as Node) &&
+      !monthSelectRef.value?.contains(e.target as Node)) {
+    closeDropdowns()
+  }
+}
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeDropdowns()
+}
+
+onMounted(async () => {
+  await updateHeatmapData()
+  document.addEventListener('click', handleClickOutside)
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('keydown', handleKeydown)
+})
+
+// === 数据逻辑 ===
 
 const fetchArticleData = async () => {
   isLoading.value = true
@@ -139,13 +260,10 @@ const onMonthChange = () => {
     .filter(item => item.month === selectedMonth.value)
     .sort((a, b) => new Date(a.date) - new Date(b.date))
 }
-
-onMounted(async () => {
-  await updateHeatmapData()
-})
 </script>
 
 <style scoped>
+/* ============================== 容器 ============================== */
 .heatmap-wrapper {
   margin: 0;
   display: flex;
@@ -154,8 +272,13 @@ onMounted(async () => {
   align-items: center;
   position: relative;
   min-height: 200px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 
+/* ============================== Loading ============================== */
 .loading-overlay {
   position: absolute;
   inset: 0;
@@ -170,15 +293,11 @@ onMounted(async () => {
 .loading-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid rgba(0,0,0,0.1);
+  border: 3px solid var(--common-shadow);
   border-top-color: var(--common-color-1);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 10px;
-}
-
-body.dark-theme .loading-spinner {
-  border-color: rgba(255,255,255,0.1);
 }
 
 .loading-text {
@@ -187,12 +306,13 @@ body.dark-theme .loading-spinner {
   opacity: 0.5;
 }
 
+/* ============================== Error ============================== */
 .error-message {
   text-align: center;
   padding: 16px;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: rgba(255,255,255,0.3);
+  border: 1px solid var(--common-shadow);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.3));
 }
 
 .error-message p {
@@ -205,10 +325,14 @@ body.dark-theme .loading-spinner {
   padding: 6px 16px;
   border-radius: 16px;
   background: var(--common-color-1);
-  color: #fff;
+  color: var(--common-content);
   border: none;
   cursor: pointer;
   font-size: 13px;
+}
+
+.retry-btn:hover {
+  filter: brightness(1.1);
 }
 
 .no-data {
@@ -219,6 +343,7 @@ body.dark-theme .loading-spinner {
   opacity: 0.4;
 }
 
+/* ============================== Header ============================== */
 .heatmap-header {
   display: flex;
   justify-content: center;
@@ -235,48 +360,119 @@ body.dark-theme .loading-spinner {
   opacity: 0.6;
 }
 
-.year-selector,
-.month-selector {
+/* ============================== 自定义下拉 ============================== */
+.custom-select {
   position: relative;
   flex-shrink: 0;
 }
 
-.year-selector select,
-.month-selector select {
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 6px 28px 6px 12px;
-  border: 1px solid rgba(0,0,0,0.08);
+.select-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: 20px;
   font-size: 13px;
-  cursor: pointer;
-  background: rgba(255,255,255,0.45) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;
-  background-size: 14px;
-  color: var(--common-text);
-  outline: none;
   font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--common-text);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
+  border: 1px solid var(--common-shadow);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-body.dark-theme .year-selector select,
-body.dark-theme .month-selector select {
-  background-color: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.1);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-}
-
-.year-selector select:hover,
-.month-selector select:hover {
+.select-trigger:hover:not(:disabled) {
   border-color: var(--common-color-1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 25%, transparent);
 }
 
-select:disabled {
+.select-trigger.active {
+  border-color: var(--common-color-1);
+  background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
+}
+
+.select-trigger:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
+.select-value {
+  line-height: 1;
+}
+
+.select-arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--common-text);
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+
+.select-arrow.rotated {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* 下拉菜单面板 */
+.dropdown-menu {
+  position: fixed;
+  min-width: 120px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  border-radius: 12px;
+  border: 1px solid var(--common-shadow);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 8px 24px var(--common-shadow);
+  z-index: 10001;
+}
+
+.dropdown-item {
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--common-text);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  font-weight: 500;
+}
+
+.dropdown-item:hover {
+  background: color-mix(in srgb, var(--common-color-1) 12%, transparent);
+}
+
+.dropdown-item.active {
+  background: var(--common-color-1);
+  color: var(--common-content);
+  font-weight: 600;
+}
+
+/* 下拉动画 */
+.dropdown-enter-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dropdown-leave-active {
+  transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* ============================== 热力图网格 ============================== */
 .heatmap-content {
   width: 100%;
   display: flex;
@@ -305,15 +501,9 @@ select:disabled {
   z-index: 1;
 }
 
-.heatmap-no-article,
-.heatmap-no-article-dark {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .heatmap-no-article-dark {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.04);
+.heatmap-no-article {
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
+  border-color: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
 .heatmap-has-article {
@@ -325,15 +515,7 @@ body.dark-theme .heatmap-no-article-dark {
   opacity: 0.85;
 }
 
-body.dark-theme .heatmap-has-article-dark {
-  background: var(--common-color-1);
-  opacity: 0.5;
-}
-
-body.dark-theme .heatmap-has-article-dark:hover {
-  opacity: 0.85;
-}
-
+/* ============================== 图例 ============================== */
 .heatmap-legend {
   display: flex;
   align-items: center;
@@ -355,13 +537,8 @@ body.dark-theme .heatmap-has-article-dark:hover {
   border-radius: 4px;
 }
 
-.legend-cell.no-article,
-.legend-cell.no-article-dark {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .legend-cell.no-article-dark {
-  background: rgba(255, 255, 255, 0.06);
+.legend-cell.no-article {
+  background: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .legend-cell.has-article {
@@ -369,24 +546,11 @@ body.dark-theme .legend-cell.no-article-dark {
   opacity: 0.55;
 }
 
-body.dark-theme .legend-cell.has-article-dark {
-  background: var(--common-color-1);
-  opacity: 0.5;
-}
-
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-</style>
 
-<style scoped>
-.heatmap-wrapper {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-}
-
+/* ============================== 响应式 ============================== */
 @media (max-width: 640px) {
   .heatmap-header {
     flex-wrap: wrap;
@@ -395,9 +559,11 @@ body.dark-theme .legend-cell.has-article-dark {
     gap: 4px;
     max-width: 100%;
   }
-  .year-selector select,
-  .month-selector select {
+  .select-trigger {
     padding: 4px 10px;
+    font-size: 12px;
+  }
+  .dropdown-menu {
     font-size: 12px;
   }
 }

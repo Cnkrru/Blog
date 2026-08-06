@@ -98,14 +98,13 @@ onMounted(() => {
         <!-- 搜索和排序 -->
         <div class="post-menu-controls">
           <div class="search-box">
-            <input 
-              type="text" 
+            <input
+              type="text"
               v-model="searchKeyword"
-              @input="handleSearch"
               placeholder="搜索文章..."
               class="menu-search-input"
             />
-            <button v-if="searchKeyword" @click="clearSearch" class="clear-search-btn">
+            <button v-if="searchKeyword" @click="clearSearch" class="menu-clear-search-btn">
               ×
             </button>
           </div>
@@ -147,6 +146,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* ============================== 卡片容器 ============================== */
 .post-menu-card {
     position: fixed;
     top: 50%;
@@ -159,7 +159,11 @@ onMounted(() => {
     z-index: 999;
     overflow: hidden;
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
+    background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--common-shadow);
+    box-shadow: -8px 0 40px var(--common-shadow);
 }
 
 .post-menu-card.active {
@@ -168,27 +172,24 @@ onMounted(() => {
 }
 
 @keyframes slideIn {
-    from {
-        transform: translate(100%, -50%);
-        opacity: 0;
-    }
-    to {
-        transform: translate(0, -50%);
-        opacity: 1;
-    }
+    from { transform: translate(100%, -50%); opacity: 0; }
+    to   { transform: translate(0, -50%);     opacity: 1; }
 }
 
+/* ============================== 卡片头部 ============================== */
 .post-menu-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
+    border-bottom: 1px solid var(--common-shadow);
 }
 
 .post-menu-card-header h3 {
     margin: 0;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
+    color: var(--common-text);
 }
 
 .post-menu-close-btn {
@@ -197,23 +198,35 @@ onMounted(() => {
     justify-content: center;
     width: 28px;
     height: 28px;
-    background: none;
+    background: var(--common-shadow);
     border: none;
     cursor: pointer;
     border-radius: 50%;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
+.post-menu-close-btn:hover {
+    transform: rotate(90deg);
+}
+
+.post-menu-close-btn img {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+/* ============================== 卡片内容 ============================== */
 .post-menu-card-content {
     padding: 15px 20px;
     max-height: calc(70vh - 60px);
     overflow-y: auto;
+    color: var(--common-text);
 }
 
 .post-menu-controls {
     margin-bottom: 16px;
 }
 
+/* 搜索框 */
 .search-box {
     position: relative;
     margin-bottom: 12px;
@@ -222,14 +235,20 @@ onMounted(() => {
 .menu-search-input {
     width: 100%;
     padding: 8px 32px 8px 12px;
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 14px;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.15));
+    color: var(--common-text);
+    border: 1px solid var(--common-shadow);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+.menu-search-input::placeholder { color: var(--common-text); opacity: 0.4; }
 
 .menu-search-input:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    border-color: var(--common-color-1);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--common-color-1) 20%, transparent);
 }
 
 .menu-clear-search-btn {
@@ -247,9 +266,14 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
+    color: var(--common-text);
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
 }
 
+.menu-clear-search-btn:hover { opacity: 1; }
+
+/* 排序按钮 */
 .sort-controls {
     display: flex;
     gap: 8px;
@@ -258,12 +282,27 @@ onMounted(() => {
 .sort-btn {
     flex: 1;
     padding: 6px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 12px;
     cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.15));
+    color: var(--common-text);
+    border: 1px solid var(--common-shadow);
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
+.sort-btn:hover {
+    border-color: var(--common-color-1);
+    color: var(--common-color-1);
+}
+
+.sort-btn.active {
+    background: var(--common-color-1);
+    color: var(--common-content);
+    border-color: var(--common-color-1);
+}
+
+/* ============================== 文章列表 ============================== */
 .post-list {
     list-style: none;
     padding: 0;
@@ -273,34 +312,31 @@ onMounted(() => {
 .post-list-item {
     padding: 8px 12px;
     cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
     display: flex;
     align-items: center;
-    border-radius: 6px;
-    margin-bottom: 8px;
+    border-radius: 8px;
+    margin-bottom: 4px;
     animation: fadeIn 0.3s ease;
+    transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .post-list-item:hover {
     transform: translateX(-4px);
+    background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
 .post-id {
-    font-weight: bold;
+    font-weight: 600;
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 13px;
     min-width: 30px;
+    color: var(--common-color-1);
+    opacity: 0.7;
 }
 
 .post-title {
@@ -310,14 +346,18 @@ onMounted(() => {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: var(--common-text);
 }
 
 .post-date {
-    font-size: 12px;
+    font-size: 11px;
     margin-left: 10px;
     white-space: nowrap;
+    color: var(--common-text);
+    opacity: 0.4;
 }
 
+/* ============================== 菜单按钮 ============================== */
 .post-menu-btn-container {
     display: flex;
     align-items: center;
@@ -327,113 +367,23 @@ onMounted(() => {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1px solid;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    background: rgba(255, 192, 203, 0.85);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-body.dark-theme .post-menu-btn {
-    background: rgba(58, 170, 231, 0.85);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: var(--common-color-1);
+    border: 1px solid var(--common-color-1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .post-menu-btn img {
-    filter: brightness(0) invert(1) !important;
+    filter: brightness(0) invert(1);
 }
 
 .post-menu-btn:hover {
     transform: scale(1.08);
-}
-
-.post-menu-btn span {
-    display: none;
-}
-
-</style>
-
-<style scoped>
-.post-menu-card {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .post-menu-card {
-    background: rgba(21, 7, 60, 0.88);
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
-.post-menu-card-header h3 {
-    color: var(--common-text);
-}
-
-.post-menu-card-content {
-    color: var(--common-text);
-}
-
-.menu-search-input {
-    background: rgba(255, 255, 255, 0.5);
-    color: var(--common-text);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 10px;
-}
-
-body.dark-theme .menu-search-input {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
-.menu-clear-search-btn {
-    color: var(--common-text);
-}
-
-.sort-btn {
-    background: rgba(255, 255, 255, 0.5);
-    color: var(--common-text);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-body.dark-theme .sort-btn {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
-.sort-btn.active {
-    background: var(--common-color-1);
-    color: #fff;
-    border-color: var(--common-color-1);
-}
-
-.post-list-item:hover {
-    background: rgba(255, 192, 203, 0.1);
-}
-
-body.dark-theme .post-list-item:hover {
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.post-id { color: var(--common-text); }
-.post-title { color: var(--common-text); }
-.post-date {
-  color: var(--common-text);
-   opacity: 0.5;
-   
-}
-
-.post-menu-btn {
-    background-color: var(--common-color-1);
-    color: var(--common-content);
-    border: 1px solid var(--common-color-1);
-}
-
-.post-menu-close-btn svg {
-    fill: var(--common-text);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--common-color-1) 35%, transparent);
 }
 </style>
 
@@ -443,137 +393,23 @@ body.dark-theme .post-list-item:hover {
         width: 240px;
         max-height: 60vh;
     }
-    
-    .post-menu-card-header {
-        padding: 12px 16px;
-    }
-    
-    .post-menu-card-header h3 {
-        font-size: 14px;
-    }
-    
+    .post-menu-card-header { padding: 12px 16px; }
+    .post-menu-card-header h3 { font-size: 14px; }
     .post-menu-card-content {
         padding: 12px 16px;
         max-height: calc(60vh - 50px);
     }
-    
-    .post-list-item {
-        padding: 6px 10px;
-    }
-    
-    .post-id {
-        font-size: 13px;
-        min-width: 25px;
-    }
-    
-    .post-title {
-        font-size: 13px;
-    }
-    
-    .post-date {
-        font-size: 11px;
-    }
-    
-    .post-menu-btn {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-    
-    .post-menu-btn svg {
-        width: 16px;
-        height: 16px;
-    }
-}
-
-@media (max-width: 640px) {
-    .post-menu-card {
-        width: 260px;
-        max-height: 65vh;
-    }
-    
-    .post-menu-card-header {
-        padding: 13px 18px;
-    }
-    
-    .post-menu-card-header h3 {
-        font-size: 15px;
-    }
-    
-    .post-menu-card-content {
-        padding: 13px 18px;
-        max-height: calc(65vh - 55px);
-    }
-    
-    .post-list-item {
-        padding: 7px 11px;
-    }
-    
-    .post-id {
-        font-size: 13.5px;
-        min-width: 28px;
-    }
-    
-    .post-title {
-        font-size: 13.5px;
-    }
-    
-    .post-date {
-        font-size: 11.5px;
-    }
+    .post-list-item { padding: 6px 10px; }
+    .post-id { font-size: 12px; min-width: 25px; }
+    .post-title { font-size: 13px; }
+    .post-date { font-size: 10px; }
 }
 
 @media (max-width: 768px) {
-    .post-menu-card {
-        width: 300px;
-        max-height: 70vh;
-    }
-    
-    .post-menu-card-header {
-        padding: 15px 20px;
-    }
-    
-    .post-menu-card-header h3 {
-        font-size: 16px;
-    }
-    
-    .post-menu-card-content {
-        padding: 15px 20px;
-        max-height: calc(70vh - 60px);
-    }
-    
-    .post-list-item {
-        padding: 8px 12px;
-    }
-    
-    .post-id {
-        font-size: 14px;
-        min-width: 30px;
-    }
-    
-    .post-title {
-        font-size: 14px;
-    }
-    
-    .post-date {
-        font-size: 12px;
-    }
+    .post-menu-card { width: 260px; }
 }
 
 @media (max-width: 1024px) {
-    .post-menu-card {
-        width: 320px;
-    }
-}
-
-@media (max-width: 1280px) {
-    .post-menu-card {
-        width: 340px;
-    }
-}
-
-@media (max-width: 1536px) {
-    .post-menu-card {
-        width: 360px;
-    }
+    .post-menu-card { width: 280px; }
 }
 </style>

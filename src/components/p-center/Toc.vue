@@ -231,7 +231,9 @@ onUnmounted(() => {
       <h3>文章目录</h3>
       <div class="header-actions">
         <span v-if="toc.length" class="toc-count">{{ toc.length }} 项</span>
-        <button class="toc-close-btn" @click="toggleToc" title="关闭">x</button>
+        <button class="toc-close-btn" @click="toggleToc" title="关闭">
+          <img src="../../assets/imgs/svg/close.svg" alt="" width="16" height="16">
+        </button>
       </div>
     </div>
     <div class="toc-toolbar">
@@ -307,6 +309,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* ============================== 卡片容器 ============================== */
 .toc-card {
   position: fixed;
   top: 50%;
@@ -318,32 +321,24 @@ onUnmounted(() => {
   z-index: 999;
   overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  background: rgba(255, 255, 255, 0.88);
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
-}
-
-body.dark-theme .toc-card {
-  background: rgba(21, 7, 60, 0.88);
-  border-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--common-shadow);
+  box-shadow: -8px 0 40px var(--common-shadow);
 }
 
 .toc-card.active {
   transform: translate(0, -50%);
 }
 
+/* ============================== 卡片头部 ============================== */
 .toc-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .toc-card-header {
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--common-shadow);
 }
 
 .toc-card-header h3 {
@@ -354,9 +349,9 @@ body.dark-theme .toc-card-header {
 }
 
 .header-actions {
-  display: flex; align-items: center;
-   gap: 8px;
-   
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .toc-count {
@@ -365,61 +360,56 @@ body.dark-theme .toc-card-header {
   border-radius: 10px;
   color: var(--common-text);
   opacity: 0.5;
-  background: rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .toc-count {
-  background: rgba(255, 255, 255, 0.06);
+  background: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .toc-close-btn {
   width: 26px; height: 26px;
   border-radius: 50%;
   border: none;
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--common-text);
+  background: var(--common-shadow);
   cursor: pointer;
-  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-body.dark-theme .toc-close-btn { background: rgba(255, 255, 255, 0.08); }
+.toc-close-btn img {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
 
 .toc-close-btn:hover {
-  background: rgba(0, 0, 0, 0.1);
   transform: rotate(90deg);
 }
 
-body.dark-theme .toc-close-btn:hover { background: rgba(255, 255, 255, 0.15); }
-
+/* ============================== 工具栏 ============================== */
 .toc-toolbar {
   display: flex;
   justify-content: flex-end;
   padding: 4px 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--common-shadow);
 }
-
-body.dark-theme .toc-toolbar { border-bottom-color: rgba(255, 255, 255, 0.06); }
 
 .toc-tb-btn {
   font-size: 11px;
   padding: 3px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--common-shadow);
   background: transparent;
   color: var(--common-text);
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-body.dark-theme .toc-tb-btn { border-color: rgba(255, 255, 255, 0.1); }
+.toc-tb-btn:hover {
+  background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
+  border-color: var(--common-color-1);
+  color: var(--common-color-1);
+}
 
-.toc-tb-btn:hover { background: rgba(0, 0, 0, 0.06); }
-body.dark-theme .toc-tb-btn:hover { background: rgba(255, 255, 255, 0.08); }
-
+/* ============================== 目录内容 ============================== */
 .toc-card-content {
   padding: 6px 8px;
   max-height: calc(70vh - 90px);
@@ -427,10 +417,11 @@ body.dark-theme .toc-tb-btn:hover { background: rgba(255, 255, 255, 0.08); }
 }
 
 .toc-list {
-  list-style: none; padding: 0;
-   margin: 0;
-   
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
+
 .toc-children { margin: 0; }
 
 .toc-item {
@@ -454,27 +445,20 @@ body.dark-theme .toc-tb-btn:hover { background: rgba(255, 255, 255, 0.08); }
 }
 
 .toc-link:hover {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .toc-link:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
 .toc-item.active > .toc-link {
-  background: rgba(255, 192, 203, 0.15);
+  background: color-mix(in srgb, var(--common-color-1) 14%, transparent);
   color: var(--common-color-1);
   font-weight: 600;
-}
-
-body.dark-theme .toc-item.active > .toc-link {
-  background: rgba(58, 170, 231, 0.15);
 }
 
 .lv-1 > .toc-link { padding-left: 12px; }
 .lv-2 > .toc-link { padding-left: 20px; }
 .lv-3 > .toc-link { padding-left: 28px; }
 
+/* 箭头 */
 .toc-arrow {
   flex-shrink: 0;
   display: flex;
@@ -482,15 +466,15 @@ body.dark-theme .toc-item.active > .toc-link {
   justify-content: center;
   width: 16px; height: 16px;
   cursor: pointer;
-  opacity: 0.35;
+  opacity: 0.4;
   transition: opacity 0.15s;
 }
 
-.toc-arrow:hover { opacity: 0.7; }
+.toc-arrow:hover { opacity: 0.8; }
 
 .toc-arrow-icon {
   transition: transform 0.2s ease;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .toc-arrow-icon.rot {
@@ -499,10 +483,10 @@ body.dark-theme .toc-item.active > .toc-link {
 
 .toc-arrow-blank {
   width: 16px;
-   flex-shrink: 0;
-   
+  flex-shrink: 0;
 }
 
+/* 编号 */
 .toc-num {
   font-size: 10px;
   min-width: 20px;
@@ -513,15 +497,13 @@ body.dark-theme .toc-item.active > .toc-link {
 }
 
 .toc-item.active .toc-num {
-  opacity: 0.7;
-   color: var(--common-color-1);
-   
+  opacity: 0.8;
+  color: var(--common-color-1);
 }
 
 .toc-text {
   flex: 1;
-   word-break: break-word;
-   
+  word-break: break-word;
 }
 
 .toc-empty {
@@ -534,15 +516,13 @@ body.dark-theme .toc-item.active > .toc-link {
 
 @media (max-width: 768px) {
   .toc-card {
-  width: 260px;
-   max-height: 60vh;
-   
-}
+    width: 260px;
+    max-height: 60vh;
+  }
   .toc-card-content { max-height: calc(60vh - 80px); }
   .toc-link {
-  font-size: 12px;
-   padding: 5px 8px;
-   
-}
+    font-size: 12px;
+    padding: 5px 8px;
+  }
 }
 </style>

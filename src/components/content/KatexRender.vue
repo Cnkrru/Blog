@@ -292,12 +292,7 @@ onUnmounted(() => {
 }
 
 .loading-spinner {
-  border: 3px solid rgba(255, 192, 203, 0.3);
-  border-top: 3px solid var(--common-color-1);
-}
-
-.math-container-dark .loading-spinner {
-  border: 3px solid rgba(58, 170, 231, 0.3);
+  border: 3px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
   border-top: 3px solid var(--common-color-1);
 }
 

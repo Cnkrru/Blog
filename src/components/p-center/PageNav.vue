@@ -295,46 +295,28 @@ const closeDropdown = () => {
 
 <style scoped>
 .nav-btn {
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 192, 203, 0.85);
-  color: #333;
-}
-
-body.dark-theme .nav-btn {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(58, 170, 231, 0.85);
-  color: #fff;
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
 .page-btn {
-  background: rgba(255, 192, 203, 0.25);
+  background: color-mix(in srgb, var(--common-color-1) 25%, transparent);
   color: var(--common-text);
-  border: 1px solid rgba(255, 192, 203, 0.3);
-}
-
-body.dark-theme .page-btn {
-  background: rgba(58, 170, 231, 0.15);
-  border: 1px solid rgba(58, 170, 231, 0.2);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 .page-btn.active {
-  background: rgba(255, 192, 203, 0.85);
-  color: #333;
-  border-color: rgba(255, 192, 203, 0.85);
-}
-
-body.dark-theme .page-btn.active {
-  background: rgba(58, 170, 231, 0.85);
-  color: #fff;
-  border-color: rgba(58, 170, 231, 0.85);
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border-color: var(--common-color-1);
 }
 
 .dropdown-card {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
 }
 
 body.dark-theme .dropdown-card {
-  background: rgba(21, 7, 60, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -348,11 +330,7 @@ body.dark-theme .dropdown-card {
 }
 
 .dropdown-item:hover {
-  background-color: rgba(255, 192, 203, 0.1);
-}
-
-body.dark-theme .dropdown-item:hover {
-  background-color: rgba(58, 170, 231, 0.1);
+  background-color: color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
 .item-number {

@@ -83,21 +83,14 @@ onMounted(() => {})
   font-weight: 500;
   cursor: pointer;
   transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background-color 0.2s ease;
-  background: rgba(255, 192, 203, 0.2);
-  border-color: rgba(255, 192, 203, 0.35);
+  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
+  border-color: color-mix(in srgb, var(--common-color-1) 35%, transparent);
   color: var(--common-text);
-}
-body.dark-theme .egg-btn {
-  background: rgba(58, 170, 231, 0.15);
-  border-color: rgba(58, 170, 231, 0.25);
 }
 .egg-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  background: rgba(255, 192, 203, 0.4);
+  background: color-mix(in srgb, var(--common-color-1) 40%, transparent);
   box-shadow: 0 4px 12px var(--common-shadow);
-}
-body.dark-theme .egg-btn:hover:not(:disabled) {
-  background: rgba(58, 170, 231, 0.3);
 }
 .egg-btn:disabled {
   opacity: 0.5;
@@ -127,14 +120,14 @@ body.dark-theme .egg-btn:hover:not(:disabled) {
   color: var(--common-color-1);
   transform: translate(-50%, -50%);
   transition: top 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-  text-shadow: 0 0 40px rgba(255, 192, 203, 0.4);
+  text-shadow: 0 0 40px color-mix(in srgb, var(--common-color-1) 40%, transparent);
   will-change: top;
 }
 .egg-final {
   font-size: clamp(40px, 8vw, 100px);
   font-weight: 800;
   color: var(--common-color-1);
-  text-shadow: 0 0 60px rgba(255, 192, 203, 0.5);
+  text-shadow: 0 0 60px color-mix(in srgb, var(--common-color-1) 50%, transparent);
   animation: egg-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);
 }
 @keyframes egg-pop {
