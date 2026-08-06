@@ -21,7 +21,7 @@ export const useAnnouncementStore = defineStore('announcement', () => {
 
   const loadAnnouncement = async (): Promise<void> => {
     try {
-      const mdModule = await import('../pages/announcement/index.md?raw')
+      const mdModule = await import('../../content/announcement/index.md?raw')
       announcementContent.value = mdModule.default
       lastUpdated.value = new Date()
       loading.value = true

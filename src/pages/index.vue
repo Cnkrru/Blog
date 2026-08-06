@@ -10,6 +10,11 @@ import NetworkParticles from '../components/page-index/NetworkParticles.vue'
   <div class="hero-container">
     <NetworkParticles />
 
+    <header class="index-header">
+      <IndexLogo />
+      <IndexNavbar />
+    </header>
+
     <HeroContent />
 
     <ScrollIndicator />
@@ -24,4 +29,22 @@ import NetworkParticles from '../components/page-index/NetworkParticles.vue'
   overflow: hidden;
 }
 
+.index-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .index-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
 </style>

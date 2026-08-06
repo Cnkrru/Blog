@@ -15,8 +15,8 @@ export default function copyVercelConfigPlugin(): Plugin {
   return {
     name: 'copy-vercel-config',
     buildEnd() {
-      const srcFile = resolve(__dirname, '../../../vercel.json')
-      const destFile = resolve(__dirname, '../../../dist/vercel.json')
+      const srcFile = resolve(__dirname, '../../vercel.json')
+      const destFile = resolve(__dirname, '../../dist/vercel.json')
 
       try {
         copyFileSync(srcFile, destFile)

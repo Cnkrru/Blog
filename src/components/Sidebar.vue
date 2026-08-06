@@ -2,6 +2,7 @@
 import Avatar from './p-sidebar/Avatar.vue'
 import WelcomeSaying from './p-sidebar/WelcomeSaying.vue'
 import PageLinks from './p-sidebar/PageLinks.vue'
+import BusuanziStats from './p-sidebar/BusuanziStats.vue'
 import Weather from './api/Weather.vue'
 </script>
 
@@ -17,6 +18,8 @@ import Weather from './api/Weather.vue'
             <Weather />
             <!-- 页面跳转链接设计 -->
             <PageLinks />
+            <!-- 站点统计 -->
+            <BusuanziStats />
             <!-- RSS 订阅组件 -->   
         </div>
         </div>

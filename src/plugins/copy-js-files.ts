@@ -17,9 +17,9 @@ export default function copyJsFilesPlugin(): Plugin {
     name: 'copy-js-files',
     buildEnd() {
       // 源码路径
-      const srcDir = resolve(__dirname, '../assets/js')
+      const srcDir = resolve(__dirname, '../../public/js')
       // 输出路径
-      const destDir = resolve(__dirname, '../../../dist/assets/js')
+      const destDir = resolve(__dirname, '../../dist/assets/js')
 
       // 如果输出路径不存在，创建对应文件夹，参数recursive用于自动创建父级目录
       if (!existsSync(destDir)) { mkdirSync(destDir, { recursive: true }) }

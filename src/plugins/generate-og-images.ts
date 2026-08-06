@@ -139,7 +139,7 @@ export default function generateOgImagesPlugin(): Plugin {
     name: 'generate-og-images',
     writeBundle() {
       // 根据search.json配合文章名post-<>生成post-<>.svg
-      const searchJsonPath = resolve(__dirname, '../../../public/config/search.json')
+      const searchJsonPath = resolve(__dirname, '../../public/config/search.json')
       let posts: Post[] = []
 
       try {
@@ -150,8 +150,8 @@ export default function generateOgImagesPlugin(): Plugin {
       }
 
       // 封面图输出目录
-      const ogDirDist = resolve(__dirname, '../../../dist', 'og')
-      const ogDirPublic = resolve(__dirname, '../../../public', 'og')
+      const ogDirDist = resolve(__dirname, '../../dist', 'og')
+      const ogDirPublic = resolve(__dirname, '../../public', 'og')
 
       try {
         // 文件路径检查，没有则创建

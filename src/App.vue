@@ -10,7 +10,6 @@ import Sidebar from './components/Sidebar.vue'
 import Center from './components/Center.vue'
 import Footer from './components/Footer.vue'
 import WebAnalytics from './components/api/WebAnalytics.vue'
-import Live2dWidget from './components/media/Live2dWidget.vue'
 import NotificationRender from './components/content/NotificationRender.vue'
 import MouseTrail from './components/api/MouseTrail.vue'
 import ConsoleEasterEgg from './components/media/ConsoleEasterEgg.vue'
@@ -72,7 +71,6 @@ onMounted(() => {
     <ContextMenu />
     <MouseTrail />
     <template v-if="!isIndexPage && !isTerminalPage">
-      <Live2dWidget />
       <Header />
       <main class="mid-flex">
         <Sidebar />

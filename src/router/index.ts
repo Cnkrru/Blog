@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/about',
         name: 'About',
-        component: () => import('../pages/About/About.vue')
+        component: () => import('../pages/About.vue')
     },
     // 归档页面
     {
@@ -45,13 +45,13 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/post/:id',
         name: 'Post',
-        component: () => import('../pages/post/Posts.vue')
+        component: () => import('../pages/Post.vue')
     },
     // 项目详情页面
     {
         path: '/project/:id',
         name: 'Project',
-        component: () => import('../pages/project/Projects.vue')
+        component: () => import('../pages/ProjectDetail.vue')
     },
     // 标签页面
     {
@@ -81,7 +81,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/changelog',
         name: 'Changelog',
-        component: () => import('../pages/log/Changelog.vue')
+        component: () => import('../pages/Changelog.vue')
     },
     // 404页面
     {

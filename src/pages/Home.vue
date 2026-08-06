@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import Announcement from './announcement/Announcement.vue'
+import Announcement from './Announcement.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 import PageNav from '../components/p-center/PageNav.vue'
 import { useArticlesStore } from '../stores/index'

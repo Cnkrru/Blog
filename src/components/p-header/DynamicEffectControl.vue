@@ -12,17 +12,19 @@
     <span v-if="isAnimating" class="emoji-burst">✨</span>
   </div>
 
-  <div
-    v-if="isEffectEnabled && !isDarkMode"
-    class="sakura-container"
-  ></div>
+  <Teleport to="body">
+    <div
+      v-if="isEffectEnabled && !isDarkMode"
+      class="sakura-container"
+    ></div>
 
-  <div
-    v-if="isEffectEnabled && isDarkMode"
-    class="snow-container"
-  >
-    <div v-for="i in 30" :key="i" class="snowflake" :style="getSnowflakeStyle(i)"></div>
-  </div>
+    <div
+      v-if="isEffectEnabled && isDarkMode"
+      class="snow-container"
+    >
+      <div v-for="i in 30" :key="i" class="snowflake" :style="snowflakeStyles[i - 1]"></div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -118,15 +120,28 @@ const destroySakura = () => {
   }
 }
 
-const getSnowflakeStyle = (index) => {
-  return {
-    left: `${Math.random() * 100}%`,
-    animationDelay: `${Math.random() * 5}s`,
-    animationDuration: `${5 + Math.random() * 10}s`,
-    opacity: 0.5 + Math.random() * 0.5,
-    transform: `scale(${0.5 + Math.random() * 1})`
-  }
+// 基于索引的确定性伪随机，避免每次渲染雪花跳动
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453
+  return x - Math.floor(x)
 }
+
+const snowflakeStyles = Array.from({ length: 30 }, (_, i) => {
+  const r1 = seededRandom(i * 7 + 1)
+  const r2 = seededRandom(i * 7 + 2)
+  const r3 = seededRandom(i * 7 + 3)
+  const r4 = seededRandom(i * 7 + 4)
+  const r5 = seededRandom(i * 7 + 5)
+  const size = 5 + r5 * 12
+  return {
+    left: `${r1 * 100}%`,
+    animationDelay: `${r2 * 5}s`,
+    animationDuration: `${5 + r3 * 10}s`,
+    opacity: 0.5 + r4 * 0.5,
+    width: `${size}px`,
+    height: `${size}px`,
+  }
+})
 
 onMounted(() => {
   if (!isBrowser) return
