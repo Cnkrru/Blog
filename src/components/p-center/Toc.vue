@@ -82,8 +82,9 @@ function scanHeadings() {
   hds.forEach((h, i) => {
     const lv = parseInt(h.tagName.substring(1))
     const tx = h.textContent?.trim() || ''
-    const id = `th-${i}`
-    h.id = id
+    // 保留已有 id（如 Markdown 锚点链接设置的 id），无 id 时才分配 th-{i}
+    const id = h.id || `th-${i}`
+    if (!h.id) h.id = id
     nv.push({ id, level: lv, text: tx, numbering: genNum(i, lv, cnt) })
   })
   toc.value = nv

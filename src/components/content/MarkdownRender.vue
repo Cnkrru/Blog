@@ -363,10 +363,11 @@ const renderMarkdown = async () => {
       }
     }
     
-    // 添加图片点击事件和标题锚点
+    // 添加图片点击事件、标题锚点和锚点链接滚动拦截
     nextTick(() => {
       addImageClickListeners()
       addHeadingIds()
+      addAnchorClickInterceptors()
     })
   } catch (error) {
     console.error('渲染Markdown时出错:', error)
@@ -420,6 +421,47 @@ const addHeadingIds = () => {
       }
     })
   }, 100)
+}
+
+// 存储事件监听器引用，用于组件卸载时清理
+const anchorContainers: Element[] = []
+
+// 拦截锚点链接点击，使用 scroll API 滚动（与 Toc.vue 一致）
+const handleAnchorClick = (e: Event) => {
+  const target = e.target as HTMLElement
+  const anchor = target.closest('a[href^="#"]')
+  if (!anchor) return
+
+  const href = anchor.getAttribute('href')
+  if (!href || href === '#') return
+
+  const id = href.slice(1)
+  const el = document.getElementById(id)
+  if (!el) return
+
+  e.preventDefault()
+
+  const scrollContainer = document.querySelector('.center-card-content')
+  if (scrollContainer && scrollContainer.contains(el)) {
+    const rect = el.getBoundingClientRect()
+    const cr = scrollContainer.getBoundingClientRect()
+    scrollContainer.scrollTo({
+      top: scrollContainer.scrollTop + rect.top - cr.top - 20,
+      behavior: 'smooth'
+    })
+  } else {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
+const addAnchorClickInterceptors = () => {
+  setTimeout(() => {
+    const containers = document.querySelectorAll('.markdown-content')
+    containers.forEach((container) => {
+      container.addEventListener('click', handleAnchorClick)
+      anchorContainers.push(container)
+    })
+  }, 200)
 }
 
 // 选中文字引用功能
@@ -521,6 +563,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('mouseup', handleTextSelection)
+  anchorContainers.forEach(c => c.removeEventListener('click', handleAnchorClick))
+  anchorContainers.length = 0
 })
 
 watch(() => props.content, () => {
