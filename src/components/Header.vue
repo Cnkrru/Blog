@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Logo from './p-header/Logo.vue'
@@ -7,7 +7,7 @@ import ThemeToggle from './p-header/ThemeToggle.vue'
 import ImmersiveReading from './p-header/ImmersiveReading.vue'
 import ReadingProgress from './p-header/ReadingProgress.vue'
 import Search from './p-header/Search.vue'
-import MusicPlay from './media/MusicPlay.vue'
+const MusicPlay = defineAsyncComponent(() => import('./media/MusicPlay.vue'))
 import MobileMenu from './p-header/MobileMenu.vue'
 import DynamicEffectControl from './p-header/DynamicEffectControl.vue'
 

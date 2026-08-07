@@ -45,18 +45,33 @@ export const useArticlesStore = defineStore('articles', () => {
   }
 
   const getArticleById = async (id: string): Promise<Article | null> => {
-    const articles = await fetchArticles()
-    return articles.find(article => article.id === id) || null
+    try {
+      const articles = await fetchArticles()
+      return articles.find(article => article.id === id) || null
+    } catch (e) {
+      console.error('获取文章详情失败:', e)
+      return null
+    }
   }
 
   const getArticlesByTag = async (tag: string): Promise<Article[]> => {
-    const articles = await fetchArticles()
-    return articles.filter(article => article.tags?.includes(tag))
+    try {
+      const articles = await fetchArticles()
+      return articles.filter(article => article.tags?.includes(tag))
+    } catch (e) {
+      console.error('按标签获取文章失败:', e)
+      return []
+    }
   }
 
   const getArticlesByCategory = async (category: string): Promise<Article[]> => {
-    const articles = await fetchArticles()
-    return articles.filter(article => article.category === category)
+    try {
+      const articles = await fetchArticles()
+      return articles.filter(article => article.category === category)
+    } catch (e) {
+      console.error('按分类获取文章失败:', e)
+      return []
+    }
   }
 
   /**

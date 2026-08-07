@@ -1,47 +1,48 @@
 {
   "compilerOptions": {
-    // TypeScript 编译配置 - Cnkrru's Blog
+    // ========== TypeScript 编译配置 — Cnkrru's Blog ==========
+
     // 输出构建标准
     "target": "ES2020",
 
     "useDefineForClassFields": true,
-    // 导包写法import
+    // 模块系统
     "module": "ESNext",
-    // 调用库
+    // 标准库
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    // 跳过.d.ts文件检查
+    // 跳过 .d.ts 文件检查
     "skipLibCheck": true,
-    // 模拟打包
+    // 打包模式
     "moduleResolution": "bundler",
-    // 允许import导入ts时写扩展名
+    // 允许 import 时写 .ts 扩展名
     "allowImportingTsExtensions": true,
-    // 允许import导入json
+    // 允许导入 JSON
     "resolveJsonModule": true,
-    // 模块隔离，按照文件单独编译
+    // 模块隔离，按文件单独编译
     "isolatedModules": true,
-    // TS只做类型检查，实际编译由vite来
+    // TS 仅做类型检查，实际编译由 Vite 完成
     "noEmit": true,
-    // 支持jsx写法
+    // 支持 JSX 语法
     "jsx": "preserve",
-    // 启动ts严格检查
+    // 严格模式
     "strict": true,
     // 检查未使用变量
     "noUnusedLocals": true,
-    // 不检查函数参数
+    // 不检查未使用参数
     "noUnusedParameters": false,
-    // 检查switch是否存在缺少break泄露
+    // 检查 switch 穿透
     "noFallthroughCasesInSwitch": true,
-    // 部署根路径未‘.’
+    // 部署根路径
     "baseUrl": ".",
-    // 顶层路径映射
+    // 路径别名映射
     "paths": {
       "@/*": ["src/*"]
     },
-    // 引入ts全局变量
+    // 全局类型声明
     "types": ["vite/client", "node"]
   },
-  // 编译文件src文件夹下的所有ts、d.ts、tsx、vue、index.ts文件
+  // 编译范围：src 下所有 TS / Vue 文件
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.ts"],
-  // 引用node配置文件，作为vite配置
+  // 引用 Node 端配置
   "references": [{ "path": "./tsconfig.node.json" }]
 }

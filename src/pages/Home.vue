@@ -22,13 +22,32 @@ useHead({
     { property: 'og:description', content: '欢迎来到Cnkrru\'s Blog，分享技术和生活的个人空间' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/home' },
     { name: 'twitter:title', content: '首页 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: '欢迎来到Cnkrru\'s Blog，分享技术和生活的个人空间' }
+    { name: 'twitter:description', content: '欢迎来到Cnkrru\'s Blog，分享技术和生活的个人空间' },
+    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/home' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: "Cnkrru's Blog",
+        url: 'https://cnkrru.top',
+        description: '一个技术博客，记录学习与成长',
+        author: {
+          '@type': 'Person',
+          name: 'Cnkrru',
+          url: 'https://cnkrru.top/about'
+        }
+      })
+    }
   ]
 })
 
@@ -384,7 +403,7 @@ onMounted(() => loadArticles())
   .card-title { font-size: 14px; }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 640px) {
   .card-grid > *,
   .skel-grid > * {
     flex: 1 1 100%;

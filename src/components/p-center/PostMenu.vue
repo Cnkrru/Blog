@@ -41,7 +41,11 @@ const filteredPosts = computed(() => {
 const posts = computed(() => filteredPosts.value)
 
 const loadPosts = async () => {
-  await articlesStore.fetchArticles()
+  try {
+    await articlesStore.fetchArticles()
+  } catch (e) {
+    console.error('加载文章失败:', e)
+  }
 }
 
 const toggleMenu = () => {
@@ -80,7 +84,7 @@ onMounted(() => {
   <div class="post-menu-container">
     <!-- 文章菜单按钮 -->
     <div class="post-menu-btn-container">
-      <button class="post-menu-btn" @click="toggleMenu" :title="show ? '关闭菜单' : '文章菜单'">
+      <button class="post-menu-btn" @click="toggleMenu" :title="show ? '关闭菜单' : '文章菜单'" aria-label="文章菜单">
         <svg
           v-if="!show"
           class="menu-btn-icon"
@@ -118,7 +122,7 @@ onMounted(() => {
             <h3>文章菜单</h3>
             <span class="post-menu-count">{{ posts.length }}</span>
           </div>
-          <button class="post-menu-close-btn" @click="toggleMenu" title="关闭">
+          <button class="post-menu-close-btn" @click="toggleMenu" title="关闭" aria-label="关闭菜单">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -140,7 +144,7 @@ onMounted(() => {
               placeholder="搜索文章标题或标签..."
               class="menu-search-input"
             />
-            <button v-if="searchKeyword" @click="clearSearch" class="menu-clear-search-btn" title="清除">
+            <button v-if="searchKeyword" @click="clearSearch" class="menu-clear-search-btn" title="清除" aria-label="清除搜索">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
               </svg>
@@ -153,6 +157,7 @@ onMounted(() => {
               @click="handleSortChange('id')"
               class="sort-btn"
               :class="{ active: sortBy === 'id' }"
+              aria-label="按ID排序"
             >
               ID {{ getSortIcon('id') }}
             </button>
@@ -160,6 +165,7 @@ onMounted(() => {
               @click="handleSortChange('title')"
               class="sort-btn"
               :class="{ active: sortBy === 'title' }"
+              aria-label="按标题排序"
             >
               标题 {{ getSortIcon('title') }}
             </button>
@@ -550,7 +556,7 @@ onMounted(() => {
 }
 
 /* ============================== 响应式 ============================== */
-@media (max-width: 639px) {
+@media (max-width: 640px) {
   .post-menu-card {
     width: 260px;
     max-height: 60vh;

@@ -38,12 +38,6 @@ export function generateSitemap(posts: Post[]): string {
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/tools</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>${siteConfig.domain}/projects</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
@@ -54,18 +48,6 @@ export function generateSitemap(posts: Post[]): string {
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${siteConfig.domain}/tool/1</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>${siteConfig.domain}/tool/2</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   ${posts.map(post => `
   <url>

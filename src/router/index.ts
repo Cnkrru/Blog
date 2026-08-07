@@ -101,13 +101,6 @@ const createAppHistory = (): ReturnType<typeof createWebHistory> | ReturnType<ty
     }
 }
 
-// 返回顶部滚动参数（垃圾代码）
-// type ScrollBehaviorReturn = void | boolean | {
-//     left: number
-//     top: number
-//     behavior: ScrollBehavior
-// }
-
 // 返回顶部，控制中心内容卡片返回顶部
 const scrollToTop = (): void => {
     if (typeof document !== 'undefined') {

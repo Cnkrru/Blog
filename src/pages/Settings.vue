@@ -42,6 +42,7 @@ useHead({
           class="style-opt"
           :class="{ active: currentStyle === 'ink' }"
           @click="setStyle('ink')"
+          aria-label="水墨风格"
         >
           <span class="opt-name">水墨风</span>
           <span class="opt-desc">宣纸米白 · 朱砂点睛</span>
@@ -50,6 +51,7 @@ useHead({
           class="style-opt"
           :class="{ active: currentStyle === 'sakura' }"
           @click="setStyle('sakura')"
+          aria-label="樱粉风格"
         >
           <span class="opt-name">樱粉风</span>
           <span class="opt-desc">粉色基调 · 梦幻渐变</span>
@@ -65,6 +67,7 @@ useHead({
           class="style-opt"
           :class="{ active: currentLayout === 'card' }"
           @click="setLayout('card')"
+          aria-label="卡片布局"
         >
           <span class="opt-name">卡片式</span>
           <span class="opt-desc">区域之间留有间隔</span>
@@ -73,6 +76,7 @@ useHead({
           class="style-opt"
           :class="{ active: currentLayout === 'compact' }"
           @click="setLayout('compact')"
+          aria-label="紧凑布局"
         >
           <span class="opt-name">无空隙</span>
           <span class="opt-desc">四大区域紧贴相连</span>

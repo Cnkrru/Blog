@@ -151,20 +151,6 @@ onUnmounted(() => {
     margin-bottom: 16px;
 }
 
-.retry-button {
-    border: 2px solid;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-    font-weight: 500;
-}
-
-.retry-button:hover {
-    transform: translateY(-2px);
-}
-
 /* 评论容器 */
 .comment-container {
     width: 100%;
@@ -254,17 +240,6 @@ onUnmounted(() => {
     color: var(--common-color-1);
 }
 
-.retry-button {
-    background-color: var(--common-bg);
-    border-color: var(--common-color-1);
-    color: var(--common-text);
-}
-
-.retry-button:hover {
-    background-color: var(--common-hover);
-    box-shadow: 0 4px 8px var(--common-shadow);
-}
-
 /* 暗色主题适配 */
 :deep(html.dark) .loading-spinner {
     border-color: rgba(255, 255, 255, 0.1);
@@ -279,7 +254,7 @@ onUnmounted(() => {
 <style scoped>
 /*==============================响应式设计查询=============================*/
 /* 超小屏手机 */
-@media (max-width: 639px) {
+@media (max-width: 640px) {
     .comment-section {
         margin-top: 1rem;
         padding: 1rem;

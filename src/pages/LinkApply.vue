@@ -24,7 +24,7 @@ async function submitForm() {
     if (res.ok) {
       submitted.value = true
     }
-  } catch {} finally {
+  } catch (e) { console.error('提交失败:', e) } finally {
     submitting.value = false
   }
 }

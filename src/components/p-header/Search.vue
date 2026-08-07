@@ -22,7 +22,6 @@ const searchCache = new RedisLikeCache({
 })
 
 onMounted(async () => {
-  console.log('开始加载搜索数据')
   try {
     const data = await store.fetchArticles()
     searchData.value = data.filter(item => item.id !== 'terminal' && item.id !== 'changelog')
@@ -98,8 +97,7 @@ const performSearch = (query) => {
     }
   }
 
-  console.log(`搜索完成: "${query}" - 结果: ${searchResults.value.length} - 耗时: ${duration.toFixed(2)}ms`)
-}
+  }
 
 const handleKeyPress = (e) => {
   if (e.key === 'Enter') {

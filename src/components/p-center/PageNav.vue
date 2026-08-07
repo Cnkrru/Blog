@@ -64,6 +64,7 @@ const closeDropdown = () => {
         class="nav-btn prev-btn"
         :disabled="currentPage === 1"
         @click="changePage(currentPage - 1)"
+        aria-label="上一页"
       >
         &lt; 上一页
       </button>
@@ -84,6 +85,7 @@ const closeDropdown = () => {
           class="nav-btn next-btn"
           :disabled="currentPage === totalPages"
           @click="changePage(currentPage + 1)"
+          aria-label="下一页"
         >
           下一页 &gt;
         </button>

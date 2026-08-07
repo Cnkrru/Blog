@@ -62,6 +62,7 @@ import MermaidRender from './MermaidRender.vue'
 import KatexRender from './KatexRender.vue'
 import HighlightRender from './HighlightRender.vue'
 import EasterEggAnimation from '../media/EasterEggAnimation.vue'
+import { CDN_VERSIONS } from '../../utils/constants'
 
 const props = defineProps<{
   content: string
@@ -83,7 +84,6 @@ const renderMode = ref('normal') // normal 或 special-blocks
 
 // 加载CDN资源
 const loadCDN = async () => {
-  console.log('开始加载CDN资源', window.marked)
   
   // 移除可能存在的旧脚本和样式
   const cleanupOldResources = () => {
@@ -100,18 +100,16 @@ const loadCDN = async () => {
   // 加载marked.js
   await new Promise((resolve, reject) => {
     const script = document.createElement('script')
-    script.src = 'https://cdn.jsdelivr.net/npm/marked@14.0.0/marked.min.js'
+    script.src = `https://cdn.jsdelivr.net/npm/marked@${CDN_VERSIONS.marked}/marked.min.js`
     script.onload = () => {
-      console.log('marked.js加载完成', window.marked)
       resolve()
     }
     script.onerror = () => {
       console.error('marked.js加载失败，尝试备用链接')
       // 尝试备用链接
       const backupScript = document.createElement('script')
-      backupScript.src = 'https://unpkg.com/marked@14.0.0/marked.min.js'
+      backupScript.src = `https://unpkg.com/marked@${CDN_VERSIONS.marked}/marked.min.js`
       backupScript.onload = () => {
-        console.log('marked.js备用链接加载完成')
         resolve()
       }
       backupScript.onerror = () => {
@@ -125,12 +123,9 @@ const loadCDN = async () => {
   
   // 配置marked
   if (window.marked && typeof window.marked === 'object') {
-    console.log('marked配置成功')
     // 确保marked是一个函数
     if (typeof window.marked.parse === 'function') {
-      console.log('使用marked.parse方法')
     } else if (typeof window.marked === 'function') {
-      console.log('使用marked函数')
     } else {
       console.error('marked.js API结构异常', window.marked)
     }
@@ -138,8 +133,6 @@ const loadCDN = async () => {
     console.error('marked.js未正确加载', window.marked)
     throw new Error('marked.js未正确加载')
   }
-  
-  console.log('CDN资源加载完成')
 }
 
 // 提取特殊块
@@ -299,15 +292,12 @@ const extractOrderedBlocks = (content) => {
 
 // 解析和渲染Markdown
 const renderMarkdown = async () => {
-  console.log('开始渲染Markdown', props.content)
   
   try {
     await loadCDN()
-    console.log('CDN资源加载完成后，开始处理Markdown')
     
     // 提取特殊块
     extractSpecialBlocks(props.content)
-    console.log('特殊块提取完成', mermaidBlocks.value, mathBlocks.value, codeBlocks.value, easterEggBlocks.value)
     
     // 检查是否有特殊块
     const hasSpecialBlocks = mermaidBlocks.value.length > 0 || mathBlocks.value.length > 0 || codeBlocks.value.length > 0 || easterEggBlocks.value.length > 0
@@ -350,7 +340,6 @@ const renderMarkdown = async () => {
       })
       
       orderedBlocks.value = processedBlocks
-      console.log('按顺序组织的内容块', orderedBlocks.value)
     } else {
       // 没有特殊块，使用普通渲染模式
       renderMode.value = 'normal'
@@ -552,7 +541,7 @@ watch(() => props.content, () => {
 
 .quote-done {
   font-size: 12px;
-  color: #28a745;
+  color: var(--color-success);
   padding: 6px 12px;
   font-weight: 600;
 }

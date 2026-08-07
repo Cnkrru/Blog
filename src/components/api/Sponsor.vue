@@ -9,7 +9,7 @@ const loadConfig = async () => {
   try {
     const res = await fetch('/config/sponsor.json')
     if (res.ok) sponsor.value = await res.json()
-  } catch {}
+  } catch (e) { console.error('加载赞助配置失败:', e) }
 }
 
 const toggleModal = () => { showModal.value = !showModal.value }
@@ -38,7 +38,7 @@ if (typeof window !== 'undefined') {
           <div class="sponsor-modal">
             <div class="sponsor-header">
               <h3>赞赏支持</h3>
-              <button class="sponsor-close" @click="closeModal">
+              <button class="sponsor-close" @click="closeModal" aria-label="关闭">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -48,8 +48,8 @@ if (typeof window !== 'undefined') {
             <p class="sponsor-msg">{{ sponsor.message }}</p>
 
             <div class="sponsor-tabs">
-              <button :class="['sp-tab', { active: activeTab === 'wechat' }]" @click="activeTab = 'wechat'">微信</button>
-              <button :class="['sp-tab', { active: activeTab === 'alipay' }]" @click="activeTab = 'alipay'">支付宝</button>
+              <button :class="['sp-tab', { active: activeTab === 'wechat' }]" @click="activeTab = 'wechat'" aria-label="微信支付">微信</button>
+              <button :class="['sp-tab', { active: activeTab === 'alipay' }]" @click="activeTab = 'alipay'" aria-label="支付宝">支付宝</button>
             </div>
 
             <div class="sponsor-qr">

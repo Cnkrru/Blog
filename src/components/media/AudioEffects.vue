@@ -18,15 +18,12 @@ const emit = defineEmits<{ 'effect-change': [effect: any]; close: [] }>()
 const musicStore = useMusicStore()
 
 const effectsEnabled = computed(() => {
-  console.log('[AudioEffects] effectsEnabled changed:', musicStore.effectsEnabled)
   return musicStore.effectsEnabled
 })
 const currentSurroundMode = computed(() => {
-  console.log('[AudioEffects] surroundMode changed:', musicStore.surroundMode)
   return musicStore.surroundMode
 })
 const currentEqPreset = computed(() => {
-  console.log('[AudioEffects] eqPreset changed:', musicStore.eqPreset)
   return musicStore.eqPreset
 })
 
@@ -102,10 +99,10 @@ const closePanel = () => {
       <div class="effects-header">
         <h4>音效设置</h4>
         <div class="header-actions">
-          <button class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects">
+          <button class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects" aria-label="切换音效状态">
             {{ effectsEnabled ? '已启用' : '已关闭' }}
           </button>
-          <button class="close-btn" @click="closePanel">
+          <button class="close-btn" @click="closePanel" aria-label="关闭音效设置">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
         </div>
@@ -115,7 +112,7 @@ const closePanel = () => {
         <div class="effect-section">
           <div class="visualizer-toggle">
             <span class="effect-label">音频可视化</span>
-            <button class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer">{{ isVizEnabled ? '已开启' : '已关闭' }}</button>
+            <button class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer" aria-label="切换音频可视化">{{ isVizEnabled ? '已开启' : '已关闭' }}</button>
           </div>
         </div>
 
@@ -126,6 +123,7 @@ const closePanel = () => {
               v-for="mode in surroundModes"
               :key="mode.value"
               class="chip-btn"
+              :aria-label="'环绕模式：' + mode.label"
               :style="currentSurroundMode === mode.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeSurroundMode(mode.value)"
             >{{ mode.label }}</button>
@@ -139,6 +137,7 @@ const closePanel = () => {
               v-for="preset in eqPresets"
               :key="preset.value"
               class="chip-btn"
+              :aria-label="'均衡器：' + preset.label"
               :style="currentEqPreset === preset.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeEqPreset(preset.value)"
             >{{ preset.label }}</button>

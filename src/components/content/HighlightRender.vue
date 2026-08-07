@@ -39,6 +39,7 @@ import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
 import CodePreview from './CodePreview.vue'
 import { useCodeStore } from '../../stores'
+import { CDN_VERSIONS } from '../../utils/constants'
 
 const props = withDefaults(defineProps<{
   code: string
@@ -87,12 +88,12 @@ const loadPrism = () => {
     // 加载 CSS
     const cssLink = document.createElement('link')
     cssLink.rel = 'stylesheet'
-    cssLink.href = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css'
+    cssLink.href = `https://cdn.jsdelivr.net/npm/prismjs@${CDN_VERSIONS.prismjs}/themes/prism.min.css`
     document.head.appendChild(cssLink)
 
     // 加载 JS
     const script = document.createElement('script')
-    script.src = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js'
+    script.src = `https://cdn.jsdelivr.net/npm/prismjs@${CDN_VERSIONS.prismjs}/prism.min.js`
     script.onload = () => {
       // 加载常用语言
       const languages = ['javascript', 'typescript', 'css', 'html', 'json', 'python', 'bash', 'vue', 'c', 'cpp']
@@ -107,7 +108,7 @@ const loadPrism = () => {
 
       languages.forEach(lang => {
         const langScript = document.createElement('script')
-        langScript.src = `https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-${lang}.min.js`
+        langScript.src = `https://cdn.jsdelivr.net/npm/prismjs@${CDN_VERSIONS.prismjs}/components/prism-${lang}.min.js`
         langScript.onload = () => {
           codeStore.addLoadedLanguage(lang)
           loadedCount++

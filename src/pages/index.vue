@@ -4,6 +4,30 @@ import IndexNavbar from '../components/page-index/IndexNavbar.vue'
 import HeroContent from '../components/page-index/HeroContent.vue'
 import ScrollIndicator from '../components/page-index/ScrollIndicator.vue'
 import NetworkParticles from '../components/page-index/NetworkParticles.vue'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'Cnkrru\'s Blog',
+  meta: [
+    { name: 'description', content: '一个技术博客，记录学习与成长' },
+    { name: 'keywords', content: '技术博客,编程,前端,后端,C++,Vue' },
+    { name: 'author', content: 'Cnkrru' },
+    { name: 'robots', content: 'index, follow' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://cnkrru.top' },
+    { property: 'og:title', content: 'Cnkrru\'s Blog' },
+    { property: 'og:description', content: '一个技术博客，记录学习与成长' },
+    { property: 'og:locale', content: 'zh_CN' },
+    { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:url', content: 'https://cnkrru.top' },
+    { name: 'twitter:title', content: 'Cnkrru\'s Blog' },
+    { name: 'twitter:description', content: '一个技术博客，记录学习与成长' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://cnkrru.top' }
+  ]
+})
 </script>
 
 <template>

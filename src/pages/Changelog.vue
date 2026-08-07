@@ -51,10 +51,12 @@ useHead({
     { property: 'og:description', content: 'Cnkrru\'s Blog网站更新日志，记录网站的更新历史和功能变更' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/changelog' },
     { name: 'twitter:title', content: '网站更新日志 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: 'Cnkrru\'s Blog网站更新日志' }
+    { name: 'twitter:description', content: 'Cnkrru\'s Blog网站更新日志' },
+    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
   ]),
   link: computed(() => [
     {
@@ -168,7 +170,7 @@ onMounted(() => {
 /* 颜色样式 */
 .loading-message,
 .error-message {
-    color: #666;
+    color: var(--text-secondary);
 }
 </style>
 

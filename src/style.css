@@ -175,3 +175,18 @@ body:not(.dark-theme) img[src*="/og/"] {
         }
     }
 }
+
+/*==============================重试按钮（全局复用）==============================*/
+.retry-button {
+  padding: 8px 16px;
+  background: var(--common-color-1);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.25s ease;
+}
+.retry-button:hover {
+  background: var(--common-hover);
+}

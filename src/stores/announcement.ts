@@ -24,7 +24,6 @@ export const useAnnouncementStore = defineStore('announcement', () => {
       const mdModule = await import('../../content/announcement/index.md?raw')
       announcementContent.value = mdModule.default
       lastUpdated.value = new Date()
-      loading.value = true
     } catch (error) {
       console.error('[announcementStore] 加载公告失败:', error)
       announcementContent.value = '## 网站公告\n\n公告加载失败，请稍后再试。'

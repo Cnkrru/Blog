@@ -69,33 +69,33 @@ std::memmove(arr, arr + 2, 3 * sizeof(int));  // arr = {3, 4, 5, 4, 5, 6, 7}
 > 标准库
 > 一些简单的数学公式
 1. 取整
-    - round(<num>)
-    - floor(<num>)
-    - ceil(<num>)
-    - trunc(<num>)
+    - `round(<num>)`
+    - `floor(<num>)`
+    - `ceil(<num>)`
+    - `trunc(<num>)`
 2. 方根运算
-    - pow(<num>,<num>)
-    - sqrt(<num>)
-    - cbrt(<num>)
-    - hypot(<num>,<num>)
+    - `pow(<num>,<num>)`
+    - `sqrt(<num>)`
+    - `cbrt(<num>)`
+    - `hypot(<num>,<num>)`
 3. 绝对值
-    - abs(<num>)
-    - fabs(<num>)
+    - `abs(<num>)`
+    - `fabs(<num>)`
 4. 三角函数
-    - sin(<num>)
-    - cos(<num>)
-    - tan(<num>)
-    - asin(<num>)
-    - acos(<num>)
-    - atan(<num>)    
+    - `sin(<num>)`
+    - `cos(<num>)`
+    - `tan(<num>)`
+    - `asin(<num>)`
+    - `acos(<num>)`
+    - `atan(<num>)`    
 5. 指对运算
-    - exp(<num>)
-    - log(<num>)
-    - log10(<num>)
-    - log2(<num>)
+    - `exp(<num>)`
+    - `log(<num>)`
+    - `log10(<num>)`
+    - `log2(<num>)`
 6. 最值运算
-    - min(<num>,<num>)
-    - max(<num>,<num>)
+    - `min(<num>,<num>)`
+    - `max(<num>,<num>)`
 ---
 ## ctime
 > 标准库

@@ -119,5 +119,4 @@ onUnmounted(() => {
 }
 </style>
 
-<style scoped>
-</style>
+

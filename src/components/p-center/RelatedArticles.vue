@@ -267,7 +267,7 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-@media (max-width: 639px) {
+@media (max-width: 640px) {
   .related-articles-grid {
     grid-template-columns: 1fr;
   }

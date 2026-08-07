@@ -45,7 +45,7 @@ function triggerEasterEgg() {
   }, arr.length * 80 + 1400)
 }
 
-onMounted(() => {})
+
 </script>
 
 <template>

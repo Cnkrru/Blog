@@ -25,6 +25,7 @@ const toggleToc = () => {
       @click="toggleToc"
       :class="{ active: tocStore.show }"
       :title="tocStore.show ? '关闭目录' : '打开目录'"
+      aria-label="切换目录"
     >
       <!-- 列表图标（默认） -->
       <svg

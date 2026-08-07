@@ -16,6 +16,10 @@
   --common-cursor: #b23a2e;         /* 朱砂指针 */
   --common-gradient: linear-gradient(90deg, #b23a2e, #6b6557, #3a5a6a, #5a7a4a, #b23a2e);
   --glass-r: 251; --glass-g: 248; --glass-b: 239; /* 宣纸亮面 RGB，配合 --glass-alpha 控制玻璃透明度 */
+  --text-secondary: #666;      /* 次要文字 */
+  --color-error: #dc3545;      /* 错误/危险 */
+  --color-success: #28a745;    /* 成功 */
+  --color-warning: #f59e0b;    /* 警告 */
 }
 
 [data-style="ink"].dark-theme,
@@ -30,6 +34,10 @@
   --common-cursor: #d25043;
   --common-gradient: linear-gradient(90deg, #d25043, #b8b0a0, #4a6e80, #6e9060, #d25043);
   --glass-r: 33; --glass-g: 30; --glass-b: 25; /* 夜墨面 RGB */
+  --text-secondary: #999;      /* 次要文字（暗色下更亮） */
+  --color-error: #f06070;      /* 错误/危险（暗色下更亮） */
+  --color-success: #48c060;    /* 成功（暗色下更亮） */
+  --color-warning: #f5b040;    /* 警告（暗色下更亮） */
 }
 
 /* 鼠标指针：水墨色 */

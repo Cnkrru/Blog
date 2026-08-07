@@ -46,8 +46,26 @@
 - 骨架屏
 - 右键菜单
 
-## 目录结构
+## 快速开始
 
+```bash
+# 安装依赖
+npm install
+
+# 本地开发（热更新）
+npm run dev
+
+# 同步 Markdown 内容到 JSON 配置
+npm run sync
+
+# 构建生产版本
+npm run build
+
+# 预览构建结果
+npm run preview
+```
+
+## 目录结构
 ```
 content/           # Markdown 文章源文件
 ├── posts/         # 博客文章

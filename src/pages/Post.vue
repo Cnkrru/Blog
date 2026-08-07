@@ -265,7 +265,7 @@ onMounted(() => {
 }
 
 /* 移动端 */
-@media (max-width: 639px) {
+@media (max-width: 640px) {
     .center-head-title {
         width: 100%;
     }
@@ -301,7 +301,7 @@ onMounted(() => {
 /* 颜色样式 */
 .loading-message,
 .error-message {
-    color: #666;
+    color: var(--text-secondary);
 }
 </style>
 

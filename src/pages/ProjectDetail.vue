@@ -205,7 +205,7 @@ const handleError = (err) => {
 /* 颜色样式 */
 .loading-message,
 .error-message {
-    color: #666;
+    color: var(--text-secondary);
 }
 </style>
 

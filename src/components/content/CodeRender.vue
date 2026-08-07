@@ -330,24 +330,24 @@ onMounted(() => {
 
 /* 复制成功状态 */
 .copy-button.copied-success {
-    background-color: #28a745;
+    background-color: var(--color-success);
     color: white;
     box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
 }
 
 .copy-button.copied-success:hover {
-    background-color: #28a745;
+    background-color: var(--color-success);
 }
 
 /* 复制失败状态 */
 .copy-button.copied-fail {
-    background-color: #dc3545;
+    background-color: var(--color-error);
     color: white;
     box-shadow: 0 6px 20px rgba(220, 53, 69, 0.5);
 }
 
 .copy-button.copied-fail:hover {
-    background-color: #dc3545;
+    background-color: var(--color-error);
 }
 
 /* 加载动画 */

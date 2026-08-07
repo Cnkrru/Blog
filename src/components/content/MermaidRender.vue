@@ -6,7 +6,7 @@
     </div>
     <div v-else-if="error" class="mermaid-error">
       <span>{{ error }}</span>
-      <button @click="retryRender" class="retry-button">重试</button>
+      <button @click="retryRender" class="retry-button" aria-label="重试">重试</button>
     </div>
     <div ref="containerRef" v-show="!loading && !error"></div>
   </div>
@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import { useMermaidStore, useThemeStore } from '../../stores'
+import { CDN_VERSIONS } from '../../utils/constants'
 
 const props = defineProps<{
   code: string
@@ -38,9 +39,9 @@ const error = computed(() => mermaidStore.error)
 
 // Mermaid CDN 链接列表（主链接 + 备用链接）
 const mermaidCdnLinks = [
-  'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js',
-  'https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js'
+  `https://cdn.jsdelivr.net/npm/mermaid@${CDN_VERSIONS.mermaid}/dist/mermaid.min.js`,
+  `https://unpkg.com/mermaid@${CDN_VERSIONS.mermaid}/dist/mermaid.min.js`,
+  `https://cdnjs.cloudflare.com/ajax/libs/mermaid/${CDN_VERSIONS.mermaid}/mermaid.min.js`
 ]
 
 // 加载资源函数，支持备用链接
@@ -159,7 +160,7 @@ const renderMermaid = async () => {
   } catch (error) {
     const errorMessage = `图表渲染错误: ${error.message}`
     mermaidStore.setError(errorMessage)
-    containerRef.value.innerHTML = `<span style="color: #cc0000;">${errorMessage}</span>`
+    containerRef.value.innerHTML = `<span style="color: var(--color-error);">${errorMessage}</span>`
     emit('render-error', error)
   } finally {
     mermaidStore.setLoading(false)
@@ -239,19 +240,6 @@ watch(() => isDarkTheme.value, () => {
   min-height: 300px;
 }
 
-.retry-button {
-  margin-top: 16px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.retry-button:hover {
-}
-
 /* Mermaid 样式 */
 :deep(.mermaid) {
   font-family: 'Fira Code', 'Consolas', monospace;
@@ -289,16 +277,7 @@ watch(() => isDarkTheme.value, () => {
 }
 
 .mermaid-error {
-  color: #cc0000;
-}
-
-.retry-button {
-  background-color: var(--common-color-1);
-  color: var(--common-content);
-}
-
-.retry-button:hover {
-  background-color: var(--common-hover);
+  color: var(--color-error);
 }
 
 /* 暗色主题适配 */
@@ -331,9 +310,5 @@ watch(() => isDarkTheme.value, () => {
     height: 24px;
   }
   
-  .retry-button {
-    padding: 6px 12px;
-    font-size: 12px;
   }
-}
 </style>

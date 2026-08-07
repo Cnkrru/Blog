@@ -86,13 +86,11 @@ const fetchLocationAndWeather = async (): Promise<void> => {
 
       let ipData: IPData | null = null
       try {
-        console.log('尝试使用 ip-api 获取位置...')
         try {
           const ipResponse: Response = await fetchWithTimeout('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon')
           if (ipResponse.ok) {
             ipData = await ipResponse.json()
             if (ipData.status !== 'fail') {
-              console.log('ip-api 获取成功:', ipData.city)
             } else {
               throw new Error('ip-api 返回失败状态')
             }
@@ -100,7 +98,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
             throw new Error('ip-api 请求失败')
           }
         } catch (e) {
-          console.log('ip-api 失败，尝试方案2: ipinfo.io...')
           try {
             const ipinfoResponse: Response = await fetchWithTimeout('https://ipinfo.io/json')
             if (ipinfoResponse.ok) {
@@ -112,7 +109,6 @@ const fetchLocationAndWeather = async (): Promise<void> => {
                   lat: parseFloat(ipinfoData.loc.split(',')[0]),
                   lon: parseFloat(ipinfoData.loc.split(',')[1])
                 }
-                console.log('ipinfo.io 获取成功:', ipData.city)
               } else {
                 throw new Error('ipinfo.io 无城市数据')
               }
@@ -120,19 +116,16 @@ const fetchLocationAndWeather = async (): Promise<void> => {
               throw new Error('ipinfo.io 请求失败')
             }
           } catch (e) {
-            console.log('ipinfo.io 失败，尝试方案3: ipify + 默认位置...')
             try {
               const ipifyResponse: Response = await fetchWithTimeout('https://api.ipify.org?format=json')
               if (ipifyResponse.ok) {
                 const ipifyData = await ipifyResponse.json()
-                console.log('获取到IP:', ipifyData.ip)
                 ipData = {
                   city: 'Changchun',
                   countryCode: 'CN',
                   lat: 43.8168,
                   lon: 125.3240
                 }
-                console.log('使用默认位置: 长春')
               } else {
                 throw new Error('ipify 请求失败')
               }

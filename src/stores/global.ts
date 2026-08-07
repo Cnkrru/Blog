@@ -5,11 +5,11 @@ import type { SocialLink, AppNotification } from '../types/index'
 export const useGlobalStore = defineStore('global', () => {
   const siteTitle = ref<string>('Cnkrru\'s Blog')
   const siteDescription = ref<string>('一个技术博客，记录学习与成长')
-  const siteUrl = ref<string>('https://www.moyublog.com')
+  const siteUrl = ref<string>('https://cnkrru.top')
   const siteKeywords = ref<string>('')
   const socialLinks = ref<SocialLink[]>([
     { name: 'GitHub', url: 'https://github.com/cnkrru', icon: 'fa-brands fa-github' },
-    { name: 'Mail', url: 'mailto:admin@moyublog.com', icon: 'fa-solid fa-envelope' }
+    { name: 'Mail', url: 'mailto:admin@cnkrru.top', icon: 'fa-solid fa-envelope' }
   ])
   const notifications = ref<AppNotification[]>([])
 

@@ -6,7 +6,7 @@
     </div>
     <div v-else-if="error" class="math-error">
       <span>{{ error }}</span>
-      <button @click="retryRender" class="retry-button">重试</button>
+      <button @click="retryRender" class="retry-button" aria-label="重试">重试</button>
     </div>
     <div ref="mathRef" class="math-content" v-show="!loading && !error"></div>
   </div>
@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useMathStore, useThemeStore } from '../../stores'
+import { CDN_VERSIONS } from '../../utils/constants'
 
 const props = defineProps<{
   latex: string
@@ -38,19 +39,19 @@ const error = computed(() => mathStore.error)
 // KaTeX CDN 链接列表（主链接 + 备用链接）
 const katexCdnLinks = {
   css: [
-    'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css',
-    'https://unpkg.com/katex@0.16.8/dist/katex.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css'
+    `https://cdn.jsdelivr.net/npm/katex@${CDN_VERSIONS.katex}/dist/katex.min.css`,
+    `https://unpkg.com/katex@${CDN_VERSIONS.katex}/dist/katex.min.css`,
+    `https://cdnjs.cloudflare.com/ajax/libs/KaTeX/${CDN_VERSIONS.katex}/katex.min.css`
   ],
   js: [
-    'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js',
-    'https://unpkg.com/katex@0.16.8/dist/katex.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.js'
+    `https://cdn.jsdelivr.net/npm/katex@${CDN_VERSIONS.katex}/dist/katex.min.js`,
+    `https://unpkg.com/katex@${CDN_VERSIONS.katex}/dist/katex.min.js`,
+    `https://cdnjs.cloudflare.com/ajax/libs/KaTeX/${CDN_VERSIONS.katex}/katex.min.js`
   ],
   autoRender: [
-    'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js',
-    'https://unpkg.com/katex@0.16.8/dist/contrib/auto-render.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/contrib/auto-render.min.js'
+    `https://cdn.jsdelivr.net/npm/katex@${CDN_VERSIONS.katex}/dist/contrib/auto-render.min.js`,
+    `https://unpkg.com/katex@${CDN_VERSIONS.katex}/dist/contrib/auto-render.min.js`,
+    `https://cdnjs.cloudflare.com/ajax/libs/KaTeX/${CDN_VERSIONS.katex}/contrib/auto-render.min.js`
   ]
 }
 
@@ -157,7 +158,7 @@ const renderMath = async () => {
         throwOnError: false,
         displayMode: true,
         fleqn: false,
-        errorColor: '#cc0000',
+        errorColor: 'var(--color-error)',
         strict: 'ignore',
         trust: true
       })
@@ -171,7 +172,7 @@ const renderMath = async () => {
   } catch (error) {
     console.error('渲染数学公式失败:', error)
     mathStore.setError('公式渲染错误: ' + error.message)
-    mathRef.value.innerHTML = `<span style="color: #cc0000;">公式渲染错误: ${error.message}</span>`
+    mathRef.value.innerHTML = `<span style="color: var(--color-error);">公式渲染错误: ${error.message}</span>`
     emit('render-error', error)
   } finally {
     mathStore.setLoading(false)
@@ -250,19 +251,6 @@ onUnmounted(() => {
   min-height: 150px;
 }
 
-.retry-button {
-  margin-top: 12px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: background-color 0.3s ease;
-}
-
-.retry-button:hover {
-}
-
 .math-content {
   padding: 10px 0;
   min-height: 100px;
@@ -298,17 +286,7 @@ onUnmounted(() => {
 
 /* 错误状态 */
 .math-error {
-  color: #cc0000;
-}
-
-/* 重试按钮 */
-.retry-button {
-  background-color: var(--common-color-1);
-  color: var(--common-content);
-}
-
-.retry-button:hover {
-  background-color: var(--common-hover);
+  color: var(--color-error);
 }
 
 /* 暗色主题适配 */
@@ -354,9 +332,5 @@ onUnmounted(() => {
     height: 20px;
   }
   
-  .retry-button {
-    padding: 5px 10px;
-    font-size: 12px;
   }
-}
 </style>

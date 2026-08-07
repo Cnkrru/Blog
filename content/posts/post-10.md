@@ -18,13 +18,13 @@ keywords: git，shell
 ---
 ## shell指令
 > shell指令基本都是对应英语的缩写，很好记忆，不过现在很少用，常用于运维
-1. cd <路径>
+1. `cd <路径>`
     - 进入指定路径
 2. ls 
     - 列出当前路径下的文件/文件夹
-3. del <文件/文件夹>
+3. `del <文件/文件夹>`
     - 删除指定文件/文件夹
-4. rm <文件/文件夹>
+4. `rm <文件/文件夹>`
     - 删除指定文件/文件夹
 ---
 ## python/pip
@@ -34,9 +34,9 @@ keywords: git，shell
     - PATH挂载的py解释器的版本
 2. pip list
     - pip在全局安装的python包
-3. pip install / uninstall <包名>
+3. `pip install / uninstall <包名>`
     - 全局安装/卸载指定包
-    - 如果在uv虚拟环境，则是uv install / uninstall <包名>
+    - 如果在uv虚拟环境，则是 `uv install / uninstall <包名>`
 ---
 ## npm
 > npm是JavaScript/typescript的包管理器
@@ -45,9 +45,9 @@ keywords: git，shell
     - PATH挂载的py解释器的版本
 2. npm list
     - pip在全局安装的python包
-3. npm install / uninstall <包名>
+3. `npm install / uninstall <包名>`
     - 全局安装/卸载指定包
-    - 如果在uv虚拟环境，则是uv install / uninstall <包名>
+    - 如果在uv虚拟环境，则是 `uv install / uninstall <包名>`
 4. npm run dev
     - 构建并启动服务本地预览
     - vue项目，electron项目，vue项目默认端口是5173

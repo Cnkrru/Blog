@@ -17,10 +17,12 @@ useHead({
     { property: 'og:description', content: 'Cnkrru的个人项目展示' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/projects' },
     { name: 'twitter:title', content: '项目 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: 'Cnkrru的个人项目展示' }
+    { name: 'twitter:description', content: 'Cnkrru的个人项目展示' },
+    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/projects' }
@@ -311,7 +313,7 @@ onMounted(() => {
     .card-desc { font-size: 0.82rem; }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 640px) {
     .projects-content { gap: 10px; }
     .projects-content > * { flex: 1 1 100%; }
     .project-card { min-height: 140px; }

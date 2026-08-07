@@ -218,7 +218,7 @@ onUnmounted(() => {
 
 <!-- 响应式 -->
 <style scoped>
-@media (max-width: 639px) {
+@media (max-width: 640px) {
     .reading-time-container {
         padding: 6px 10px;
         border-radius: 8px;

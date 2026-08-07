@@ -7,7 +7,7 @@
 
     <div v-if="error && !isLoading" class="error-message">
       <p>⚠️ {{ error }}</p>
-      <button @click="updateHeatmapData" class="retry-btn">重试</button>
+      <button @click="updateHeatmapData" class="retry-button" aria-label="重试">重试</button>
     </div>
 
     <div class="heatmap-header">
@@ -18,6 +18,7 @@
           :class="{ active: yearDropdownOpen }"
           @click="toggleYearDropdown"
           :disabled="isLoading"
+          aria-label="切换年份"
         >
           <span class="select-value">{{ selectedYear }}年</span>
           <span class="select-arrow" :class="{ rotated: yearDropdownOpen }"></span>
@@ -48,6 +49,7 @@
           :class="{ active: monthDropdownOpen }"
           @click="toggleMonthDropdown"
           :disabled="isLoading"
+          aria-label="切换月份"
         >
           <span class="select-value">{{ months[selectedMonth - 1] }}</span>
           <span class="select-arrow" :class="{ rotated: monthDropdownOpen }"></span>
@@ -186,7 +188,11 @@ const handleKeydown = (e: KeyboardEvent) => {
 }
 
 onMounted(async () => {
-  await updateHeatmapData()
+  try {
+    await updateHeatmapData()
+  } catch (e) {
+    console.error('加载热力图数据失败:', e)
+  }
   document.addEventListener('click', handleClickOutside)
   document.addEventListener('keydown', handleKeydown)
 })
@@ -246,13 +252,17 @@ const processArticleData = (articles, year) => {
 let cachedArticles = null
 
 const updateHeatmapData = async () => {
-  if (!cachedArticles) {
-    cachedArticles = await fetchArticleData()
+  try {
+    if (!cachedArticles) {
+      cachedArticles = await fetchArticleData()
+    }
+    yearData.value = processArticleData(cachedArticles, selectedYear.value)
+    currentMonthData.value = yearData.value
+      .filter(item => item.month === selectedMonth.value)
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+  } catch (e) {
+    console.error('加载热力图数据失败:', e)
   }
-  yearData.value = processArticleData(cachedArticles, selectedYear.value)
-  currentMonthData.value = yearData.value
-    .filter(item => item.month === selectedMonth.value)
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
 }
 
 const onMonthChange = () => {
@@ -319,20 +329,6 @@ const onMonthChange = () => {
   margin: 0 0 8px;
   color: var(--common-text);
   font-size: 13px;
-}
-
-.retry-btn {
-  padding: 6px 16px;
-  border-radius: 16px;
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border: none;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.retry-btn:hover {
-  filter: brightness(1.1);
 }
 
 .no-data {

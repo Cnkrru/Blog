@@ -86,7 +86,7 @@ watch(() => props.type, () => loadContentData())
     <div v-else-if="error" class="error-message">
       <div class="error-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       <p>{{ error }}</p>
-      <button class="retry-button" @click="retry">重试</button>
+      <button class="retry-button" @click="retry" aria-label="重试">重试</button>
     </div>
     
     <!-- 内容状态 -->
@@ -169,20 +169,6 @@ watch(() => props.type, () => loadContentData())
   max-width: 400px;
 }
 
-.retry-button {
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-  font-weight: 500;
-  margin-top: 8px;
-}
-
-.retry-button:hover {
-  transform: translateY(-2px);
-}
-
 /* 内容状态 */
 .content-container {
   width: 100%;
@@ -236,18 +222,6 @@ watch(() => props.type, () => loadContentData())
   color: var(--common-color-1);
 }
 
-/* 重试按钮颜色 */
-.retry-button {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-2);
-  color: var(--common-content);
-}
-
-.retry-button:hover {
-  background-color: var(--common-hover);
-  box-shadow: 0 4px 8px var(--common-shadow);
-}
-
 /* 分隔线颜色 */
 .content-container hr {
   border: 1px solid var(--common-color-2);
@@ -281,11 +255,6 @@ watch(() => props.type, () => loadContentData())
   .loading-message p,
   .error-message p {
     font-size: 14px;
-  }
-  
-  .retry-button {
-    padding: 6px 12px;
-    font-size: 12px;
   }
   
   .content-container p {

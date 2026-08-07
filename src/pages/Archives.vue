@@ -18,8 +18,10 @@ useHead({
     { property: 'og:title', content: '归档 - Cnkrru\'s Blog' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:url', content: 'https://cnkrru.top/archives' }
+    { name: 'twitter:url', content: 'https://cnkrru.top/archives' },
+    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
   ],
   link: [{ rel: 'canonical', href: 'https://cnkrru.top/archives' }]
 })
@@ -32,7 +34,7 @@ const loadArticles = async () => {
   try {
     const data = await store.fetchArticles()
     articles.value = data.sort((a, b) => parseInt(b.id) - parseInt(a.id))
-  } catch { articles.value = [] }
+  } catch (e) { console.error('加载文章列表失败:', e); articles.value = [] }
 }
 
 // 按分类
@@ -95,14 +97,17 @@ onMounted(loadArticles)
       <button
         :class="['view-tab', { active: viewMode === 'category' }]"
         @click="viewMode = 'category'"
+        aria-label="按分类查看"
       >按分类</button>
       <button
         :class="['view-tab', { active: viewMode === 'year' }]"
         @click="viewMode = 'year'"
+        aria-label="按年查看"
       >按年</button>
       <button
         :class="['view-tab', { active: viewMode === 'month' }]"
         @click="viewMode = 'month'"
+        aria-label="按月查看"
       >按月</button>
     </div>
 

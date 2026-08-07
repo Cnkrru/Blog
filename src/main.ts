@@ -24,10 +24,6 @@ interface AppReturn {
   head: ReturnType<typeof createHead>
 }
 
-interface OptimizationModule {
-  initOptimizationSystem: () => void
-}
-
 /* 
 * ID: VUE项目初始化函数
 * fn：启用vue与插件pinia和vue-head
@@ -47,19 +43,9 @@ export function createApp(): AppReturn {
 
 
 
-// 仅客户端：挂载应用，同时异步加载性能优化模块（不阻塞渲染）
+// 仅客户端：挂载应用
 if (!import.meta.env.SSR) {
-  
   const { app } = createApp()
-
-  import('./utils/optimization-init.js')
-    .then((module: OptimizationModule) => {
-      module.initOptimizationSystem()
-      console.log('[info]优化系统已初始化')
-    })
-    .catch((err: unknown) => {
-      console.warn('[error]优化系统初始化失败:', err)
-    })
 
   // 挂载根目录app.vue 
   app.mount('#app')

@@ -34,7 +34,3 @@
     border: 3px solid var(--common-color-1);
 }
 </style>
-
-<!-- 响应式设计媒体查询 -->
-<style scoped>
-</style>

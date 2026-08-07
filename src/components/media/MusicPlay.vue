@@ -267,6 +267,4 @@ onUnmounted(() => {
 /* 按钮颜色由 Header.vue 统一管理 */
 </style>
 
-<!-- 响应式设计媒体查询 -->
-<style scoped>
-</style>
+

@@ -1,9 +1,31 @@
-# Vercel 部署忽略文件
+# ============================================================
+# Vercel 部署忽略 — Cnkrru's Blog
+# 这些文件/目录不会被上传到 Vercel 构建环境
+# ============================================================
+
+# 依赖
 node_modules/
+
+# 本地构建产物
 dist/
-.DS_Store
+
+# 版本控制
 .git/
+
+# 项目自定义目录
 app/
 release/
 temp/
+desktop/
+script/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 构建缓存
+.vite/
+.vite-ssg-temp/
+
+# 文档
 JS_TO_TS_MIGRATION.md

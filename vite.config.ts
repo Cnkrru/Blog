@@ -1,26 +1,20 @@
-// Cnkrru's Blog - Vite 构建配置
-// 导入ts工具函数
+// ============================================================
+// Cnkrru's Blog — Vite 构建配置
+// ============================================================
+
 import { defineConfig } from 'vite'
-// 导入vue
 import vue from '@vitejs/plugin-vue'
-// 导入vite插件，根据页面自动生成路由
-import Pages from 'vite-plugin-pages'
-// 构建node依赖包
 import { dirname } from 'path'
 import { fileURLToPath, URL } from 'node:url'
 
-// 导入自定义插件
 import copyJsFilesPlugin from './src/plugins/copy-js-files'
-import copyVercelConfigPlugin from './src/plugins/copy-vercel-config'
 import generateOgImagesPlugin from './src/plugins/generate-og-images'
 
-// 导入构建工具函数
 import { manualChunks } from './src/plugins/chunks'
 import { getIncludedRoutes } from './src/plugins/routes'
 import { onSsgFinished } from './src/plugins/seo'
 
-// 将文件url协议file://转为路径再获取文件路径
-// import.meta.url表示一个文件的路径,file:///D:/code_projects/frontend/vite.config.ts，在不同环境（node/brower值不同）
+// __dirname 在 ESM 中不可用，通过 import.meta.url 推导
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const includedRoutes = getIncludedRoutes(__dirname)
 
@@ -77,14 +71,7 @@ export default defineConfig(
       // 一般和该文件的头部导入一样
       plugins: [
         vue(),
-        Pages({
-          dirs: 'src/pages',
-          extensions: ['vue'],
-          importMode: 'sync',
-          exclude: ['**/*.md']
-        }),
         copyJsFilesPlugin(),
-        copyVercelConfigPlugin(),
         generateOgImagesPlugin()
       ],
 

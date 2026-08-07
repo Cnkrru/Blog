@@ -7,7 +7,7 @@
     
     <div v-else-if="error" class="github-error">
       <p>{{ error }}</p>
-      <button @click="fetchGitHubData" class="retry-button">重试</button>
+      <button @click="fetchGitHubData" class="retry-button" aria-label="重试">重试</button>
     </div>
     
     <div v-else-if="userData" class="github-content">
@@ -275,19 +275,6 @@ onMounted(() => {
     margin-bottom: 20px;
 }
 
-.retry-button {
-    margin-top: 16px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-}
-
-.retry-button:hover {
-    transform: translateY(-2px);
-}
-
 .github-content {
     display: flex;
     flex-direction: column;
@@ -484,15 +471,6 @@ onMounted(() => {
 .loading-spinner {
   border-color: color-mix(in srgb, var(--common-text) 12%, transparent);
   border-top-color: var(--common-color-1);
-}
-
-.retry-button {
-  background: var(--common-color-1);
-  color: var(--common-content);
-}
-
-.retry-button:hover {
-  background: color-mix(in srgb, var(--common-color-1) 85%, black);
 }
 
 .user-card {

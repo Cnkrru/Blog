@@ -7,7 +7,11 @@ const store = useArticlesStore()
 const articleCount = computed(() => store.totalArticles.toString())
 
 onMounted(async () => {
-  await store.fetchArticles()
+  try {
+    await store.fetchArticles()
+  } catch (e) {
+    console.error('加载文章数量失败:', e)
+  }
 })
 </script>
 
@@ -53,6 +57,4 @@ onMounted(async () => {
 }
 </style>
 
-<!-- 响应式设计媒体查询 -->
-<style scoped>
-</style>
+

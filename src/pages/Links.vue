@@ -17,10 +17,12 @@ useHead({
     { property: 'og:description', content: 'Cnkrru\'s Blog推荐的有趣网站和资源链接' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/links' },
     { name: 'twitter:title', content: '友链 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: 'Cnkrru\'s Blog推荐的有趣网站和资源链接' }
+    { name: 'twitter:description', content: 'Cnkrru\'s Blog推荐的有趣网站和资源链接' },
+    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/links' }
@@ -322,17 +324,17 @@ onMounted(() => {
 }
 
 .status-dot.online {
-  background: #22c55e;
-  box-shadow: 0 0 6px #22c55e;
+  background: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
 }
 
 .status-dot.offline {
-  background: #ef4444;
-  box-shadow: 0 0 6px #ef4444;
+  background: var(--color-error);
+  box-shadow: 0 0 6px var(--color-error);
 }
 
 .status-dot.checking {
-  background: #f59e0b;
+  background: var(--color-warning);
   animation: dotPulse 1.2s ease-in-out infinite;
 }
 
@@ -356,17 +358,17 @@ onMounted(() => {
 }
 
 .link-status-icon.online {
-  background: #22c55e;
-  box-shadow: 0 0 6px #22c55e;
+  background: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
 }
 
 .link-status-icon.offline {
-  background: #ef4444;
-  box-shadow: 0 0 6px #ef4444;
+  background: var(--color-error);
+  box-shadow: 0 0 6px var(--color-error);
 }
 
 .link-status-icon.checking {
-  background: #f59e0b;
+  background: var(--color-warning);
   animation: dotPulse 1.2s ease-in-out infinite;
 }
 
@@ -376,15 +378,15 @@ onMounted(() => {
 }
 
 .link-status-text.online {
-  color: #22c55e;
+  color: var(--color-success);
 }
 
 .link-status-text.offline {
-  color: #ef4444;
+  color: var(--color-error);
 }
 
 .link-status-text.checking {
-  color: #f59e0b;
+  color: var(--color-warning);
 }
 
 .link-card.offline {
@@ -433,7 +435,7 @@ onMounted(() => {
 
 <style scoped>
 /* 响应式设计媒体查询 */
-@media (max-width: 639px) {
+@media (max-width: 640px) {
     .links-content {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 10px;

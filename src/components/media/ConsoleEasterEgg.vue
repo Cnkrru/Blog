@@ -27,10 +27,3 @@ onMounted(() => {
 }
 </style>
 
-<!-- 颜色样式 -->
-<style scoped>
-</style>
-
-<!-- 响应式设计媒体查询 -->
-<style scoped>
-</style>

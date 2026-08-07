@@ -9,6 +9,10 @@ const route = useRoute()
 
 useHead({
   title: '搜索 - Cnkrru\'s Blog',
+  meta: [
+    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
+    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
+  ],
   link: [{ rel: 'canonical', href: 'https://cnkrru.top/search' }]
 })
 
@@ -35,8 +39,12 @@ function highlightMatch(text: string): string {
 
 onMounted(async () => {
   loading.value = true
-  const data = await store.fetchArticles()
-  articles.value = data.filter((a: any) => a.id !== 'terminal')
+  try {
+    const data = await store.fetchArticles()
+    articles.value = data.filter((a: any) => a.id !== 'terminal')
+  } catch (e) {
+    console.error('加载搜索页面数据失败:', e)
+  }
   const q = route.query.q as string
   if (q) query.value = q
   loading.value = false

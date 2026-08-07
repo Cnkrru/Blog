@@ -45,7 +45,7 @@ defineProps<{ title: string; url: string; description?: string }>()
   margin: 0 8px;
 }
 
-@media (max-width: 639px) {
+@media (max-width: 640px) {
   .action-bar-inner {
     flex-direction: column;
     gap: 8px;

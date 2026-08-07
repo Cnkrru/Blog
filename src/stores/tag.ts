@@ -11,6 +11,7 @@ export interface TagStat {
 export const useTagStore = defineStore('tag', () => {
   const tags = ref<string[]>([])
   const tagStats = ref<TagStat[]>([])
+  const allArticles = ref<any[]>([])
   const sortBy = ref<'frequency' | 'count' | 'recent' | 'trending'>('frequency')
   const loading = ref<boolean>(false)
   const error = ref<string | null>(null)
@@ -68,6 +69,7 @@ export const useTagStore = defineStore('tag', () => {
 
       tagStats.value = stats.slice(0, 50)
       tags.value = tagStats.value.map(item => item.tag)
+      allArticles.value = articles
       lastLoaded.value = new Date()
     } catch (err) {
       console.error('[tagStore] 加载标签失败:', err)
@@ -92,7 +94,23 @@ export const useTagStore = defineStore('tag', () => {
   }
 
   const getRelatedTags = (_tag: string, _limit: number = 5): string[] => {
-    return []
+    // 返回与给定标签相关的其他标签，按共现频率排序
+    const articles = allArticles.value
+    if (articles.length === 0) return []
+
+    const cooccurrence = new Map<string, number>()
+    for (const article of articles) {
+      if (!article.tags || !article.tags.includes(_tag)) continue
+      for (const t of article.tags) {
+        if (t === _tag) continue
+        cooccurrence.set(t, (cooccurrence.get(t) || 0) + 1)
+      }
+    }
+
+    return Array.from(cooccurrence.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, _limit)
+      .map(([tag]) => tag)
   }
 
   const setSortBy = (newSortBy: 'frequency' | 'count' | 'recent' | 'trending'): void => {

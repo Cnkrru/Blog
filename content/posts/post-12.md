@@ -44,10 +44,10 @@ keywords: Cpp
 }
 ```
 - 编译器名：MinGW（也可以用MSVC）
-- 编译器自带库路径：<>
-- 包管理器路径：<>
-- 编译器路径：<>
-- C与Cpp标准：<>
+- 编译器自带库路径：`<>`
+- 包管理器路径：`<>`
+- 编译器路径：`<>`
+- C与Cpp标准：`<>`
 ---
 ## vector
 > 标准库
@@ -127,7 +127,7 @@ std::unordered_set<int> un_set = [1,2,3]        // 无序，哈希表
     - var_s1 + '' + var_s2
 3. 追加
     - 支持append追加
-    - var_s.append('<内容>')
+    - var_s.append(`<内容>`)
 4. 长度判断
     - 支持size与empty判断字符串长度
     - var_s.size()
@@ -136,20 +136,20 @@ std::unordered_set<int> un_set = [1,2,3]        // 无序，哈希表
         - 返回布尔值
 5. 分块取子串
     - 支持参数切割字符串
-    - var_s.substr(<参数>)
+    - var_s.substr(`<参数>`)
 6. 查找
     - 支持find查找
-    - var_s.find('<字符串>')
+    - var_s.find(`<字符串>`)
     - 查找的是第一次出现的位置
 7. 替换
     - 支持replace替换
-    - var_s.replace(<参数>,<字符串>)
+    - var_s.replace(`<参数>`,`<字符串>`)
 8. 插入
     - 支持insert插入字符串
-    - var_s.insert(<参数>,<字符串>)
+    - var_s.insert(`<参数>`,`<字符串>`)
 9. 删除
     - 支持erase删除字符串
-    - var_s.erase(<参数>)
+    - var_s.erase(`<参数>`)
 
 |参数|范围|
 |---|---|
@@ -256,15 +256,15 @@ while (iss >> word)
 ---
 ## fmt
 > 第三方库。只能输出
-> 导入'#include '<fmt/<子文件>>' ->如果是用包管理器vcpkg，需要在配置json写出其位置
+> 导入 `#include <fmt/<子文件>>` ->如果是用包管理器vcpkg，需要在配置json写出其位置
 1. core.h
     1. print()
         - 格式化输出 
         - {},{},{} 支持参数传递
 2. color.h
     1. fg frontgroud前景色
-        - print(fmt::fg(fmt::color:;<颜色>),<字符串>)
+        - print(fmt::fg(fmt::color:;`<颜色>`),`<字符串>`)
     2. bg background背景色
-        - print(fmt::bg(fmt::color:;<颜色>),<字符串>)
+        - print(fmt::bg(fmt::color:;`<颜色>`),`<字符串>`)
 ---
 

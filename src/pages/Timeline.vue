@@ -20,9 +20,11 @@ useHead({
     { property: 'og:title', content: '标签 - Cnkrru\'s Blog' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
+    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/timeline' },
-    { name: 'twitter:title', content: '标签 - Cnkrru\'s Blog' }
+    { name: 'twitter:title', content: '标签 - Cnkrru\'s Blog' },
+    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/timeline' }
@@ -183,7 +185,7 @@ onMounted(async () => {
             placeholder="搜索标签..."
             class="search-input"
           >
-          <button v-if="searchQuery" @click="clearSearch" class="clear-btn">x</button>
+          <button v-if="searchQuery" @click="clearSearch" class="clear-btn" aria-label="清除搜索">x</button>
         </div>
         <div class="sort-options">
           <span class="sort-label">排序:</span>
@@ -220,7 +222,7 @@ onMounted(async () => {
         <div class="selected-tag-header">
           <span class="sel-label">当前标签: <strong>{{ selectedTag }}</strong></span>
           <span class="sel-count">{{ tagArticles.length }} 篇文章</span>
-          <button class="sel-clear" @click="selectTag(selectedTag)">x 清除</button>
+          <button class="sel-clear" @click="selectTag(selectedTag)" aria-label="清除筛选">x 清除</button>
         </div>
         <div v-if="getRelatedTags(selectedTag).length > 0" class="related-tags-row">
           <span class="related-label">相关标签:</span>
@@ -957,7 +959,7 @@ onMounted(async () => {
 
 <!-- 响应式 -->
 <style scoped>
-@media (max-width: 639px) {
+@media (max-width: 640px) {
   .timeline {
     padding-left: 20px;
   }

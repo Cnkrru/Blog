@@ -5,6 +5,7 @@
       :class="{ disabled: !prevPost, loading: loadingPrev }"
       @click="handlePrev"
       :disabled="!prevPost"
+      aria-label="上一篇文章"
     >
       <span class="post-nav-btn-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -23,6 +24,7 @@
       :class="{ disabled: !nextPost, loading: loadingNext }"
       @click="handleNext"
       :disabled="!nextPost"
+      aria-label="下一篇文章"
     >
       <div class="post-nav-btn-text">
         <span class="post-nav-btn-label">下一篇</span>
@@ -247,7 +249,7 @@ onUnmounted(() => {
 
 <style scoped>
 /* ========== 响应式适配 (Responsive) ========== */
-@media (max-width: 639px) {
+@media (max-width: 640px) {
   .post-nav-container {
     flex-direction: column;
     gap: 8px;

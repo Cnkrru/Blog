@@ -115,7 +115,7 @@ onUnmounted(() => {
 
           <div v-else-if="error" class="popup-error">
             <span>统计数据加载失败</span>
-            <button class="retry-btn" @click="loading = true; error = false; fetchBusuanzi()">重试</button>
+            <button class="retry-button" @click="loading = true; error = false; fetchBusuanzi()">重试</button>
           </div>
 
           <div v-else class="stats-grid">
@@ -274,21 +274,6 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-}
-
-.retry-btn {
-  padding: 4px 16px;
-  border-radius: 6px;
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 40%, transparent);
-  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
-  color: var(--common-color-1);
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.retry-btn:hover {
-  background: color-mix(in srgb, var(--common-color-1) 35%, transparent);
 }
 
 .stats-grid {

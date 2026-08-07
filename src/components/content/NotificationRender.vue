@@ -264,9 +264,9 @@ if (typeof window !== 'undefined') {
   box-shadow: 0 4px 20px var(--common-shadow);
 }
 
-.notification.success { border-left-color: #22c55e; }
-.notification.error { border-left-color: #ef4444; }
-.notification.warning { border-left-color: #f59e0b; }
+.notification.success { border-left-color: var(--color-success); }
+.notification.error { border-left-color: var(--color-error); }
+.notification.warning { border-left-color: var(--color-warning); }
 .notification.info { border-left-color: var(--common-color-1); }
 
 .notif-progress {
@@ -277,14 +277,14 @@ if (typeof window !== 'undefined') {
   color: #fff;
 }
 
-.notification.success .notif-icon { background: #22c55e; }
-.notification.error .notif-icon { background: #ef4444; }
-.notification.warning .notif-icon { background: #f59e0b; color: #333; }
+.notification.success .notif-icon { background: var(--color-success); }
+.notification.error .notif-icon { background: var(--color-error); }
+.notification.warning .notif-icon { background: var(--color-warning); color: #333; }
 .notification.info .notif-icon { background: var(--common-color-1); }
 
-.notification.success .notif-progress { background: #22c55e; }
-.notification.error .notif-progress { background: #ef4444; }
-.notification.warning .notif-progress { background: #f59e0b; }
+.notification.success .notif-progress { background: var(--color-success); }
+.notification.error .notif-progress { background: var(--color-error); }
+.notification.warning .notif-progress { background: var(--color-warning); }
 
 .notif-message { color: var(--common-text); }
 .notif-close { color: var(--common-text); }

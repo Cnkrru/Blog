@@ -15,6 +15,10 @@
   --common-cursor: #e8758f;         /* 樱粉指针 */
   --common-gradient: linear-gradient(90deg, #f9c5d1, #f7a8c0, #c9a0e0, #f7a8c0, #f9c5d1);
   --glass-r: 255; --glass-g: 250; --glass-b: 252; /* 樱白亮面 RGB */
+  --text-secondary: #666;      /* 次要文字 */
+  --color-error: #dc3545;      /* 错误/危险 */
+  --color-success: #28a745;    /* 成功 */
+  --color-warning: #f59e0b;    /* 警告 */
 }
 [data-style="sakura"].dark-theme,
 [data-style="sakura"] body.dark-theme {
@@ -28,6 +32,10 @@
   --common-cursor: #e58fb0;
   --common-gradient: linear-gradient(90deg, #d56b9a, #9a6cc9, #c77fd0, #9a6cc9, #d56b9a);
   --glass-r: 37; --glass-g: 22; --glass-b: 56; /* 夜紫面 RGB */
+  --text-secondary: #999;      /* 次要文字（暗色下更亮） */
+  --color-error: #f06070;      /* 错误/危险（暗色下更亮） */
+  --color-success: #48c060;    /* 成功（暗色下更亮） */
+  --color-warning: #f5b040;    /* 警告（暗色下更亮） */
 }
 
 /* 鼠标指针：粉色 */

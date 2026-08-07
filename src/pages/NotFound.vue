@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: '页面未找到 - Cnkrru\'s Blog',
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' }
+  ]
+})
 
 const router = useRouter()
 const goHome = () => {
@@ -61,7 +69,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
       </p>
 
       <div class="actions">
-        <button class="back-btn" @click="goHome">
+        <button class="back-btn" @click="goHome" aria-label="返回首页">
           <span class="btn-icon">🏠</span>
           返回首页
         </button>
