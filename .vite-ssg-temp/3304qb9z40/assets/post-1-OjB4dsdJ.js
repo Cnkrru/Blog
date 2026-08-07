@@ -1,4 +1,0 @@
-//#region content/posts/post-1.md?raw
-var post_1_default = "---\ntitle: 个人博客介绍\ndate: 2026-03-29\ncategory: 前端\ntags: [前端, 博客]\ndescription: 一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，提供快速、优雅的写作和阅读体验。\nkeywords: 个人博客, Vue 3, Vite, 前端项目, Markdown, 代码高亮, 数学公式, 响应式设计\n---\n## 博客介绍\n\n1. 该博客基于vue3\n2. 使用vue插件来实现类似SSG的效果\n\n### 简介\n\n> 作者先前用过hexo，hugo这些SSG，后希望基于HTML，CSS，JavaScript自定义，实现部分功能（约现在的60%）后，转而用vue搭建，js也逐渐转为ts。\n\n> 博客和其他SSG一样，自己只需要写markdown文章，有vue组件来实现渲染，可以用插件，但插件效果不符合预期，一开始决定自己制作渲染组件，但是技术有限，制作的渲染组件功能不完整，遂转用CDN引入渲染脚本。\n\n> 因为不准备做后端，所以用py制作一个UI工具管理博客，实现自动化，主要是修改配置文件，创建草稿，备份什么的，也是ai写的，作者只是知道该用哪些包，该如何实现预期功能。\n\n### 第三方功能介绍\n\n1. 不蒜子统计\n2. 谷歌分析、百度分析、vercel分析\n3. giscus评论\n5. 天气API\n6. IP地址API\n7. 樱花雪花动态背景\n8. 访客地图\n---\n\n### 联系方式\n\n> 编辑于2026-03-30\n> 作者：Cnkrru\n> 联系方式：3253884026@qq.com\n";
-//#endregion
-export { post_1_default as default };

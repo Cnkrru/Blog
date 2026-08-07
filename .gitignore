@@ -33,6 +33,7 @@ temp/
 
 # Vite
 .vite/
+.vite-ssg-temp/
 
 # Environment variables
 .env
