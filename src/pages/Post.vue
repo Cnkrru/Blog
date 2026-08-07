@@ -195,11 +195,6 @@ onMounted(() => {
     <hr>
 
     <div class="center-card-content" ref="contentCard">
-        <!-- 文章封面图 -->
-        <div class="post-cover" v-if="!loading && !error && post">
-          <img :src="`/og/post-${post.id}.svg`" :alt="post.title" class="cover-image" />
-        </div>
-
         <ReadingTime v-if="!loading && !error" />
         <ContentRender 
             :key="postId"
@@ -283,21 +278,6 @@ onMounted(() => {
 </style>
 
 <style scoped>
-/* 封面图 */
-.post-cover {
-    margin: 0 0 20px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-    margin-bottom: 10px;
-    box-shadow: 0 2px 8px var(--common-shadow);
-}
-
-.cover-image {
-    width: 100%;
-    display: block;
-}
-
 /* 颜色样式 */
 .loading-message,
 .error-message {
