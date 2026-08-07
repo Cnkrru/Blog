@@ -125,21 +125,6 @@ const loadCDN = async () => {
   if (window.marked && typeof window.marked === 'object') {
     // 确保marked是一个函数
     if (typeof window.marked.parse === 'function') {
-      // 配置标题自动生成 id，支持中文字符作为锚点
-      if (window.marked.use) {
-        window.marked.use({
-          renderer: {
-            heading(text: string, level: number) {
-              const id = text
-                .toLowerCase()
-                .replace(/<[^>]*>/g, '')
-                .replace(/[^\w\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]+/g, '-')
-                .replace(/^-+|-+$/g, '')
-              return `<h${level} id="${id}">${text}</h${level}>`
-            }
-          }
-        })
-      }
     } else if (typeof window.marked === 'function') {
     } else {
       console.error('marked.js API结构异常', window.marked)
@@ -378,9 +363,10 @@ const renderMarkdown = async () => {
       }
     }
     
-    // 添加图片点击事件
+    // 添加图片点击事件和标题锚点
     nextTick(() => {
       addImageClickListeners()
+      addHeadingIds()
     })
   } catch (error) {
     console.error('渲染Markdown时出错:', error)
@@ -413,6 +399,26 @@ const addImageClickListeners = () => {
     })
 
     lightboxImages.value = imageData
+  }, 100)
+}
+
+// 为标题生成 id，支持中文锚点跳转
+const generateHeadingId = (text: string): string => {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\u4e00-\u9fff]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+const addHeadingIds = () => {
+  setTimeout(() => {
+    const headings = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6')
+    headings.forEach((h) => {
+      const text = h.textContent?.trim() || ''
+      if (text && !h.id) {
+        h.id = generateHeadingId(text)
+      }
+    })
   }, 100)
 }
 
