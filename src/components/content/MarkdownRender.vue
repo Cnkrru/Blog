@@ -125,6 +125,21 @@ const loadCDN = async () => {
   if (window.marked && typeof window.marked === 'object') {
     // 确保marked是一个函数
     if (typeof window.marked.parse === 'function') {
+      // 配置标题自动生成 id，支持中文字符作为锚点
+      if (window.marked.use) {
+        window.marked.use({
+          renderer: {
+            heading(text: string, level: number) {
+              const id = text
+                .toLowerCase()
+                .replace(/<[^>]*>/g, '')
+                .replace(/[^\w\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+              return `<h${level} id="${id}">${text}</h${level}>`
+            }
+          }
+        })
+      }
     } else if (typeof window.marked === 'function') {
     } else {
       console.error('marked.js API结构异常', window.marked)
