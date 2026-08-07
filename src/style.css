@@ -148,12 +148,8 @@ body.dark-theme ::-webkit-scrollbar-thumb {
     scrollbar-color: var(--common-color-1) transparent;
 }
 
-/*==============================SVG 图标暗色主题统一变白==============================*/
+/*==============================OG 图片暗色主题适配==============================*/
 body:not(.dark-theme) img[src*="/og/"] {
-    filter: invert(1);
-}
-
-body.dark-theme img[src$=".svg"]:not([src*="/og/"]) {
     filter: invert(1);
 }
 

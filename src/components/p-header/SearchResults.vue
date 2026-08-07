@@ -113,14 +113,10 @@ const handleResultClick = (item) => {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
   box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.06),
     0 8px 24px rgba(0, 0, 0, 0.10);
-}
-
-body.dark-theme .search-results {
-  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .search-empty {

@@ -121,7 +121,7 @@ onUnmounted(() => {
       <!-- 字数统计 -->
       <div class="word-count-section">
         <span class="word-count-icon">
-          <img src="../../assets/imgs/svg/file-text.svg" alt="" width="16" height="16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         </span>
         <span class="word-count-text">
           字数统计: {{ readingTime.totalWords }} 字
@@ -134,7 +134,7 @@ onUnmounted(() => {
       <!-- 阅读时间 -->
       <div class="reading-time-section">
         <span class="reading-time-icon">
-          <img src="../../assets/imgs/svg/clock.svg" alt="" width="16" height="16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </span>
         <span class="reading-time-text">
           预计阅读时间: {{ formatTime(readingTime) }}
@@ -207,13 +207,9 @@ onUnmounted(() => {
 <!-- 颜色样式 -->
 <style scoped>
 .reading-time-container {
-    background: rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
+    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
     color: var(--common-text);
-}
-body.dark-theme .reading-time-container {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.08);
 }
 .word-count-detail {
     opacity: 0.55;

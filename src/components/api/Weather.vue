@@ -317,14 +317,9 @@ onMounted(() => {
 
 <style scoped>
 .weather-mini {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
   color: var(--common-text);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-body.dark-theme .weather-mini {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .weather-icon {

@@ -88,11 +88,7 @@
     font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.2px;
-}
-
-body.dark-theme :deep(.center-head-card h2) {
-    color: #fff;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+    text-shadow: 0 0 20px color-mix(in srgb, var(--common-text) 25%, transparent);
 }
 
 /* 分割线 */
@@ -114,12 +110,8 @@ body.dark-theme :deep(.center-head-card h2) {
 
 /* 内部带边框卡片 — 加深边框，与毛玻璃背景有区分度 */
 :deep(.center-card-bordered) {
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid color-mix(in srgb, var(--common-text) 10%, transparent);
     border-radius: 12px;
-}
-
-body.dark-theme :deep(.center-card-bordered) {
-    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 </style>
 

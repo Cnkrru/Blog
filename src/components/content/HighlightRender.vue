@@ -15,9 +15,7 @@
       <div v-if="showLineNumbers" class="line-numbers">
         <span v-for="line in generateLineNumbers()" :key="line" class="line-number">{{ line }}</span>
       </div>
-      <pre class="code-content">
-        <code ref="codeRef" :class="`language-${language}`">{{ code }}</code>
-      </pre>
+      <pre class="code-content"><code ref="codeRef" :class="`language-${normalizedLanguage}`">{{ code }}</code></pre>
       <!-- 行号高亮的 overlay 层 -->
       <div v-if="showLineNumbers" class="line-highlight-overlay" ref="lineOverlayRef">
         <div
@@ -65,6 +63,18 @@ const isLoaded = computed(() => codeStore.isPrismLoaded)
 const showLineNumbers = computed(() => props.showLineNumbers && codeStore.lineNumbersEnabled)
 const showCopyButton = computed(() => props.showCopyButton && codeStore.copyEnabled)
 
+// 语言名标准化：Prism.js 只认小写，且有自己的命名规则
+const langAlias: Record<string, string> = {
+  cpp: 'cpp', Cpp: 'cpp', CPP: 'cpp', 'c++': 'cpp', 'C++': 'cpp',
+  c: 'c', C: 'c',
+  js: 'javascript', JS: 'javascript',
+  ts: 'typescript', TS: 'typescript',
+  py: 'python', PY: 'python',
+  sh: 'bash', SH: 'bash',
+  vue: 'vue', Vue: 'vue',
+}
+const normalizedLanguage = computed(() => langAlias[props.language] || props.language.toLowerCase())
+
 // 加载 Prism.js CDN
 const loadPrism = () => {
   return new Promise((resolve, reject) => {
@@ -85,7 +95,7 @@ const loadPrism = () => {
     script.src = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js'
     script.onload = () => {
       // 加载常用语言
-      const languages = ['javascript', 'typescript', 'css', 'html', 'json', 'python', 'bash', 'vue']
+      const languages = ['javascript', 'typescript', 'css', 'html', 'json', 'python', 'bash', 'vue', 'c', 'cpp']
       let loadedCount = 0
 
       const checkComplete = () => {
@@ -354,25 +364,15 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 <style scoped>
 /* 颜色样式 */
 .code-container {
-  background: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .code-container {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
+  box-shadow: 0 1px 3px var(--common-shadow);
 }
 
 /* 代码头部 */
 .code-header {
-  background: rgba(255, 255, 255, 0.5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .code-header {
-  background: rgba(255, 255, 255, 0.04);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 /* 语言标签 */

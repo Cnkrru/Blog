@@ -17,9 +17,8 @@ keywords: 前端组件, 沉浸阅读, TypeScript
 ---
 
 ### 代码:
-```typescript
-
-const toggleReading = (): void=> {
+```javascript
+const toggleReading = ()=> {
   document.body.classList.toggle('immersive-reading')
 }
 ```

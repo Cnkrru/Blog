@@ -19,16 +19,15 @@ keywords: 前端, 组件, 返回顶部, TypeScript
 ## 代码:
 
 ### 固定位置的返回顶部按钮
-```ts
-
+```javascript
 // 选择监听sample-card区域=>作为滚动的区域
 // 选择返回顶部按钮的容器=>用于绑定click事件
-const backTopArea = document.querySelector('.sample-card') as HTMLElement | null;
-const backTopBtn = document.querySelector('.back-to-top') as HTMLElement | null;
+const backTopArea = document.querySelector('.sample-card');
+const backTopBtn = document.querySelector('.back-to-top');
 
-const backToTop = (): void=> {
+const backToTop = ()=> {
   // 绑定click事件
-  backTopBtn.addEventListener('click', (): void => {
+  backTopBtn.addEventListener('click', ()=> {
     // 使用scrollTo()返回顶部
     backTopArea.scrollTo({
       top: 0,
@@ -40,17 +39,16 @@ const backToTop = (): void=> {
 ---
 
 ### 阅读指定px后，在特定位置出现返回顶部按钮
-```ts
-
+```javascript
 // 设置的出现高度
 // 选择返回顶部按钮的容器=>用于绑定click事件
 // 选择文章内容的容器=>用于监听滚动距离
 const height : number = 1000
-const backTopBtn : HTMLElement | null = document.querySelector('.back-to-top') as HTMLElement | null;
-const backTopArea : HTMLElement | null = document.querySelector('.sample-card') as HTMLElement | null;
+const backTopBtn = document.querySelector('.back-to-top');
+const backTopArea = document.querySelector('.sample-card');
 
 // 显示
-const btnShow = (): void=> {
+const btnShow = ()=> {
   if (backTopArea.scrollTop > height)
   {
     backTopBtn.style.display = 'block'
@@ -62,8 +60,8 @@ const btnShow = (): void=> {
 }
 
 // 滚动
-const backToTop = (): void=> {
-  backTopBtn.addEventListener('click', (): void => {
+const backToTop = ()=> {
+  backTopBtn.addEventListener('click', ()=> {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'

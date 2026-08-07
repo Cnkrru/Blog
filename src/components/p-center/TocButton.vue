@@ -20,81 +20,90 @@ const toggleToc = () => {
 
 <template>
   <div class="toc-btn-container" :class="{ 'dark-theme': isDarkTheme }">
-    <button 
-      class="toc-btn" 
+    <button
+      class="toc-btn"
       @click="toggleToc"
       :class="{ active: tocStore.show }"
       :title="tocStore.show ? '关闭目录' : '打开目录'"
     >
-      <img src="../../assets/imgs/svg/toc-list.svg" alt="" width="18" height="18" class="toc-icon">
+      <!-- 列表图标（默认） -->
+      <svg
+        v-if="!tocStore.show"
+        class="toc-btn-icon"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <!-- 关闭图标（展开时） -->
+      <svg
+        v-else
+        class="toc-btn-icon"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
     </button>
   </div>
 </template>
 
 <style scoped>
 .toc-btn-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .toc-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--common-color-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  background: var(--common-color-1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+  position: relative;
 }
 
-.toc-icon {
-    width: 16px;
-    height: 16px;
-}
-
-.toc-count {
-    min-width: 18px;
-    font-size: 12px;
-    font-weight: bold;
-    text-align: center;
-    padding: 2px 6px;
-    border-radius: 10px;
-    margin-left: 6px;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-}
-</style>
-
-<style scoped>
-.toc-btn {
-    background: var(--common-color-1);
-    border: 1px solid var(--common-color-1);
-}
-
-.toc-icon {
-    filter: brightness(0) invert(1);
+.toc-btn-icon {
+  color: #fff;
+  transition: transform 0.25s ease;
 }
 
 .toc-btn:hover {
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--common-color-1) 35%, transparent);
+  transform: scale(1.1);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
 
-.toc-count {
-    display: none;
+.toc-btn:active {
+  transform: scale(0.95);
 }
-</style>
 
-<style scoped>
+.toc-btn.active {
+  background: color-mix(in srgb, var(--common-color-1) 85%, var(--common-text));
+  border-color: transparent;
+}
+
+/* 响应式 */
 @media (max-width: 640px) {
-    .toc-btn {
-        width: 32px;
-        height: 32px;
-    }
-    .toc-icon {
-        width: 14px;
-        height: 14px;
-    }
+  .toc-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .toc-btn-icon {
+    width: 14px;
+    height: 14px;
+  }
 }
 </style>

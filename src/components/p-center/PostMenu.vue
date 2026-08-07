@@ -80,67 +80,121 @@ onMounted(() => {
   <div class="post-menu-container">
     <!-- 文章菜单按钮 -->
     <div class="post-menu-btn-container">
-      <button class="post-menu-btn" @click="toggleMenu">
-        <img src="../../assets/imgs/svg/menu.svg" alt="" width="18" height="18">
+      <button class="post-menu-btn" @click="toggleMenu" :title="show ? '关闭菜单' : '文章菜单'">
+        <svg
+          v-if="!show"
+          class="menu-btn-icon"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg
+          v-else
+          class="menu-btn-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
       </button>
     </div>
 
     <!-- 文章菜单卡片 -->
     <Teleport to="body">
-    <div class="post-menu-card" :class="{ active: show }">
-      <div class="post-menu-card-header">
-        <h3>文章菜单</h3>
-        <button class="post-menu-close-btn" @click="toggleMenu">
-          <img src="../../assets/imgs/svg/close.svg" alt="" width="20" height="20">
-        </button>
-      </div>
-      <div class="post-menu-card-content">
+      <div class="post-menu-card" :class="{ active: show }">
+        <!-- 头部 -->
+        <div class="post-menu-card-header">
+          <div class="post-menu-header-left">
+            <svg class="post-menu-header-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>文章菜单</h3>
+            <span class="post-menu-count">{{ posts.length }}</span>
+          </div>
+          <button class="post-menu-close-btn" @click="toggleMenu" title="关闭">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="post-menu-divider"></div>
+
         <!-- 搜索和排序 -->
         <div class="post-menu-controls">
+          <!-- 搜索框 -->
           <div class="search-box">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 21L15 15M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
             <input
               type="text"
               v-model="searchKeyword"
-              placeholder="搜索文章..."
+              placeholder="搜索文章标题或标签..."
               class="menu-search-input"
             />
-            <button v-if="searchKeyword" @click="clearSearch" class="menu-clear-search-btn">
-              ×
+            <button v-if="searchKeyword" @click="clearSearch" class="menu-clear-search-btn" title="清除">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
             </button>
           </div>
+
+          <!-- 排序按钮 -->
           <div class="sort-controls">
-            <button 
+            <button
               @click="handleSortChange('id')"
-              class="sort-btn" 
+              class="sort-btn"
               :class="{ active: sortBy === 'id' }"
             >
               ID {{ getSortIcon('id') }}
             </button>
-            <button 
+            <button
               @click="handleSortChange('title')"
-              class="sort-btn" 
+              class="sort-btn"
               :class="{ active: sortBy === 'title' }"
             >
               标题 {{ getSortIcon('title') }}
             </button>
           </div>
         </div>
-        
+
+        <div class="post-menu-divider"></div>
+
         <!-- 文章列表 -->
-        <ul class="post-list">
-          <li 
-            v-for="(post, index) in posts" 
-            :key="post.id"
-            class="post-list-item"
-            @click="navigateToPost(post.id)"
-          >
-            <span class="post-id">#{{ index + 1 }}</span>
-            <span class="post-title">{{ post.title }}</span>
-            <span class="post-date">{{ post.date }}</span>
-          </li>
-        </ul>
+        <div class="post-menu-card-content">
+          <ul class="post-list">
+            <li
+              v-for="(post, index) in posts"
+              :key="post.id"
+              class="post-list-item"
+              @click="navigateToPost(post.id)"
+            >
+              <span class="post-index">{{ index + 1 }}</span>
+              <div class="post-info">
+                <span class="post-title">{{ post.title }}</span>
+                <div class="post-meta">
+                  <span class="post-date">{{ post.date }}</span>
+                  <span v-if="post.category" class="post-category">{{ post.category }}</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div v-if="!posts.length" class="post-list-empty">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 21L15 15M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>没有匹配的文章</span>
+          </div>
+        </div>
       </div>
-    </div>
     </Teleport>
   </div>
 </template>
@@ -148,268 +202,373 @@ onMounted(() => {
 <style scoped>
 /* ============================== 卡片容器 ============================== */
 .post-menu-card {
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translate(100%, -50%);
-    width: 300px;
-    max-height: 70vh;
-    border-right: none;
-    border-radius: 16px 0 0 16px;
-    z-index: 999;
-    overflow: hidden;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid var(--common-shadow);
-    box-shadow: -8px 0 40px var(--common-shadow);
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translate(100%, -50%);
+  width: 300px;
+  max-height: 70vh;
+  border-radius: 12px 0 0 12px;
+  z-index: 999;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.92);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid var(--common-shadow);
+  border-right: none;
+  box-shadow: -4px 0 28px color-mix(in srgb, var(--common-shadow) 50%, transparent);
 }
 
 .post-menu-card.active {
-    transform: translate(0, -50%);
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from { transform: translate(100%, -50%); opacity: 0; }
-    to   { transform: translate(0, -50%);     opacity: 1; }
+  transform: translate(0, -50%);
 }
 
 /* ============================== 卡片头部 ============================== */
 .post-menu-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--common-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 10px;
+  user-select: none;
+}
+
+.post-menu-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.post-menu-header-icon {
+  color: var(--common-text);
+  opacity: 0.5;
+  flex-shrink: 0;
 }
 
 .post-menu-card-header h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--common-text);
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--common-text);
+  letter-spacing: 0.3px;
+}
+
+.post-menu-count {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: 8px;
+  color: var(--common-text);
+  opacity: 0.5;
+  background: color-mix(in srgb, var(--common-text) 8%, transparent);
+  line-height: 1.5;
 }
 
 .post-menu-close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: var(--common-shadow);
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--common-text);
+  opacity: 0.45;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
 }
 
 .post-menu-close-btn:hover {
-    transform: rotate(90deg);
+  opacity: 0.8;
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
+  transform: rotate(90deg);
 }
 
-.post-menu-close-btn img {
-    filter: brightness(0) invert(1);
-    opacity: 0.8;
+.post-menu-divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--common-text) 8%, transparent);
+  margin: 0 16px;
 }
 
-/* ============================== 卡片内容 ============================== */
-.post-menu-card-content {
-    padding: 15px 20px;
-    max-height: calc(70vh - 60px);
-    overflow-y: auto;
-    color: var(--common-text);
-}
-
+/* ============================== 搜索和排序 ============================== */
 .post-menu-controls {
-    margin-bottom: 16px;
+  padding: 10px 16px;
 }
 
 /* 搜索框 */
 .search-box {
-    position: relative;
-    margin-bottom: 12px;
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--common-text);
+  opacity: 0.35;
+  pointer-events: none;
+  flex-shrink: 0;
 }
 
 .menu-search-input {
-    width: 100%;
-    padding: 8px 32px 8px 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.15));
-    color: var(--common-text);
-    border: 1px solid var(--common-shadow);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  padding: 7px 32px 7px 32px;
+  border-radius: 8px;
+  font-size: 13px;
+  background: color-mix(in srgb, var(--common-text) 5%, transparent);
+  color: var(--common-text);
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  outline: none;
 }
 
-.menu-search-input::placeholder { color: var(--common-text); opacity: 0.4; }
+.menu-search-input::placeholder {
+  color: var(--common-text);
+  opacity: 0.3;
+}
 
 .menu-search-input:focus {
-    outline: none;
-    border-color: var(--common-color-1);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--common-color-1) 20%, transparent);
+  border-color: color-mix(in srgb, var(--common-color-1) 40%, transparent);
+  background: color-mix(in srgb, var(--common-text) 3%, transparent);
 }
 
 .menu-clear-search-btn {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    color: var(--common-text);
-    opacity: 0.5;
-    transition: opacity 0.15s ease;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--common-text);
+  opacity: 0.35;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
 }
 
-.menu-clear-search-btn:hover { opacity: 1; }
+.menu-clear-search-btn:hover {
+  opacity: 0.8;
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
+}
 
 /* 排序按钮 */
 .sort-controls {
-    display: flex;
-    gap: 8px;
+  display: flex;
+  gap: 6px;
 }
 
 .sort-btn {
-    flex: 1;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    cursor: pointer;
-    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.15));
-    color: var(--common-text);
-    border: 1px solid var(--common-shadow);
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  flex: 1;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--common-text) 5%, transparent);
+  color: var(--common-text);
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  opacity: 0.7;
 }
 
 .sort-btn:hover {
-    border-color: var(--common-color-1);
-    color: var(--common-color-1);
+  opacity: 1;
+  border-color: color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  color: var(--common-color-1);
 }
 
 .sort-btn.active {
-    background: var(--common-color-1);
-    color: var(--common-content);
-    border-color: var(--common-color-1);
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border-color: var(--common-color-1);
+  opacity: 1;
+  font-weight: 500;
 }
 
 /* ============================== 文章列表 ============================== */
+.post-menu-card-content {
+  padding: 0 0 6px;
+  max-height: calc(70vh - 130px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--common-text) 12%, transparent) transparent;
+}
+
+.post-menu-card-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.post-menu-card-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.post-menu-card-content::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--common-text) 12%, transparent);
+  border-radius: 2px;
+}
+
 .post-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .post-list-item {
-    padding: 8px 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
-    margin-bottom: 4px;
-    animation: fadeIn 0.3s ease;
-    transition: background-color 0.15s ease, transform 0.15s ease;
+  padding: 9px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 6px;
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease;
+  transition: background-color 0.15s ease;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .post-list-item:hover {
-    transform: translateX(-4px);
-    background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
+  background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
 }
 
-.post-id {
-    font-weight: 600;
-    margin-right: 10px;
-    font-size: 13px;
-    min-width: 30px;
-    color: var(--common-color-1);
-    opacity: 0.7;
+.post-index {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--common-color-1);
+  background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
+  margin-top: 2px;
+}
+
+.post-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .post-title {
-    flex: 1;
-    font-size: 14px;
-    line-height: 1.5;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--common-text);
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--common-text);
+  font-weight: 500;
+}
+
+.post-list-item:hover .post-title {
+  color: var(--common-color-1);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .post-date {
-    font-size: 11px;
-    margin-left: 10px;
-    white-space: nowrap;
-    color: var(--common-text);
-    opacity: 0.4;
+  font-size: 11px;
+  color: var(--common-text);
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.post-category {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--common-color-1);
+  background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+/* 空状态 */
+.post-list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 0;
+  color: var(--common-text);
+  opacity: 0.3;
+  font-size: 13px;
 }
 
 /* ============================== 菜单按钮 ============================== */
 .post-menu-btn-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .post-menu-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    background: var(--common-color-1);
-    border: 1px solid var(--common-color-1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--common-color-1);
+  border: 1px solid var(--common-color-1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.post-menu-btn img {
-    filter: brightness(0) invert(1);
+.menu-btn-icon {
+  color: #fff;
 }
 
 .post-menu-btn:hover {
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--common-color-1) 35%, transparent);
+  transform: scale(1.1);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
-</style>
 
-<style scoped>
+.post-menu-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================== 响应式 ============================== */
 @media (max-width: 639px) {
-    .post-menu-card {
-        width: 240px;
-        max-height: 60vh;
-    }
-    .post-menu-card-header { padding: 12px 16px; }
-    .post-menu-card-header h3 { font-size: 14px; }
-    .post-menu-card-content {
-        padding: 12px 16px;
-        max-height: calc(60vh - 50px);
-    }
-    .post-list-item { padding: 6px 10px; }
-    .post-id { font-size: 12px; min-width: 25px; }
-    .post-title { font-size: 13px; }
-    .post-date { font-size: 10px; }
+  .post-menu-card {
+    width: 260px;
+    max-height: 60vh;
+  }
+  .post-menu-card-header { padding: 10px 14px 8px; }
+  .post-menu-card-header h3 { font-size: 13px; }
+  .post-menu-controls { padding: 8px 14px; }
+  .post-menu-card-content { max-height: calc(60vh - 120px); }
+  .post-list-item { padding: 7px 14px; }
+  .post-title { font-size: 12px; }
+  .post-menu-btn { width: 32px; height: 32px; }
 }
 
 @media (max-width: 768px) {
-    .post-menu-card { width: 260px; }
+  .post-menu-card { width: 280px; }
 }
 
 @media (max-width: 1024px) {
-    .post-menu-card { width: 280px; }
+  .post-menu-card { width: 290px; }
 }
 </style>

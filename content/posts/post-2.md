@@ -146,6 +146,7 @@ console.log('文章数:', posts.length)
 ## Python
 
 ```python
+from datetime import datetime
 
 class BlogPost:
     def __init__(self, title, content, author):

@@ -12,7 +12,6 @@
         <li ><router-link to="/search" class="page-card"> 搜索 </router-link></li>
         <li ><router-link to="/projects" class="page-card"> 项目 </router-link></li>
         <li ><router-link to="/settings" class="page-card"> 设置 </router-link></li>
-        <li ><router-link to="/rss.xml" target="_blank" rel="noopener noreferrer" class="page-card"> RSS </router-link></li>
       </ul>
   </div>
 </template>
@@ -72,27 +71,15 @@
 <!-- 颜色样式 -->
 <style scoped>
 .page-card {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
     color: var(--common-text);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-body.dark-theme .page-card {
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .page-card:hover {
-    background: rgba(255, 255, 255, 0.5);
-    border-color: rgba(255, 255, 255, 0.45);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-body.dark-theme .page-card:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.14);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
+    border-color: color-mix(in srgb, var(--common-text) 15%, transparent);
+    box-shadow: 0 4px 12px var(--common-shadow);
 }
 </style>
 

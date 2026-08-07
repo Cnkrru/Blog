@@ -340,22 +340,18 @@ onMounted(() => loadArticles())
 <!-- 颜色样式 -->
 <style scoped>
 .post-card {
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.5));
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.04);
   color: inherit;
 }
-body.dark-theme .post-card {
-  background: rgba(21, 7, 60, 0.5);
-  border-color: rgba(255, 255, 255, 0.06);
-}
 .post-card:hover {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.10), 0 0 0 1px rgba(255,192,203,0.15);
-  border-color: rgba(255, 192, 203, 0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.10), 0 0 0 1px color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  border-color: color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
-.post-card.pinned { border-color: rgba(255, 192, 203, 0.4); }
+.post-card.pinned { border-color: color-mix(in srgb, var(--common-color-1) 50%, transparent); }
 .card-cover { background: var(--common-bg); }
 .card-title { color: var(--common-text); }
 .card-date { color: var(--common-text); }

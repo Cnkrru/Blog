@@ -121,20 +121,14 @@ onUnmounted(() => { if (timer) clearTimeout(timer) })
 .btn-primary:hover { box-shadow: 0 8px 24px var(--common-shadow); }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
   color: var(--common-text);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid color-mix(in srgb, var(--common-text) 10%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 
-body.dark-theme .btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.btn-secondary:hover { background: rgba(255, 255, 255, 0.45); }
-body.dark-theme .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
+.btn-secondary:hover { background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5); }
 
 .hero-cards {
   max-width: 720px;
@@ -144,17 +138,12 @@ body.dark-theme .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
 .glass-card {
   border-radius: 16px;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
   display: flex;
   justify-content: center;
-}
-
-body.dark-theme .glass-card {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.08);
 }
 </style>
 

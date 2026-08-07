@@ -28,7 +28,7 @@ watch(() => props.url, () => { if (scriptLoaded.value) initButtons() })
 <template>
   <div class="share-container">
     <div class="share-header">
-      <img src="../../assets/imgs/svg/share.svg" alt="" width="18" height="18" class="share-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" class="share-icon"><path d="M832 128h-192v64h146.752l-265.376 265.376 45.248 45.248L832 237.248V384h64V128z"/><path d="M768 832H192V256h352V192H160a32 32 0 0 0-32 32v640a32 32 0 0 0 32 32h640a32 32 0 0 0 32-32V480h-64v352z"/></svg>
       <span class="share-title">分享这篇文章</span>
     </div>
     <div class="a2a_kit a2a_kit_size_32 a2a_default_style" :data-a2a-url="url" :data-a2a-title="title">

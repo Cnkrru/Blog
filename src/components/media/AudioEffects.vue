@@ -106,7 +106,7 @@ const closePanel = () => {
             {{ effectsEnabled ? '已启用' : '已关闭' }}
           </button>
           <button class="close-btn" @click="closePanel">
-            <img src="../../assets/imgs/svg/close.svg" alt="" width="14" height="14">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
         </div>
       </div>
@@ -283,35 +283,21 @@ const closePanel = () => {
 
 <style scoped>
 .effects-panel {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(0, 0, 0, 0.06);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-}
-
-body.dark-theme .effects-panel {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
+  box-shadow: 0 16px 48px var(--common-shadow);
 }
 
 .effects-header {
-  border-bottom-color: rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .effects-header {
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .effects-header h4 { color: var(--common-text); }
 
 .enable-btn {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
+  border-color: color-mix(in srgb, var(--common-text) 10%, transparent);
   color: var(--common-text);
-}
-
-body.dark-theme .enable-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .enable-btn.active {
@@ -321,13 +307,10 @@ body.dark-theme .enable-btn {
 }
 
 .close-btn {
-  background: rgba(0, 0, 0, 0.05);
+  background: color-mix(in srgb, var(--common-text) 8%, transparent);
   color: var(--common-text);
 }
-
-body.dark-theme .close-btn { background: rgba(255, 255, 255, 0.08); }
-.close-btn:hover { background: rgba(0, 0, 0, 0.1); }
-body.dark-theme .close-btn:hover { background: rgba(255, 255, 255, 0.15); }
+.close-btn:hover { background: color-mix(in srgb, var(--common-text) 15%, transparent); }
 
 .effect-label {
   color: var(--common-text);
@@ -336,18 +319,13 @@ body.dark-theme .close-btn:hover { background: rgba(255, 255, 255, 0.15); }
 }
 
 .toggle-btn {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
+  border-color: color-mix(in srgb, var(--common-text) 10%, transparent);
   color: var(--common-text);
 }
 
-body.dark-theme .toggle-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
 .toggle-btn:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: color-mix(in srgb, var(--common-text) 10%, transparent);
   border-color: var(--common-color-1);
 }
 
@@ -358,23 +336,13 @@ body.dark-theme .toggle-btn {
 }
 
 .chip-btn {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.08);
+  background: color-mix(in srgb, var(--common-text) 5%, transparent);
+  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
   color: var(--common-text);
 }
 
-body.dark-theme .chip-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
 .chip-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: var(--common-color-1);
-}
-
-body.dark-theme .chip-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--common-text) 8%, transparent);
   border-color: var(--common-color-1);
 }
 

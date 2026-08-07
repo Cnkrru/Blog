@@ -149,13 +149,9 @@ async function submitForm() {
 .field span { color: var(--common-text); opacity: 0.6; }
 
 .field input {
-  background: rgba(255, 255, 255, 0.4);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+  border-color: color-mix(in srgb, var(--common-text) 10%, transparent);
   color: var(--common-text);
-}
-body.dark-theme .field input {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.1);
 }
 .field input:focus {
   border-color: var(--common-color-1);

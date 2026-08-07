@@ -12,7 +12,6 @@ keywords: CSS, 初始化
 ### init.css
 
 ```css
-
 * {
     margin: 0;
     padding: 0;
@@ -68,7 +67,6 @@ hr {
 
 ### container.css
 ```css
-
 .container {
     width: 100%;
     height: 100%;

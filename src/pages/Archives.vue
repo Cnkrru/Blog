@@ -189,12 +189,8 @@ onMounted(loadArticles)
 }
 
 .arch-header:hover {
-  background: rgba(255, 192, 203, 0.15);
+  background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
   transform: translateY(-1px);
-}
-
-body.dark-theme .arch-header:hover {
-  background: rgba(58, 170, 231, 0.12);
 }
 
 .arch-name {

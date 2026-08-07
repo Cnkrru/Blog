@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useTocStore, useThemeStore } from '../../stores'
+import TocTreeItem from './TocTreeItem.vue'
 
 const props = defineProps<{ show?: boolean }>()
 const emit = defineEmits<{ 'update:show': [show: boolean] }>()
@@ -8,15 +9,14 @@ const emit = defineEmits<{ 'update:show': [show: boolean] }>()
 const tocStore = useTocStore()
 const themeStore = useThemeStore()
 
-const tocContentRef = ref(null)
+const tocContentRef = ref<HTMLElement | null>(null)
 const toc = ref<any[]>([])
 const collapsedSet = ref<Set<string>>(new Set())
 const expandedAll = ref(true)
 const activeId = ref('')
-const isDarkTheme = computed(() => themeStore.isDark)
 
 // 生成标题编号
-function genNum(index: number, level: number, counters: Record<number, number>): string {
+function genNum(_index: number, level: number, counters: Record<number, number>): string {
   counters[level] = (counters[level] || 0) + 1
   for (let i = level + 1; i <= 6; i++) counters[i] = 0
   let n = ''
@@ -41,28 +41,6 @@ function buildTree(flat: any[]): any[] {
 
 const treeToc = computed(() => buildTree(toc.value))
 
-function isVisible(node: any): boolean {
-  // 检查是否有任何一个祖先被折叠
-  const idx = toc.value.findIndex(i => i.id === node.id)
-  if (idx <= 0) return true
-  for (let i = idx - 1; i >= 0; i--) {
-    const p = toc.value[i]
-    if (p.level < node.level) {
-      if (collapsedSet.value.has(p.id)) return false
-      break
-    }
-  }
-  return true
-}
-
-function isChildActive(node: any): boolean {
-  if (node.id === activeId.value) return true
-  for (const c of node.children) {
-    if (isChildActive(c)) return true
-  }
-  return false
-}
-
 function toggleCollapse(id: string) {
   const s = new Set(collapsedSet.value)
   s.has(id) ? s.delete(id) : s.add(id)
@@ -77,39 +55,6 @@ function collapseAll() {
 function expandAll() {
   collapsedSet.value = new Set()
   expandedAll.value = true
-}
-
-// 遍历树递归渲染 TOC
-// 由于需要递归组件，改用动态渲染
-const renderedTree = computed(() => {
-  return renderNodes(treeToc.value, 0)
-})
-
-function renderNodes(nodes: any[], _depth: number): any[] {
-  const result: any[] = []
-  for (const node of nodes) {
-    const hasCh = node.children && node.children.length > 0
-    const col = collapsedSet.value.has(node.id)
-    const active = activeId.value === node.id
-
-    // 递归渲染子节点（包含 transition wrapper）
-    let childrenHtml = null
-    if (hasCh && !col) {
-      childrenHtml = renderNodes(node.children, _depth + 1)
-    }
-
-    result.push({
-      id: node.id,
-      level: node.level,
-      text: node.text,
-      numbering: node.numbering,
-      hasChildren: hasCh,
-      collapsed: col,
-      active,
-      childrenHtml
-    })
-  }
-  return result
 }
 
 function onTreeClick(id: string) {
@@ -226,194 +171,204 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-  <div class="toc-card" :class="{ active: show }">
-    <div class="toc-card-header">
-      <h3>文章目录</h3>
-      <div class="header-actions">
-        <span v-if="toc.length" class="toc-count">{{ toc.length }} 项</span>
-        <button class="toc-close-btn" @click="toggleToc" title="关闭">
-          <img src="../../assets/imgs/svg/close.svg" alt="" width="16" height="16">
-        </button>
+    <div class="toc-card" :class="{ active: show }">
+      <!-- 头部 -->
+      <div class="toc-header">
+        <div class="toc-header-left">
+          <svg class="toc-header-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3 class="toc-title">目录</h3>
+          <span v-if="toc.length" class="toc-count">{{ toc.length }}</span>
+        </div>
+        <div class="toc-header-actions">
+          <button
+            class="toc-tb-btn"
+            :title="expandedAll ? '折叠全部' : '展开全部'"
+            @click="expandedAll ? collapseAll() : expandAll()"
+          >
+            <svg v-if="expandedAll" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 12H16M12 8V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="toc-close-btn" @click="toggleToc" title="关闭">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 分隔线 -->
+      <div class="toc-divider"></div>
+
+      <!-- 目录内容 -->
+      <div class="toc-content" ref="tocContentRef">
+        <ul class="toc-list">
+          <TocTreeItem
+            v-for="node in treeToc"
+            :key="node.id"
+            :node="node"
+            :active-id="activeId"
+            :collapsed-set="collapsedSet"
+            :depth="0"
+            @click="onTreeClick"
+            @toggle="toggleCollapse"
+          />
+        </ul>
+        <div v-if="!toc.length" class="toc-empty">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5M12 12H15M12 16H15M9 12H9.01M9 16H9.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span>暂无目录</span>
+        </div>
       </div>
     </div>
-    <div class="toc-toolbar">
-      <button v-if="expandedAll" class="toc-tb-btn" @click="collapseAll">折叠全部</button>
-      <button v-else class="toc-tb-btn" @click="expandAll">展开全部</button>
-    </div>
-    <div class="toc-card-content" ref="tocContentRef">
-      <ul class="toc-list">
-        <template v-for="node in renderedTree" :key="node.id">
-          <li
-            class="toc-item"
-            :class="[`lv-${node.level}`, { active: node.active }]"
-          >
-            <a href="#" class="toc-link" @click.prevent="onTreeClick(node.id)">
-              <span
-                v-if="node.hasChildren"
-                class="toc-arrow"
-                @click.prevent.stop="toggleCollapse(node.id)"
-              >
-                <img src="../../assets/imgs/svg/chevron-right.svg" alt="" width="10" height="10" class="toc-arrow-icon" :class="{ rot: !node.collapsed }">
-              </span>
-              <span v-else class="toc-arrow-blank"></span>
-              <span class="toc-num">{{ node.numbering }}</span>
-              <span class="toc-text">{{ node.text }}</span>
-            </a>
-            <!-- 子节点 -->
-            <div v-if="node.hasChildren && !node.collapsed" class="toc-children">
-              <ul class="toc-list">
-                <li
-                  v-for="child in node.childrenHtml"
-                  :key="child.id"
-                  class="toc-item"
-                  :class="[`lv-${child.level}`, { active: child.active }]"
-                >
-                  <a href="#" class="toc-link" @click.prevent="onTreeClick(child.id)">
-                    <span
-                      v-if="child.hasChildren"
-                      class="toc-arrow"
-                      @click.prevent.stop="toggleCollapse(child.id)"
-                    >
-                      <img src="../../assets/imgs/svg/chevron-right.svg" alt="" width="10" height="10" class="toc-arrow-icon" :class="{ rot: !child.collapsed }">
-                    </span>
-                    <span v-else class="toc-arrow-blank"></span>
-                    <span class="toc-num">{{ child.numbering }}</span>
-                    <span class="toc-text">{{ child.text }}</span>
-                  </a>
-                  <div v-if="child.hasChildren && !child.collapsed" class="toc-children">
-                    <ul class="toc-list">
-                      <li
-                        v-for="gc in child.childrenHtml"
-                        :key="gc.id"
-                        class="toc-item"
-                        :class="[`lv-${gc.level}`, { active: gc.active }]"
-                      >
-                        <a href="#" class="toc-link" @click.prevent="onTreeClick(gc.id)">
-                          <span class="toc-arrow-blank"></span>
-                          <span class="toc-num">{{ gc.numbering }}</span>
-                          <span class="toc-text">{{ gc.text }}</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </template>
-      </ul>
-      <div v-if="!toc.length" class="toc-empty">暂无目录</div>
-    </div>
-  </div>
   </Teleport>
 </template>
 
 <style scoped>
-/* ============================== 卡片容器 ============================== */
+/* ========== 卡片容器 - 文档站风格 ========== */
 .toc-card {
   position: fixed;
   top: 50%;
   right: 0;
   transform: translate(100%, -50%);
-  width: 280px;
+  width: 260px;
   max-height: 70vh;
-  border-radius: 16px 0 0 16px;
+  border-radius: 10px 0 0 10px;
   z-index: 999;
   overflow: hidden;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.92);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   border: 1px solid var(--common-shadow);
-  box-shadow: -8px 0 40px var(--common-shadow);
+  border-right: none;
+  box-shadow: -3px 0 24px color-mix(in srgb, var(--common-shadow) 50%, transparent);
 }
 
 .toc-card.active {
   transform: translate(0, -50%);
 }
 
-/* ============================== 卡片头部 ============================== */
-.toc-card-header {
+/* ========== 头部 ========== */
+.toc-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px 10px;
-  border-bottom: 1px solid var(--common-shadow);
+  padding: 12px 14px 10px;
+  user-select: none;
 }
 
-.toc-card-header h3 {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--common-text);
-}
-
-.header-actions {
+.toc-header-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+.toc-header-icon {
+  color: var(--common-text);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.toc-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--common-text);
+  letter-spacing: 0.3px;
+}
+
 .toc-count {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: 8px;
   color: var(--common-text);
   opacity: 0.5;
   background: color-mix(in srgb, var(--common-text) 8%, transparent);
+  line-height: 1.5;
 }
 
-.toc-close-btn {
-  width: 26px; height: 26px;
-  border-radius: 50%;
+.toc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toc-tb-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
   border: none;
-  background: var(--common-shadow);
+  background: transparent;
+  color: var(--common-text);
+  opacity: 0.45;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.toc-close-btn img {
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
-}
-
-.toc-close-btn:hover {
-  transform: rotate(90deg);
-}
-
-/* ============================== 工具栏 ============================== */
-.toc-toolbar {
-  display: flex;
-  justify-content: flex-end;
-  padding: 4px 14px;
-  border-bottom: 1px solid var(--common-shadow);
-}
-
-.toc-tb-btn {
-  font-size: 11px;
-  padding: 3px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--common-shadow);
-  background: transparent;
-  color: var(--common-text);
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
 }
 
 .toc-tb-btn:hover {
-  background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
-  border-color: var(--common-color-1);
-  color: var(--common-color-1);
+  opacity: 0.8;
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
-/* ============================== 目录内容 ============================== */
-.toc-card-content {
-  padding: 6px 8px;
-  max-height: calc(70vh - 90px);
+.toc-close-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--common-text);
+  opacity: 0.45;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
+}
+
+.toc-close-btn:hover {
+  opacity: 0.8;
+  background: color-mix(in srgb, var(--common-text) 6%, transparent);
+  transform: rotate(90deg);
+}
+
+/* ========== 分隔线 ========== */
+.toc-divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--common-text) 8%, transparent);
+  margin: 0 14px;
+}
+
+/* ========== 目录内容 ========== */
+.toc-content {
+  padding: 6px 0;
+  max-height: calc(70vh - 56px);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--common-text) 12%, transparent) transparent;
+}
+
+.toc-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.toc-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.toc-content::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--common-text) 12%, transparent);
+  border-radius: 2px;
 }
 
 .toc-list {
@@ -422,107 +377,33 @@ onUnmounted(() => {
   margin: 0;
 }
 
-.toc-children { margin: 0; }
-
-.toc-item {
-  margin-bottom: 1px;
-  border-radius: 8px;
-  transition: background-color 0.15s ease;
-}
-
-.toc-link {
+/* ========== 空状态 ========== */
+.toc-empty {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  text-decoration: none;
-  border-radius: 8px;
-  color: var(--common-text);
-  font-size: 13px;
-  line-height: 1.4;
-  transition: background-color 0.12s ease, color 0.12s ease;
-  cursor: pointer;
-}
-
-.toc-link:hover {
-  background: color-mix(in srgb, var(--common-text) 6%, transparent);
-}
-
-.toc-item.active > .toc-link {
-  background: color-mix(in srgb, var(--common-color-1) 14%, transparent);
-  color: var(--common-color-1);
-  font-weight: 600;
-}
-
-.lv-1 > .toc-link { padding-left: 12px; }
-.lv-2 > .toc-link { padding-left: 20px; }
-.lv-3 > .toc-link { padding-left: 28px; }
-
-/* 箭头 */
-.toc-arrow {
-  flex-shrink: 0;
-  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 16px; height: 16px;
-  cursor: pointer;
-  opacity: 0.4;
-  transition: opacity 0.15s;
-}
-
-.toc-arrow:hover { opacity: 0.8; }
-
-.toc-arrow-icon {
-  transition: transform 0.2s ease;
-  opacity: 0.7;
-}
-
-.toc-arrow-icon.rot {
-  transform: rotate(90deg);
-}
-
-.toc-arrow-blank {
-  width: 16px;
-  flex-shrink: 0;
-}
-
-/* 编号 */
-.toc-num {
-  font-size: 10px;
-  min-width: 20px;
-  text-align: right;
+  gap: 8px;
+  padding: 32px 0;
   color: var(--common-text);
-  opacity: 0.35;
-  flex-shrink: 0;
-}
-
-.toc-item.active .toc-num {
-  opacity: 0.8;
-  color: var(--common-color-1);
-}
-
-.toc-text {
-  flex: 1;
-  word-break: break-word;
-}
-
-.toc-empty {
-  text-align: center;
-  padding: 24px 0;
-  color: var(--common-text);
-  opacity: 0.35;
+  opacity: 0.3;
   font-size: 13px;
 }
 
+/* ========== 响应式 ========== */
 @media (max-width: 768px) {
   .toc-card {
-    width: 260px;
+    width: 240px;
     max-height: 60vh;
   }
-  .toc-card-content { max-height: calc(60vh - 80px); }
-  .toc-link {
-    font-size: 12px;
-    padding: 5px 8px;
+  .toc-content {
+    max-height: calc(60vh - 56px);
+  }
+}
+
+@media (max-width: 480px) {
+  .toc-card {
+    width: 220px;
   }
 }
 </style>

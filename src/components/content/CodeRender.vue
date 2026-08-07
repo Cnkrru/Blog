@@ -314,14 +314,9 @@ onMounted(() => {
 <style scoped>
 /* 复制按钮颜色 */
 .copy-button {
-    background: rgba(255, 255, 255, 0.5);
-    border-color: rgba(0, 0, 0, 0.08);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
+    border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
     color: var(--common-text);
-}
-
-body.dark-theme .copy-button {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .copy-button:hover {

@@ -480,86 +480,89 @@ onMounted(() => {
 </style>
 
 <style scoped>
-/* 颜色样式 */
+/* 颜色样式 — 使用 CSS 变量，自动适配亮/暗主题 */
 .loading-spinner {
-  border-color: #e0e0e0;
-  border-top-color: #3498db;
+  border-color: color-mix(in srgb, var(--common-text) 12%, transparent);
+  border-top-color: var(--common-color-1);
 }
 
 .retry-button {
-  background-color: #3498db;
-  color: white;
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
 .retry-button:hover {
-  background-color: #2980b9;
+  background: color-mix(in srgb, var(--common-color-1) 85%, black);
 }
 
 .user-card {
-  background-color: #ffffff;
-  border: 1px solid #e8e8e8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.95);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
+  box-shadow: 0 2px 8px var(--common-shadow);
 }
 
 .user-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px var(--common-shadow);
 }
 
 .avatar {
-  border-color: #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
+  box-shadow: 0 4px 12px var(--common-shadow);
 }
 
 .user-info h3 {
-  color: #24292e;
+  color: var(--common-text);
 }
 
 .username {
-  color: #586069;
+  color: var(--common-text);
+  opacity: 0.65;
 }
 
 .bio {
-  color: #586069;
+  color: var(--common-text);
+  opacity: 0.65;
 }
 
 .stat-value {
-  color: #24292e;
+  color: var(--common-text);
 }
 
 .stat-label {
-  color: #586069;
+  color: var(--common-text);
+  opacity: 0.65;
 }
 
 .profile-link {
-  background-color: #3498db;
-  color: white;
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
 .profile-link:hover {
-  background-color: #2980b9;
+  background: color-mix(in srgb, var(--common-color-1) 85%, black);
 }
 
 .section-title {
-  color: #24292e;
+  color: var(--common-text);
 }
 
 .section-title::before {
-  background-color: #3498db;
+  background-color: var(--common-color-1);
 }
 
 .repo-card {
-  background-color: #ffffff;
-  border-color: #e8e8e8;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.95);
+  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .repo-card:hover {
-  background-color: #fafbfc;
-  border-color: #d1d5da;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.98);
+  border-color: color-mix(in srgb, var(--common-text) 15%, transparent);
+  box-shadow: 0 4px 12px var(--common-shadow);
 }
 
 .repo-name {
-  color: #0366d6;
+  color: var(--common-color-1);
 }
 
 .repo-stars {
@@ -567,175 +570,44 @@ onMounted(() => {
 }
 
 .repo-description {
-  color: #586069;
+  color: var(--common-text);
+  opacity: 0.65;
 }
 
 .repo-meta {
-  color: #586069;
+  color: var(--common-text);
+  opacity: 0.65;
 }
 
 .language-dot {
-  background-color: #586069;
+  background-color: var(--common-text);
+  opacity: 0.65;
 }
 
-.language-dot.javascript {
-  background-color: #f1e05a;
-}
-
-.language-dot.python {
-  background-color: #3572a5;
-}
-
-.language-dot.java {
-  background-color: #b07219;
-}
-
-.language-dot.html {
-  background-color: #e34c26;
-}
-
-.language-dot.css {
-  background-color: #563d7c;
-}
-
-.language-dot.typescript {
-  background-color: #2b7489;
-}
-
-.language-dot.vue {
-  background-color: #41b883;
-}
+.language-dot.javascript { background-color: #f1e05a; }
+.language-dot.python { background-color: #3572a5; }
+.language-dot.java { background-color: #b07219; }
+.language-dot.html { background-color: #e34c26; }
+.language-dot.css { background-color: #563d7c; }
+.language-dot.typescript { background-color: #2b7489; }
+.language-dot.vue { background-color: #41b883; }
 
 .contribution-item {
-  background-color: #ffffff;
-  border: 1px solid #e8e8e8;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.95);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .contribution-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--common-shadow);
 }
 
 .contribution-value {
-  color: #3498db;
+  color: var(--common-color-1);
 }
 
 .contribution-label {
-  color: #586069;
-}
-
-/* 暗色主题适配 */
-:deep(html.dark) .loading-spinner {
-  border-color: #333;
-  border-top-color: #64b5f6;
-}
-
-:deep(html.dark) .retry-button {
-  background-color: #64b5f6;
-  color: #1e1e1e;
-}
-
-:deep(html.dark) .retry-button:hover {
-  background-color: #90caf9;
-}
-
-:deep(html.dark) .user-card {
-  background-color: #2d2d2d;
-  border-color: #444;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-:deep(html.dark) .user-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-}
-
-:deep(html.dark) .avatar {
-  border-color: #444;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-:deep(html.dark) .user-info h3 {
-  color: #e0e0e0;
-}
-
-:deep(html.dark) .username {
-  color: #a0a0a0;
-}
-
-:deep(html.dark) .bio {
-  color: #a0a0a0;
-}
-
-:deep(html.dark) .stat-value {
-  color: #e0e0e0;
-}
-
-:deep(html.dark) .stat-label {
-  color: #a0a0a0;
-}
-
-:deep(html.dark) .profile-link {
-  background-color: #64b5f6;
-  color: #1e1e1e;
-}
-
-:deep(html.dark) .profile-link:hover {
-  background-color: #90caf9;
-}
-
-:deep(html.dark) .section-title {
-  color: #e0e0e0;
-}
-
-:deep(html.dark) .section-title::before {
-  background-color: #64b5f6;
-}
-
-:deep(html.dark) .repo-card {
-  background-color: #2d2d2d;
-  border-color: #444;
-}
-
-:deep(html.dark) .repo-card:hover {
-  background-color: #333;
-  border-color: #555;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-:deep(html.dark) .repo-name {
-  color: #64b5f6;
-}
-
-:deep(html.dark) .repo-stars {
-  color: #ffd54f;
-}
-
-:deep(html.dark) .repo-description {
-  color: #a0a0a0;
-}
-
-:deep(html.dark) .repo-meta {
-  color: #a0a0a0;
-}
-
-:deep(html.dark) .language-dot {
-  background-color: #a0a0a0;
-}
-
-:deep(html.dark) .contribution-item {
-  background-color: #2d2d2d;
-  border-color: #444;
-}
-
-:deep(html.dark) .contribution-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-:deep(html.dark) .contribution-value {
-  color: #64b5f6;
-}
-
-:deep(html.dark) .contribution-label {
-  color: #a0a0a0;
+  color: var(--common-text);
+  opacity: 0.65;
 }
 </style>
 

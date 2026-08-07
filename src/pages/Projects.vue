@@ -100,8 +100,25 @@ onMounted(() => {
             <!-- 项目列表 -->
             <div class="projects-content">
                 <RouterLink v-for="project in getCurrentCategory().projects" :key="project.id" :to="`/project/${project.id}`" class="project-card">
-                    <div class="project-name">{{ project.name }}</div>
-                    <div class="project-description">{{ project.description }}</div>
+                    <div class="card-accent"></div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="card-category">{{ project.category }}</span>
+                            <span class="card-date">{{ project.date }}</span>
+                        </div>
+                        <h3 class="card-title">{{ project.title }}</h3>
+                        <p class="card-desc">{{ project.description }}</p>
+                        <div class="card-footer">
+                            <div class="card-tags" v-if="project.tags && project.tags.length">
+                                <span v-for="t in project.tags.slice(0, 3)" :key="t" class="card-tag">{{ t }}</span>
+                            </div>
+                            <span class="card-arrow">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
                 </RouterLink>
             </div>
         </template>
@@ -118,7 +135,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* 布局样式 */
+/* ========== 布局 ========== */
 .projects-content {
     display: flex;
     flex-wrap: wrap;
@@ -129,144 +146,179 @@ onMounted(() => {
     max-width: 100%;
 }
 
+/* ========== 卡片容器 ========== */
 .project-card {
-    display: block;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    text-decoration: none;
-    transition:
-        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-    height: 150px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    border-radius: 14px;
+    text-decoration: none;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.35s ease,
+        border-color 0.3s ease;
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid color-mix(in srgb, var(--common-text) 6%, transparent);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-body.dark-theme .project-card {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.06);
+/* 顶部装饰条 */
+.card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--common-color-1), color-mix(in srgb, var(--common-color-1) 40%, transparent));
+    opacity: 0;
+    transform: scaleX(0.4);
+    transform-origin: left;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .project-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    border-color: var(--common-color-1);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 8px 28px rgba(0, 0, 0, 0.08);
+    border-color: color-mix(in srgb, var(--common-color-1) 35%, transparent);
 }
 
-.project-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 8px;
+.project-card:hover .card-accent {
+    opacity: 1;
+    transform: scaleX(1);
 }
 
-.project-description {
-    font-size: 0.9rem;
-    opacity: 0.8;
+/* ========== 卡片主体 ========== */
+.card-body {
+    display: flex;
+    flex-direction: column;
     flex: 1;
+    padding: 22px 24px;
 }
 
+/* ========== 元信息行：分类 + 日期 ========== */
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
 
-</style>
+.card-category {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
+    color: var(--common-color-1);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
 
-<style scoped>
-/* 颜色样式 */
-.project-card {
+.card-date {
+    font-size: 11px;
     color: var(--common-text);
+    opacity: 0.35;
+    font-variant-numeric: tabular-nums;
 }
 
-.project-name {
+/* ========== 卡片标题 ========== */
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+    line-height: 1.4;
     color: var(--common-text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.25s ease;
 }
 
-.project-description {
+.project-card:hover .card-title {
+    color: var(--common-color-1);
+}
+
+/* ========== 卡片描述 ========== */
+.card-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
     color: var(--common-text);
+    opacity: 0.55;
+    flex: 1;
+    margin: 0 0 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-
-</style>
-
-<style scoped>
-/* 响应式设计媒体查询 */
-@media (max-width: 639px) {
-    .projects-content {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 10px;
-    }
-    
-    .project-card {
-        height: 120px;
-        padding: 12px;
-    }
-    
-    .project-name {
-        font-size: 1rem;
-    }
-    
-    .project-description {
-        font-size: 0.8rem;
-    }
+/* ========== 卡片底部：标签 + 箭头 ========== */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 22px;
 }
 
-@media (max-width: 640px) {
-    .projects-content {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 15px;
-    }
-    
-    .project-card {
-        height: 130px;
-        padding: 15px;
-    }
-    
-    .project-name {
-        font-size: 1.1rem;
-    }
-    
-    .project-description {
-        font-size: 0.85rem;
-    }
+.card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
+.card-tag {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    border: 1px solid color-mix(in srgb, var(--common-color-1) 20%, transparent);
+    color: var(--common-color-1);
+    opacity: 0.7;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.project-card:hover .card-tag {
+    opacity: 0.9;
+    border-color: color-mix(in srgb, var(--common-color-1) 40%, transparent);
+}
+
+.card-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--common-color-1);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.project-card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ========== 响应式 ========== */
 @media (max-width: 768px) {
-    .projects-content {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-    }
-    
-    .project-card {
-        height: 150px;
-        padding: 20px;
-    }
-    
-    .project-name {
-        font-size: 1.2rem;
-    }
-    
-    .project-description {
-        font-size: 0.9rem;
-    }
+    .projects-content { gap: 14px; }
+    .project-card { min-height: 160px; }
+    .card-body { padding: 18px 20px; }
+    .card-title { font-size: 1.05rem; }
+    .card-desc { font-size: 0.82rem; }
 }
 
-@media (max-width: 1024px) {
-    .projects-content {
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    }
-}
-
-@media (max-width: 1280px) {
-    .projects-content {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 1536px) {
-    .projects-content {
-        grid-template-columns: repeat(4, 1fr);
-    }
+@media (max-width: 639px) {
+    .projects-content { gap: 10px; }
+    .projects-content > * { flex: 1 1 100%; }
+    .project-card { min-height: 140px; }
+    .card-body { padding: 14px 16px; }
+    .card-title { font-size: 0.95rem; }
+    .card-desc { font-size: 0.78rem; }
+    .card-meta { margin-bottom: 8px; }
+    .card-desc { margin-bottom: 10px; }
 }
 </style>

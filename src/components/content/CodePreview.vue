@@ -125,13 +125,9 @@ function close() {
 
 <style scoped>
 .run-btn {
-  background: rgba(255, 255, 255, 0.4);
-  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
   color: var(--common-text);
-}
-body.dark-theme .run-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.08);
 }
 .run-btn:hover {
   background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
@@ -139,14 +135,10 @@ body.dark-theme .run-btn {
 }
 
 .preview-window {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-body.dark-theme .preview-window {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
-  border-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .preview-header {

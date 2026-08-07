@@ -32,7 +32,7 @@ const handleNext = () => {
       title="上一首"
       @click="handlePrev"
     >
-      <img src="../../assets/imgs/svg/prev.svg" alt="上一首" />
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/></svg>
     </button>
 
     <button
@@ -43,8 +43,8 @@ const handleNext = () => {
       title="播放/暂停"
       @click="handleTogglePlay"
     >
-      <img class="play-icon" src="../../assets/imgs/svg/play.svg" alt="播放" />
-      <img class="pause-icon" src="../../assets/imgs/svg/pause.svg" alt="暂停" />
+      <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <svg class="pause-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
     </button>
 
     <button
@@ -54,7 +54,7 @@ const handleNext = () => {
       title="下一首"
       @click="handleNext"
     >
-      <img src="../../assets/imgs/svg/next.svg" alt="下一首" />
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/></svg>
     </button>
   </div>
 </template>

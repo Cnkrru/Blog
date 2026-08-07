@@ -13,12 +13,10 @@ keywords: VitePress, 快速开始
 ### 构建步骤
 1. 安装VitePress
    ```bash
-
     npm add -D vitepress@next
    ```
 2. 初始化VitePress
    ```bash
-
     npx vitepress init
    ```
 3. 初始化选项
@@ -30,7 +28,6 @@ keywords: VitePress, 快速开始
    6. 三个配置:后面三个配置，都直接yes即可，如果没学过前端，可能不知道在说什么
 
 4. 文件夹初始结构
-.
 ├─ docs
 │  ├─ .vitepress
 │  │  └─ config.js
@@ -42,18 +39,15 @@ keywords: VitePress, 快速开始
 5. 修改配置文件来完善VitePress配置
 6. 本地运行VitePress
    ```bash
-
     npm run docs:dev
    ```
    访问http://localhost:[port]查看效果
 7. 构建VitePress
    ```bash
-
     npm run docs:build
    ```
 8. 构建预览
    ```bash
-
     npm run docs:preview
    ```
    访问http://localhost:[port]查看效果

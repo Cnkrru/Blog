@@ -162,6 +162,12 @@ onUnmounted(() => {
 
 <template>
   <div class="search-card search-container">
+    <span class="search-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </span>
     <input
       type="text"
       placeholder="搜索"
@@ -191,7 +197,21 @@ onUnmounted(() => {
   flex: 1;
   justify-content: center;
   align-items: center;
+  gap: 8px;
   z-index: 1000;
+}
+
+.search-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.search-card:focus-within .search-icon {
+  opacity: 0.8;
 }
 
 .search-card input {
@@ -205,20 +225,28 @@ onUnmounted(() => {
 
 <style scoped>
 .search-card {
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 15%, transparent);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-body.dark-theme .search-card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.08);
+.search-card:focus-within {
+  border-color: var(--common-color-1);
+}
+
+.search-icon {
+  color: var(--common-text);
 }
 
 .search-card input {
   color: var(--common-text);
   background-color: transparent;
+}
+
+.search-card input::placeholder {
+  color: var(--common-text);
+  opacity: 0.4;
 }
 </style>
 

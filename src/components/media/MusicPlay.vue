@@ -163,7 +163,7 @@ onUnmounted(() => {
       @keydown.space.prevent="togglePlayer"
       @click="togglePlayer"
     >
-      <img src="../../assets/imgs/svg/music-player.svg" alt="音乐播放">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-music" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 18V5l12 -2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       <span v-if="isBtnAnimating" class="emoji-burst">✨</span>
     </div>
 
@@ -207,7 +207,7 @@ onUnmounted(() => {
                   title="音乐列表"
                   @click="togglePlaylist"
                 >
-                  <img src="../../assets/imgs/svg/playlist.svg" alt="音乐列表">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15V6"/><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/></svg>
                 </button>
               </div>
               <div class="player-effects">
@@ -219,7 +219,7 @@ onUnmounted(() => {
                   title="音效设置"
                   @click="toggleEffects"
                 >
-                  <img src="../../assets/imgs/svg/effects.svg" alt="" width="18" height="18">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
                 </button>
               </div>
             </div>

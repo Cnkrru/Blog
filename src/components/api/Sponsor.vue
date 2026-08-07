@@ -26,7 +26,9 @@ if (typeof window !== 'undefined') {
 <template>
   <div v-if="sponsor.enabled" class="sponsor-wrap">
     <button class="sponsor-btn" @click="toggleModal">
-      <img src="../../assets/imgs/svg/heart.svg" alt="" width="16" height="16" class="sp-btn-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="sp-btn-icon">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
       赞赏
     </button>
 
@@ -36,7 +38,12 @@ if (typeof window !== 'undefined') {
           <div class="sponsor-modal">
             <div class="sponsor-header">
               <h3>赞赏支持</h3>
-              <button class="sponsor-close" @click="closeModal">&times;</button>
+              <button class="sponsor-close" @click="closeModal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             </div>
             <p class="sponsor-msg">{{ sponsor.message }}</p>
 
@@ -73,7 +80,7 @@ if (typeof window !== 'undefined') {
   transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .sponsor-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--common-shadow); }
-.sp-btn-icon { filter: brightness(0) invert(1); }
+.sp-btn-icon { flex-shrink: 0; }
 
 .sponsor-overlay {
   position: fixed;
@@ -129,7 +136,7 @@ if (typeof window !== 'undefined') {
 .modal-fade-leave-to .sponsor-modal { transform: scale(0.92) translateY(12px); }
 </style>
 
-<!-- 颜色 -->
+<!-- 颜色 — 使用 CSS 变量，无 body.dark-theme 硬编码 -->
 <style scoped>
 .sponsor-btn {
   background: var(--common-color-1);
@@ -141,22 +148,19 @@ if (typeof window !== 'undefined') {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-color: rgba(0, 0, 0, 0.06);
+  border-color: color-mix(in srgb, var(--common-color-1) 12%, transparent);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-}
-body.dark-theme .sponsor-modal {
-  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .sponsor-header h3 { color: var(--common-text); }
-.sponsor-close { background: rgba(0, 0, 0, 0.05); color: var(--common-text); }
-body.dark-theme .sponsor-close { background: rgba(255, 255, 255, 0.08); }
-.sponsor-close:hover { background: rgba(0, 0, 0, 0.1); }
-body.dark-theme .sponsor-close:hover { background: rgba(255, 255, 255, 0.15); }
+.sponsor-close {
+  background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
+  color: var(--common-text);
+}
+.sponsor-close:hover { background: color-mix(in srgb, var(--common-color-1) 20%, transparent); }
 
 .sponsor-msg { color: var(--common-text); }
-.sponsor-tabs { border-color: rgba(0, 0, 0, 0.08); }
-body.dark-theme .sponsor-tabs { border-color: rgba(255, 255, 255, 0.1); }
+.sponsor-tabs { border-color: color-mix(in srgb, var(--common-color-1) 15%, transparent); }
 .sp-tab { color: var(--common-text); }
 .sp-tab.active { background: var(--common-color-1); color: var(--common-content); }
 

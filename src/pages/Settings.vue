@@ -133,8 +133,8 @@ useHead({
   gap: 4px;
   padding: 14px 16px;
   border-radius: 12px;
-  border: 1px solid rgba(74, 60, 40, 0.16);
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 15%, transparent);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.5));
   color: var(--common-text);
   cursor: pointer;
   text-align: left;
@@ -169,21 +169,7 @@ useHead({
   opacity: 0.7;
 }
 
-body.dark-theme .style-opt {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  color: var(--common-content);
-}
 
-body.dark-theme .style-opt:hover {
-  border-color: var(--common-color-1);
-}
-
-body.dark-theme .style-opt.active {
-  background: var(--common-color-1);
-  border-color: var(--common-color-1);
-  color: var(--common-content);
-}
 
 .setting-tip {
   font-size: 13px;

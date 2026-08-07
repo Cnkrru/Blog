@@ -12,8 +12,7 @@ import ArticleNav from '../components/p-center/ArticleNav.vue'
 
 import Comment from '../components/api/Comment.vue'
 import RelatedArticles from '../components/p-center/RelatedArticles.vue'
-import ShareButton from '../components/api/ShareButton.vue'
-import Sponsor from '../components/api/Sponsor.vue'
+import ArticleActionBar from '../components/p-center/ArticleActionBar.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -228,14 +227,12 @@ onMounted(() => {
             <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
         </div>
 
-        <ShareButton
+        <ArticleActionBar
             v-if="!loading && !error && post"
             :title="post?.title || ''"
             :url="`https://cnkrru.top/post/${postId}`"
             :description="post?.description || ''"
         />
-
-        <Sponsor v-if="!loading && !error && post" />
 
         <Comment v-if="!loading && !error" />
         
@@ -288,16 +285,12 @@ onMounted(() => {
 <style scoped>
 /* 封面图 */
 .post-cover {
-    width: 100%;
+    margin: 0 0 20px;
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
     margin-bottom: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .post-cover {
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 8px var(--common-shadow);
 }
 
 .cover-image {

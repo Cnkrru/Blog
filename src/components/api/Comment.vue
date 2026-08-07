@@ -52,7 +52,7 @@ onUnmounted(() => {
             
             <!-- 错误状态 -->
             <div v-else-if="error" class="error-state">
-                <div class="error-icon"><img src="../../assets/imgs/svg/warning.svg" alt="" width="32" height="32"></div>
+                <div class="error-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
                 <span class="error-text">{{ error }}</span>
                 <button class="retry-button" @click="commentStore.initCommentSystem">重试</button>
             </div>
@@ -208,22 +208,13 @@ onUnmounted(() => {
 <style scoped>
 /* 评论区域颜色 */
 .comment-section {
-    background: rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-body.dark-theme .comment-section {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.06);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
+    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 /* 评论标题 */
 .comment-header {
-    border-bottom-color: rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .comment-header {
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .comment-header h3 {

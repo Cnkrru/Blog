@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useArticlesStore, useThemeStore } from '../../stores'
+import { useArticlesStore } from '../../stores'
 
 const props = defineProps<{ currentArticleId: string; currentArticleCategory: string }>()
 
 const articlesStore = useArticlesStore()
-const themeStore = useThemeStore()
 
 const relatedArticles = ref([])
-
-const isDarkTheme = computed(() => themeStore.isDark)
 
 let debounceTimer = null
 
@@ -88,26 +85,30 @@ onUnmounted(() => {
 
 <template>
   <div class="related-articles-wrapper">
-    <div class="related-articles-container" :class="{ 'dark-theme': isDarkTheme }">
+    <div class="related-articles-container">
       <h3 class="related-articles-title">相关文章推荐</h3>
-      <div class="related-articles-list">
-        <div v-for="article in relatedArticles" :key="article.id" class="related-article-item">
-          <RouterLink :to="`/post/${article.id}`" class="related-article-link">
-            <div class="related-article-content">
-              <span v-if="article.category" class="related-article-category">{{ article.category }}</span>
-              <div class="related-article-title">{{ article.title }}</div>
-              <div class="related-article-meta">
-                <span class="related-article-date">{{ article.date }}</span>
-                <span v-if="article.tags && article.tags.length > 0" class="related-article-tags">
-                  <span v-for="tag in article.tags.slice(0, 2)" :key="tag" class="tag">{{ tag }}</span>
-                </span>
-              </div>
+      <div class="related-articles-grid">
+        <RouterLink
+          v-for="(article, idx) in relatedArticles"
+          :key="article.id"
+          :to="`/post/${article.id}`"
+          class="related-card"
+          :style="{ animationDelay: `${idx * 0.08}s` }"
+        >
+          <div class="related-card-cover">
+            <img :src="`/og/post-${article.id}.svg`" :alt="article.title" loading="lazy" />
+          </div>
+          <div class="related-card-body">
+            <span v-if="article.category" class="related-card-category">{{ article.category }}</span>
+            <div class="related-card-title">{{ article.title }}</div>
+            <div class="related-card-meta">
+              <span class="related-card-date">{{ article.date }}</span>
+              <span v-if="article.tags && article.tags.length > 0" class="related-card-tags">
+                <span v-for="tag in article.tags.slice(0, 2)" :key="tag" class="tag">{{ tag }}</span>
+              </span>
             </div>
-            <span class="related-article-arrow">
-              <img src="../../assets/imgs/svg/chevron-right-stroke.svg" alt="" width="16" height="16">
-            </span>
-          </RouterLink>
-        </div>
+          </div>
+        </RouterLink>
       </div>
     </div>
   </div>
@@ -115,260 +116,185 @@ onUnmounted(() => {
 
 <style scoped>
 .related-articles-wrapper {
-    width: 100%;
-    margin: 20px 0;
+  width: 100%;
+  margin: 20px 0;
 }
 
 .related-articles-container {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .related-articles-container {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.05);
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.4));
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
 .related-articles-title {
-    margin: 0 0 15px 0;
-    font-size: 16px;
-    font-weight: bold;
+  margin: 0 0 14px 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--common-text);
 }
 
-.related-articles-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.related-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
-.related-article-item {
-    border-radius: 10px;
-    border: 1px solid transparent;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-    animation: fadeInUp 0.3s ease forwards;
-    opacity: 0;
+.related-card {
+  text-decoration: none;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
 }
-
-.related-article-item:nth-child(1) { animation-delay: 0.05s; }
-.related-article-item:nth-child(2) { animation-delay: 0.1s; }
-.related-article-item:nth-child(3) { animation-delay: 0.15s; }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.related-article-link {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+.related-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
 }
 
-.related-article-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 0;
+.related-card-cover {
+  width: 100%;
+  aspect-ratio: 1.91 / 1;
+  overflow: hidden;
+  background: var(--common-bg);
 }
 
-.related-article-category {
-    display: inline-block;
-    padding: 2px 8px;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    border-radius: 4px;
-    width: fit-content;
+.related-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.related-article-title {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
-    transition: color 0.3s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.related-card-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
 }
 
-.related-article-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
+.related-card-category {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 4px;
+  width: fit-content;
 }
 
-.related-article-date {
-    flex-shrink: 0;
+.related-card-title {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.related-article-tags {
-    display: flex;
-    gap: 4px;
+.related-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  margin-top: auto;
+}
+
+.related-card-date {
+  flex-shrink: 0;
+}
+
+.related-card-tags {
+  display: flex;
+  gap: 4px;
 }
 
 .tag {
-    padding: 1px 6px;
-    font-size: 10px;
-    border-radius: 3px;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-}
-
-.related-article-arrow {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-}
-
-.related-article-arrow svg {
-    width: 100%;
-    height: 100%;
-}
-
-.related-article-link:hover .related-article-arrow {
-    transform: translateX(4px);
+  padding: 1px 6px;
+  font-size: 10px;
+  border-radius: 3px;
 }
 </style>
 
 <style scoped>
-.related-articles-title {
-    color: var(--common-text);
+/* ========== 主题适配 — 使用 CSS 变量，无 body.dark-theme 硬编码 ========== */
+.related-card {
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.5));
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
+  color: var(--common-text);
 }
 
-.related-article-item:hover {
-    background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(0, 0, 0, 0.06);
+.related-card:hover {
+  border-color: var(--common-color-1);
 }
 
-body.dark-theme .related-article-item:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
+.related-card-category {
+  background-color: var(--common-color-1);
+  color: #fff;
 }
 
-.related-article-link {
-    color: var(--common-text);
+.related-card-title {
+  color: var(--common-text);
 }
 
-.related-article-category {
-    background-color: var(--common-color-1);
-    color: #fff;
-}
-
-.related-article-meta {
-    color: var(--common-text);
+.related-card-meta {
+  color: var(--common-text);
+  opacity: 0.7;
 }
 
 .tag {
-    background: rgba(0, 0, 0, 0.04);
-    color: var(--common-text);
-    border-radius: 4px;
-}
-
-body.dark-theme .tag {
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.related-article-arrow {
-    color: var(--common-text);
-}
-
-.related-article-link:hover .related-article-arrow {
-    color: var(--common-text);
+  background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
+  color: var(--common-text);
 }
 </style>
 
 <style scoped>
 @media (max-width: 639px) {
-    .related-articles-container {
-        padding: 12px;
-        margin: 15px 0;
-    }
-    
-    .related-articles-title {
-        font-size: 14px;
-        margin-bottom: 12px;
-    }
-    
-    .related-article-link {
-        padding: 8px;
-    }
-    
-    .related-article-title {
-        font-size: 13px;
-    }
-    
-    .related-article-meta {
-        font-size: 11px;
-        flex-wrap: wrap;
-    }
-    
-    .related-article-arrow {
-        width: 16px;
-        height: 16px;
-    }
+  .related-articles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .related-articles-container {
+    padding: 12px;
+    margin: 15px 0;
+  }
+  
+  .related-articles-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  
+  .related-card-title {
+    font-size: 13px;
+  }
+  
+  .related-card-meta {
+    font-size: 11px;
+    flex-wrap: wrap;
+  }
 }
 
-@media (max-width: 640px) {
-    .related-articles-container {
-        padding: 13px;
-        margin: 18px 0;
-    }
-    
-    .related-articles-title {
-        font-size: 15px;
-        margin-bottom: 13px;
-    }
-    
-    .related-article-link {
-        padding: 9px;
-    }
-    
-    .related-article-title {
-        font-size: 13.5px;
-    }
-    
-    .related-article-meta {
-        font-size: 11.5px;
-    }
-}
-
-@media (max-width: 768px) {
-    .related-articles-container {
-        padding: 15px;
-        margin: 20px 0;
-    }
-    
-    .related-articles-title {
-        font-size: 16px;
-        margin-bottom: 15px;
-    }
-    
-    .related-article-link {
-        padding: 10px;
-    }
-    
-    .related-article-title {
-        font-size: 14px;
-    }
-    
-    .related-article-meta {
-        font-size: 12px;
-    }
+@media (min-width: 640px) and (max-width: 1023px) {
+  .related-articles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>

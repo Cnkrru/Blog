@@ -108,15 +108,10 @@ onMounted(async () => {
   flex: 1;
   padding: 12px 18px;
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
   color: var(--common-text);
   font-size: 15px;
-}
-
-body.dark-theme .search-field {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .search-field:focus {
@@ -147,24 +142,15 @@ body.dark-theme .search-field {
   border-radius: 10px;
   text-decoration: none;
   color: var(--common-text);
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.35);
+  border: 1px solid color-mix(in srgb, var(--common-text) 5%, transparent);
   margin-bottom: 10px;
-}
-
-body.dark-theme .search-result {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .search-result:hover {
   transform: translateX(4px);
   border-color: var(--common-color-1);
-  background: rgba(255, 255, 255, 0.55);
-}
-
-body.dark-theme .search-result:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.55);
 }
 
 .sr-title {
@@ -197,12 +183,8 @@ body.dark-theme .search-result:hover {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid color-mix(in srgb, var(--common-text) 10%, transparent);
   color: var(--common-text);
-}
-
-body.dark-theme .sr-tag {
-  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .sr-date {

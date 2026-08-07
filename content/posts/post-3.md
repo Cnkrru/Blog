@@ -19,7 +19,6 @@ keywords: HTML-CSS, 前端, 组件
 
 **图片样式：**
 ```
-
 div.logo
 └── a
     └── img
@@ -27,7 +26,6 @@ div.logo
 
 **文字样式：**
 ```
-
 div.logo
 └── a
     └── p
@@ -39,7 +37,6 @@ div.logo
 
 **图片样式**
 ```html
-
 <div class="logo">
     <a href="/">
         <img src="/logo.png" alt="logo">
@@ -48,7 +45,6 @@ div.logo
 ```
 
 ```css
-
 .logo {
     display: flex;
     justify-content: center;
@@ -64,7 +60,6 @@ div.logo
 
 **文字样式**
 ```html
-
 <div class="logo">
     <a href="/">
         <p>Logo</p>
@@ -73,7 +68,6 @@ div.logo
 ```
 
 ```css
-
 .logo {
     display: flex;
     justify-content: center;
@@ -99,7 +93,6 @@ div.logo
 ### 结构
 
 ```
-
 div.avatar
 └── img
 ```
@@ -108,7 +101,6 @@ div.avatar
 ### 代码
 
 ```html
-
 <div class="avatar">
   <img src="avatar.jpg" alt="用户头像">
 </div>
@@ -153,7 +145,6 @@ ul.nav
 ### 代码
 
 ```html
-
 <ul class="nav">
     <li><a href="/">首页</a></li>
     <li><a href="/about">关于</a></li>
@@ -164,7 +155,6 @@ ul.nav
 ```
 
 ```css
-
 .nav {
     display: flex;
     justify-content: center;
@@ -190,7 +180,6 @@ ul.nav
 ### 结构
 
 ```
-
 p
 ```
 ---
@@ -198,14 +187,12 @@ p
 ### 代码
 
 ```html
-
 <p class="copyright">
     &copy; 2023 你的博客名称. 所有权利保留.
 </p>
 ```
 
 ```css
-
 .copyright {
     font-size: 14px;
     color: #666;

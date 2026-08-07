@@ -166,7 +166,7 @@ onMounted(() => {
     </div>
     <hr>
     <div class="apply-link-wrap">
-      <RouterLink to="/links/apply" class="apply-link"><img src="../assets/imgs/svg/mail.svg" alt="" width="15" height="15" class="apply-icon">申请友链</RouterLink>
+      <RouterLink to="/links/apply" class="apply-link"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="apply-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>申请友链</RouterLink>
     </div>
 
     <PageNav
@@ -195,7 +195,7 @@ onMounted(() => {
     display: block;
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid color-mix(in srgb, var(--common-text) 5%, transparent);
     text-decoration: none;
     transition:
         transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -205,25 +205,14 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .link-card {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.06);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+    box-shadow: 0 1px 3px var(--common-shadow);
 }
 
 .link-card:hover {
     transform: translateY(-3px);
-    box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.06),
-        0 8px 20px rgba(0, 0, 0, 0.08);
-    border-color: rgba(255, 192, 203, 0.25);
-}
-
-body.dark-theme .link-card:hover {
-    border-color: rgba(58, 170, 231, 0.25);
+    box-shadow: 0 4px 16px var(--common-shadow);
+    border-color: color-mix(in srgb, var(--common-color-1) 25%, transparent);
 }
 
 .link-name {
@@ -416,28 +405,18 @@ body.dark-theme .link-card:hover {
 }
 
 .pagination a {
-    color: var(--common-text);
-    background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(0, 0, 0, 0.08);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+    border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
     border-radius: 12px;
 }
 
-body.dark-theme .pagination a {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
 .pagination a:hover {
-    background: rgba(255, 192, 203, 0.2);
-}
-
-body.dark-theme .pagination a:hover {
-    background: rgba(58, 170, 231, 0.15);
+    background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
 }
 
 .pagination .active a {
     background: var(--common-color-1);
-    color: #fff;
+    color: var(--common-content);
     border-color: var(--common-color-1);
 }
 

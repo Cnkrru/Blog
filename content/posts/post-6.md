@@ -13,14 +13,12 @@ keywords: 前端组件, 主题切换, TypeScript
 ---
 
 ### 代码:
-```typescript
-
-const toggleTheme = (): void=> {
+```javascript
+const toggleTheme = ()=> {
   document.body.classList.toggle('dark-theme')
 }
 ```
 ```css
-
 :root {
   --color-primary: #007bff;
 }

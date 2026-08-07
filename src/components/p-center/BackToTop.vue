@@ -56,17 +56,19 @@ onUnmounted(() => {
     <button
         v-if="!isImmersiveReading"
         class="back-to-top-btn"
+        title="返回顶部"
         @click="scrollToTop"
     >
-        <img src="../../assets/imgs/svg/arrow-up.svg" alt="返回顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
     </button>
     <Teleport to="body">
         <button
             v-if="isImmersiveReading"
             class="back-to-top-btn immersive visible"
+            title="返回顶部"
             @click="scrollToTop"
         >
-            <img src="../../assets/imgs/svg/arrow-up.svg" alt="返回顶部">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
         </button>
     </Teleport>
 </template>
@@ -87,6 +89,7 @@ onUnmounted(() => {
     -webkit-backdrop-filter: blur(8px);
     background: var(--common-color-1);
     border: 1px solid var(--common-color-1);
+    color: #fff;
     box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
@@ -100,12 +103,6 @@ onUnmounted(() => {
 .back-to-top-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
-}
-
-.back-to-top-btn img {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) invert(1);
 }
 </style>
 

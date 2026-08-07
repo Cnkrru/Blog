@@ -47,7 +47,7 @@
       @click.stop
     >
       <button v-if="!quoteCopied" class="quote-btn" @click="copyQuote">
-        <img src="../../assets/imgs/svg/file-text.svg" alt="" width="14" height="14">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         引用
       </button>
       <span v-else class="quote-done">已复制</span>
@@ -70,10 +70,6 @@ const props = defineProps<{
 const route = useRoute()
 const postId = computed(() => route.params.id as string || '')
 
-const emit = defineEmits<{
-  'update:toc': [toc: any]
-}>()
-
 const markdownContent = ref('')
 const showLightbox = ref(false)
 const currentImageIndex = ref(0)
@@ -84,7 +80,6 @@ const codeBlocks = ref([])
 const easterEggBlocks = ref([])
 const orderedBlocks = ref([]) // 按顺序排列的内容块
 const renderMode = ref('normal') // normal 或 special-blocks
-const normalContent = ref('')
 
 // 加载CDN资源
 const loadCDN = async () => {
@@ -147,40 +142,6 @@ const loadCDN = async () => {
   console.log('CDN资源加载完成')
 }
 
-// 提取目录
-const extractToc = (content) => {
-  const toc = []
-  const lines = content.split('\n')
-  const levelCounters = [0, 0, 0, 0, 0, 0]
-  let headingCounter = 0
-
-  lines.forEach((line) => {
-    const headingMatch = line.match(/^(#{1,6})\s*(.+)$/)
-    if (headingMatch) {
-      const level = headingMatch[1].length
-      const text = headingMatch[2].trim()
-      const id = `heading-${headingCounter++}`
-
-      for (let i = level; i < levelCounters.length; i++) {
-        levelCounters[i] = 0
-      }
-      levelCounters[level - 1]++
-
-      let numbering = ''
-      for (let i = 0; i < level; i++) {
-        if (levelCounters[i] > 0) {
-          numbering += levelCounters[i] + '.'
-        }
-      }
-      numbering = numbering.slice(0, -1)
-
-      toc.push({ level, text, id, numbering })
-    }
-  })
-
-  return toc
-}
-
 // 提取特殊块
 const extractSpecialBlocks = (content) => {
   // 清空之前的块数据
@@ -214,7 +175,7 @@ const extractSpecialBlocks = (content) => {
     
     // 跳过 Mermaid 代码块，因为已经单独处理
     if (lang.toLowerCase() !== 'mermaid') {
-      codeBlocks.value.push({ language: lang, code: codeContent })
+      codeBlocks.value.push({ language: lang, code: codeContent.replace(/\n+$/, '') })
     }
   }
   
@@ -230,52 +191,6 @@ const extractSpecialBlocks = (content) => {
       finalText: finalTextMatch ? finalTextMatch[1] : '欢迎来到我的博客'
     })
   }
-}
-
-// 替换特殊块为占位符
-const replaceSpecialBlocks = (content) => {
-  let processedContent = content
-  
-  // 替换 Mermaid 代码块
-  let mermaidIndex = 0
-  processedContent = processedContent.replace(/```mermaid[\s\S]*?```/gim, () => {
-    const placeholder = `<div class="mermaid-placeholder" data-id="mermaid-${mermaidIndex}"></div>`
-    mermaidIndex++
-    return placeholder
-  })
-  
-  // 替换数学公式
-  let mathIndex = 0
-  processedContent = processedContent.replace(/\$\$([\s\S]*?)\$\$/gim, () => {
-    const placeholder = `<div class="math-placeholder" data-id="math-${mathIndex}"></div>`
-    mathIndex++
-    return placeholder
-  })
-  
-  // 替换代码块
-  let codeIndex = 0
-  processedContent = processedContent.replace(/```([\s\S]*?)```/gim, (match, code) => {
-    const lines = code.split('\n')
-    const lang = lines[0].trim() || 'plaintext'
-    
-    // 跳过 Mermaid 代码块，因为已经单独处理
-    if (lang.toLowerCase() !== 'mermaid') {
-      const placeholder = `<div class="code-block-placeholder" data-id="code-${codeIndex}"></div>`
-      codeIndex++
-      return placeholder
-    }
-    return match
-  })
-  
-  // 替换彩蛋动画块
-  let easterEggIndex = 0
-  processedContent = processedContent.replace(/<easter-egg([^>]*)>[\s\S]*?<\/easter-egg>/gim, () => {
-    const placeholder = `<div class="easter-egg-placeholder" data-id="easter-egg-${easterEggIndex}"></div>`
-    easterEggIndex++
-    return placeholder
-  })
-  
-  return processedContent
 }
 
 // 按顺序提取和组织内容块
@@ -344,7 +259,7 @@ const extractOrderedBlocks = (content) => {
       const code = match[1]
       const lines = code.split('\n')
       const lang = lines[0].trim() || 'plaintext'
-      const codeContent = lines.slice(1).join('\n')
+      const codeContent = lines.slice(1).join('\n').replace(/\n+$/, '')
       
       // 跳过 Mermaid 代码块，因为已经单独处理
       if (lang.toLowerCase() !== 'mermaid') {
@@ -380,28 +295,6 @@ const extractOrderedBlocks = (content) => {
   }
   
   return blocks
-}
-
-// 提取普通Markdown内容（去除特殊块）
-const extractNormalContent = (content) => {
-  let processedContent = content
-  
-  // 移除YAML front matter
-  processedContent = processedContent.replace(/^---[\s\S]*?---\n?/, '')
-  
-  // 移除 Mermaid 代码块
-  processedContent = processedContent.replace(/```mermaid[\s\S]*?```/gim, '')
-  
-  // 移除数学公式
-  processedContent = processedContent.replace(/\$\$([\s\S]*?)\$\$/gim, '')
-  
-  // 移除代码块
-  processedContent = processedContent.replace(/```([\s\S]*?)```/gim, '')
-  
-  // 移除彩蛋动画块
-  processedContent = processedContent.replace(/<easter-egg([^>]*)>[\s\S]*?<\/easter-egg>/gim, '')
-  
-  return processedContent
 }
 
 // 解析和渲染Markdown
@@ -684,10 +577,6 @@ watch(() => props.content, () => {
   padding: 1rem;
 }
 
-/* 确保内容块可见 */
-.markdown-content > div {
-}
-
 /* 标题样式 */
 .markdown-content h1,
 .markdown-content h2,
@@ -748,13 +637,8 @@ watch(() => props.content, () => {
   padding: 14px 16px;
   border-radius: 10px;
   overflow-x: auto;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .markdown-content pre {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--common-bg, #fff) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .markdown-content pre code {
@@ -933,10 +817,6 @@ body.dark-theme .markdown-content pre {
 .markdown-content code {
   background-color: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   color: var(--common-text);
-}
-
-body.dark-theme .markdown-content pre {
-  background: rgba(255, 255, 255, 0.04);
 }
 
 /* 引用颜色 */

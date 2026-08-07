@@ -7,7 +7,9 @@
       :disabled="!prevPost"
     >
       <span class="post-nav-btn-icon">
-        <img src="../../assets/imgs/svg/chevron-left.svg" alt="" width="20" height="20">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
       </span>
       <div class="post-nav-btn-text">
         <span class="post-nav-btn-label">上一篇</span>
@@ -27,7 +29,9 @@
         <span class="post-nav-btn-title">{{ nextPost?.title || '暂无' }}</span>
       </div>
       <span class="post-nav-btn-icon">
-        <img src="../../assets/imgs/svg/chevron-right-stroke.svg" alt="" width="20" height="20">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
       </span>
       <div v-if="loadingNext" class="post-nav-loading"></div>
     </button>
@@ -174,7 +178,7 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--common-color-1) 20%, transparent), transparent);
   animation: loading 1.5s infinite;
 }
 
@@ -207,41 +211,37 @@ onUnmounted(() => {
 
 .post-nav-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
 </style>
 
 <style scoped>
-/* ========== 样式与主题 (Theme) ========== */
+/* ========== 样式与主题 (Theme) — 使用 CSS 变量，无 body.dark-theme 硬编码 ========== */
 .post-nav-container {
   background: transparent;
   border: none;
 }
 
 .post-nav-btn {
-  background: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
   color: var(--common-text);
-}
-
-body.dark-theme .post-nav-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .post-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.8));
   border-color: var(--common-color-1);
-}
-
-body.dark-theme .post-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .post-nav-btn-label,
 .post-nav-btn-title {
   color: var(--common-text);
+}
+
+.post-nav-btn-icon {
+  color: var(--common-color-1);
 }
 </style>
 

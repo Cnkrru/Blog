@@ -382,28 +382,16 @@
 <style>
 /* --- 面板 --- */
 .player-content {
-    background: rgba(255, 255, 255, 0.78);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.78);
     box-shadow:
-        0 0 0 1px rgba(0, 0, 0, 0.04),
-        0 2px 6px rgba(0, 0, 0, 0.06),
-        0 16px 40px rgba(0, 0, 0, 0.12);
-}
-
-body.dark-theme .player-content {
-    background: rgba(30, 15, 60, 0.82);
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.06),
-        0 2px 6px rgba(0, 0, 0, 0.2),
-        0 16px 40px rgba(0, 0, 0, 0.3);
+        0 0 0 1px color-mix(in srgb, var(--common-text) 5%, transparent),
+        0 2px 6px var(--common-shadow),
+        0 16px 40px var(--common-shadow);
 }
 
 /* --- 封面 --- */
 .player-cover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-body.dark-theme .player-cover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px var(--common-shadow);
 }
 
 /* --- 歌曲信息 --- */
@@ -418,11 +406,7 @@ body.dark-theme .player-cover {
 
 /* --- 进度条 --- */
 .progress-bar {
-    background: rgba(0, 0, 0, 0.08);
-}
-
-body.dark-theme .progress-bar {
-    background: rgba(255, 255, 255, 0.12);
+    background: color-mix(in srgb, var(--common-text) 12%, transparent);
 }
 
 #progress-fill {
@@ -446,11 +430,7 @@ body.dark-theme .progress-bar {
 }
 
 .control-btn:hover {
-    background: rgba(0, 0, 0, 0.06);
-}
-
-body.dark-theme .control-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 /* --- 播放按钮 --- */
@@ -471,11 +451,7 @@ body.dark-theme .control-btn:hover {
 
 /* --- 音量条 --- */
 .volume-bar {
-    background: rgba(0, 0, 0, 0.08);
-}
-
-body.dark-theme .volume-bar {
-    background: rgba(255, 255, 255, 0.12);
+    background: color-mix(in srgb, var(--common-text) 12%, transparent);
 }
 
 #volume-fill {
@@ -489,23 +465,14 @@ body.dark-theme .volume-bar {
 
 /* --- 播放列表弹窗 --- */
 .player-playlist {
-    background: rgba(0, 0, 0, 0.4);
-}
-
-body.dark-theme .player-playlist {
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.45);
 }
 
 .playlist-container {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.92);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
-}
-
-body.dark-theme .playlist-container {
-    background: rgba(30, 15, 60, 0.94);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 16px 48px var(--common-shadow);
 }
 
 .playlist-header {
@@ -527,28 +494,16 @@ body.dark-theme .playlist-container {
 }
 
 .playlist-items li {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid color-mix(in srgb, var(--common-text) 6%, transparent);
     color: var(--common-text);
 }
 
-body.dark-theme .playlist-items li {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 .playlist-items li:hover {
-    background: rgba(0, 0, 0, 0.03);
-}
-
-body.dark-theme .playlist-items li:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: color-mix(in srgb, var(--common-text) 4%, transparent);
 }
 
 .playlist-items li.active {
-    background: rgba(0, 0, 0, 0.04);
-}
-
-body.dark-theme .playlist-items li.active {
-    background: rgba(255, 255, 255, 0.06);
+    background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
 .playlist-item-title {

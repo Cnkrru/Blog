@@ -1,16 +1,32 @@
 [
   {
-    "id": "12",
-    "title": "Cpp学习",
-    "date": "2026-08-06",
-    "category": "Cpp",
+    "id": "13",
+    "title": "C_Cpp学习2",
+    "date": "2026-08-07",
+    "category": "C_Cpp",
     "tags": [
+      "C",
+      "Cpp"
+    ],
+    "description": "C库学习",
+    "keywords": "C",
+    "author": "Cnkrru",
+    "seoTitle": "C_Cpp学习2 - Tech Blog",
+    "path": "./html/posts/post-13.html"
+  },
+  {
+    "id": "12",
+    "title": "C_Cpp学习",
+    "date": "2026-08-06",
+    "category": "C_Cpp",
+    "tags": [
+      "C",
       "Cpp"
     ],
     "description": "Cpp库学习",
     "keywords": "Cpp",
     "author": "Cnkrru",
-    "seoTitle": "Cpp学习 - Tech Blog",
+    "seoTitle": "C_Cpp学习 - Tech Blog",
     "path": "./html/posts/post-12.html"
   },
   {

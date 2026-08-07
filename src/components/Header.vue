@@ -142,22 +142,15 @@ onMounted(() => {
         background-color 0.2s ease;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    box-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.08),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
-}
-
-body.dark-theme :deep(.button-style) {
-    box-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.2),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    background: var(--common-color-1);
+    border: 1px solid var(--common-color-1);
+    color: #fff;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 :deep(.button-style:hover) {
-    transform: scale(1.08);
-    box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.12),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
 
 :deep(.button-style.animating) {
@@ -202,30 +195,11 @@ body.dark-theme :deep(.button-style) {
 
 <!-- 颜色样式 -->
 <style>
-/* 水墨风：按钮宣纸暖白底，朱砂描边 */
-[data-style="ink"] .button-style {
-    background-color: rgba(251, 248, 240, 0.85);
-    border: 1px solid rgba(74, 60, 40, 0.18);
-}
-
-[data-style="ink"] body.dark-theme .button-style {
-    background-color: rgba(38, 34, 28, 0.85);
-    border: 1px solid rgba(245, 241, 232, 0.14);
-}
-
-/* 樱粉风：通过 CSS 变量自适应亮/暗主题 */
-[data-style="sakura"] .button-style {
-    background-color: var(--common-color-1);
-    border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
-}
-
-/* 按钮图标：亮色黑色，暗色白色，保证对比清晰 */
-.button-style img {
-    filter: brightness(0) !important;
-}
-
-body.dark-theme .button-style img {
-    filter: brightness(0) invert(1) !important;
+/* 统一按钮风格：与 PostMenu/TocButton 一致 — 主题色背景 + 白色 SVG */
+.button-style {
+    background: var(--common-color-1);
+    border: 1px solid var(--common-color-1);
+    color: #fff;
 }
 </style>
 

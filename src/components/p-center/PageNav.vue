@@ -233,7 +233,6 @@ const closeDropdown = () => {
   animation: slideUp 0.2s ease;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
 }
 
@@ -314,10 +313,7 @@ const closeDropdown = () => {
 
 .dropdown-card {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
-}
-
-body.dark-theme .dropdown-card {
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
 }
 
 .dropdown-header {

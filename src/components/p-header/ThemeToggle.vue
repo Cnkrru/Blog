@@ -18,6 +18,7 @@ const toggleTheme = () => {
 <template>
   <div
     class="button-style theme-toggle-btn"
+    title="切换主题"
     @click="toggleTheme"
     :aria-label="isDarkTheme ? '切换到亮色主题' : '切换到暗色主题'"
     role="button"
@@ -26,7 +27,7 @@ const toggleTheme = () => {
     @keydown.space="toggleTheme"
     :class="{ animating: isAnimating }"
   >
-    <img src="../../assets/imgs/svg/theme-toggle.svg" alt="">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-moon-sun" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/><path d="M12 9v4l3 3"/></svg>
     <span v-if="isAnimating" class="emoji-burst">✨</span>
   </div>
 </template>
