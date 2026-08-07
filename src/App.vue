@@ -21,7 +21,6 @@ const isIndexPage = computed(() => route.path === '/')
 const isTerminalPage = computed(() => route.path === '/terminal')
 
 const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDark)
 
 // 页面加载进度条
 const progressWidth = ref('0%')

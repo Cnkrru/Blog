@@ -3,12 +3,14 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const isImmersiveReading = ref(false)
+const isAnimating = ref(false)
 const router = useRouter()
 
 const toggleImmersiveReading = () : void => {
   isImmersiveReading.value = true                           //沉浸阅读标志置为true
+  isAnimating.value = true                                  //动画标志
   document.body.classList.toggle('immersive-reading')       //切换bodyCSS样式(功能实现)
-//   setTimeout(() => { isAnimating.value = false }, 400)      //超时时间设置为400ms
+  setTimeout(() => { isAnimating.value = false }, 400)      //超时时间设置为400ms
 }
 
 //路由切换，沉浸阅读功能的生命周期结束

@@ -61,25 +61,6 @@
           </div>
         </div>
       </div>
-      
-      <!-- 贡献日历 -->
-      <div class="contribution-section" v-if="contributionData">
-        <h3 class="section-title">贡献统计</h3>
-        <div class="contribution-stats">
-          <div class="contribution-item">
-            <span class="contribution-value">{{ contributionData.totalContributions }}</span>
-            <span class="contribution-label">今年贡献</span>
-          </div>
-          <div class="contribution-item">
-            <span class="contribution-value">{{ contributionData.longestStreak }}</span>
-            <span class="contribution-label">最长连续贡献</span>
-          </div>
-          <div class="contribution-item">
-            <span class="contribution-value">{{ contributionData.currentStreak }}</span>
-            <span class="contribution-label">当前连续贡献</span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -93,7 +74,6 @@ const loading = ref(false)
 const error = ref('')
 const userData = ref(null)
 const reposData = ref([])
-const contributionData = ref(null)
 
 // 获取GitHub用户数据
 const fetchGitHubData = async () => {
@@ -141,100 +121,10 @@ const fetchGitHubData = async () => {
       const repos = await reposResponse.json()
       reposData.value = repos.filter(repo => !repo.fork).slice(0, 6)
     }
-
-    // 获取贡献数据
-    try {
-      const contributionsResponse = await fetchWithTimeout(
-        `https://github-contributions-api.jogruber.de/v4/${props.username}`
-      )
-      if (contributionsResponse.ok) {
-        const contributionJson = await contributionsResponse.json()
-        contributionData.value = calculateContributions(contributionJson)
-      }
-    } catch (contribError) {
-      console.warn('获取贡献数据失败:', contribError)
-      contributionData.value = null
-    }
   } catch (err) {
     error.value = err.message
   } finally {
     loading.value = false
-  }
-}
-
-// 计算贡献统计
-const calculateContributions = (data) => {
-  // 安全检查
-  if (!data || !data.years || data.years.length === 0) {
-    return {
-      totalContributions: 0,
-      longestStreak: 0,
-      currentStreak: 0
-    }
-  }
-
-  const years = data.years
-  const currentYear = years[years.length - 1]
-  if (!currentYear || !currentYear.contributions) {
-    return {
-      totalContributions: 0,
-      longestStreak: 0,
-      currentStreak: 0
-    }
-  }
-
-  let totalContributions = 0
-  let longestStreak = 0
-  let currentStreak = 0
-  let tempStreak = 0
-
-  // 遍历所有周
-  currentYear.contributions.forEach((week) => {
-    let weekHasContribution = false
-    week.contributions.forEach(day => {
-      totalContributions += day.count
-      if (day.count > 0) {
-        weekHasContribution = true
-      }
-    })
-
-    if (weekHasContribution) {
-      tempStreak++
-      longestStreak = Math.max(longestStreak, tempStreak)
-    } else {
-      tempStreak = 0
-    }
-  })
-
-  // 计算当前连续贡献 - 从后往前遍历所有周
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  let foundGap = false
-  // 反向遍历所有周
-  for (let weekIndex = currentYear.contributions.length - 1; weekIndex >= 0 && !foundGap; weekIndex--) {
-    const week = currentYear.contributions[weekIndex]
-    // 反向遍历这一周内的每天
-    for (let dayIndex = week.contributions.length - 1; dayIndex >= 0; dayIndex--) {
-      const day = week.contributions[dayIndex]
-      const dayDate = new Date(day.date)
-      dayDate.setHours(0, 0, 0, 0)
-
-      if (dayDate > today) continue
-
-      if (day.count > 0) {
-        currentStreak++
-      } else {
-        foundGap = true
-        break
-      }
-    }
-  }
-
-  return {
-    totalContributions,
-    longestStreak,
-    currentStreak
   }
 }
 
@@ -434,36 +324,6 @@ onMounted(() => {
     border-radius: 50%;
     margin-right: 4px;
 }
-
-/* 贡献统计 */
-.contribution-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-.contribution-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
-
-.contribution-item:hover {
-    transform: translateY(-4px);
-}
-
-.contribution-value {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-.contribution-label {
-    font-size: 0.85rem;
-    margin-top: 4px;
-}
 </style>
 
 <style scoped>
@@ -569,24 +429,6 @@ onMounted(() => {
 .language-dot.css { background-color: #563d7c; }
 .language-dot.typescript { background-color: #2b7489; }
 .language-dot.vue { background-color: #41b883; }
-
-.contribution-item {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.95);
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-}
-
-.contribution-item:hover {
-  box-shadow: 0 4px 12px var(--common-shadow);
-}
-
-.contribution-value {
-  color: var(--common-color-1);
-}
-
-.contribution-label {
-  color: var(--common-text);
-  opacity: 0.65;
-}
 </style>
 
 <style scoped>
@@ -609,14 +451,6 @@ onMounted(() => {
     
     .repos-grid {
         grid-template-columns: 1fr;
-    }
-    
-    .contribution-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .contribution-value {
-        font-size: 1.5rem;
     }
 }
 </style>

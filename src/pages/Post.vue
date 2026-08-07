@@ -124,10 +124,6 @@ useHead({
   ] : [])
 })
 
-const toggleToc = () => {
-    showToc.value = !showToc.value
-}
-
 const scrollToTop = () => {
     const centerCardContent = document.querySelector('.center-card-content');
     if (centerCardContent) {
@@ -283,8 +279,4 @@ onMounted(() => {
 .error-message {
     color: var(--text-secondary);
 }
-</style>
-
-<style scoped>
-/* 响应式设计媒体查询 */
 </style>

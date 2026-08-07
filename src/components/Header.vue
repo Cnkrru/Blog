@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, defineAsyncComponent } from 'vue'
+import { onMounted, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Logo from './p-header/Logo.vue'
@@ -12,13 +12,6 @@ import MobileMenu from './p-header/MobileMenu.vue'
 import DynamicEffectControl from './p-header/DynamicEffectControl.vue'
 
 const router = useRouter()
-
-
-// 初始化功能
-onMounted(() => {
-  // 组件挂载时的初始化逻辑
-})
-
 </script>
 
 

@@ -26,6 +26,31 @@ useHead({
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            'name': "Cnkrru's Blog",
+            'url': 'https://cnkrru.top',
+            'description': '个人技术博客 — 记录 C++ 学习、前端开发与工程实践',
+            'inLanguage': 'zh-CN'
+          },
+          {
+            '@type': 'Person',
+            'name': 'Cnkrru',
+            'url': 'https://cnkrru.top',
+            'sameAs': [
+              'https://github.com/Cnkrru'
+            ]
+          }
+        ]
+      })
+    }
   ]
 })
 </script>

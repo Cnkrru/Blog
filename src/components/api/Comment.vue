@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
+import { onMounted, computed, ref, watch } from 'vue'
 import { useCommentStore, useThemeStore } from '../../stores'
 
 const commentStore = useCommentStore()

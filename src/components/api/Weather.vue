@@ -90,8 +90,7 @@ const fetchLocationAndWeather = async (): Promise<void> => {
           const ipResponse: Response = await fetchWithTimeout('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon')
           if (ipResponse.ok) {
             ipData = await ipResponse.json()
-            if (ipData.status !== 'fail') {
-            } else {
+            if (ipData.status === 'fail') {
               throw new Error('ip-api 返回失败状态')
             }
           } else {

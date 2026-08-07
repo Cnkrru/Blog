@@ -61,10 +61,6 @@ import Weather from './api/Weather.vue'
 </style>
 
 <style scoped>
-/* 颜色样式 */
-</style>
-
-<style scoped>
 /* 移动端：侧边栏默认隐藏，点击菜单按钮时滑出 */
 @media (max-width: 768px) {
     .left-asider-S {

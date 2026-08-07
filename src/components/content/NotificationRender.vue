@@ -41,10 +41,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useNotificationStore, useThemeStore } from '../../stores'
+import { useNotificationStore } from '../../stores'
 
 const notificationStore = useNotificationStore()
-const themeStore = useThemeStore()
 
 const pausedIds = ref<Set<string>>(new Set())
 const timers = new Map<string, ReturnType<typeof setTimeout>>()

@@ -125,19 +125,11 @@ onMounted(() => {
 </style>
 
 <style scoped>
-/* 颜色样式 */
-</style>
-
-<style scoped>
 /* 响应式设计媒体查询 */
 @media (max-width: 640px) {
     .about-center-card-footer {
         height: 120px;
     }
-}
-
-@media (max-width: 640px) {
-    /* 保持现有样式 */
 }
 
 @media (max-width: 768px) {

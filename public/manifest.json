@@ -1,0 +1,19 @@
+{
+  "name": "Cnkrru's Blog",
+  "short_name": "Cnkrru",
+  "description": "个人技术博客 — 记录 C++ 学习、前端开发与工程实践",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "zh-CN"
+}

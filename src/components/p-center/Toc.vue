@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
-import { useTocStore, useThemeStore } from '../../stores'
+import { useTocStore } from '../../stores'
 import TocTreeItem from './TocTreeItem.vue'
 
 const props = defineProps<{ show?: boolean }>()
 const emit = defineEmits<{ 'update:show': [show: boolean] }>()
 
 const tocStore = useTocStore()
-const themeStore = useThemeStore()
 
 const tocContentRef = ref<HTMLElement | null>(null)
 const toc = ref<any[]>([])

@@ -28,17 +28,13 @@ onMounted(async () => {
 
     searchIndex = new ElasticsearchLikeScorer()
     searchIndex.buildInvertedIndex(searchData.value)
-
-    const cacheWarmupData = searchData.value.map(doc => ({
-      key: `article_${doc.id}`,
-      value: doc,
-      options: { priority: 'high', ttl: 3600 }
-    }))
-
-    await searchCache.warmup(cacheWarmupData)
   } catch (error) {
     console.error('加载搜索数据失败:', error)
     searchData.value = []
+  }
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('click', handleClickOutside)
   }
 })
 
@@ -68,7 +64,6 @@ const performSearch = (query) => {
   if (cachedResults) {
     searchResults.value = cachedResults
     showResults.value = cachedResults.length > 0
-    searchCache.recordAccess(cacheKey)
   } else {
     const results = searchIndex.search(query, searchData.value, 20)
     searchResults.value = results
@@ -144,12 +139,6 @@ const handleClickOutside = (e) => {
     showResults.value = false
   }
 }
-
-onMounted(() => {
-  if (typeof document !== 'undefined') {
-    document.addEventListener('click', handleClickOutside)
-  }
-})
 
 onUnmounted(() => {
   if (typeof document !== 'undefined') {
