@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    // Vite 构建工具的 TS 配置 - Cnkrru's Blog
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",

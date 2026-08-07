@@ -1,3 +1,4 @@
+// Cnkrru's Blog - Vite 构建配置
 // 导入ts工具函数
 import { defineConfig } from 'vite'
 // 导入vue

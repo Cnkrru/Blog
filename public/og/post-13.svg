@@ -23,7 +23,7 @@
   <rect x="60" y="80" width="80" height="4" rx="2" fill="url(#accent)"/>
 
   <!-- 标题 -->
-  <text x="60" y="150" font-size="42" font-weight="bold" fill="#ffffff">C_Cpp学习</text>
+  <text x="60" y="150" font-size="42" font-weight="bold" fill="#ffffff">C_Cpp学习2</text>
 
   <!-- 标签 -->
   <foreignObject x="56" y="220" width="1088" height="60">
@@ -34,5 +34,5 @@
 
   <!-- 底部信息 -->
   <text x="60" y="570" font-size="20" fill="rgba(255,255,255,0.5)">Cnkrru's Blog</text>
-  <text x="60" y="595" font-size="14" fill="rgba(255,255,255,0.35)">2026-08-06</text>
+  <text x="60" y="595" font-size="14" fill="rgba(255,255,255,0.35)">2026-08-07</text>
 </svg>

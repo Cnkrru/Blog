@@ -1,76 +1,81 @@
 # Cnkrru's Blog
 
-基于 Vue 3 的个人技术博客。
+基于 Vue 3 + Vite + vite-ssg 的个人技术博客，静态站点生成。
 
 ## 技术栈
 
 - Vue 3 + Composition API
 - Vue Router 4
 - Pinia 3（状态管理）
-- Vue I18n（国际化）
 - Vite + vite-ssg（构建与静态生成）
 - vite-plugin-pages（页面路由）
-- ECharts（访客地图、热力图、标签云）
-- Three.js（音频可视化）
-- CodeMirror 5（代码编辑器）
-- Web Audio API（3D 环绕音效）
-- Web Workers（代码安全执行）
+- Markdown（marked.js 渲染 + Prism.js 代码高亮）
+- KaTeX（数学公式）
+- Mermaid（流程图）
 - @vueuse/head（SEO）
 
 ## 功能
 
-**内容**
+**内容系统**
 - 文章系统（Markdown、代码高亮、数学公式、流程图）
 - 项目展示、归档、友链、关于
-- 工具集页面（Serial Tool、Code Runner）
-- 终端页面
+- 自动生成 OG 封面图、RSS、Sitemap
+
+**侧边栏**
+- 头像、欢迎语、天气组件
+- 页面导航链接
+- 站点统计（不蒜子）
 
 **Header**
-- 音乐播放器（播放控制、进度条、音量、播放列表）
-- 3D 环绕音效
+- 音乐播放器（播放控制、音量、播放列表）
 - 搜索（中文分词）
-- 主题切换（自动 + 手动）
+- 主题切换（自动 + 手动，Ink / Sakura 双风格）
 - 樱花/雪花动态效果
-- 语言选择器
-- 阅读进度条
+- 沉浸式阅读模式
 
-**Center**
-- 性能监控（Memory、Fetch API）
-- 音频可视化
-- 鼠标跟随特效
-- 控制台彩蛋
-- 标签云
-- 代码复制、分享、目录导航
-- 评论区
-- Live2D 看板娘
-- 分页
-
-**Index**
-- 实时时钟
-- GitHub 风格热力图
-- 访客地图
-- 网络粒子背景
+**文章页**
+- 目录导航、阅读时间
+- 代码复制、代码预览
+- 文章分享、赞助
+- 相关文章推荐
+- 评论区（Giscus）
+- 图片灯箱
 
 **其他**
 - 懒加载图片
 - 骨架屏
-- RSS 订阅
+- 右键菜单
 
 ## 目录结构
 
 ```
+content/           # Markdown 文章源文件
+├── posts/         # 博客文章
+├── logs/          # 更新日志
+├── projects/      # 项目展示
+├── about/         # 关于页面
+└── announcement/  # 公告
+
 src/
-├── assets/          # 静态资源
-├── components/      # Vue 组件
-│   ├── api/        # API 组件（天气等）
-│   ├── commands/   # 终端命令
-│   ├── functions/  # 功能组件
-│   ├── index/      # 首页组件
-│   └── tools/      # 工具页面组件
-├── pages/           # 页面
-├── router/          # 路由
-├── stores/         # Pinia 状态
-├── utils/          # 工具函数
-├── i18n/           # 国际化
-└── composables/     # 组合式函数
+├── assets/        # 静态资源
+├── components/    # Vue 组件
+│   ├── api/      # 第三方 API 组件（天气、GitHub、评论等）
+│   ├── content/  # 内容渲染组件（Markdown、代码高亮等）
+│   ├── media/    # 媒体组件（音乐播放器、音效等）
+│   ├── p-center/ # 页面中部组件（目录、导航、菜单等）
+│   ├── p-footer/ # 页脚组件
+│   ├── p-header/ # 页头组件（搜索、主题、菜单等）
+│   └── p-sidebar/# 侧边栏组件
+├── pages/         # 页面
+├── plugins/       # Vite 插件
+├── stores/        # Pinia 状态
+├── utils/         # 工具函数
+└── composables/   # 组合式函数
+
+public/            # 静态资源
+├── config/        # 自动生成的 JSON 配置
+├── og/            # 自动生成的 OG 封面图
+└── js/            # 动态效果脚本
+
+script/            # 构建与同步脚本
 ```

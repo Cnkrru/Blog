@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    // TypeScript 编译配置 - Cnkrru's Blog
     // 输出构建标准
     "target": "ES2020",
 

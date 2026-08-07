@@ -1,3 +1,4 @@
+# Vercel 部署忽略文件
 node_modules/
 dist/
 .DS_Store

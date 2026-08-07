@@ -1,8 +1,9 @@
 {
   "name": "vue-blog",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Cnkrru's personal tech blog - Vue 3 + Vite + vite-ssg",
   "engines": {
     "node": ">=20.x"
   },
