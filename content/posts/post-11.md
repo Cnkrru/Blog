@@ -1,8 +1,12 @@
 ---
 title: Docsify转为VitePress
 date: 2026-07-29
+updated: 2026-08-07
 category: 前端
 tags: [前端, VitePress, Docsify, 导航站, 站点迁移]
+history:
+  - 2026-08-07 补充迁移后性能对比数据
+  - 2026-08-01 整理VitePress配置最佳实践
 description: 将个人导航站点从Docsify v4迁移至VitePress的完整记录，包含旧配置存档、迁移原因以及VitePress配置详情。
 keywords: Docsify, VitePress, 导航站, 站点迁移, 静态站点生成器, SSG
 ---
@@ -169,5 +173,7 @@ nav/
 
 ---
 > 编辑于2026-07-29
+
 > 作者：Cnkrru
+
 > 联系方式：3253884026@qq.com

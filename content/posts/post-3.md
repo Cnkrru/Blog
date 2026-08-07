@@ -1,6 +1,7 @@
 ---
 title: Frontend-HTML-CSS组件
 date: 2026-04-20
+updated: 2026-08-06
 category: 技术
 tags: [前端, 组件]
 description: 详细介绍前端组件——HTML-CSS组件，介绍这些只需要HTML和CSS的简单组件如何制作。
@@ -202,5 +203,7 @@ p
 
 ---
 > 编辑于2026-04-20
+
 > 作者：Cnkrru
+
 > 联系方式：3253884026@qq.com

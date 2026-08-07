@@ -1,6 +1,7 @@
 ---
 title: CSS初始化以及版心容器代码
 date: 2026-04-22
+updated: 2026-08-07
 category: 前端
 tags: [前端, CSS]
 description: 详细介绍CSS初始化以及版心容器代码备份。
@@ -76,5 +77,7 @@ hr {
 ```
 ---
 > 编辑于2026-04-22
+
 > 作者：Cnkrru
+
 > 联系方式：3253884026@qq.com

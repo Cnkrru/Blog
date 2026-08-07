@@ -13,6 +13,8 @@ import ArticleNav from '../components/p-center/ArticleNav.vue'
 import Comment from '../components/api/Comment.vue'
 import RelatedArticles from '../components/p-center/RelatedArticles.vue'
 import ArticleActionBar from '../components/p-center/ArticleActionBar.vue'
+import ArticleFeedback from '../components/p-center/ArticleFeedback.vue'
+import EditHistory from '../components/p-center/EditHistory.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -192,6 +194,12 @@ onMounted(() => {
 
     <div class="center-card-content" ref="contentCard">
         <ReadingTime v-if="!loading && !error" />
+        <EditHistory 
+            v-if="!loading && !error && post"
+            :date="post?.date || ''"
+            :updated="post?.updated || ''"
+            :history="post?.history || []"
+        />
         <ContentRender 
             :key="postId"
             :id="postId" 
@@ -201,6 +209,8 @@ onMounted(() => {
             @error="handleError"
             @prev-next-posts="handlePrevNextPosts"
         />
+        
+        <ArticleFeedback :postId="postId" v-if="!loading && !error" />
         
         <hr v-if="!loading && !error">
         

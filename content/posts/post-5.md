@@ -1,6 +1,7 @@
 ---
 title: Frontend-沉浸阅读组件
 date: 2026-04-20
+updated: 2026-08-06
 category: 前端
 tags: [前端, 组件]
 description: 详细介绍前端组件——沉浸阅读，介绍组件如何制作。
@@ -47,5 +48,7 @@ body.immersive-reading .center-S {
 ```
 ---
 > 编辑于2026-04-20
+
 > 作者：Cnkrru
+
 > 联系方式：3253884026@qq.com

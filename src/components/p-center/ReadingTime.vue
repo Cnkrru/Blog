@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { useThemeStore } from '../../stores'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = withDefaults(defineProps<{
   contentSelector?: string
@@ -14,10 +13,7 @@ const props = withDefaults(defineProps<{
   minTime: 1
 })
 
-const themeStore = useThemeStore()
 const readingTime = ref(null)
-
-const isDarkTheme = computed(() => themeStore.isDark)
 
 const calculateReadingTime = () => {
   const selectors = props.contentSelector.split(', ')
@@ -28,9 +24,7 @@ const calculateReadingTime = () => {
     if (articleContent) break
   }
   
-  if (!articleContent) {
-    return null
-  }
+  if (!articleContent) return null
 
   const clone = articleContent.cloneNode(true)
   
@@ -58,187 +52,239 @@ const calculateReadingTime = () => {
   const minutes = Math.max(props.minTime, Math.ceil(totalTime))
   
   return {
-    minutes: minutes,
-    chineseCount: chineseCount,
-    englishCount: englishCount,
-    codeCount: codeCount,
+    minutes,
+    chineseCount,
+    englishCount,
+    codeCount,
     totalWords: chineseCount + englishCount + codeCount
   }
 }
 
 const formatTime = (timeData) => {
   if (!timeData) return ''
-  
   const minutes = timeData.minutes
-  
-  if (minutes < 1) {
-    return '小于 1 分钟'
-  } else if (minutes === 1) {
-    return '1 分钟'
-  } else if (minutes < 60) {
-    return minutes + ' 分钟'
-  } else {
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    if (remainingMinutes === 0) {
-      return hours + ' 小时'
-    } else {
-      return hours + ' 小时 ' + remainingMinutes + ' 分钟'
-    }
-  }
+  if (minutes < 1) return '&lt;1 分钟'
+  if (minutes === 1) return '1 分钟'
+  if (minutes < 60) return minutes + ' 分钟'
+  const hours = Math.floor(minutes / 60)
+  const rm = minutes % 60
+  return rm === 0 ? hours + ' 小时' : hours + 'h ' + rm + 'm'
+}
+
+const formatNum = (n) => {
+  if (n >= 10000) return (n / 10000).toFixed(1) + '万'
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'k'
+  return String(n)
 }
 
 let debounceTimer = null
 
 const initReadingTime = () => {
   setTimeout(() => {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer)
-    }
-    
+    if (debounceTimer) clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
-      const timeData = calculateReadingTime()
-      readingTime.value = timeData
+      readingTime.value = calculateReadingTime()
     }, 200)
   }, 100)
 }
 
-onMounted(() => {
-  initReadingTime()
-})
-
-onUnmounted(() => {
-  if (debounceTimer) {
-    clearTimeout(debounceTimer)
-  }
-})
+onMounted(() => initReadingTime())
+onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 </script>
 
 <template>
   <div class="reading-time-wrapper">
-    <!-- 阅读时间显示 -->
-    <div v-if="readingTime" class="reading-time-container" :class="{ 'dark-theme': isDarkTheme }">
-      <!-- 字数统计 -->
-      <div class="word-count-section">
-        <span class="word-count-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        </span>
-        <span class="word-count-text">
-          字数统计: {{ readingTime.totalWords }} 字
-        </span>
-        <span class="word-count-detail">
-          ({{ readingTime.chineseCount }}中文 / {{ readingTime.englishCount }}英文 / {{ readingTime.codeCount }}代码)
-        </span>
+    <div v-if="readingTime" class="reading-time-card">
+      <!-- 字数 -->
+      <div class="metric-block">
+        <div class="metric-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="metric-info">
+          <span class="metric-value">{{ formatNum(readingTime.totalWords) }}</span>
+          <span class="metric-label">总字数</span>
+        </div>
       </div>
-      
+
+      <!-- 分隔 -->
+      <div class="metric-divider"></div>
+
+      <!-- 中文 -->
+      <div class="metric-block metric-sm">
+        <div class="metric-info">
+          <span class="metric-value-sm">{{ formatNum(readingTime.chineseCount) }}</span>
+          <span class="metric-label-sm">中文</span>
+        </div>
+      </div>
+
+      <!-- 英文 -->
+      <div class="metric-block metric-sm">
+        <div class="metric-info">
+          <span class="metric-value-sm">{{ formatNum(readingTime.englishCount) }}</span>
+          <span class="metric-label-sm">英文</span>
+        </div>
+      </div>
+
+      <!-- 代码 -->
+      <div class="metric-block metric-sm">
+        <div class="metric-info">
+          <span class="metric-value-sm">{{ formatNum(readingTime.codeCount) }}</span>
+          <span class="metric-label-sm">代码</span>
+        </div>
+      </div>
+
+      <!-- 分隔 -->
+      <div class="metric-divider"></div>
+
       <!-- 阅读时间 -->
-      <div class="reading-time-section">
-        <span class="reading-time-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </span>
-        <span class="reading-time-text">
-          预计阅读时间: {{ formatTime(readingTime) }}
-        </span>
+      <div class="metric-block is-time">
+        <div class="metric-icon time-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="metric-info">
+          <span class="metric-value" v-html="formatTime(readingTime)"></span>
+          <span class="metric-label">预计阅读</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<!-- 布局样式 -->
 <style scoped>
+/* ── 布局 ── */
 .reading-time-wrapper {
-    width: 100%;
-    margin: 8px 0;
+  width: 100%;
+  margin: 8px 0;
 }
 
-.reading-time-container {
-    width: 100%;
-    padding: 8px 14px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+.reading-time-card {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
+  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
-.word-count-section {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+.metric-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-.word-count-icon,
-.reading-time-icon {
-    width: 14px;
-    height: 14px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
+.metric-sm {
+  gap: 0;
 }
 
-.word-count-icon img,
-.reading-time-icon img {
-    width: 100%;
-    height: 100%;
-    display: block;
+.metric-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--common-color-1) 12%, transparent);
+  color: var(--common-color-1);
 }
 
-.word-count-text,
-.reading-time-text {
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1;
+.time-icon {
+  background: color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
-.word-count-detail {
-    font-size: 11px;
+.metric-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.reading-time-section {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
+.metric-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--common-text);
+  line-height: 1;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.metric-value-sm {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--common-text);
+  line-height: 1;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  text-align: center;
+  min-width: 36px;
+}
+
+.metric-label {
+  font-size: 11px;
+  color: var(--common-text);
+  opacity: 0.45;
+  line-height: 1;
+}
+
+.metric-label-sm {
+  font-size: 10px;
+  color: var(--common-text);
+  opacity: 0.4;
+  line-height: 1;
+  text-align: center;
+}
+
+.metric-divider {
+  width: 1px;
+  height: 24px;
+  margin: 0 14px;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--common-text) 10%, transparent);
+}
+
+.is-time {
+  margin-left: auto;
 }
 </style>
 
-<!-- 颜色样式 -->
-<style scoped>
-.reading-time-container {
-    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
-    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-    color: var(--common-text);
-}
-.word-count-detail {
-    opacity: 0.55;
-}
-</style>
-
-<!-- 响应式 -->
 <style scoped>
 @media (max-width: 640px) {
-    .reading-time-container {
-        padding: 6px 10px;
-        border-radius: 8px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-    }
-    .word-count-section {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 3px;
-    }
-    .word-count-text,
-    .reading-time-text {
-        font-size: 12px;
-    }
-    .word-count-icon,
-    .reading-time-icon {
-        width: 13px;
-        height: 13px;
-    }
+  .reading-time-card {
+    padding: 8px 10px;
+    border-radius: 8px;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .metric-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+  }
+  .metric-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+  .metric-value,
+  .metric-value-sm {
+    font-size: 13px;
+  }
+  .metric-divider {
+    margin: 0 8px;
+    height: 20px;
+  }
+  .metric-sm {
+    display: none;
+  }
+  .metric-divider:nth-of-type(2) {
+    display: none;
+  }
 }
 </style>

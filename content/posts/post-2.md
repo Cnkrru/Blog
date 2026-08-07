@@ -1,8 +1,13 @@
 ---
 title: 功能测试汇总
 date: 2026-04-16
+updated: 2026-08-07
 category: 测试
 tags: [测试, Markdown, 代码高亮, 灯箱, 通知系统, Mermaid, KaTeX]
+history:
+  - 2026-08-07 新增灯箱和PDF打印功能测试
+  - 2026-07-20 补充Mermaid图表和KaTeX公式测试用例
+  - 2026-05-10 新增代码高亮和通知系统测试
 description: 本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表等测试。
 keywords: Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX
 ---
@@ -457,63 +462,67 @@ stateDiagram-v2
 
 ---
 
-# 第六部分：通知系统测试
+# 第六部分：通知系统 & 提示块测试
 
 ---
 
-这是一篇测试通知系统的文章，我们将在这篇文章中测试博客的通知功能。
+::: info 通知系统介绍
+通知系统是博客的一个重要功能，它可以在用户执行某些操作（如复制代码）时，在页面右上角弹出提示信息，提升用户体验。Toast 通知通过 `window.toast` 全局 API 调用。
+:::
 
-## 通知系统介绍
+## Toast 通知测试
 
-通知系统是博客的一个重要功能，它可以在用户执行某些操作时显示提示信息，提升用户体验。
+点击下面的按钮来测试 Toast 通知功能：
 
-## 测试通知功能
+<msg:info>通用通知</msg:info>
+<msg:success>成功通知</msg:success>
+<msg:error>错误通知</msg:error>
+<msg:warning>警告通知</msg:warning>
+<msg:info>信息通知</msg:info>
 
-点击下面的按钮来测试通知功能：
+::: tip 小提示
+Toast 通知支持 4 种类型：`success`（3秒）、`error`（5秒）、`warning`（4秒）、`info`（3秒）。鼠标悬停会暂停自动消失，支持带操作按钮的高级通知。
+:::
 
-<button onclick="if(window.toast) window.toast('这是一条测试通知')" class="test-button">测试通知</button>
+## Admonition 提示块测试
 
-## 通知类型
+以下使用 `:::type` 语法测试各类行内提示块：
 
-我们可以测试不同类型的通知：
+::: info 这是信息提示块
+用于展示**一般性信息**，支持 `行内代码`、[链接](https://cnkrru.top)等 Markdown 语法。
+:::
 
-<button onclick="if(window.toast && window.toast.success) window.toast.success('操作成功！')" class="test-button">成功通知</button>
-<button onclick="if(window.toast && window.toast.error) window.toast.error('操作失败！')" class="test-button">错误通知</button>
-<button onclick="if(window.toast && window.toast.warning) window.toast.warning('警告信息！')" class="test-button">警告通知</button>
-<button onclick="if(window.toast && window.toast.info) window.toast.info('这是一条信息通知')" class="test-button">信息通知</button>
+::: success 操作成功
+任务已成功完成！所有数据已保存到数据库。
+:::
 
-## 通知系统的应用场景
+::: warning 注意
+此操作会覆盖现有配置，请确认后再执行。建议先**备份**原有设置。
+:::
 
-通知系统可以应用在以下场景：
+::: error 错误
+连接超时，无法访问远程服务器。请检查网络设置后重试。
+:::
 
-1. **操作成功**：当用户执行某个操作成功时，显示成功通知
-2. **操作失败**：当用户执行某个操作失败时，显示错误通知
-3. **提醒信息**：显示一些重要的提醒信息
-4. **系统通知**：显示系统相关的通知
+::: tip 小技巧
+使用 `Ctrl + Shift + P` 可以快速打开命令面板，搜索你需要的功能。
+:::
+
+::: note 笔记
+这是一条笔记类型的提示块，适合记录需要记住的信息。
+:::
+
+::: danger 危险操作
+此操作**不可逆**！删除后数据将无法恢复，请谨慎操作。
+:::
+
+## Toast 通知的应用场景
+
+::: note 常见场景
+- **操作成功**：用户执行操作成功后显示成功通知
+- **操作失败**：操作失败时显示错误通知及原因
+- **提醒信息**：重要提醒或时效性信息
+- **系统通知**：系统维护、更新等通知
+:::
 
 ---
-
-<style>
-.test-button {
-  display: inline-block;
-  padding: 8px 16px;
-  margin: 5px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: 1px solid var(--button-border);
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.test-button:hover {
-  background-color: var(--button-hover-bg);
-  transform: translateY(-3px);
-}
-</style>
-
----
-> 编辑于2026-04-016
-> 作者：Cnkrru
-> 联系方式：3253884026@qq.com

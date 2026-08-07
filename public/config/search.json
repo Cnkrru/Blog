@@ -3,6 +3,7 @@
     "id": "13",
     "title": "C_Cpp学习2",
     "date": "2026-08-07",
+    "updated": "",
     "category": "C_Cpp",
     "tags": [
       "C",
@@ -11,6 +12,7 @@
     "description": "C库学习",
     "keywords": "C",
     "author": "Cnkrru",
+    "history": [],
     "seoTitle": "C_Cpp学习2 - Tech Blog",
     "path": "./html/posts/post-13.html"
   },
@@ -18,6 +20,7 @@
     "id": "12",
     "title": "C_Cpp学习",
     "date": "2026-08-06",
+    "updated": "2026-08-07",
     "category": "C_Cpp",
     "tags": [
       "C",
@@ -26,6 +29,7 @@
     "description": "Cpp库学习",
     "keywords": "Cpp",
     "author": "Cnkrru",
+    "history": [],
     "seoTitle": "C_Cpp学习 - Tech Blog",
     "path": "./html/posts/post-12.html"
   },
@@ -33,6 +37,7 @@
     "id": "11",
     "title": "Docsify转为VitePress",
     "date": "2026-07-29",
+    "updated": "2026-08-07",
     "category": "前端",
     "tags": [
       "前端",
@@ -44,6 +49,10 @@
     "description": "将个人导航站点从Docsify v4迁移至VitePress的完整记录，包含旧配置存档、迁移原因以及VitePress配置详情。",
     "keywords": "Docsify, VitePress, 导航站, 站点迁移, 静态站点生成器, SSG",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 补充迁移后性能对比数据",
+      "2026-08-01 整理VitePress配置最佳实践"
+    ],
     "seoTitle": "Docsify转为VitePress - Tech Blog",
     "path": "./html/posts/post-11.html"
   },
@@ -51,6 +60,7 @@
     "id": "10",
     "title": "shell与git 常用指令",
     "date": "2026-07-03",
+    "updated": "2026-08-07",
     "category": "shell",
     "tags": [
       "git",
@@ -59,6 +69,10 @@
     "description": "记录一些shell，git常用指令",
     "keywords": "git，shell",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 补充常用shell脚本和Git分支管理",
+      "2026-07-20 新增git rebase和stash使用场景"
+    ],
     "seoTitle": "shell与git 常用指令 - Tech Blog",
     "path": "./html/posts/post-10.html"
   },
@@ -66,6 +80,7 @@
     "id": "9",
     "title": "VitePress-1-快速开始",
     "date": "2026-04-23",
+    "updated": "2026-08-07",
     "category": "前端",
     "tags": [
       "前端",
@@ -74,6 +89,10 @@
     "description": "详细介绍VitePress-1-快速开始。",
     "keywords": "VitePress, 快速开始",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 补充VitePress与Docsify对比分析",
+      "2026-07-29 同步迁移经验到独立文章"
+    ],
     "seoTitle": "VitePress-1-快速开始 - Tech Blog",
     "path": "./html/posts/post-9.html"
   },
@@ -81,6 +100,7 @@
     "id": "8",
     "title": "CSS初始化以及版心容器代码",
     "date": "2026-04-22",
+    "updated": "2026-08-07",
     "category": "前端",
     "tags": [
       "前端",
@@ -89,6 +109,7 @@
     "description": "详细介绍CSS初始化以及版心容器代码备份。",
     "keywords": "CSS, 初始化",
     "author": "Cnkrru",
+    "history": [],
     "seoTitle": "CSS初始化以及版心容器代码 - Tech Blog",
     "path": "./html/posts/post-8.html"
   },
@@ -96,6 +117,7 @@
     "id": "6",
     "title": "Frontend-主题切换",
     "date": "2026-04-21",
+    "updated": "2026-08-07",
     "category": "前端",
     "tags": [
       "前端",
@@ -104,6 +126,11 @@
     "description": "详细介绍前端组件——主题切换，介绍组件如何制作。",
     "keywords": "前端组件, 主题切换, TypeScript",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 适配CSS变量方案，移除硬编码颜色",
+      "2026-07-10 新增Sakura樱粉主题和Compact布局",
+      "2026-05-15 完善亮暗模式自动切换"
+    ],
     "seoTitle": "Frontend-主题切换 - Tech Blog",
     "path": "./html/posts/post-6.html"
   },
@@ -111,6 +138,7 @@
     "id": "7",
     "title": "Frontend-网站年龄组件设计",
     "date": "2026-04-21",
+    "updated": "2026-08-07",
     "category": "前端",
     "tags": [
       "前端",
@@ -119,6 +147,7 @@
     "description": "详细介绍前端组件——网站年龄组件，介绍组件如何制作。",
     "keywords": "前端组件, 网站年龄组件, HTML, CSS",
     "author": "Cnkrru",
+    "history": [],
     "seoTitle": "Frontend-网站年龄组件设计 - Tech Blog",
     "path": "./html/posts/post-7.html"
   },
@@ -126,6 +155,7 @@
     "id": "3",
     "title": "Frontend-HTML-CSS组件",
     "date": "2026-04-20",
+    "updated": "2026-08-06",
     "category": "技术",
     "tags": [
       "前端",
@@ -134,6 +164,7 @@
     "description": "详细介绍前端组件——HTML-CSS组件，介绍这些只需要HTML和CSS的简单组件如何制作。",
     "keywords": "HTML-CSS, 前端, 组件",
     "author": "Cnkrru",
+    "history": [],
     "seoTitle": "Frontend-HTML-CSS组件 - Tech Blog",
     "path": "./html/posts/post-3.html"
   },
@@ -141,6 +172,7 @@
     "id": "5",
     "title": "Frontend-沉浸阅读组件",
     "date": "2026-04-20",
+    "updated": "2026-08-06",
     "category": "前端",
     "tags": [
       "前端",
@@ -149,6 +181,7 @@
     "description": "详细介绍前端组件——沉浸阅读，介绍组件如何制作。",
     "keywords": "前端组件, 沉浸阅读, TypeScript",
     "author": "Cnkrru",
+    "history": [],
     "seoTitle": "Frontend-沉浸阅读组件 - Tech Blog",
     "path": "./html/posts/post-5.html"
   },
@@ -156,6 +189,7 @@
     "id": "4",
     "title": "Frontend-返回顶部组件",
     "date": "2026-04-19",
+    "updated": "2026-08-06",
     "category": "前端",
     "tags": [
       "前端",
@@ -164,6 +198,7 @@
     "description": "详细介绍前端组件——返回顶部，介绍组件如何制作。",
     "keywords": "前端, 组件, 返回顶部, TypeScript",
     "author": "Cnkrru",
+    "history": [],
     "seoTitle": "Frontend-返回顶部组件 - Tech Blog",
     "path": "./html/posts/post-4.html"
   },
@@ -171,6 +206,7 @@
     "id": "2",
     "title": "功能测试汇总",
     "date": "2026-04-16",
+    "updated": "2026-08-07",
     "category": "测试",
     "tags": [
       "测试",
@@ -184,6 +220,11 @@
     "description": "本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表等测试。",
     "keywords": "Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 新增灯箱和PDF打印功能测试",
+      "2026-07-20 补充Mermaid图表和KaTeX公式测试用例",
+      "2026-05-10 新增代码高亮和通知系统测试"
+    ],
     "seoTitle": "功能测试汇总 - Tech Blog",
     "path": "./html/posts/post-2.html"
   },
@@ -191,6 +232,7 @@
     "id": "changelog",
     "title": "网站更新日志",
     "date": "2026-04-16",
+    "updated": "2026-08-07",
     "category": "网站公告",
     "tags": [
       "网站公告",
@@ -199,6 +241,13 @@
     "description": "记录网站的更新历史和功能变更",
     "keywords": "更新日志,网站更新,功能变更",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 新增编辑历史功能、PDF打印、OG图自动生成",
+      "2026-08-06 新增文章反馈组件、PWA离线支持",
+      "2026-07-29 新增JSON-LD结构化数据、图片灯箱",
+      "2026-07-10 新增Sakura樱粉主题和音乐播放器",
+      "2026-05-15 新增代码高亮、KaTeX公式和Mermaid图表"
+    ],
     "seoTitle": "网站更新日志 - Tech Blog",
     "path": "./html/changelog.html"
   },
@@ -206,6 +255,7 @@
     "id": "0",
     "title": "欢迎来到我的博客",
     "date": "2026-03-29",
+    "updated": "2026-08-07",
     "category": "随笔",
     "tags": [
       "随笔"
@@ -213,6 +263,11 @@
     "description": "欢迎访问我的个人博客！这是一个使用 Vue 3 + Markdown 构建的现代化博客系统，包含文章系统、多媒体支持和丰富的交互体验。",
     "keywords": "个人博客, Vue 3, Markdown, 现代化博客, 文章系统, 多媒体支持, 交互体验, 技术栈",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 新增编辑历史功能",
+      "2026-07-20 优化文章排版和代码高亮",
+      "2026-04-10 首次修订"
+    ],
     "seoTitle": "欢迎来到我的博客 - Tech Blog",
     "path": "./html/posts/post-0.html"
   },
@@ -220,6 +275,7 @@
     "id": "1",
     "title": "个人博客介绍",
     "date": "2026-03-29",
+    "updated": "2026-08-08",
     "category": "前端",
     "tags": [
       "前端",
@@ -228,6 +284,12 @@
     "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，提供快速、优雅的写作和阅读体验。",
     "keywords": "个人博客, Vue 3, Vite, 前端项目, Markdown, 代码高亮, 数学公式, 响应式设计",
     "author": "Cnkrru",
+    "history": [
+      "2026-08-07 更新文章内容，部分功能替换或者移除，按照现在的情况写",
+      "2026-08-06 同步最新技术栈和功能特性",
+      "2026-07-15 更新项目截图和架构说明",
+      "2026-04-10 补充SEO和性能优化说明"
+    ],
     "seoTitle": "个人博客介绍 - Tech Blog",
     "path": "./html/posts/post-1.html"
   }

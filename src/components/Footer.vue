@@ -2,6 +2,7 @@
 import { useGlobalStore } from '../stores/global'
 import WebsiteAge from './p-footer/WebsiteAge.vue'
 import Copyright from './p-footer/CopyRight.vue'
+import PrintPdf from './p-footer/PrintPdf.vue'
 
 const globalStore = useGlobalStore()
 const socialLinks = globalStore.socialLinks
@@ -43,6 +44,7 @@ const socialLinks = globalStore.socialLinks
               </svg>
               <span class="social-label">RSS</span>
             </a>
+            <PrintPdf />
           </div>
 
           <!-- 站点信息 -->

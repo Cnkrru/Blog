@@ -15,6 +15,14 @@
         <div v-else-if="block.type === 'code'" class="code-container">
           <HighlightRender :code="block.content" :language="block.language" />
         </div>
+        <!-- 提示块 -->
+        <div v-else-if="block.type === 'admonition'" class="admonition-container">
+          <AdmonitionRender :type="block.admonitionType" :title="block.admonitionTitle" :content="block.content" />
+        </div>
+        <!-- Toast 按钮 -->
+        <span v-else-if="block.type === 'toast-btn'" class="toast-btn-container">
+          <ToastButton :type="block.toastType" :text="block.toastText" />
+        </span>
         <!-- 彩蛋动画块 -->
         <div v-else-if="block.type === 'easter-egg'" class="easter-egg-container">
           <EasterEggAnimation :text="block.text" :final-text="block.finalText" />
@@ -62,6 +70,8 @@ import MermaidRender from './MermaidRender.vue'
 import KatexRender from './KatexRender.vue'
 import HighlightRender from './HighlightRender.vue'
 import EasterEggAnimation from '../media/EasterEggAnimation.vue'
+import AdmonitionRender from './AdmonitionRender.vue'
+import ToastButton from './ToastButton.vue'
 import { CDN_VERSIONS } from '../../utils/constants'
 
 const props = defineProps<{
@@ -81,6 +91,20 @@ const codeBlocks = ref([])
 const easterEggBlocks = ref([])
 const orderedBlocks = ref([]) // 按顺序排列的内容块
 const renderMode = ref('normal') // normal 或 special-blocks
+
+// 提示块默认标题
+const defaultTitle = (type: string): string => {
+  const titles: Record<string, string> = {
+    info: '信息',
+    success: '成功',
+    warning: '警告',
+    error: '错误',
+    tip: '提示',
+    note: '笔记',
+    danger: '危险'
+  }
+  return titles[type] || type
+}
 
 // 加载CDN资源
 const loadCDN = async () => {
@@ -202,7 +226,9 @@ const extractOrderedBlocks = (content) => {
     { type: 'mermaid', regex: /```mermaid[\s\S]*?```/gim },
     { type: 'math', regex: /\$\$([\s\S]*?)\$\$/gim },
     { type: 'code', regex: /```([\s\S]*?)```/gim },
-    { type: 'easter-egg', regex: /<easter-egg([^>]*)>[\s\S]*?<\/easter-egg>/gim }
+    { type: 'easter-egg', regex: /<easter-egg([^>]*)>[\s\S]*?<\/easter-egg>/gim },
+    { type: 'admonition', regex: /^:::\s*(info|success|warning|error|tip|note|danger)\s*(.*?)\s*\n([\s\S]*?)^:::\s*$/gm },
+    { type: 'toast-btn', regex: /<msg:(info|success|warning|error)>([\s\S]*?)<\/msg:(info|success|warning|error)>/gim }
   ]
   
   // 收集所有特殊块及其位置
@@ -271,6 +297,24 @@ const extractOrderedBlocks = (content) => {
         text: textMatch ? textMatch[1] : '欢迎来到我的博客',
         finalText: finalTextMatch ? finalTextMatch[1] : '欢迎来到我的博客'
       })
+    } else if (type === 'admonition') {
+      const admonType = match[1] || 'info'
+      const admonTitle = match[2]?.trim() || defaultTitle(admonType)
+      const admonContent = match[3]?.trim() || ''
+      blocks.push({
+        type: 'admonition',
+        content: admonContent,
+        admonitionType: admonType,
+        admonitionTitle: admonTitle
+      })
+    } else if (type === 'toast-btn') {
+      const btnType = match[1] || 'info'
+      const btnText = match[2]?.trim() || ''
+      blocks.push({
+        type: 'toast-btn',
+        toastType: btnType,
+        toastText: btnText
+      })
     }
     
     lastIndex = index + match[0].length
@@ -300,7 +344,7 @@ const renderMarkdown = async () => {
     extractSpecialBlocks(props.content)
     
     // 检查是否有特殊块
-    const hasSpecialBlocks = mermaidBlocks.value.length > 0 || mathBlocks.value.length > 0 || codeBlocks.value.length > 0 || easterEggBlocks.value.length > 0
+    const hasSpecialBlocks = mermaidBlocks.value.length > 0 || mathBlocks.value.length > 0 || codeBlocks.value.length > 0 || easterEggBlocks.value.length > 0 || /:::\s*(info|success|warning|error|tip|note|danger)/gm.test(props.content) || /<msg:(info|success|warning|error)>/gim.test(props.content)
     
     if (hasSpecialBlocks) {
       // 有特殊块，使用特殊块渲染模式
@@ -323,18 +367,21 @@ const renderMarkdown = async () => {
                 ...block,
                 content: window.marked(block.content)
               }
-            } else {
-              return {
-                ...block,
-                content: `<p>Markdown解析器API错误</p>`
-              }
-            }
-          } else {
-            return {
-              ...block,
-              content: `<p>Markdown解析器加载失败</p>`
             }
           }
+          return { ...block, content: `<p>Markdown解析器加载失败</p>` }
+        }
+        if (block.type === 'admonition') {
+          // 将提示块内容也渲染为 Markdown
+          if (window.marked && block.content) {
+            const rendered = typeof window.marked.parse === 'function'
+              ? window.marked.parse(block.content)
+              : typeof window.marked === 'function'
+                ? window.marked(block.content)
+                : block.content
+            return { ...block, content: rendered }
+          }
+          return block
         }
         return block
       })

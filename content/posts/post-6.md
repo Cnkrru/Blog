@@ -1,8 +1,13 @@
 ---
 title: Frontend-主题切换
 date: 2026-04-21
+updated: 2026-08-07
 category: 前端
 tags: [前端, 主题]
+history:
+  - 2026-08-07 适配CSS变量方案，移除硬编码颜色
+  - 2026-07-10 新增Sakura樱粉主题和Compact布局
+  - 2026-05-15 完善亮暗模式自动切换
 description: 详细介绍前端组件——主题切换，介绍组件如何制作。
 keywords: 前端组件, 主题切换, TypeScript
 ---
@@ -46,5 +51,7 @@ body {
 > 2. 默认主题配置
 ---
 > 编辑于2026-04-21
+
 > 作者：Cnkrru
+
 > 联系方式：3253884026@qq.com

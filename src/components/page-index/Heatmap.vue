@@ -40,7 +40,7 @@
         </Teleport>
       </div>
 
-      <h3 class="heatmap-title">文章发布热力图</h3>
+      <h3 class="heatmap-title">创作活动热力图</h3>
 
       <!-- 月份下拉 -->
       <div class="custom-select" ref="monthSelectRef">
@@ -79,9 +79,13 @@
           :key="index"
           class="heatmap-cell"
           :class="[
-            day.hasArticle ? 'heatmap-has-article' : 'heatmap-no-article'
+            day.activity === 0 ? 'heatmap-lv0' : '',
+            day.activity === 1 ? 'heatmap-lv1' : '',
+            day.activity === 2 ? 'heatmap-lv2' : '',
+            day.activity === 3 ? 'heatmap-lv3' : '',
+            day.activity >= 4 ? 'heatmap-lv4' : ''
           ]"
-          :title="`${day.date}: ${day.hasArticle ? '有文章' : '无文章'}`"
+          :title="day.date + ': ' + (day.activity > 0 ? day.activity + ' 次活动' + (day.details.published > 0 ? '（含发布）' : '') : '无活动')"
         ></div>
       </div>
       <div v-else-if="!isLoading && !error && currentMonthData.length === 0" class="no-data">
@@ -90,12 +94,15 @@
     </div>
 
     <div class="heatmap-legend">
-      <span class="legend-text">无文章</span>
+      <span class="legend-text">少</span>
       <div class="legend-cells">
-        <div class="legend-cell no-article"></div>
-        <div class="legend-cell has-article"></div>
+        <div class="legend-cell lv0"></div>
+        <div class="legend-cell lv1"></div>
+        <div class="legend-cell lv2"></div>
+        <div class="legend-cell lv3"></div>
+        <div class="legend-cell lv4"></div>
       </div>
-      <span class="legend-text">有文章</span>
+      <span class="legend-text">多</span>
     </div>
   </div>
 </template>
@@ -224,26 +231,49 @@ const fetchArticleData = async () => {
   }
 }
 
-const buildDateIndex = (articles) => {
-  const dateIndex = new Set()
-  articles.forEach(article => {
-    if (article.date) {
-      dateIndex.add(article.date)
+const buildActivityMap = (articles) => {
+  // date -> { published: count, updated: count, history: count }
+  const map = new Map<string, { published: number; updated: number; history: number }>()
+
+  const inc = (date: string, key: 'published' | 'updated' | 'history') => {
+    if (!date) return
+    const d = date.trim().slice(0, 10) // 取 YYYY-MM-DD
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return
+    if (!map.has(d)) map.set(d, { published: 0, updated: 0, history: 0 })
+    map.get(d)![key]++
+  }
+
+  articles.forEach((article: any) => {
+    if (article.date) inc(article.date, 'published')
+    if (article.updated) inc(article.updated, 'updated')
+    if (Array.isArray(article.history)) {
+      article.history.forEach((entry: string) => {
+        const d = entry.trim().slice(0, 10)
+        inc(d, 'history')
+      })
     }
   })
-  return dateIndex
+
+  return map
 }
 
 const processArticleData = (articles, year) => {
   const data = []
-  const dateIndex = buildDateIndex(articles)
+  const activityMap = buildActivityMap(articles)
 
   for (let month = 1; month <= 12; month++) {
     const daysInMonth = new Date(year, month, 0).getDate()
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month - 1, day)
       const dateString = date.toISOString().split('T')[0]
-      data.push({ date: dateString, hasArticle: dateIndex.has(dateString), month })
+      const act = activityMap.get(dateString)
+      data.push({
+        date: dateString,
+        activity: act ? act.published + act.updated + act.history : 0,
+        hasArticle: act ? act.published > 0 : false,
+        details: act || { published: 0, updated: 0, history: 0 },
+        month
+      })
     }
   }
   return data
@@ -497,18 +527,36 @@ const onMonthChange = () => {
   z-index: 1;
 }
 
-.heatmap-no-article {
+.heatmap-lv0 {
   background: color-mix(in srgb, var(--common-text) 6%, transparent);
   border-color: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
-.heatmap-has-article {
+.heatmap-lv1 {
   background: var(--common-color-1);
-  opacity: 0.55;
+  opacity: 0.25;
 }
 
-.heatmap-has-article:hover {
+.heatmap-lv2 {
+  background: var(--common-color-1);
+  opacity: 0.45;
+}
+
+.heatmap-lv3 {
+  background: var(--common-color-1);
+  opacity: 0.65;
+}
+
+.heatmap-lv4 {
+  background: var(--common-color-1);
   opacity: 0.85;
+}
+
+.heatmap-lv1:hover,
+.heatmap-lv2:hover,
+.heatmap-lv3:hover,
+.heatmap-lv4:hover {
+  opacity: 0.95;
 }
 
 /* ============================== 图例 ============================== */
@@ -533,13 +581,28 @@ const onMonthChange = () => {
   border-radius: 4px;
 }
 
-.legend-cell.no-article {
+.legend-cell.lv0 {
   background: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
-.legend-cell.has-article {
+.legend-cell.lv1 {
   background: var(--common-color-1);
-  opacity: 0.55;
+  opacity: 0.25;
+}
+
+.legend-cell.lv2 {
+  background: var(--common-color-1);
+  opacity: 0.45;
+}
+
+.legend-cell.lv3 {
+  background: var(--common-color-1);
+  opacity: 0.65;
+}
+
+.legend-cell.lv4 {
+  background: var(--common-color-1);
+  opacity: 0.85;
 }
 
 @keyframes spin {

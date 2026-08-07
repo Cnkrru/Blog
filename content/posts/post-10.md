@@ -1,19 +1,26 @@
 ---
 title: shell与git 常用指令
 date: 2026-07-03
+updated: 2026-08-07
 category: shell
 tags: [git，shell]
+history:
+  - 2026-08-07 补充常用shell脚本和Git分支管理
+  - 2026-07-20 新增git rebase和stash使用场景
 description: 记录一些shell，git常用指令
 keywords: git，shell
 ---
 # Shell简介
 > shell是C编写的一种解释性脚本语言，专门用于终端与操作系统的交互
+
 > shell天生支持其他语言os库的功能，并自带一些指令集合
 
 > Windows自带终端CMD和Powershell常用于运行shell脚本（bat/ps1）
+
 > git也常用于运行shell脚本。指令，不过更常用于GITHUB相关操作
 
 > 可以人为新的注册shell指令，如果是Windows操作系统，需要在环境变量PATH里添加注册shell指令的exe的路径
+
 > python解释器，npm包管理器，hugo站点生成器均是如此
 ---
 ## shell指令
@@ -29,6 +36,7 @@ keywords: git，shell
 ---
 ## python/pip
 > python解释器注册到PATH后可在终端运行py脚本
+
 > pip是python的包管理器
 1. python --version / -v
     - PATH挂载的py解释器的版本
@@ -40,6 +48,7 @@ keywords: git，shell
 ---
 ## npm
 > npm是JavaScript/typescript的包管理器
+
 > typescript是JavaScript的优化与封装，ts修了js的一些缺点，ts会编译成js
 1. npm --version / -v
     - PATH挂载的py解释器的版本
@@ -56,9 +65,12 @@ keywords: git，shell
 ---
 ## vcpkg
 > vcpkg是Cpp的包管理器，需要搭配编译器MSVC.MinGW使用，一般构建项目需要编译器+vcpkg+Cmake
+
 > 包管理器指令大多相似，不再重复
 
 ---
 > 编辑于2026-07-03
+
 > 作者：Cnkrru
+
 > 联系方式：3253884026@qq.com

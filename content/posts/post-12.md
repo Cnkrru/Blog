@@ -1,6 +1,7 @@
 ---
 title: C_Cpp学习
 date: 2026-08-06
+updated: 2026-08-07
 category: C_Cpp
 tags: [C,Cpp]
 description: Cpp库学习
@@ -267,4 +268,9 @@ while (iss >> word)
     2. bg background背景色
         - print(fmt::bg(fmt::color:;`<颜色>`),`<字符串>`)
 ---
+> 编辑于2026-08-07
+
+> 作者：Cnkrru
+
+> 联系方式：3253884026@qq.com
 
