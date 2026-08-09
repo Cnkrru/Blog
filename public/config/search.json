@@ -1,5 +1,69 @@
 [
   {
+    "id": "16",
+    "title": "Frontend-阅读进度条组件",
+    "date": "2026-08-10",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "介绍前端组件：阅读进度条的制作方法",
+    "keywords": "frontend",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Frontend-阅读进度条组件 - Tech Blog",
+    "path": "./html/posts/post-16.html"
+  },
+  {
+    "id": "17",
+    "title": "Frontend-Scroll-Screen",
+    "date": "2026-08-10",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "介绍前端组件：阅读进度条的制作方法",
+    "keywords": "frontend",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Frontend-Scroll-Screen - Tech Blog",
+    "path": "./html/posts/post-17.html"
+  },
+  {
+    "id": "14",
+    "title": "Frontend-打印为PDF导出组件",
+    "date": "2026-08-09",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "介绍前端组件：将页面导出为PDF的制作方法",
+    "keywords": "frontend",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Frontend-打印为PDF导出组件 - Tech Blog",
+    "path": "./html/posts/post-14.html"
+  },
+  {
+    "id": "15",
+    "title": "Frontend-不蒜子统计组件",
+    "date": "2026-08-09",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "介绍前端组件：不蒜子统计的制作方法",
+    "keywords": "frontend",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Frontend-不蒜子统计组件 - Tech Blog",
+    "path": "./html/posts/post-15.html"
+  },
+  {
     "id": "13",
     "title": "C_Cpp学习2",
     "date": "2026-08-07",
@@ -42,9 +106,7 @@
     "tags": [
       "前端",
       "VitePress",
-      "Docsify",
-      "导航站",
-      "站点迁移"
+      "Docsify"
     ],
     "description": "将个人导航站点从Docsify v4迁移至VitePress的完整记录，包含旧配置存档、迁移原因以及VitePress配置详情。",
     "keywords": "Docsify, VitePress, 导航站, 站点迁移, 静态站点生成器, SSG",
@@ -58,7 +120,7 @@
   },
   {
     "id": "10",
-    "title": "shell与git 常用指令",
+    "title": "shell与git常用指令",
     "date": "2026-07-03",
     "updated": "2026-08-07",
     "category": "shell",
@@ -73,7 +135,7 @@
       "2026-08-07 补充常用shell脚本和Git分支管理",
       "2026-07-20 新增git rebase和stash使用场景"
     ],
-    "seoTitle": "shell与git 常用指令 - Tech Blog",
+    "seoTitle": "shell与git常用指令 - Tech Blog",
     "path": "./html/posts/post-10.html"
   },
   {
@@ -103,8 +165,7 @@
     "updated": "2026-08-07",
     "category": "前端",
     "tags": [
-      "前端",
-      "CSS"
+      "前端"
     ],
     "description": "详细介绍CSS初始化以及版心容器代码备份。",
     "keywords": "CSS, 初始化",
@@ -136,26 +197,25 @@
   },
   {
     "id": "7",
-    "title": "Frontend-网站年龄组件设计",
+    "title": "Frontend-建站时长",
     "date": "2026-04-21",
-    "updated": "2026-08-07",
+    "updated": "2026-08-09",
     "category": "前端",
     "tags": [
-      "前端",
-      "组件"
+      "前端"
     ],
     "description": "详细介绍前端组件——网站年龄组件，介绍组件如何制作。",
-    "keywords": "前端组件, 网站年龄组件, HTML, CSS",
+    "keywords": "frontend",
     "author": "Cnkrru",
     "history": [],
-    "seoTitle": "Frontend-网站年龄组件设计 - Tech Blog",
+    "seoTitle": "Frontend-建站时长 - Tech Blog",
     "path": "./html/posts/post-7.html"
   },
   {
     "id": "3",
     "title": "Frontend-HTML-CSS组件",
     "date": "2026-04-20",
-    "updated": "2026-08-06",
+    "updated": "2026-08-09",
     "category": "技术",
     "tags": [
       "前端",

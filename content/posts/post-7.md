@@ -1,57 +1,94 @@
 ---
-title: Frontend-网站年龄组件设计
+title: Frontend-建站时长
 date: 2026-04-21
-updated: 2026-08-07
+updated: 2026-08-09
 category: 前端
-tags: [前端, 组件]
+tags: [前端]
 description: 详细介绍前端组件——网站年龄组件，介绍组件如何制作。
-keywords: 前端组件, 网站年龄组件, HTML, CSS
+keywords: frontend
 ---
-### 相关
-> 如果学过后端语言，比如python，C之类的，应该学习过时间戳，time包相关知识
-> JavaScript在前端部分内置了time包，可以直接使用。
-> 作者这里称time为包: 作者学过py，C，C++，JavaScript,主要写python代码
-> 各个可用于后端的语言，其实都是一样的，只是擅长领域不同，写法稍微有些不同，语言之间是互通的。
-> time模块，在python中称为包，在C/C++称为库，在JavaScript称为对象，其实都是一个东西，作者这里按照自己的习惯来称呼：time包
-
-### 网站年龄组件设计思路
-> 1. 设置一个网站起始时间戳
-> 2. 调用JavaScript的time对象的内置方法，获取当前时间的时间戳。
-> 3. 计算时间戳差值，规范化显示(需要用Math包处理数值)
-
+## 制作方法
+- 需要调用JS在前端内置的库：Date
+- JS`<const绑定的选择器>.textcontent`渲染到HTML上
 ---
+### 时间戳
+时间戳指的是从1970-01-01 00：00：00开始计时的一段毫秒数
 
-### 代码:
-```javascript
-const updateAge = ()=> {
-    // 设置一个网站起始时间戳
-    const startTime = new Date('2026-03-28T12:00:00').getTime()
-    // 获取当前时间的时间戳
-    const now = Date.now()
-    const diff = now - startTime
+各种后端语言一般都有时间库，比如py的time，datetime，C的time，都是基于时间戳。
 
-    const seconds = Math.floor(diff / 1000)
-    const minutes = Math.floor(seconds / 60)
-    const hours = Math.floor(minutes / 60)
-    const days = Math.floor(hours / 24)
-    const months = Math.floor(days / 30)
-    const years = Math.floor(months / 12)
+基础的封装：用毫秒数->年月日时分秒，推算过程需要注意一下闰年，每一月有多少天
+### Date库
+1. new Date(`<参数>`)
+    - 创建一个date对象
+    - 参数：
+        1. 指定时间戳数字
+        2. 年月日 时分秒
+        3. 不填（默认获取当前的时间戳）
+2. Date.now()
+    - 返回当前时间戳
+3. Date.prototype.`<操作>``<时区>``<类型>`
+    1. 操作：get/set/to
+        - get：由时间戳转为具体类型的时间
+        - set：没用过
+        - to：没用过
+    2. 时区：默认/UTC标准世界时间
+    3. 类型：年月日时分秒（还有一些，用不到，不写了）
+    4. 示例：
+        - 年 -> `Date.prototype.getFullYear()`
+        - 月 -> `Date.prototype.getMonth()`
+        - 日 -> `Date.prototype.getDate()`
+        - 时 -> `Date.prototype.getHours()`
+        - 分 -> `Date.prototype.getMinutes()`
+        - 秒 -> `Date.prototype.getSeconds()`
+> Date库文档：[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date)        
+---
+## 代码:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>siteage</title>
+    <style>
+        .siteage {
+            width: 80%;
+            height: 40px;
 
-    const displayMonths = months % 12
-    const displayDays = days % 30
-    const displayHours = hours % 24
-    const displayMinutes = minutes % 60 
-    const displaySeconds = seconds % 60
+            padding: 5px;
+            border: 1px solid pink;
+            border-radius: 4px;
 
-    // 显示标准格式：年-月-日 小时:分:秒，使用 i18n 翻译
-    websiteAge.value = `${years}年${displayMonths}月${displayDays}天${displayHours}时${displayMinutes}分${displaySeconds}秒`
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            font-size: 10px;
+            color: #333;
+        }    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="siteage"></div>
+    </div>
+    <script>
+        const siteage = document.querySelector('.siteage');
+        const init_date = new Date('2023-01-01');
+        const current_date = new Date();
+        const diff_time = current_date - init_date;
+        const year = Date.prototype.getFullYear.call(new Date(diff_time))-1970;
+        const month = Date.prototype.getMonth.call(new Date(diff_time));
+        const day = Date.prototype.getDate.call(new Date(diff_time)) - 1;
+        const hours = Date.prototype.getHours.call(new Date(diff_time));
+        const minutes = Date.prototype.getMinutes.call(new Date(diff_time));
+        const seconds = Date.prototype.getSeconds.call(new Date(diff_time));
 
-// 调用前端内置的计时器，每秒更新一次网站年龄
-let updateInterval = setInterval(updateAge, 1000)
-
+        siteage.textContent = `${year} 年, ${month} 月, ${day} 天， ${hours} 小时, ${minutes} 分钟, ${seconds} 秒`;
+    </script>
+</body>
+</html>
 ```
-
 ---
 > 编辑于2026-04-21
 

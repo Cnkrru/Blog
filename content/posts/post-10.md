@@ -1,5 +1,5 @@
 ---
-title: shell与git 常用指令
+title: shell与git常用指令
 date: 2026-07-03
 updated: 2026-08-07
 category: shell

@@ -1,0 +1,55 @@
+---
+title: Frontend-不蒜子统计组件
+date: 2026-08-09
+category: 前端
+tags: [前端]
+description: 介绍前端组件：不蒜子统计的制作方法
+keywords: frontend
+---
+## 制作方法
+- 不蒜子统计是一个免费的站点统计服务
+- 官网:[busuanzi](https://www.busuanzi.cc/)
+- 调用:通过CDN加载js脚本
+- 样式:官方给了示例，直接改里面的id选择器的样式即可
+> 关于CDN：
+
+> CDN指的是将你存储在世界某地的服务器里的源码分发缓存在世界各地的其他服务器，这样在其他地方获取你的资源时只需要从最近的服务器调用即可
+> 用多地缓存的方式来应对挂载的服务器距离目标用户太远的问题
+---
+## 示例代码
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>busuanzi</title>
+    <style>
+        .busuanzi_container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="busuanzi_container">
+        <span>今日总访问量 <span id="busuanzi_today_pv">加载中...</span> 次</span>
+        <span>今日总访客数 <span id="busuanzi_today_uv">加载中...</span> 人</span>
+        <span>本站总访问量 <span id="busuanzi_site_pv">加载中...</span> 次</span>
+        <span>本站总访客数 <span id="busuanzi_site_uv">加载中...</span> 人</span>
+        <span>本页总阅读量 <span id="busuanzi_page_pv">加载中...</span> 次</span>
+        <span>本页总访客数 <span id="busuanzi_page_uv">加载中...</span> 人</span>
+    </div>
+    <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.abbr.min.js" defer></script>
+</body>
+</html>
+```
+---
+> 编辑于2026-08-09
+
+> 作者：Cnkrru
+
+> 联系方式：3253884026@qq.com
+

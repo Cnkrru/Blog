@@ -34,7 +34,8 @@ onUnmounted(() => {
   if (typeof window !== 'undefined') {
     delete window.updateGiscusTheme
   }
-})</script>
+})
+</script>
 
 <template>
     <div class="comment-section">

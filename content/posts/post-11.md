@@ -3,7 +3,7 @@ title: Docsify转为VitePress
 date: 2026-07-29
 updated: 2026-08-07
 category: 前端
-tags: [前端, VitePress, Docsify, 导航站, 站点迁移]
+tags: [前端, VitePress, Docsify]
 history:
   - 2026-08-07 补充迁移后性能对比数据
   - 2026-08-01 整理VitePress配置最佳实践
