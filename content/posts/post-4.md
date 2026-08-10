@@ -7,68 +7,65 @@ tags: [前端, 组件]
 description: 详细介绍前端组件——返回顶部，介绍组件如何制作。
 keywords: 前端, 组件, 返回顶部, TypeScript
 ---
-## 返回顶部的制作思路
-> 1. 绑定监听阅读进度的区域，window是页面窗口，指定选择器则是目标区域
-> 2. 绑定点击事件
-> 3. 利用浏览器的`scroll`API,将指定区域/整个页面(Window)滚动到顶部
->    - 'scroll'API接收一个数组(x,y)/一个字典{top:0,behavior:'smooth'}
->    - 如果想在阅读一定距离出现，通过监听滚动距离，用布局来决定是否显示(block/none)
->    - 本篇文章并没有涉及HTML和CSS，示例中的选择器大家根据自己代码里的实际情况来修改
-
+## 制作方法
+1. 依靠`scroll`API来实现，关于scroll详见于:[Frontend-Scroll-Screen](post-17.md)
+2. 如果要实现滚动一定距离再显示，使用CSS变量，JS控制opacity来实现，关于CSS变量详见于:[Frontend-CSS变量](post-18.md)
 ---
-
 ## 代码:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>backtotop</title>
+    <style>
+        :root {
+            --btt-opacity: 0;
+        }
 
-### 固定位置的返回顶部按钮
-```javascript
-// 选择监听sample-card区域=>作为滚动的区域
-// 选择返回顶部按钮的容器=>用于绑定click事件
-const backTopArea = document.querySelector('.sample-card');
-const backTopBtn = document.querySelector('.back-to-top');
+        .placeholder {
+            height: 20000px;
+            overflow: auto;
+        }
+        .backtotop {
+            position: fixed;
 
-const backToTop = ()=> {
-  // 绑定click事件
-  backTopBtn.addEventListener('click', ()=> {
-    // 使用scrollTo()返回顶部
-    backTopArea.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-      })
-  })
-}
-```
----
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
 
-### 阅读指定px后，在特定位置出现返回顶部按钮
-```javascript
-// 设置的出现高度
-// 选择返回顶部按钮的容器=>用于绑定click事件
-// 选择文章内容的容器=>用于监听滚动距离
-const height : number = 1000
-const backTopBtn = document.querySelector('.back-to-top');
-const backTopArea = document.querySelector('.sample-card');
+            background-color: #007BFF;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
 
-// 显示
-const btnShow = ()=> {
-  if (backTopArea.scrollTop > height)
-  {
-    backTopBtn.style.display = 'block'
-  }
-  else
-  {
-    backTopBtn.style.display = 'none'
-  }
-}
+            opacity: var(--btt-opacity);
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="placeholder"></div>
+    <button class="backtotop"></button>
 
-// 滚动
-const backToTop = ()=> {
-  backTopBtn.addEventListener('click', ()=> {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-      })
-  })
-}
+    <script>
+        const btt_button = document.querySelector('.backtotop');
+        const placeholder = document.querySelector('.placeholder');
+        function scrollToTop() {window.scroll({ top: 0, behavior: 'smooth' });}
+        function updateButtonVisibility() 
+        {
+            if (window.scrollY > 300) {document.documentElement.style.setProperty('--btt-opacity', 1);} 
+            else {document.documentElement.style.setProperty('--btt-opacity', 0);}
+        }
+
+        btt_button.addEventListener('click', scrollToTop);
+        window.addEventListener('scroll', updateButtonVisibility);
+
+    </script>
+</body>
+</html>
 ```
 ---
 > 编辑于2026-04-19

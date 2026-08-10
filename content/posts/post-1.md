@@ -13,16 +13,15 @@ description: 一个使用 Vue 3、Vite 等现代前端技术栈构建的个人�
 keywords: 个人博客, Vue 3, Vite, 前端项目, Markdown, 代码高亮, 数学公式, 响应式设计
 ---
 ## 博客介绍
-
 1. 该博客基于vue3
 2. 使用vue插件来实现类似SSG的效果
-
+---
 ### 简介
 
-> 作者先前用过hexo，hugo这些SSG，后希望基于HTML，CSS，JavaScript自定义，实现部分功能（约现在的60%）后，转而用vue搭建，js也逐渐转为ts。
+> 作者先前用过hexo，hugo这些SSG，后希望基于HTML，CSS，JavaScript自定义，实现部分功能后，转而用vue搭建，js也转为ts。
 
 > 博客和其他SSG一样，自己只需要写markdown文章，引入markjs来实现md转HTML
-
+---
 ### 第三方功能介绍
 
 1. 不蒜子统计
@@ -32,7 +31,6 @@ keywords: 个人博客, Vue 3, Vite, 前端项目, Markdown, 代码高亮, 数�
 6. IP地址API
 7. 樱花雪花动态背景
 ---
-
 ### 联系方式
 
 > 编辑于2026-03-30

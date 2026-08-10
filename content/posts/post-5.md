@@ -1,50 +1,71 @@
 ---
 title: Frontend-沉浸阅读组件
 date: 2026-04-20
-updated: 2026-08-06
+updated: 2026-08-10
 category: 前端
-tags: [前端, 组件]
+tags: [前端]
 description: 详细介绍前端组件——沉浸阅读，介绍组件如何制作。
-keywords: 前端组件, 沉浸阅读, TypeScript
+keywords: 前端组件, 沉浸阅读
 ---
-### 沉浸阅读制作思路
-> 1. 选择内容区域
-> 2. 更改内容区域样式
->    - 沉浸阅读：实际上就是把样式改变一下
->    - 把想隐藏的用display:none隐藏起来
->    - 把想放大的设计新尺寸，用transform放大
-> 建议直接操作body，方便些
-
+## 制作方法
+1. 用`classList.toggle()`切换类名
+2. 主题切换是通过CSS属性改变颜色，沉浸阅读是通过切换类来实现，需要给一个组件准备两套类
+    - 按道理来说不管是切换类还是使用CSS变量都可以，修改CSS属性来实现的组件一般是通过这两种途径
 ---
 
 ### 代码:
-```javascript
-const toggleReading = ()=> {
-  document.body.classList.toggle('immersive-reading')
-}
-```
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>immersivereading</title>
+    <style>
+        body.immersive-reading .placeholder {
+            height: 2000px;
+            width: 50%;
+        }
+        .placeholder {
+            height: 2000px;
+            width: 100%;
+            overflow: auto;
+            background-color: pink;
+            transition: width 0.3s ease;
+        }
+        .toggle-button {
+            position: fixed;
 
-```css
-//隐藏的元素
-body.immersive-reading .left-blank,
-body.immersive-reading .left-asider-S,
-body.immersive-reading .left-center-blank,
-body.immersive-reading .footer-blank,
-body.immersive-reading .footer-flex,
-body.immersive-reading .footer-S {
-    display: none;
-}
-//放大的元素
-body.immersive-reading .center-S {
-    width: 1400px;
-    max-width: 1400px;
-}
-//添加过渡效果
-.left-blank, .left-asider-S, .left-center-blank,
-.footer-blank, .footer-flex, .footer-S,
-.center-S {
-    transition: all 0.3s ease;
-}
+            width: 40px;
+            height: 40px;
+
+            bottom: 10px;
+            right: 10px;
+            
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="placeholder"></div>
+    <button class="toggle-button"></button>
+    <script>
+        const placeholder = document.querySelector('.placeholder');
+        const toggleButton = document.querySelector('.toggle-button');
+
+        function toggleImmersiveReading() {
+            document.body.classList.toggle('immersive-reading');
+            console.log('[info]已切换');
+        }
+        toggleButton.addEventListener('click', toggleImmersiveReading);
+    </script>
+</body>
+</html>
 ```
 ---
 > 编辑于2026-04-20

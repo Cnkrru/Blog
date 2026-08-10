@@ -234,4 +234,55 @@ useHead({
   opacity: 0.6;
   margin-top: 6px;
 }
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+  .settings-content {
+    padding-top: 0;
+  }
+
+  .setting-block {
+    margin-bottom: 20px;
+  }
+
+  .setting-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .option-row {
+    gap: 10px;
+  }
+
+  .style-opt {
+    min-width: 100%;
+    padding: 12px 14px;
+    gap: 2px;
+  }
+
+  .opt-name {
+    font-size: 14px;
+  }
+
+  .opt-desc {
+    font-size: 11px;
+  }
+
+  .slider-row {
+    gap: 10px;
+  }
+
+  .slider-value {
+    min-width: 38px;
+    font-size: 13px;
+  }
+
+  .slider-hint {
+    font-size: 11px;
+  }
+
+  .setting-tip {
+    font-size: 12px;
+  }
+}
 </style>

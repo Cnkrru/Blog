@@ -1,7 +1,7 @@
 ---
 title: Frontend-主题切换
 date: 2026-04-21
-updated: 2026-08-07
+updated: 2026-08-10
 category: 前端
 tags: [前端, 主题]
 history:
@@ -11,44 +11,68 @@ history:
 description: 详细介绍前端组件——主题切换，介绍组件如何制作。
 keywords: 前端组件, 主题切换, TypeScript
 ---
-### 主题切换制作思路
-> 制作主题切换功能，一个主题对应一套配色，所以只需要更改CSS属性里和颜色相关的变量就行。
-> 常见的做法是用CSS变量的形式，即给颜色相关的属性定义变量，然后在需要使用的地方引用这些变量
-
+## 制作方法
+1. 一般使用CSS变量的方式来实现，关于CSS变量详见于:[Frontend-CSS变量](post-18.md)
+2. 按钮绑定一下`click`事件就行
 ---
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>themetoggle</title>
+    <style>
+        :root {
+            --bg-color: #fff;
+            --text-color: #000;
+        }
 
-### 代码:
-```javascript
-const toggleTheme = ()=> {
-  document.body.classList.toggle('dark-theme')
-}
+        .dark-theme {
+            --bg-color: #000;
+            --text-color: #fff;
+        }
+
+        .placeholder {
+            height: 2000px;
+            overflow: auto;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .themetoggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+
+            background-color: #007BFF;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+
+            color: #fff;
+        }
+    </style>    
+</head>
+<body>
+    <div class="placeholder"></div>
+    <button class="themetoggle">Toggle Theme</button>
+    <script>
+        const themeToggleButton = document.querySelector('.themetoggle');
+        const placeholder = document.querySelector('.placeholder');
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+
+        themeToggleButton.addEventListener('click', toggleTheme);
+    </script>    
+</body>
+</html>
 ```
-```css
-:root {
-  --color-primary: #007bff;
-}
-.dark-theme {
-  --color-primary: #000000;
-}
-body {
-  background-color: var(--color-primary);
-}
-```
-
----
-
-### 注意：
-- CSS变量使用时只能用var，不能用let或const
-- CSS变量命名时建议使用短横线命名法，例如--color-primary
-- CSS变量可以控制任何CSS属性，主题切换只是常见用法
-- 一般情况下，两套主题在两个选择器下，:root选择器用于定义亮色主题，dark-theme用于定义暗黑主题的变量
-- 个人制作习惯是将用到的颜色放一个CSS文件里，如果其他文件需要，就引用这个文件的变量
-
----
-
-### 拓展
-> 1. 根据时间自动切换主题
-> 2. 默认主题配置
 ---
 > 编辑于2026-04-21
 

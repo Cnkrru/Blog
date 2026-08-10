@@ -3,7 +3,7 @@ title: Frontend-Scroll-Screen
 date: 2026-08-10
 category: 前端
 tags: [前端]
-description: 介绍前端组件：阅读进度条的制作方法
+description: 介绍前端Web API：scrollAPI以及screen属性
 keywords: frontend
 ---
 ## Scroll API

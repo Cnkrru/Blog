@@ -74,9 +74,4 @@ const toggleTheme = () => {
 }
 </style>
 
-<!-- 颜色样式 -->
-<style scoped>
-/* 按钮颜色由 Header.vue 统一管理 */
-</style>
-
 
