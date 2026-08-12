@@ -1,0 +1,156 @@
+/*! Giscus 共享基础样式 — 所有颜色通过 CSS 变量注入 */
+main {
+  --color-prettylights-syntax-comment: #8b949e;
+  --color-prettylights-syntax-constant: #79c0ff;
+  --color-prettylights-syntax-entity: #d2a8ff;
+  --color-prettylights-syntax-storage-modifier-import: #c9d1d9;
+  --color-prettylights-syntax-entity-tag: #7ee787;
+  --color-prettylights-syntax-keyword: #ff7b72;
+  --color-prettylights-syntax-string: #a5d6ff;
+  --color-prettylights-syntax-variable: #ffa657;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #f85149;
+  --color-prettylights-syntax-invalid-illegal-text: #f0f6fc;
+  --color-prettylights-syntax-invalid-illegal-bg: #8e1519;
+  --color-prettylights-syntax-carriage-return-text: #f0f6fc;
+  --color-prettylights-syntax-carriage-return-bg: #b62324;
+  --color-prettylights-syntax-string-regexp: #7ee787;
+  --color-prettylights-syntax-markup-list: #f2cc60;
+  --color-prettylights-syntax-markup-heading: #1f6feb;
+  --color-prettylights-syntax-markup-italic: #c9d1d9;
+  --color-prettylights-syntax-markup-bold: #c9d1d9;
+  --color-prettylights-syntax-markup-deleted-text: #ffdcd7;
+  --color-prettylights-syntax-markup-deleted-bg: #67060c;
+  --color-prettylights-syntax-markup-inserted-text: #aff5b4;
+  --color-prettylights-syntax-markup-inserted-bg: #033a16;
+  --color-prettylights-syntax-markup-changed-text: #ffdfb6;
+  --color-prettylights-syntax-markup-changed-bg: #5a1e02;
+  --color-prettylights-syntax-markup-ignored-text: #c9d1d9;
+  --color-prettylights-syntax-markup-ignored-bg: #1158c7;
+  --color-prettylights-syntax-meta-diff-range: #d2a8ff;
+  --color-prettylights-syntax-brackethighlighter-angle: #8b949e;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
+  --color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
+
+  --color-btn-text: var(--g-btn-text);
+  --color-btn-bg: var(--g-btn-bg);
+  --color-btn-border: var(--g-btn-border);
+  --color-btn-shadow: var(--g-btn-shadow, 0 0 transparent);
+  --color-btn-inset-shadow: var(--g-btn-inset-shadow, 0 0 transparent);
+  --color-btn-hover-bg: var(--g-btn-hover-bg);
+  --color-btn-hover-border: var(--g-btn-hover-border);
+  --color-btn-active-bg: var(--g-btn-active-bg);
+  --color-btn-active-border: var(--g-btn-active-border);
+  --color-btn-selected-bg: var(--g-btn-selected-bg);
+
+  --color-btn-primary-text: var(--g-btn-primary-text);
+  --color-btn-primary-bg: var(--g-btn-primary-bg);
+  --color-btn-primary-border: var(--g-btn-primary-border);
+  --color-btn-primary-shadow: var(--g-btn-primary-shadow);
+  --color-btn-primary-inset-shadow: var(--g-btn-primary-inset-shadow);
+  --color-btn-primary-hover-bg: var(--g-btn-primary-hover-bg);
+  --color-btn-primary-hover-border: var(--g-btn-primary-hover-border);
+  --color-btn-primary-selected-bg: var(--g-btn-primary-selected-bg);
+  --color-btn-primary-selected-shadow: var(--g-btn-primary-selected-shadow);
+  --color-btn-primary-disabled-text: var(--g-btn-primary-disabled-text);
+  --color-btn-primary-disabled-bg: var(--g-btn-primary-disabled-bg);
+  --color-btn-primary-disabled-border: var(--g-btn-primary-disabled-border);
+
+  --color-action-list-item-default-hover-bg: var(--g-action-list-hover-bg);
+  --color-segmented-control-bg: var(--g-segmented-bg);
+  --color-segmented-control-button-bg: var(--g-segmented-btn-bg);
+  --color-segmented-control-button-selected-border: var(--g-segmented-btn-border);
+
+  --color-fg-default: var(--g-fg-default);
+  --color-fg-muted: var(--g-fg-muted);
+  --color-fg-subtle: var(--g-fg-subtle);
+
+  --color-canvas-default: var(--g-canvas-default);
+  --color-canvas-overlay: var(--g-canvas-overlay);
+  --color-canvas-inset: var(--g-canvas-inset);
+  --color-canvas-subtle: var(--g-canvas-subtle);
+
+  --color-border-default: var(--g-border-default);
+  --color-border-muted: var(--g-border-muted);
+  --color-neutral-muted: var(--g-neutral-muted);
+
+  --color-accent-fg: var(--g-accent-fg);
+  --color-accent-emphasis: var(--g-accent-emphasis);
+  --color-accent-muted: var(--g-accent-muted);
+  --color-accent-subtle: var(--g-accent-subtle);
+
+  --color-success-fg: var(--g-success-fg, #3fb950);
+  --color-attention-fg: var(--g-attention-fg, #d29922);
+  --color-attention-muted: var(--g-attention-muted, rgba(187,128,9,0.3));
+  --color-attention-subtle: var(--g-attention-subtle, rgba(187,128,9,0.1));
+  --color-danger-fg: var(--g-danger-fg, #f85149);
+  --color-danger-muted: var(--g-danger-muted, rgba(248,81,73,0.3));
+  --color-danger-subtle: var(--g-danger-subtle, rgba(248,81,73,0.08));
+
+  --color-primer-shadow-inset: var(--g-primer-shadow-inset, 0 0 transparent);
+  --color-scale-gray-7: var(--g-scale-gray-7);
+  --color-scale-blue-8: var(--g-scale-blue-8);
+  --color-social-reaction-bg-hover: var(--g-social-reaction-bg-hover);
+  --color-social-reaction-bg-reacted-hover: var(--g-social-reaction-bg-reacted-hover);
+}
+
+/* ========== 圆角 / 卡片化 ========== */
+.btn {
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.1px;
+  transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.1s ease, box-shadow 0.12s ease !important;
+}
+.btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: var(--g-hover-shadow, 0 2px 8px rgba(0,0,0,0.2)) !important;
+}
+.btn:active {
+  transform: scale(0.97) !important;
+}
+.btn-primary {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+}
+.gsc-comment-box {
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  box-shadow: var(--g-box-shadow, 0 1px 2px rgba(0,0,0,0.04)) !important;
+}
+.gsc-comment-box-textarea {
+  border-radius: 12px !important;
+  font-size: 14px !important;
+  background: var(--g-textarea-bg) !important;
+  border-color: var(--g-textarea-border) !important;
+  color: var(--g-textarea-color) !important;
+}
+.gsc-comment-box-textarea:focus {
+  border-color: var(--g-textarea-focus-border) !important;
+  box-shadow: var(--g-textarea-focus-shadow) !important;
+}
+.gsc-comment {
+  padding: 14px !important;
+  border-radius: 12px !important;
+  margin-bottom: 8px !important;
+  background: var(--g-comment-bg) !important;
+  border: 1px solid var(--g-comment-border) !important;
+}
+.gsc-header {
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid var(--g-header-border) !important;
+  margin-bottom: 14px !important;
+}
+.gsc-timeline {
+  gap: 14px !important;
+}
+.gsc-reactions-button {
+  border-radius: 8px !important;
+}
+.gsc-social-reaction-summary-item {
+  border-radius: 20px !important;
+}
+.Box, .flash {
+  border-radius: 12px !important;
+}
+.form-control {
+  border-radius: 10px !important;
+}
