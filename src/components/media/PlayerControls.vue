@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import skipBackSvg from '@/assets/svg/skip-back.svg?raw'
+import playSvg from '@/assets/svg/play.svg?raw'
+import pauseSvg from '@/assets/svg/pause.svg?raw'
+import skipForwardSvg from '@/assets/svg/skip-forward.svg?raw'
+
 withDefaults(defineProps<{ isPlaying?: boolean; currentSong?: any }>(), {
   isPlaying: false,
   currentSong: null
@@ -32,7 +37,7 @@ const handleNext = () => {
       title="上一首"
       @click="handlePrev"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/></svg>
+      <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="skipBackSvg"></span>
     </button>
 
     <button
@@ -43,8 +48,8 @@ const handleNext = () => {
       title="播放/暂停"
       @click="handleTogglePlay"
     >
-      <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      <svg class="pause-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      <span class="svg-icon play-icon" :style="{ width: '24px', height: '24px' }" v-html="playSvg"></span>
+      <span class="svg-icon pause-icon" :style="{ width: '24px', height: '24px' }" v-html="pauseSvg"></span>
     </button>
 
     <button
@@ -54,7 +59,7 @@ const handleNext = () => {
       title="下一首"
       @click="handleNext"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/></svg>
+      <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="skipForwardSvg"></span>
     </button>
   </div>
 </template>

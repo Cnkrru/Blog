@@ -3,39 +3,17 @@
     <div class="admonition-header">
       <div class="admonition-icon">
         <!-- info -->
-        <svg v-if="type === 'info'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="16" x2="12" y2="12"/>
-          <line x1="12" y1="8" x2="12.01" y2="8"/>
-        </svg>
+        <span v-if="type === 'info'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="infoSvg"></span>
         <!-- success / tip -->
-        <svg v-else-if="type === 'success' || type === 'tip'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
+        <span v-else-if="type === 'success' || type === 'tip'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="checkSvg"></span>
         <!-- warning -->
-        <svg v-else-if="type === 'warning'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-          <line x1="12" y1="9" x2="12" y2="13"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
+        <span v-else-if="type === 'warning'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="alertTriangleSvg"></span>
         <!-- error / danger -->
-        <svg v-else-if="type === 'error' || type === 'danger'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
+        <span v-else-if="type === 'error' || type === 'danger'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="xSvg"></span>
         <!-- note -->
-        <svg v-else-if="type === 'note'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-        </svg>
+        <span v-else-if="type === 'note'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="fileTextSvg"></span>
         <!-- 默认 -->
-        <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="16" x2="12" y2="12"/>
-          <line x1="12" y1="8" x2="12.01" y2="8"/>
-        </svg>
+        <span v-else class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="infoSvg"></span>
       </div>
       <span class="admonition-title">{{ title }}</span>
     </div>
@@ -44,6 +22,12 @@
 </template>
 
 <script setup lang="ts">
+import infoSvg from '@/assets/svg/info.svg?raw'
+import checkSvg from '@/assets/svg/check.svg?raw'
+import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
+import xSvg from '@/assets/svg/x.svg?raw'
+import fileTextSvg from '@/assets/svg/file-text.svg?raw'
+
 defineProps<{
   type: string
   title: string

@@ -5,12 +5,13 @@ const props = defineProps<{ code: string }>()
 
 const show = ref(false)
 const iframeKey = ref(0)
+const iframeRef = ref<HTMLIFrameElement | null>(null)
 
 function runCode() {
   show.value = true
   iframeKey.value++
   nextTick(() => {
-    const iframe = document.getElementById('code-preview-frame') as HTMLIFrameElement | null
+    const iframe = iframeRef.value
     if (!iframe) return
     const doc = iframe.contentDocument || iframe.contentWindow?.document
     if (!doc) return
@@ -35,7 +36,7 @@ function close() {
           <button class="preview-close" @click="close">&times;</button>
         </div>
         <div class="preview-body">
-          <iframe :key="iframeKey" id="code-preview-frame" class="preview-iframe" sandbox="allow-scripts allow-same-origin" />
+          <iframe :key="iframeKey" ref="iframeRef" class="preview-iframe" sandbox="allow-scripts allow-same-origin" />
         </div>
       </div>
     </div>

@@ -1,0 +1,195 @@
+/*==============================================================
+ * 风格方案 D：青空（冰蓝基调 / 深海夜色）
+ * 通过 <html data-style="cyan"> 激活
+ *==============================================================*/
+
+/* 变量（亮色 · 冰蓝 / 暗色 · 深海青） */
+[data-style="cyan"] {
+  --common-color-1: #06b6d4;        /* 青空主色 */
+  --common-color-2: #ecfeff;        /* 冰蓝白 */
+  --common-bg: #e0f7fa;             /* 冰蓝雾底 */
+  --common-text: #164e63;           /* 深青褐，柔和可读 */
+  --common-content: #164e63;        /* 卡片上的正文色 */
+  --common-hover: #0891b2;          /* 深海 */
+  --common-shadow: rgba(6, 182, 212, 0.14);  /* 青影 */
+  --common-cursor: #06b6d4;         /* 青指针 */
+  --common-gradient: linear-gradient(90deg, #06b6d4, #22d3ee, #67e8f9, #22d3ee, #06b6d4);
+  --glass-r: 240; --glass-g: 253; --glass-b: 255; /* 冰蓝亮面 RGB */
+  --text-secondary: #666;
+  --color-error: #dc3545;
+  --color-success: #28a745;
+  --color-warning: #f59e0b;
+}
+[data-style="cyan"].dark-theme,
+[data-style="cyan"] body.dark-theme {
+  --common-color-1: #22d3ee;        /* 亮青（深海上更跳） */
+  --common-color-2: #0a2a30;        /* 深海青 */
+  --common-bg: #041a1f;             /* 深海底 */
+  --common-text: #cffafe;           /* 冰蓝白 */
+  --common-hover: #22d3ee;
+  --common-content: #cffafe;        /* 卡片正文色 */
+  --common-shadow: rgba(0, 0, 0, 0.40);
+  --common-cursor: #22d3ee;
+  --common-gradient: linear-gradient(90deg, #0891b2, #06b6d4, #22d3ee, #06b6d4, #0891b2);
+  --glass-r: 12; --glass-g: 45; --glass-b: 55; /* 深海面 RGB */
+  --text-secondary: #999;
+  --color-error: #f06070;
+  --color-success: #48c060;
+  --color-warning: #f5b040;
+}
+
+/* 鼠标指针：青色 */
+[data-style="cyan"] body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%2306b6d4' stroke='%23e0f7fa' stroke-width='0.5'/></svg>") 4 2, auto;
+}
+[data-style="cyan"] a, [data-style="cyan"] button, [data-style="cyan"] select, [data-style="cyan"] summary, [data-style="cyan"] [role="button"], [data-style="cyan"] label[for] {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%2306b6d4'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
+}
+[data-style="cyan"] input[type="text"],
+[data-style="cyan"] input[type="search"],
+[data-style="cyan"] input[type="password"],
+[data-style="cyan"] input[type="email"],
+[data-style="cyan"] input[type="url"],
+[data-style="cyan"] textarea,
+[data-style="cyan"] [contenteditable="true"] {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%2306b6d4'/></svg>") 11 10, text;
+}
+
+/* 遮罩 */
+[data-style="cyan"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 0;
+  pointer-events: none;
+}
+[data-style="cyan"] body.dark-theme::before {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* 四角青韵晕染 */
+[data-style="cyan"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(44vw 44vw at 8% 14%, rgba(6, 182, 212, 0.08), transparent 68%),
+    radial-gradient(40vw 40vw at 92% 20%, rgba(34, 211, 238, 0.06), transparent 70%),
+    radial-gradient(48vw 48vw at 85% 88%, rgba(6, 182, 212, 0.07), transparent 72%),
+    radial-gradient(42vw 42vw at 14% 86%, rgba(34, 211, 238, 0.05), transparent 72%);
+  filter: blur(8px);
+}
+
+/* 全局卡片 - 青韵毛玻璃 */
+[data-style="cyan"] .header-card,
+[data-style="cyan"] .footer-card,
+[data-style="cyan"] .footer-element-card,
+[data-style="cyan"] .left-asider-card,
+[data-style="cyan"] .center-card,
+[data-style="cyan"] .page-list-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 1px 2px rgba(6, 182, 212, 0.06),
+    0 2px 6px rgba(6, 182, 212, 0.08),
+    0 8px 24px rgba(6, 182, 212, 0.10);
+  border-radius: 14px;
+  border: 1px solid rgba(6, 182, 212, 0.12);
+}
+[data-style="cyan"] body.dark-theme .header-card,
+[data-style="cyan"] body.dark-theme .footer-card,
+[data-style="cyan"] body.dark-theme .footer-element-card,
+[data-style="cyan"] body.dark-theme .left-asider-card,
+[data-style="cyan"] body.dark-theme .center-card,
+[data-style="cyan"] body.dark-theme .page-list-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+}
+
+/* 标题青韵下划线 */
+[data-style="cyan"] h1,
+[data-style="cyan"] h2,
+[data-style="cyan"] h3,
+[data-style="cyan"] h4,
+[data-style="cyan"] h5,
+[data-style="cyan"] h6 {
+  position: relative;
+}
+[data-style="cyan"] h1::after,
+[data-style="cyan"] h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 64%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--common-color-1) 0%, rgba(34, 211, 238, 0.5) 70%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(0.6px);
+  opacity: 0.6;
+}
+
+/* 链接青韵晕染悬停 */
+[data-style="cyan"] a:hover {
+  color: var(--common-color-1);
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.25);
+}
+
+/* 分隔线 */
+[data-style="cyan"] hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--common-shadow), transparent);
+  margin: 16px 0;
+}
+
+/* 引用块青色左侧点缀 */
+[data-style="cyan"] blockquote {
+  border-left: 4px solid var(--common-color-1);
+  background: rgba(6, 182, 212, 0.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 18px;
+  margin: 16px 0;
+}
+
+/* 内部小卡片 */
+[data-style="cyan"] .center-head-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.08));
+  box-shadow: 0 1px 3px rgba(6, 182, 212, 0.06);
+  border: 1px solid rgba(6, 182, 212, 0.12);
+}
+[data-style="cyan"] .center-card-content {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.10));
+}
+[data-style="cyan"] body.dark-theme .center-head-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.10));
+  border: 1px solid rgba(6, 182, 212, 0.15);
+}
+[data-style="cyan"] body.dark-theme .center-card-content {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.12));
+}
+[data-style="cyan"] .page-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  border: 1px solid rgba(6, 182, 212, 0.12);
+}
+[data-style="cyan"] body.dark-theme .page-card {
+  border: 1px solid rgba(6, 182, 212, 0.15);
+}
+
+/* 小屏隐藏下划线 */
+@media (max-width: 768px) {
+  [data-style="cyan"] h1::after,
+  [data-style="cyan"] h2::after {
+    display: none;
+  }
+}

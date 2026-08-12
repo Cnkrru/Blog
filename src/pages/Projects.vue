@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useHead } from '@vueuse/head'
 import PageNav from '../components/p-center/PageNav.vue'
+import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
 
 // SEO 配置
 useHead({
@@ -115,9 +116,7 @@ onMounted(() => {
                                 <span v-for="t in project.tags.slice(0, 3)" :key="t" class="card-tag">{{ t }}</span>
                             </div>
                             <span class="card-arrow">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
+                                <span class="svg-icon" :style="{ width: '16px', height: '16px' }" v-html="arrowRightSvg"></span>
                             </span>
                         </div>
                     </div>

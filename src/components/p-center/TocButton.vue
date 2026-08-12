@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useTocStore, useThemeStore } from '../../stores'
+import listSvg from '@/assets/svg/list.svg?raw'
+import xSvg from '@/assets/svg/x.svg?raw'
 
 const props = defineProps<{ show?: boolean }>()
 
@@ -28,29 +30,19 @@ const toggleToc = () => {
       aria-label="切换目录"
     >
       <!-- 列表图标（默认） -->
-      <svg
+      <span
         v-if="!tocStore.show"
-        class="toc-btn-icon"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+        class="svg-icon toc-btn-icon"
+        :style="{ width: '16px', height: '16px' }"
+        v-html="listSvg"
+      ></span>
       <!-- 关闭图标（展开时） -->
-      <svg
+      <span
         v-else
-        class="toc-btn-icon"
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
+        class="svg-icon toc-btn-icon"
+        :style="{ width: '14px', height: '14px' }"
+        v-html="xSvg"
+      ></span>
     </button>
   </div>
 </template>

@@ -4,6 +4,7 @@
  * 用于渲染无限层级的文章目录树
  */
 defineOptions({ name: 'TocTreeItem' })
+import chevronRightSvg from '@/assets/svg/chevron-right.svg?raw'
 
 const props = defineProps<{
   node: any
@@ -41,17 +42,7 @@ const hasChildren = (): boolean => !!(props.node.children && props.node.children
         class="toc-arrow"
         @click.prevent.stop="emit('toggle', node.id)"
       >
-        <svg
-          class="toc-arrow-icon"
-          :class="{ rot: !isCollapsed() }"
-          width="10"
-          height="10"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <span class="svg-icon toc-arrow-icon" :class="{ rot: !isCollapsed() }" :style="{ width: '10px', height: '10px' }" v-html="chevronRightSvg"></span>
       </span>
       <span v-else class="toc-arrow-placeholder"></span>
 

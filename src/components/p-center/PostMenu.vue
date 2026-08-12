@@ -2,6 +2,10 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticlesStore } from '../../stores'
+import menuSvg from '@/assets/svg/menu.svg?raw'
+import xSvg from '@/assets/svg/x.svg?raw'
+import listSvg from '@/assets/svg/list.svg?raw'
+import searchSvg from '@/assets/svg/search.svg?raw'
 
 const props = defineProps<{ show?: boolean }>()
 
@@ -85,28 +89,18 @@ onMounted(() => {
     <!-- 文章菜单按钮 -->
     <div class="post-menu-btn-container">
       <button class="post-menu-btn" @click="toggleMenu" :title="show ? '关闭菜单' : '文章菜单'" aria-label="文章菜单">
-        <svg
+        <span
           v-if="!show"
-          class="menu-btn-icon"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <svg
+          class="svg-icon menu-btn-icon"
+          :style="{ width: '18px', height: '18px' }"
+          v-html="menuSvg"
+        ></span>
+        <span
           v-else
-          class="menu-btn-icon"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
+          class="svg-icon menu-btn-icon"
+          :style="{ width: '16px', height: '16px' }"
+          v-html="xSvg"
+        ></span>
       </button>
     </div>
 
@@ -116,16 +110,12 @@ onMounted(() => {
         <!-- 头部 -->
         <div class="post-menu-card-header">
           <div class="post-menu-header-left">
-            <svg class="post-menu-header-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <span class="svg-icon post-menu-header-icon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
             <h3>文章菜单</h3>
             <span class="post-menu-count">{{ posts.length }}</span>
           </div>
           <button class="post-menu-close-btn" @click="toggleMenu" title="关闭" aria-label="关闭菜单">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
           </button>
         </div>
 
@@ -135,9 +125,7 @@ onMounted(() => {
         <div class="post-menu-controls">
           <!-- 搜索框 -->
           <div class="search-box">
-            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21 21L15 15M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <span class="svg-icon search-icon" :style="{ width: '14px', height: '14px' }" v-html="searchSvg"></span>
             <input
               type="text"
               v-model="searchKeyword"
@@ -145,9 +133,7 @@ onMounted(() => {
               class="menu-search-input"
             />
             <button v-if="searchKeyword" @click="clearSearch" class="menu-clear-search-btn" title="清除" aria-label="清除搜索">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-              </svg>
+              <span class="svg-icon" :style="{ width: '12px', height: '12px' }" v-html="xSvg"></span>
             </button>
           </div>
 
@@ -194,9 +180,7 @@ onMounted(() => {
             </li>
           </ul>
           <div v-if="!posts.length" class="post-list-empty">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21 21L15 15M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="searchSvg"></span>
             <span>没有匹配的文章</span>
           </div>
         </div>

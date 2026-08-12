@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import calendarSvg from '@/assets/svg/calendar.svg?raw'
+import refreshCwSvg from '@/assets/svg/refresh-cw.svg?raw'
+import chevronDownSvg from '@/assets/svg/chevron-down.svg?raw'
 
 const props = defineProps<{
   date: string
@@ -41,12 +44,7 @@ function toggle() {
       <div class="date-row">
         <div class="date-block">
           <div class="date-icon-wrap">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '15px', height: '15px' }" v-html="calendarSvg"></span>
           </div>
           <div class="date-info">
             <span class="date-label">发布</span>
@@ -56,10 +54,7 @@ function toggle() {
 
         <div v-if="hasUpdated" class="date-block">
           <div class="date-icon-wrap is-update">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="23 4 23 10 17 10"/>
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '15px', height: '15px' }" v-html="refreshCwSvg"></span>
           </div>
           <div class="date-info">
             <span class="date-label">更新</span>
@@ -72,10 +67,7 @@ function toggle() {
       <div v-if="hasHistory" class="history-section">
         <button class="history-toggle" @click="toggle">
           <div class="toggle-line"></div>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-            :class="{ rotated: expanded }">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
+          <span class="svg-icon" :style="{ width: '12px', height: '12px' }" :class="{ rotated: expanded }" v-html="chevronDownSvg"></span>
           <span class="toggle-text">{{ expanded ? '收起修订记录' : '展开修订记录' }}</span>
           <span class="history-count">{{ parsedHistory.length }}</span>
         </button>

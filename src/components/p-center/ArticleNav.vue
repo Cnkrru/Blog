@@ -8,9 +8,7 @@
       aria-label="上一篇文章"
     >
       <span class="post-nav-btn-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
+        <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="arrowLeftSvg"></span>
       </span>
       <div class="post-nav-btn-text">
         <span class="post-nav-btn-label">上一篇</span>
@@ -31,9 +29,7 @@
         <span class="post-nav-btn-title">{{ nextPost?.title || '暂无' }}</span>
       </div>
       <span class="post-nav-btn-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="arrowRightSvg"></span>
       </span>
       <div v-if="loadingNext" class="post-nav-loading"></div>
     </button>
@@ -42,6 +38,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import arrowLeftSvg from '@/assets/svg/arrow-left.svg?raw'
+import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
 
 const props = withDefaults(defineProps<{ prevPost?: any; nextPost?: any }>(), {
   prevPost: null,

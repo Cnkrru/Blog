@@ -7,9 +7,12 @@ const themeStore = useThemeStore()
 const currentStyle = computed(() => themeStore.currentStyle)
 const currentLayout = computed(() => themeStore.currentLayout)
 const glassAlpha = computed(() => themeStore.glassAlpha)
+const bgType = computed(() => themeStore.bgType)
 
-const setStyle = (style: 'ink' | 'sakura') => themeStore.setStyle(style)
-const setLayout = (layout: 'card' | 'compact') => themeStore.setLayout(layout)
+const setStyle = (style: 'ink' | 'sakura' | 'purple' | 'cyan') => themeStore.setStyle(style)
+const setLayout = (layout: 'card' | 'compact' | 'minimal') => themeStore.setLayout(layout)
+const setBgType = (type: 'image' | 'video') => themeStore.setBgType(type)
+
 let glassSaveTimer: ReturnType<typeof setTimeout> | null = null
 const onGlassInput = (e: Event) => {
   const val = Number((e.target as HTMLInputElement).value)
@@ -56,6 +59,24 @@ useHead({
           <span class="opt-name">樱粉风</span>
           <span class="opt-desc">粉色基调 · 梦幻渐变</span>
         </button>
+        <button
+          class="style-opt"
+          :class="{ active: currentStyle === 'purple' }"
+          @click="setStyle('purple')"
+          aria-label="紫色风格"
+        >
+          <span class="opt-name">紫色风</span>
+          <span class="opt-desc">紫罗兰调 · 夜幕星河</span>
+        </button>
+        <button
+          class="style-opt"
+          :class="{ active: currentStyle === 'cyan' }"
+          @click="setStyle('cyan')"
+          aria-label="青色风格"
+        >
+          <span class="opt-name">青色风</span>
+          <span class="opt-desc">冰蓝基调 · 深海夜色</span>
+        </button>
       </div>
     </section>
 
@@ -81,6 +102,15 @@ useHead({
           <span class="opt-name">无空隙</span>
           <span class="opt-desc">四大区域紧贴相连</span>
         </button>
+        <button
+          class="style-opt"
+          :class="{ active: currentLayout === 'minimal' }"
+          @click="setLayout('minimal')"
+          aria-label="极简模式"
+        >
+          <span class="opt-name">极简</span>
+          <span class="opt-desc">仅保留 Header + 背景，Ctrl+C 退出</span>
+        </button>
       </div>
     </section>
 
@@ -100,6 +130,31 @@ useHead({
         <span class="slider-value">{{ Math.round(glassAlpha * 100) }}%</span>
       </div>
       <p class="slider-hint">越低越通透（MAC 玻璃感越强），越高越实色</p>
+    </section>
+
+    <!-- 背景类型 -->
+    <section class="setting-block">
+      <h3 class="setting-title">背景类型</h3>
+      <div class="option-row">
+        <button
+          class="style-opt"
+          :class="{ active: bgType === 'image' }"
+          @click="setBgType('image')"
+          aria-label="图片背景"
+        >
+          <span class="opt-name">图片背景</span>
+          <span class="opt-desc">静态背景图片，节省性能</span>
+        </button>
+        <button
+          class="style-opt"
+          :class="{ active: bgType === 'video' }"
+          @click="setBgType('video')"
+          aria-label="视频背景"
+        >
+          <span class="opt-name">视频背景</span>
+          <span class="opt-desc">动态视频背景，播放 bg.mp4</span>
+        </button>
+      </div>
     </section>
 
     <p class="setting-tip">设置会自动保存，刷新后依然生效。</p>

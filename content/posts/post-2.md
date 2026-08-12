@@ -1,20 +1,22 @@
 ---
 title: 功能测试汇总
 date: 2026-04-16
-updated: 2026-08-07
+updated: 2026-08-12
 category: 测试
-tags: [测试, Markdown, 代码高亮, 灯箱, 通知系统, Mermaid, KaTeX]
+tags: [测试, Markdown, 代码高亮, 灯箱, 通知系统, Mermaid, KaTeX, CSV, JSON, YAML, TOML]
 history:
+  - 2026-08-12 新增JSON/YAML/TOML结构化数据渲染测试
+  - 2026-08-12 新增CSV表格渲染测试
   - 2026-08-07 新增灯箱和PDF打印功能测试
   - 2026-07-20 补充Mermaid图表和KaTeX公式测试用例
   - 2026-05-10 新增代码高亮和通知系统测试
-description: 本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表等测试。
-keywords: Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX
+description: 本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表、CSV表格渲染、JSON/YAML/TOML结构化数据渲染等测试。
+keywords: Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX, CSV, JSON, YAML, TOML
 ---
 
 # 功能测试汇总
 
-本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表等测试。
+本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表、CSV表格渲染等测试。
 
 ---
 
@@ -526,3 +528,375 @@ Toast 通知支持 4 种类型：`success`（3秒）、`error`（5秒）、`warn
 :::
 
 ---
+
+# 第七部分：CSV表格渲染测试
+
+---
+
+本文用于测试 CSV 代码块的表格渲染功能。使用 csv 语言标记的代码块，会自动将 CSV 数据渲染为可读表格，支持主题自适应。
+
+## 基本表格
+
+以下是一个简单的用户数据 CSV：
+
+```csv
+姓名,年龄,城市,职业
+张三,25,北京,工程师
+李四,30,上海,设计师
+王五,28,广州,产品经理
+赵六,35,深圳,架构师
+```
+
+## 带引号的字段
+
+当字段中包含逗号时，需要用双引号包裹：
+
+```csv
+书名,作者,价格,简介
+"JavaScript高级程序设计","Matt Frisbie",89.00,"JavaScript经典红宝书，前端必读"
+"深入浅出Vue.js","刘博文",79.00,"Vue.js源码解析，深入理解响应式原理"
+"CSS世界","张鑫旭",69.00,"CSS流、元素与基本尺寸的深入讲解"
+"设计模式","Erich Gamma",99.00,"面向对象软件设计模式经典之作"
+```
+
+## 多列数据
+
+```csv
+月份,销售额,利润,利润率,客户数,客单价
+1月,128000,25600,20.0%,320,400
+2月,145000,30450,21.0%,380,382
+3月,132000,26400,20.0%,350,377
+4月,168000,38640,23.0%,420,400
+5月,156000,34320,22.0%,400,390
+6月,182000,43680,24.0%,460,396
+```
+
+## 纯数据（无表头）
+
+如果 CSV 只有一行数据，则不分表头/表体：
+
+```csv
+2026-08-12,功能测试,CSV解析器,通过
+```
+
+---
+
+# 第八部分：JSON/YAML/TOML 结构化数据渲染测试
+
+---
+
+本文用于测试 JSON、YAML、TOML 三种结构化数据格式的渲染功能。三种格式都会渲染为可交互的树形结构视图，支持查看源码和复制功能。JSON 使用原生解析器，TOML 使用内建解析器，YAML 通过 CDN 加载 js-yaml 解析。
+
+## JSON 测试
+
+### 基本 JSON 对象
+
+```json
+{
+  "name": "张三",
+  "age": 28,
+  "city": "北京",
+  "isActive": true,
+  "score": 95.5,
+  "bio": null
+}
+```
+
+### 嵌套 JSON 对象
+
+```json
+{
+  "user": {
+    "profile": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "contact": {
+        "email": "john@example.com",
+        "phone": "+86-138-0000-0001",
+        "address": {
+          "street": "中关村大街",
+          "city": "北京",
+          "zip": "100080"
+        }
+      }
+    },
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "language": "zh-CN"
+    }
+  }
+}
+```
+
+### JSON 数组
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Vue 3 入门指南",
+    "author": "张三",
+    "tags": ["Vue", "前端", "JavaScript"],
+    "published": true,
+    "views": 1520
+  },
+  {
+    "id": 2,
+    "title": "TypeScript 高级类型",
+    "author": "李四",
+    "tags": ["TypeScript", "类型系统"],
+    "published": true,
+    "views": 980
+  },
+  {
+    "id": 3,
+    "title": "CSS 网格布局实战",
+    "author": "王五",
+    "tags": ["CSS", "布局"],
+    "published": false,
+    "views": 450
+  }
+]
+```
+
+### 混合类型 JSON
+
+```json
+{
+  "metadata": {
+    "version": "2.0.1",
+    "generatedAt": "2026-08-12T10:30:00Z",
+    "count": 100,
+    "isValid": true,
+    "checksum": null
+  },
+  "data": {
+    "metrics": [12.5, 45.3, 78.1, 23.9, 67.2],
+    "labels": ["Q1", "Q2", "Q3", "Q4"],
+    "flags": [true, false, true, true],
+    "mixed": [1, "two", false, null, { "nested": true }]
+  },
+  "empty": {},
+  "deeplyNested": {
+    "level1": {
+      "level2": {
+        "level3": {
+          "level4": {
+            "value": "太深了，默认折叠到第3层"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### 无效 JSON（展示错误处理）
+
+```json
+{
+  "name": "测试",
+  "age": 25,
+  "city": "深圳",
+  语法错误: 缺少引号
+}
+```
+
+## YAML 测试
+
+### 基本 YAML
+
+```yaml
+name: 张三
+age: 28
+city: 北京
+isActive: true
+score: 95.5
+bio: ~
+```
+
+### 嵌套 YAML
+
+```yaml
+user:
+  profile:
+    firstName: John
+    lastName: Doe
+    contact:
+      email: john@example.com
+      phone: "+86-138-0000-0001"
+      address:
+        street: 中关村大街
+        city: 北京
+        zip: "100080"
+  preferences:
+    theme: dark
+    notifications: true
+    language: zh-CN
+```
+
+### YAML 列表
+
+```yaml
+articles:
+  - id: 1
+    title: Vue 3 入门指南
+    author: 张三
+    tags:
+      - Vue
+      - 前端
+      - JavaScript
+    published: true
+    views: 1520
+  - id: 2
+    title: TypeScript 高级类型
+    author: 李四
+    tags:
+      - TypeScript
+      - 类型系统
+    published: true
+    views: 980
+  - id: 3
+    title: CSS 网格布局实战
+    author: 王五
+    tags:
+      - CSS
+      - 布局
+    published: false
+    views: 450
+```
+
+### YAML 多行字符串与特殊值
+
+```yaml
+description: >
+  这是一个多行字符串，
+  会被折叠为一行。
+notes: |
+  这是一个保留换行的
+  多行字符串。
+empty_val: ~
+null_val: null
+boolean_true: yes
+boolean_false: no
+numbers:
+  integer: 42
+  float: 3.14
+  scientific: 1.5e+10
+  hex: 0x1A
+timestamp: 2026-08-12T10:30:00Z
+```
+
+### 无效 YAML（展示错误处理）
+
+```yaml
+name: 测试
+age: 25
+  indent: 缩进错误
+broken: [
+```
+
+## TOML 测试
+
+### 基本 TOML
+
+```toml
+title = "TOML示例"
+name = "张三"
+age = 28
+isActive = true
+score = 95.5
+```
+
+### 嵌套 TOML（表）
+
+```toml
+[user]
+name = "张三"
+email = "zhangsan@example.com"
+
+[user.profile]
+bio = "全栈开发者"
+website = "https://example.com"
+
+[user.settings]
+theme = "dark"
+language = "zh-CN"
+notifications = true
+```
+
+### TOML 数组
+
+```toml
+tags = ["Vue", "前端", "JavaScript"]
+scores = [85, 92, 78, 95]
+flags = [true, false, true]
+
+[[articles]]
+id = 1
+title = "Vue 3 入门指南"
+author = "张三"
+published = true
+views = 1520
+
+[[articles]]
+id = 2
+title = "TypeScript 高级类型"
+author = "李四"
+published = true
+views = 980
+
+[[articles]]
+id = 3
+title = "CSS 网格布局实战"
+author = "王五"
+published = false
+views = 450
+```
+
+### TOML 多级嵌套表与日期
+
+```toml
+title = "项目配置"
+version = "2.0.1"
+
+[build]
+optimizer = "esbuild"
+sourcemap = true
+
+[build.output]
+dir = "dist"
+format = "esm"
+minify = true
+
+[build.output.banner]
+js = "/* build */"
+css = "/* build */"
+
+[deploy]
+host = "example.com"
+port = 443
+ssl = true
+
+[deploy.timeline]
+created = 2026-01-15T08:00:00Z
+updated = 2026-08-12T10:30:00Z
+```
+
+### 无效 TOML（展示错误处理）
+
+```toml
+title = "测试"
+age = 25
+city = "深圳"
+invalid = 没有引号的值
+```
+
+## 说明
+
+- `json`、`yaml`、`toml` 代码块会渲染为**结构化树形视图**，默认展示预览模式
+- 可点击"源码"按钮切换为原始代码（带 Prism 语法高亮）
+- 支持**一键复制**代码内容
+- 解析失败时，自动切换到源码视图并显示错误信息
+- JSON 使用原生 `JSON.parse`，TOML 使用内建解析器，YAML 通过 CDN 加载 js-yaml（首次使用需加载，后续自动缓存）

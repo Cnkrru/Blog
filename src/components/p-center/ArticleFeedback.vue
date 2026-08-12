@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import questionSvg from '@/assets/svg/question.svg?raw'
+import thumbsUpSvg from '@/assets/svg/thumbs-up.svg?raw'
+import thumbsDownSvg from '@/assets/svg/thumbs-down.svg?raw'
 
 const props = defineProps<{ postId: string }>()
 
 // counterapi.dev 配置（在项目根目录 .env 文件中设置）
-const API_BASE = 'https://api.counterapi.dev/v2'
+const API_BASE = import.meta.env.VITE_COUNTERAPI_BASE || 'https://api.counterapi.dev/v2'
 const WORKSPACE = import.meta.env.VITE_COUNTERAPI_WORKSPACE
 const TOKEN = import.meta.env.VITE_COUNTERAPI_TOKEN
 
@@ -94,11 +97,7 @@ async function submit(type: Feedback) {
     <div class="feedback-card">
       <div class="feedback-question">
         <span class="question-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-            <line x1="12" y1="17" x2="12.01" y2="17"/>
-          </svg>
+          <span class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="questionSvg"></span>
         </span>
         <span class="feedback-label">这篇文章对你有用吗？</span>
       </div>
@@ -112,10 +111,7 @@ async function submit(type: Feedback) {
           @click="submit('up')"
         >
           <span class="btn-icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" :fill="feedback === 'up' ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
-              <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="thumbsUpSvg"></span>
           </span>
           <span class="btn-text">有用</span>
           <span class="btn-count" v-if="upCount > 0">{{ upCount }}</span>
@@ -129,10 +125,7 @@ async function submit(type: Feedback) {
           @click="submit('down')"
         >
           <span class="btn-icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" :fill="feedback === 'down' ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/>
-              <path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="thumbsDownSvg"></span>
           </span>
           <span class="btn-text">没用</span>
           <span class="btn-count" v-if="downCount > 0">{{ downCount }}</span>

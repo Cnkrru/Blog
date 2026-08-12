@@ -49,7 +49,7 @@ self.addEventListener('fetch', (event) => {
       caches.open(CACHE_NAME).then((cache) => {
         return cache.match(request).then((cached) => {
           const fetchPromise = fetch(request).then((response) => {
-            if (response.ok) cache.put(request, response.clone())
+            if (response.status === 200) cache.put(request, response.clone())
             return response
           })
           return cached || fetchPromise
@@ -63,7 +63,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(request)
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
           const clone = response.clone()
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone))
         }

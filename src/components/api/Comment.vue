@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
 import { useCommentStore, useThemeStore } from '../../stores'
+import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
 
 const commentStore = useCommentStore()
 const themeStore = useThemeStore()
@@ -53,7 +54,7 @@ onUnmounted(() => {
             
             <!-- 错误状态 -->
             <div v-else-if="error" class="error-state">
-                <div class="error-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                <div class="error-icon"><span class="svg-icon" :style="{ width: '32px', height: '32px' }" v-html="alertTriangleSvg"></span></div>
                 <span class="error-text">{{ error }}</span>
                 <button class="retry-button" @click="commentStore.initCommentSystem">重试</button>
             </div>

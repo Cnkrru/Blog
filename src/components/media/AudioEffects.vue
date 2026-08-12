@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { useMusicStore } from '../../stores'
+import xSvg from '@/assets/svg/x.svg?raw'
 
 const props = withDefaults(defineProps<{
   audioContext?: any; isPlaying?: boolean;
@@ -103,7 +104,7 @@ const closePanel = () => {
             {{ effectsEnabled ? '已启用' : '已关闭' }}
           </button>
           <button class="close-btn" @click="closePanel" aria-label="关闭音效设置">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
           </button>
         </div>
       </div>

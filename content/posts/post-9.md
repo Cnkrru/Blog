@@ -1,9 +1,9 @@
 ---
-title: VitePress-1-快速开始
+title: VitePress-1
 date: 2026-04-23
 updated: 2026-08-07
 category: 前端
-tags: [前端, VitePress]
+tags: [SSG]
 history:
   - 2026-08-07 补充VitePress与Docsify对比分析
   - 2026-07-29 同步迁移经验到独立文章

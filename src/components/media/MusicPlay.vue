@@ -2,6 +2,9 @@
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 import PlayerControls from './PlayerControls.vue'
+import musicSvg from '@/assets/svg/music.svg?raw'
+import listSvg from '@/assets/svg/list.svg?raw'
+import settingsSvg from '@/assets/svg/settings.svg?raw'
 import PlayerProgress from './PlayerProgress.vue'
 import PlayerVolume from './PlayerVolume.vue'
 import PlayerPlaylist from './PlayerPlaylist.vue'
@@ -163,7 +166,7 @@ onUnmounted(() => {
       @keydown.space.prevent="togglePlayer"
       @click="togglePlayer"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-music" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 18V5l12 -2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="musicSvg"></span>
       <span v-if="isBtnAnimating" class="emoji-burst">✨</span>
     </div>
 
@@ -207,7 +210,7 @@ onUnmounted(() => {
                   title="音乐列表"
                   @click="togglePlaylist"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15V6"/><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/></svg>
+                  <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="listSvg"></span>
                 </button>
               </div>
               <div class="player-effects">
@@ -219,7 +222,7 @@ onUnmounted(() => {
                   title="音效设置"
                   @click="toggleEffects"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                  <span class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="settingsSvg"></span>
                 </button>
               </div>
             </div>

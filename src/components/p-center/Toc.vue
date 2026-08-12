@@ -2,6 +2,11 @@
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useTocStore } from '../../stores'
 import TocTreeItem from './TocTreeItem.vue'
+import listSvg from '@/assets/svg/list.svg?raw'
+import plusSvg from '@/assets/svg/plus.svg?raw'
+import minusSvg from '@/assets/svg/minus.svg?raw'
+import xSvg from '@/assets/svg/x.svg?raw'
+import fileTextSvg from '@/assets/svg/file-text.svg?raw'
 
 const props = defineProps<{ show?: boolean }>()
 const emit = defineEmits<{ 'update:show': [show: boolean] }>()
@@ -175,9 +180,7 @@ onUnmounted(() => {
       <!-- 头部 -->
       <div class="toc-header">
         <div class="toc-header-left">
-          <svg class="toc-header-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+          <span class="svg-icon toc-header-icon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
           <h3 class="toc-title">目录</h3>
           <span v-if="toc.length" class="toc-count">{{ toc.length }}</span>
         </div>
@@ -187,17 +190,11 @@ onUnmounted(() => {
             :title="expandedAll ? '折叠全部' : '展开全部'"
             @click="expandedAll ? collapseAll() : expandAll()"
           >
-            <svg v-if="expandedAll" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 12H16M12 8V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <span v-if="expandedAll" class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="minusSvg"></span>
+            <span v-else class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="plusSvg"></span>
           </button>
           <button class="toc-close-btn" @click="toggleToc" title="关闭">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
           </button>
         </div>
       </div>
@@ -220,9 +217,7 @@ onUnmounted(() => {
           />
         </ul>
         <div v-if="!toc.length" class="toc-empty">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5M12 12H15M12 16H15M9 12H9.01M9 16H9.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+          <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="fileTextSvg"></span>
           <span>暂无目录</span>
         </div>
       </div>

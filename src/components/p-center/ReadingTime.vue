@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import fileTextSvg from '@/assets/svg/file-text.svg?raw'
+import clockSvg from '@/assets/svg/clock.svg?raw'
 
 const props = withDefaults(defineProps<{
   contentSelector?: string
@@ -98,12 +100,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
       <!-- 字数 -->
       <div class="metric-block">
         <div class="metric-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
+          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="fileTextSvg"></span>
         </div>
         <div class="metric-info">
           <span class="metric-value">{{ formatNum(readingTime.totalWords) }}</span>
@@ -144,10 +141,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
       <!-- 阅读时间 -->
       <div class="metric-block is-time">
         <div class="metric-icon time-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
+          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="clockSvg"></span>
         </div>
         <div class="metric-info">
           <span class="metric-value" v-html="formatTime(readingTime)"></span>

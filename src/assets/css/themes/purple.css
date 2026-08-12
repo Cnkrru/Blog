@@ -1,0 +1,195 @@
+/*==============================================================
+ * 风格方案 C：紫韵（淡紫基调 / 夜幕星河）
+ * 通过 <html data-style="purple"> 激活
+ *==============================================================*/
+
+/* 变量（亮色 · 淡紫 / 暗色 · 夜幕紫） */
+[data-style="purple"] {
+  --common-color-1: #8b5cf6;        /* 紫罗兰主色 */
+  --common-color-2: #f5f0ff;        /* 淡紫白 */
+  --common-bg: #ede6f7;             /* 紫雾底 */
+  --common-text: #2d1b4e;           /* 深紫褐，柔和可读 */
+  --common-content: #2d1b4e;        /* 卡片上的正文色 */
+  --common-hover: #7c3aed;          /* 深紫 */
+  --common-shadow: rgba(139, 92, 246, 0.14);  /* 紫影 */
+  --common-cursor: #8b5cf6;         /* 紫指针 */
+  --common-gradient: linear-gradient(90deg, #8b5cf6, #a78bfa, #c4b5fd, #a78bfa, #8b5cf6);
+  --glass-r: 248; --glass-g: 242; --glass-b: 255; /* 淡紫亮面 RGB */
+  --text-secondary: #666;
+  --color-error: #dc3545;
+  --color-success: #28a745;
+  --color-warning: #f59e0b;
+}
+[data-style="purple"].dark-theme,
+[data-style="purple"] body.dark-theme {
+  --common-color-1: #a78bfa;        /* 淡紫（夜幕上更亮） */
+  --common-color-2: #1e1035;        /* 夜幕紫 */
+  --common-bg: #0f0720;             /* 深夜幕紫 */
+  --common-text: #e8e0f0;           /* 淡紫白 */
+  --common-hover: #a78bfa;
+  --common-content: #e8e0f0;        /* 卡片正文色 */
+  --common-shadow: rgba(0, 0, 0, 0.40);
+  --common-cursor: #a78bfa;
+  --common-gradient: linear-gradient(90deg, #7c3aed, #6d28d9, #5b21b6, #6d28d9, #7c3aed);
+  --glass-r: 32; --glass-g: 18; --glass-b: 55; /* 夜幕紫面 RGB */
+  --text-secondary: #999;
+  --color-error: #f06070;
+  --color-success: #48c060;
+  --color-warning: #f5b040;
+}
+
+/* 鼠标指针：紫色 */
+[data-style="purple"] body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%238b5cf6' stroke='%23ede6f7' stroke-width='0.5'/></svg>") 4 2, auto;
+}
+[data-style="purple"] a, [data-style="purple"] button, [data-style="purple"] select, [data-style="purple"] summary, [data-style="purple"] [role="button"], [data-style="purple"] label[for] {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%238b5cf6'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%238b5cf6' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
+}
+[data-style="purple"] input[type="text"],
+[data-style="purple"] input[type="search"],
+[data-style="purple"] input[type="password"],
+[data-style="purple"] input[type="email"],
+[data-style="purple"] input[type="url"],
+[data-style="purple"] textarea,
+[data-style="purple"] [contenteditable="true"] {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%238b5cf6'/></svg>") 11 10, text;
+}
+
+/* 遮罩 */
+[data-style="purple"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 0;
+  pointer-events: none;
+}
+[data-style="purple"] body.dark-theme::before {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* 四角紫韵晕染 */
+[data-style="purple"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(44vw 44vw at 8% 14%, rgba(139, 92, 246, 0.08), transparent 68%),
+    radial-gradient(40vw 40vw at 92% 20%, rgba(167, 139, 250, 0.06), transparent 70%),
+    radial-gradient(48vw 48vw at 85% 88%, rgba(139, 92, 246, 0.07), transparent 72%),
+    radial-gradient(42vw 42vw at 14% 86%, rgba(167, 139, 250, 0.05), transparent 72%);
+  filter: blur(8px);
+}
+
+/* 全局卡片 - 紫韵毛玻璃 */
+[data-style="purple"] .header-card,
+[data-style="purple"] .footer-card,
+[data-style="purple"] .footer-element-card,
+[data-style="purple"] .left-asider-card,
+[data-style="purple"] .center-card,
+[data-style="purple"] .page-list-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 1px 2px rgba(139, 92, 246, 0.06),
+    0 2px 6px rgba(139, 92, 246, 0.08),
+    0 8px 24px rgba(139, 92, 246, 0.10);
+  border-radius: 14px;
+  border: 1px solid rgba(139, 92, 246, 0.12);
+}
+[data-style="purple"] body.dark-theme .header-card,
+[data-style="purple"] body.dark-theme .footer-card,
+[data-style="purple"] body.dark-theme .footer-element-card,
+[data-style="purple"] body.dark-theme .left-asider-card,
+[data-style="purple"] body.dark-theme .center-card,
+[data-style="purple"] body.dark-theme .page-list-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+/* 标题紫韵下划线 */
+[data-style="purple"] h1,
+[data-style="purple"] h2,
+[data-style="purple"] h3,
+[data-style="purple"] h4,
+[data-style="purple"] h5,
+[data-style="purple"] h6 {
+  position: relative;
+}
+[data-style="purple"] h1::after,
+[data-style="purple"] h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 64%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--common-color-1) 0%, rgba(167, 139, 250, 0.5) 70%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(0.6px);
+  opacity: 0.6;
+}
+
+/* 链接紫韵晕染悬停 */
+[data-style="purple"] a:hover {
+  color: var(--common-color-1);
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.25);
+}
+
+/* 分隔线 */
+[data-style="purple"] hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--common-shadow), transparent);
+  margin: 16px 0;
+}
+
+/* 引用块紫色左侧点缀 */
+[data-style="purple"] blockquote {
+  border-left: 4px solid var(--common-color-1);
+  background: rgba(139, 92, 246, 0.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 18px;
+  margin: 16px 0;
+}
+
+/* 内部小卡片 */
+[data-style="purple"] .center-head-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.08));
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+}
+[data-style="purple"] .center-card-content {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.10));
+}
+[data-style="purple"] body.dark-theme .center-head-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.10));
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+[data-style="purple"] body.dark-theme .center-card-content {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.12));
+}
+[data-style="purple"] .page-card {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  border: 1px solid rgba(139, 92, 246, 0.12);
+}
+[data-style="purple"] body.dark-theme .page-card {
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+/* 小屏隐藏下划线 */
+@media (max-width: 768px) {
+  [data-style="purple"] h1::after,
+  [data-style="purple"] h2::after {
+    display: none;
+  }
+}

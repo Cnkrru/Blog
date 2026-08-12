@@ -20,6 +20,8 @@ export interface CodeStats {
   highlightCount: number
 }
 
+const CDN_PRISM = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0'
+
 export const useCodeStore = defineStore('code', () => {
   const prismLoaded = ref<boolean>(false)
   const loadedLanguages = ref<string[]>([])
@@ -164,6 +166,89 @@ export const useCodeStore = defineStore('code', () => {
     }
   }
 
+  // ======== 共享 Prism.js 加载 ========
+
+  // 存储加载中的 Promise，避免重复加载
+  let prismLoadingPromise: Promise<void> | null = null
+
+  /** 确保 Prism 核心 + CSS + 常用语言已加载 */
+  async function ensurePrismLoaded(): Promise<void> {
+    if (prismLoaded.value) return
+    if (prismLoadingPromise) return prismLoadingPromise
+
+    prismLoadingPromise = new Promise<void>((resolve, reject) => {
+      if (window.Prism) {
+        prismLoaded.value = true
+        resolve()
+        return
+      }
+
+      // 加载 CSS
+      const cssLink = document.createElement('link')
+      cssLink.rel = 'stylesheet'
+      cssLink.href = `${CDN_PRISM}/themes/prism.min.css`
+      document.head.appendChild(cssLink)
+
+      // 加载核心 JS
+      const script = document.createElement('script')
+      script.src = `${CDN_PRISM}/prism.min.js`
+      script.onload = () => {
+        // 加载常用语言组件
+        const languages = ['javascript', 'typescript', 'css', 'html', 'json', 'python', 'bash', 'vue', 'c', 'cpp', 'yaml', 'toml']
+        let loadedCount = 0
+
+        const checkComplete = () => {
+          if (loadedCount >= languages.length) {
+            prismLoaded.value = true
+            resolve()
+          }
+        }
+
+        languages.forEach(lang => {
+          const langScript = document.createElement('script')
+          langScript.src = `${CDN_PRISM}/components/prism-${lang}.min.js`
+          langScript.onload = () => {
+            addLoadedLanguage(lang)
+            loadedCount++
+            checkComplete()
+          }
+          langScript.onerror = () => {
+            loadedCount++
+            checkComplete()
+          }
+          document.head.appendChild(langScript)
+        })
+      }
+      script.onerror = reject
+      document.head.appendChild(script)
+    })
+
+    return prismLoadingPromise
+  }
+
+  /** 确保指定语言组件已加载 */
+  async function ensureLanguageLoaded(lang: string): Promise<void> {
+    if (!window.Prism) {
+      await ensurePrismLoaded()
+    }
+
+    if (window.Prism && window.Prism.languages[lang]) return
+
+    // 检查是否已经在加载中（通过 loadedLanguages 判断）
+    if (loadedLanguages.value.includes(lang)) return
+
+    return new Promise<void>((resolve) => {
+      const script = document.createElement('script')
+      script.src = `${CDN_PRISM}/components/prism-${lang}.min.js`
+      script.onload = () => {
+        addLoadedLanguage(lang)
+        resolve()
+      }
+      script.onerror = () => resolve() // 加载失败不阻塞
+      document.head.appendChild(script)
+    })
+  }
+
   const init = (): void => {
     loadSettings()
   }
@@ -203,6 +288,8 @@ export const useCodeStore = defineStore('code', () => {
     clearCopyError,
     saveSettings,
     loadSettings,
+    ensurePrismLoaded,
+    ensureLanguageLoaded,
     init
   }
 })

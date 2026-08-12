@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useThemeStore } from '../../stores'
+import sunSvg from '@/assets/svg/sun.svg?raw'
+import moonSvg from '@/assets/svg/moon.svg?raw'
 
 const themeStore = useThemeStore()
 const isDarkTheme = computed(() => themeStore.isDark)
@@ -27,7 +29,8 @@ const toggleTheme = () => {
     @keydown.space="toggleTheme"
     :class="{ animating: isAnimating }"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-moon-sun" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/><path d="M12 9v4l3 3"/></svg>
+    <span v-if="isDarkTheme" class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="sunSvg"></span>
+    <span v-else class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="moonSvg"></span>
     <span v-if="isAnimating" class="emoji-burst">✨</span>
   </div>
 </template>

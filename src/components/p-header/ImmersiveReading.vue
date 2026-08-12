@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import bookOpenSvg from '@/assets/svg/book-open.svg?raw'
 
 const isImmersiveReading = ref(false)
 const isAnimating = ref(false)
@@ -23,7 +24,7 @@ onMounted(() => {
 
 <template>
   <div class="button-style immersive-btn" title="沉浸式阅读" @click="toggleImmersiveReading">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+    <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="bookOpenSvg"></span>
     <span v-if="isAnimating" class="emoji-burst">✨</span>
   </div>
 </template>

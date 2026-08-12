@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import clockSvg from '@/assets/svg/clock.svg?raw'
 
 const ageText = ref('')
 let timer: ReturnType<typeof setInterval> | null = null
@@ -30,7 +31,7 @@ onUnmounted(() => {
 
 <template>
   <div class="footer-element-card website-age">
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="age-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+    <span class="svg-icon age-icon" :style="{ width: '15px', height: '15px' }" v-html="clockSvg"></span>
     <span>本站已运行</span>
     <span class="age-num">{{ ageText }}</span>
   </div>

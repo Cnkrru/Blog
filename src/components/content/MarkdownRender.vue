@@ -13,7 +13,11 @@
         </div>
         <!-- 代码块 -->
         <div v-else-if="block.type === 'code'" class="code-container">
-          <HighlightRender :code="block.content" :language="block.language" />
+          <CsvTable v-if="block.language && block.language.toLowerCase() === 'csv'" :code="block.content" />
+          <JsonView v-else-if="block.language && block.language.toLowerCase() === 'json'" :code="block.content" />
+          <YamlView v-else-if="block.language && block.language.toLowerCase() === 'yaml'" :code="block.content" />
+          <TomlView v-else-if="block.language && block.language.toLowerCase() === 'toml'" :code="block.content" />
+          <HighlightRender v-else :code="block.content" :language="block.language" />
         </div>
         <!-- 提示块 -->
         <div v-else-if="block.type === 'admonition'" class="admonition-container">
@@ -55,7 +59,7 @@
       @click.stop
     >
       <button v-if="!quoteCopied" class="quote-btn" @click="copyQuote">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="copySvg"></span>
         引用
       </button>
       <span v-else class="quote-done">已复制</span>
@@ -65,6 +69,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
+import copySvg from '@/assets/svg/copy.svg?raw'
 import { useRoute } from 'vue-router'
 import MermaidRender from './MermaidRender.vue'
 import KatexRender from './KatexRender.vue'
@@ -72,6 +77,10 @@ import HighlightRender from './HighlightRender.vue'
 import EasterEggAnimation from '../media/EasterEggAnimation.vue'
 import AdmonitionRender from './AdmonitionRender.vue'
 import ToastButton from './ToastButton.vue'
+import CsvTable from './CsvTable.vue'
+import JsonView from './JsonView.vue'
+import YamlView from './YamlView.vue'
+import TomlView from './TomlView.vue'
 import { CDN_VERSIONS } from '../../utils/constants'
 
 const props = defineProps<{
@@ -425,6 +434,9 @@ const renderMarkdown = async () => {
 
 
 
+// 存储图片点击监听器引用，用于清理
+const imageClickHandlers = new WeakMap<Element, (e: Event) => void>()
+
 // 添加图片点击事件
 const addImageClickListeners = () => {
   // 延迟一点执行，确保DOM已经更新
@@ -439,11 +451,17 @@ const addImageClickListeners = () => {
       imageData.push({ src, title: alt })
 
       image.style.cursor = 'pointer'
-      // 移除之前可能存在的点击事件监听器，避免重复添加
-      image.removeEventListener('click', () => {})
-      image.addEventListener('click', () => {
-        openLightbox(index)
-      })
+
+      // 移除旧的监听器（WeakMap 中保存的引用）
+      const oldHandler = imageClickHandlers.get(image)
+      if (oldHandler) {
+        image.removeEventListener('click', oldHandler)
+      }
+
+      // 创建新监听器并保存引用
+      const handler = () => { openLightbox(index) }
+      imageClickHandlers.set(image, handler)
+      image.addEventListener('click', handler)
     })
 
     lightboxImages.value = imageData
@@ -460,11 +478,15 @@ const generateHeadingId = (text: string): string => {
 
 const addHeadingIds = () => {
   setTimeout(() => {
+    const idCount = new Map<string, number>()
     const headings = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6')
     headings.forEach((h) => {
       const text = h.textContent?.trim() || ''
       if (text && !h.id) {
-        h.id = generateHeadingId(text)
+        let baseId = generateHeadingId(text)
+        const count = idCount.get(baseId) || 0
+        idCount.set(baseId, count + 1)
+        h.id = count > 0 ? `${baseId}-${count}` : baseId
       }
     })
   }, 100)

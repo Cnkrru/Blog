@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed } from 'vue'
 import { useAnnouncementStore } from '../stores'
+import infoSvg from '@/assets/svg/info.svg?raw'
+import xSvg from '@/assets/svg/x.svg?raw'
 import MarkdownRender from '../components/content/MarkdownRender.vue'
 import { useHead } from '@vueuse/head'
 
@@ -48,7 +50,7 @@ onUnmounted(() => {
 <template>
   <div>
     <button class="announcement-btn" @click="openAnnouncement" aria-label="查看公告">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+      <span class="svg-icon" :style="{ width: '16px', height: '16px' }" v-html="infoSvg"></span>
       <span>公告</span>
     </button>
 
@@ -60,7 +62,7 @@ onUnmounted(() => {
               <div class="modal-header">
                 <h3>网站公告</h3>
                 <button class="modal-close" @click="closeAnnouncement" aria-label="关闭公告">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                  <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="xSvg"></span>
                 </button>
               </div>
               <div class="modal-body">

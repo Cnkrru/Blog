@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import bgVideoDefault from '../assets/imgs/bg.mp4'
 
 export const useThemeStore = defineStore('theme', () => {
   const currentTheme = ref<'light' | 'dark'>('dark')
-  const currentStyle = ref<'ink' | 'sakura'>('ink')
-  const currentLayout = ref<'card' | 'compact'>('card')
+  const currentStyle = ref<'ink' | 'sakura' | 'purple' | 'cyan'>('ink')
+  const currentLayout = ref<'card' | 'compact' | 'minimal'>('card')
   const glassAlpha = ref<number>(0.78)
   const isAutoSwitch = ref<boolean>(false)
   const hasUserPreference = ref<boolean>(false)
+  const bgType = ref<'image' | 'video'>('image')
+  const bgVideoUrl = ref<string>(bgVideoDefault)
 
   const isDark = computed<boolean>(() => currentTheme.value === 'dark')
   const isLight = computed<boolean>(() => currentTheme.value === 'light')
@@ -33,6 +36,13 @@ export const useThemeStore = defineStore('theme', () => {
     document.documentElement.style.setProperty('--glass-alpha', String(glassAlpha.value))
   }
 
+  const applyBgDom = (): void => {
+    document.documentElement.setAttribute('data-bg-type', bgType.value)
+    if (bgVideoUrl.value) {
+      document.documentElement.style.setProperty('--bg-video-url', `url(${bgVideoUrl.value})`)
+    }
+  }
+
   const setTheme = (theme: 'light' | 'dark'): void => {
     currentTheme.value = theme
     hasUserPreference.value = true
@@ -47,13 +57,13 @@ export const useThemeStore = defineStore('theme', () => {
     savePreference()
   }
 
-  const setStyle = (style: 'ink' | 'sakura'): void => {
+  const setStyle = (style: 'ink' | 'sakura' | 'purple' | 'cyan'): void => {
     currentStyle.value = style
     applyStyleDom()
     savePreference()
   }
 
-  const setLayout = (layout: 'card' | 'compact'): void => {
+  const setLayout = (layout: 'card' | 'compact' | 'minimal'): void => {
     currentLayout.value = layout
     applyLayoutDom()
     savePreference()
@@ -76,27 +86,51 @@ export const useThemeStore = defineStore('theme', () => {
     savePreference()
   }
 
+  const setBgType = (type: 'image' | 'video'): void => {
+    bgType.value = type
+    if (type === 'video' && !bgVideoUrl.value) {
+      bgVideoUrl.value = bgVideoDefault
+    }
+    applyBgDom()
+    savePreference()
+  }
+
+  const setBgVideoUrl = (url: string): void => {
+    bgVideoUrl.value = url
+    if (url) {
+      document.documentElement.style.setProperty('--bg-video-url', `url(${url})`)
+    } else {
+      document.documentElement.style.removeProperty('--bg-video-url')
+    }
+    savePreference()
+  }
+
   const initTheme = (): void => {
     if (typeof window === 'undefined') return
     const saved = localStorage.getItem('theme-preference')
     if (saved) {
-      const { theme, style, layout, glass, auto } = JSON.parse(saved)
+      const { theme, style, layout, glass, auto, bgType: savedBg, bgVideoUrl: savedVideo } = JSON.parse(saved)
       currentTheme.value = (theme as 'light' | 'dark') ?? 'dark'
-      currentStyle.value = (style as 'ink' | 'sakura') ?? 'ink'
-      currentLayout.value = (layout as 'card' | 'compact') ?? 'card'
-      glassAlpha.value = typeof glass === 'number' ? glass : (currentStyle.value === 'sakura' ? 0.55 : 0.78)
+      currentStyle.value = (style as 'ink' | 'sakura' | 'purple' | 'cyan') ?? 'ink'
+      currentLayout.value = (layout as 'card' | 'compact' | 'minimal') ?? 'card'
+      glassAlpha.value = typeof glass === 'number' ? glass : (['sakura', 'purple', 'cyan'].includes(currentStyle.value) ? 0.55 : 0.78)
       isAutoSwitch.value = auto !== false
+      bgType.value = (savedBg as 'image' | 'video') ?? 'image'
+      bgVideoUrl.value = (savedVideo as string) || bgVideoDefault
       hasUserPreference.value = true
     } else {
       currentTheme.value = 'dark'
       currentStyle.value = 'ink'
       currentLayout.value = 'card'
       glassAlpha.value = 0.78
+      bgType.value = 'image'
+      bgVideoUrl.value = bgVideoDefault
     }
     applyThemeDom()
     applyStyleDom()
     applyLayoutDom()
     applyGlassDom()
+    applyBgDom()
   }
 
   const savePreference = (): void => {
@@ -107,7 +141,9 @@ export const useThemeStore = defineStore('theme', () => {
         style: currentStyle.value,
         layout: currentLayout.value,
         glass: glassAlpha.value,
-        auto: isAutoSwitch.value
+        auto: isAutoSwitch.value,
+        bgType: bgType.value,
+        bgVideoUrl: bgVideoUrl.value
       }))
     } catch (e) {
       console.warn('[themeStore] 保存主题偏好失败:', e)
@@ -120,6 +156,8 @@ export const useThemeStore = defineStore('theme', () => {
     currentLayout.value = 'card'
     glassAlpha.value = 0.78
     isAutoSwitch.value = false
+    bgType.value = 'image'
+    bgVideoUrl.value = bgVideoDefault
     hasUserPreference.value = false
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('theme-preference')
@@ -128,6 +166,8 @@ export const useThemeStore = defineStore('theme', () => {
     document.documentElement.setAttribute('data-style', 'ink')
     document.documentElement.setAttribute('data-layout', 'card')
     document.documentElement.style.setProperty('--glass-alpha', '0.78')
+    document.documentElement.setAttribute('data-bg-type', 'image')
+    document.documentElement.style.removeProperty('--bg-video-url')
   }
 
   return {
@@ -137,6 +177,8 @@ export const useThemeStore = defineStore('theme', () => {
     glassAlpha,
     isAutoSwitch,
     hasUserPreference,
+    bgType,
+    bgVideoUrl,
     isDark,
     isLight,
     setTheme,
@@ -146,6 +188,8 @@ export const useThemeStore = defineStore('theme', () => {
     setGlassAlpha,
     setGlassAlphaLive,
     setAutoSwitch,
+    setBgType,
+    setBgVideoUrl,
     initTheme,
     savePreference,
     resetToDefault

@@ -2,11 +2,10 @@
 import IndexLogo from '../components/page-index/IndexLogo.vue'
 import IndexNavbar from '../components/page-index/IndexNavbar.vue'
 import HeroContent from '../components/page-index/HeroContent.vue'
-import ScrollIndicator from '../components/page-index/ScrollIndicator.vue'
 import NetworkParticles from '../components/page-index/NetworkParticles.vue'
-import { useHead } from '@vueuse/head'
+import { useHeadRaw } from '@vueuse/head'
 
-useHead({
+useHeadRaw({
   title: 'Cnkrru\'s Blog',
   meta: [
     { name: 'description', content: '一个技术博客，记录学习与成长' },
@@ -30,7 +29,7 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      innerHTML: JSON.stringify({
+      children: JSON.stringify({
         '@context': 'https://schema.org',
         '@graph': [
           {
@@ -56,21 +55,25 @@ useHead({
 </script>
 
 <template>
-  <div class="hero-container">
-    <NetworkParticles />
+  <div class="index-page">
+    <div class="hero-container">
+      <NetworkParticles />
 
-    <header class="index-header">
-      <IndexLogo />
-      <IndexNavbar />
-    </header>
+      <header class="index-header">
+        <IndexLogo />
+        <IndexNavbar />
+      </header>
 
-    <HeroContent />
-
-    <ScrollIndicator />
+      <HeroContent />
+    </div>
   </div>
 </template>
 
 <style scoped>
+.index-page {
+  width: 100%;
+}
+
 .hero-container {
   position: relative;
   width: 100%;

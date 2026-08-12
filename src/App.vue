@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, onUnmounted, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useThemeStore } from './stores/index'
 import './style.css'
@@ -14,6 +14,8 @@ import NotificationRender from './components/content/NotificationRender.vue'
 import MouseTrail from './components/api/MouseTrail.vue'
 import ConsoleEasterEgg from './components/media/ConsoleEasterEgg.vue'
 import ContextMenu from './components/p-center/ContextMenu.vue'
+import VideoBackground from './components/background/VideoBackground.vue'
+import InstallPrompt from './components/pwa/InstallPrompt.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -51,13 +53,27 @@ router.onError(() => {
   progressVisible.value = false
 })
 
+// Ctrl+C 快捷键：从极简模式退出至无空隙模式
+function onKeyDown(e: KeyboardEvent) {
+  if (e.ctrlKey && e.key === 'c' && themeStore.currentLayout === 'minimal') {
+    e.preventDefault()
+    themeStore.setLayout('compact')
+  }
+}
+
 onMounted(() => {
   themeStore.initTheme()
+  document.addEventListener('keydown', onKeyDown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKeyDown)
 })
 </script>
 
 <template>
   <div id="app">
+    <VideoBackground />
     <!-- 页面加载进度条 -->
     <div v-if="progressVisible" class="page-progress-bar">
       <div class="page-progress-fill" :style="{ width: progressWidth }"></div>
@@ -69,18 +85,23 @@ onMounted(() => {
     <ConsoleEasterEgg />
     <ContextMenu />
     <MouseTrail />
+    <InstallPrompt />
     <template v-if="!isIndexPage && !isTerminalPage">
       <Header />
       <main class="mid-flex">
         <Sidebar />
-        <Center>
-          <router-view :key="route.fullPath" />
-        </Center>
+        <Transition name="page-fade" mode="out-in">
+          <Center :key="route.fullPath">
+            <router-view />
+          </Center>
+        </Transition>
       </main>
       <Footer />
     </template>
     <template v-else>
-      <router-view :key="route.fullPath" />
+      <Transition name="page-fade" mode="out-in">
+        <router-view :key="route.fullPath" />
+      </Transition>
     </template>
   </div>
 </template>
@@ -117,6 +138,24 @@ onMounted(() => {
     align-items: flex-start;
     flex-direction: row;
     flex: 1;
+}
+</style>
+
+<!-- 页面切换淡入淡出动画 — 非 scoped，因为 Transition 的 class 作用于页面组件根元素，不在 App.vue 的 scope 内 -->
+<style>
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.page-fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 </style>
 

@@ -37,6 +37,11 @@ body {
     min-height: 100vh;
 }
 
+/* 视频背景模式：隐藏 body 背景，由 VideoBackground 组件接管 */
+html[data-bg-type="video"] body {
+    background: none !important;
+}
+
 #app {
     position: relative;
     z-index: 1;
@@ -189,4 +194,16 @@ body:not(.dark-theme) img[src*="/og/"] {
 }
 .retry-button:hover {
   background: var(--common-hover);
+}
+
+/*==============================SVG 图标（外链注入 v-html）==============================*/
+.svg-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.svg-icon svg {
+  width: 100%;
+  height: 100%;
 }

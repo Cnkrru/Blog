@@ -12,8 +12,11 @@ import { pinia } from './stores/index'
 // 主题与布局样式拆分（由 <html data-style> / <html data-layout> 激活）
 import './assets/css/themes/ink.css'
 import './assets/css/themes/sakura.css'
+import './assets/css/themes/purple.css'
+import './assets/css/themes/cyan.css'
 import './assets/css/layouts/card.css'
 import './assets/css/layouts/compact.css'
+import './assets/css/layouts/minimal.css'
 
 
 

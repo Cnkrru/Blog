@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import homeSvg from '@/assets/svg/home.svg?raw'
+import refreshCwSvg from '@/assets/svg/refresh-cw.svg?raw'
+import arrowUpSvg from '@/assets/svg/arrow-up.svg?raw'
+import copySvg from '@/assets/svg/copy.svg?raw'
 
 const router = useRouter()
 const visible = ref(false)
@@ -82,25 +86,13 @@ onUnmounted(() => {
           @click="item.action(); closeMenu()"
         >
           <!-- Home -->
-          <svg v-if="item.icon === 'home'" class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
+          <span v-if="item.icon === 'home'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="homeSvg"></span>
           <!-- Refresh -->
-          <svg v-else-if="item.icon === 'refresh'" class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <polyline points="1 20 1 14 7 14"></polyline>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-          </svg>
+          <span v-else-if="item.icon === 'refresh'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="refreshCwSvg"></span>
           <!-- Up -->
-          <svg v-else-if="item.icon === 'up'" class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15"></polyline>
-          </svg>
+          <span v-else-if="item.icon === 'up'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="arrowUpSvg"></span>
           <!-- Copy -->
-          <svg v-else-if="item.icon === 'copy'" class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-          </svg>
+          <span v-else-if="item.icon === 'copy'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="copySvg"></span>
           <span class="menu-label">{{ item.label }}</span>
         </div>
       </div>

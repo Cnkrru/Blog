@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import sunSvg from '@/assets/svg/sun.svg?raw'
+import cloudSvg from '@/assets/svg/cloud.svg?raw'
+import cloudFogSvg from '@/assets/svg/cloud-fog.svg?raw'
+import cloudDrizzleSvg from '@/assets/svg/cloud-drizzle.svg?raw'
+import cloudSnowSvg from '@/assets/svg/cloud-snow.svg?raw'
+import cloudLightningSvg from '@/assets/svg/cloud-lightning.svg?raw'
 
 interface Weather {
   temperature: number;
@@ -177,6 +183,20 @@ const fetchLocationAndWeather = async (): Promise<void> => {
   }
 }
 
+const currentWeatherSvg = computed(() => {
+  if (!weather.value) return sunSvg
+  const code = weather.value.weatherCode
+  if (code === 0) return sunSvg
+  if (code <= 3) return cloudSvg
+  if (code <= 49) return cloudFogSvg
+  if (code <= 59) return cloudDrizzleSvg
+  if (code <= 69) return cloudSnowSvg
+  if (code <= 82) return cloudDrizzleSvg
+  if (code <= 86) return cloudSnowSvg
+  if (code <= 99) return cloudLightningSvg
+  return sunSvg
+})
+
 onMounted(() => {
   fetchLocationAndWeather()
 })
@@ -189,72 +209,7 @@ onMounted(() => {
     </div>
 
     <div v-else-if="weather" class="weather-content">
-      <svg class="weather-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <!-- 晴天 -->
-        <template v-if="weather.weatherCode === 0">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </template>
-        <!-- 多云 -->
-        <template v-else-if="weather.weatherCode <= 3">
-          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-        </template>
-        <!-- 雾 -->
-        <template v-else-if="weather.weatherCode <= 49">
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-          <line x1="3" y1="14" x2="21" y2="14"/>
-          <line x1="13" y1="18" x2="21" y2="18"/>
-        </template>
-        <!-- 毛毛雨/小雨 -->
-        <template v-else-if="weather.weatherCode <= 59">
-          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-          <line x1="8" y1="18" x2="8.01" y2="18"/>
-          <line x1="12" y1="18" x2="12.01" y2="18"/>
-          <line x1="16" y1="18" x2="16.01" y2="18"/>
-        </template>
-        <!-- 小雪 -->
-        <template v-else-if="weather.weatherCode <= 69">
-          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-          <circle cx="8" cy="19" r="1" fill="currentColor" stroke="none"/>
-          <circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/>
-          <circle cx="16" cy="19" r="1" fill="currentColor" stroke="none"/>
-        </template>
-        <!-- 大雨/暴雨 -->
-        <template v-else-if="weather.weatherCode <= 82">
-          <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
-          <line x1="8" y1="18" x2="8.01" y2="18"/>
-          <line x1="12" y1="18" x2="12.01" y2="18"/>
-          <line x1="16" y1="18" x2="16.01" y2="18"/>
-          <line x1="8" y1="22" x2="8.01" y2="22"/>
-          <line x1="12" y1="22" x2="12.01" y2="22"/>
-          <line x1="16" y1="22" x2="16.01" y2="22"/>
-        </template>
-        <!-- 暴雪 -->
-        <template v-else-if="weather.weatherCode <= 86">
-          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-          <circle cx="8" cy="18" r="1.5" fill="currentColor" stroke="none"/>
-          <circle cx="14" cy="18" r="1.5" fill="currentColor" stroke="none"/>
-          <circle cx="11" cy="22" r="1.5" fill="currentColor" stroke="none"/>
-        </template>
-        <!-- 雷暴 -->
-        <template v-else-if="weather.weatherCode <= 99">
-          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-          <polygon points="13 12 10 16 13 16 12 20 16 14 13 14 14 12" fill="currentColor" stroke="none"/>
-        </template>
-        <!-- 兜底 -->
-        <template v-else>
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-        </template>
-      </svg>
+      <span class="svg-icon weather-icon" :style="{ width: '18px', height: '18px' }" v-html="currentWeatherSvg"></span>
       <span class="weather-temp">{{ weather.temperature }}°</span>
       <span class="weather-city">{{ locationInfo.city }}</span>
     </div>

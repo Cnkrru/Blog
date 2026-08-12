@@ -73,58 +73,14 @@ const langAlias: Record<string, string> = {
   py: 'python', PY: 'python',
   sh: 'bash', SH: 'bash',
   vue: 'vue', Vue: 'vue',
+  yaml: 'yaml', YAML: 'yaml', yml: 'yaml', YML: 'yaml',
+  toml: 'toml', TOML: 'toml',
 }
 const normalizedLanguage = computed(() => langAlias[props.language] || props.language.toLowerCase())
 
-// 加载 Prism.js CDN
+// 加载 Prism.js（委托 codeStore 统一管理，避免重复加载）
 const loadPrism = () => {
-  return new Promise((resolve, reject) => {
-    if (window.Prism) {
-      codeStore.setPrismLoaded(true)
-      resolve()
-      return
-    }
-
-    // 加载 CSS
-    const cssLink = document.createElement('link')
-    cssLink.rel = 'stylesheet'
-    cssLink.href = `https://cdn.jsdelivr.net/npm/prismjs@${CDN_VERSIONS.prismjs}/themes/prism.min.css`
-    document.head.appendChild(cssLink)
-
-    // 加载 JS
-    const script = document.createElement('script')
-    script.src = `https://cdn.jsdelivr.net/npm/prismjs@${CDN_VERSIONS.prismjs}/prism.min.js`
-    script.onload = () => {
-      // 加载常用语言
-      const languages = ['javascript', 'typescript', 'css', 'html', 'json', 'python', 'bash', 'vue', 'c', 'cpp']
-      let loadedCount = 0
-
-      const checkComplete = () => {
-        if (loadedCount >= languages.length) {
-          codeStore.setPrismLoaded(true)
-          resolve()
-        }
-      }
-
-      languages.forEach(lang => {
-        const langScript = document.createElement('script')
-        langScript.src = `https://cdn.jsdelivr.net/npm/prismjs@${CDN_VERSIONS.prismjs}/components/prism-${lang}.min.js`
-        langScript.onload = () => {
-          codeStore.addLoadedLanguage(lang)
-          loadedCount++
-          checkComplete()
-        }
-        langScript.onerror = () => {
-          // 单个语言加载失败不影响其他语言
-          loadedCount++
-          checkComplete()
-        }
-        document.head.appendChild(langScript)
-      })
-    }
-    script.onerror = reject
-    document.head.appendChild(script)
-  })
+  return codeStore.ensurePrismLoaded()
 }
 
 // 高亮代码
@@ -452,6 +408,16 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 .language-badge[data-lang="rust"] {
   background-color: #dea584;
    color: #1e1e2e;
+   
+}
+.language-badge[data-lang="yaml"] {
+  background-color: #6b5b95;
+   color: #fff;
+   
+}
+.language-badge[data-lang="toml"] {
+  background-color: #4479a1;
+   color: #fff;
    
 }
 

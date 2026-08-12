@@ -1,0 +1,32 @@
+/*==============================================================
+ * 布局方案 C：极简模式（minimal）
+ * 通过 <html data-layout="minimal"> 激活。
+ * 仅保留 Header，隐去 Sidebar / Center / Footer，
+ * 利用 display: none 隐藏模块，背景（图片/视频）完全透出。
+ * 可通过 Ctrl+C 快捷键退出至 compact 模式。
+ *==============================================================*/
+
+/* 隐藏主内容区域与页脚，仅保留 Header */
+html[data-layout="minimal"] .mid-flex {
+  display: none !important;
+}
+
+html[data-layout="minimal"] .footer-S {
+  display: none !important;
+}
+
+/* 确保 body 占满视口，背景正常显示 */
+html[data-layout="minimal"] body {
+  min-height: 100vh;
+}
+
+/* 移动端适配 */
+@media (max-width: 1024px) {
+  html[data-layout="minimal"] .mid-flex {
+    display: none !important;
+  }
+
+  html[data-layout="minimal"] .footer-S {
+    display: none !important;
+  }
+}

@@ -20,26 +20,13 @@
           <!-- 图标 -->
           <div class="notif-icon">
             <!-- success -->
-            <svg v-if="n.type === 'success'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
+            <span v-if="n.type === 'success'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="checkSvg"></span>
             <!-- error -->
-            <svg v-else-if="n.type === 'error'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"/>
-              <line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
+            <span v-else-if="n.type === 'error'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="xSvg"></span>
             <!-- warning -->
-            <svg v-else-if="n.type === 'warning'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-              <line x1="12" y1="9" x2="12" y2="13"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
+            <span v-else-if="n.type === 'warning'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="alertTriangleSvg"></span>
             <!-- info -->
-            <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="16" x2="12" y2="12"/>
-              <line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
+            <span v-else class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="infoSvg"></span>
           </div>
 
           <!-- 内容 -->
@@ -50,10 +37,7 @@
 
           <!-- 关闭 -->
           <button class="notif-close" @click="removeNotification(n.id)" title="关闭">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"/>
-              <line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
+            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
           </button>
         </div>
 
@@ -73,6 +57,10 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import checkSvg from '@/assets/svg/check.svg?raw'
+import xSvg from '@/assets/svg/x.svg?raw'
+import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
+import infoSvg from '@/assets/svg/info.svg?raw'
 import { useNotificationStore } from '../../stores'
 
 const notificationStore = useNotificationStore()
