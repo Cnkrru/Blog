@@ -45,7 +45,7 @@ const handleClose = () => {
             :class="{ active: index === currentIndex }"
             @click="handleSelect(index)"
           >
-            <img :src="song.cover" :alt="song.title + ' 封面'" />
+            <img :src="song.cover" :alt="song.title + ' 封面'" loading="lazy" />
             <div class="playlist-item-info">
               <div class="playlist-item-title">{{ song.title }}</div>
               <div class="playlist-item-artist">{{ song.artist }}</div>

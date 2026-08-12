@@ -13,7 +13,7 @@
     <div v-else-if="userData" class="github-content">
       <!-- 用户信息卡片 -->
       <div class="user-card">
-        <img :src="userData.avatar_url" :alt="userData.login" class="avatar" />
+        <img :src="userData.avatar_url" :alt="userData.login" class="avatar" loading="lazy" />
         <div class="user-info">
           <h3>{{ userData.name || userData.login }}</h3>
           <p class="username">@{{ userData.login }}</p>

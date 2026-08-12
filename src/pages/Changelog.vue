@@ -11,6 +11,7 @@ import PostMenu from '../components/p-center/PostMenu.vue'
 
 
 import Comment from '../components/api/Comment.vue'
+import Share from '../components/api/ShareButton.vue'
 
 const route = useRoute()
 const router = useRouter()

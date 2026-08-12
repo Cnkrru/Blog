@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { useArticlesStore } from '../stores'
@@ -13,7 +13,6 @@ useHead({
     { name: 'description', content: 'Cnkrru\'s Blog的所有文章归档' },
     { name: 'keywords', content: '归档,文章列表,历史文章' },
     { name: 'robots', content: 'index, follow' },
-    { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://cnkrru.top/archives' },
     { property: 'og:title', content: '归档 - Cnkrru\'s Blog' },
     { property: 'og:locale', content: 'zh_CN' },
@@ -27,6 +26,7 @@ useHead({
 const articles = ref<any[]>([])
 const viewMode = ref<'category' | 'year' | 'month'>('category')
 const expandedKey = ref<string | null>(null)
+const expandAll = ref(false)
 
 const loadArticles = async () => {
   try {
@@ -35,7 +35,6 @@ const loadArticles = async () => {
   } catch (e) { console.error('加载文章列表失败:', e); articles.value = [] }
 }
 
-// 按分类
 const categoryGroups = computed(() => {
   const map: Record<string, any[]> = {}
   articles.value.forEach(a => {
@@ -46,7 +45,6 @@ const categoryGroups = computed(() => {
   return Object.keys(map).sort().map(k => ({ name: k, items: map[k] }))
 })
 
-// 按年
 const yearGroups = computed(() => {
   const map: Record<string, any[]> = {}
   articles.value.forEach(a => {
@@ -57,7 +55,6 @@ const yearGroups = computed(() => {
   return Object.keys(map).sort().reverse().map(k => ({ name: k, items: map[k] }))
 })
 
-// 按月
 const monthGroups = computed(() => {
   const map: Record<string, any[]> = {}
   articles.value.forEach(a => {
@@ -75,11 +72,41 @@ const groups = computed(() => {
   return categoryGroups.value
 })
 
+const isTimeline = computed(() => viewMode.value !== 'category')
+
 function toggleGroup(name: string) {
   expandedKey.value = expandedKey.value === name ? null : name
 }
 
-onMounted(loadArticles)
+function toggleExpandAll() {
+  expandAll.value = !expandAll.value
+  expandedKey.value = expandAll.value ? '_all' : null
+}
+
+const isExpanded = (name: string) => expandedKey.value === name || expandedKey.value === '_all'
+
+const tabsRef = ref<HTMLElement | null>(null)
+const indicatorLeft = ref(0)
+const indicatorWidth = ref(0)
+
+function updateIndicator() {
+  nextTick(() => {
+    if (!tabsRef.value) return
+    const active = tabsRef.value.querySelector('.view-tab.active') as HTMLElement | null
+    if (!active) return
+    const containerRect = tabsRef.value.getBoundingClientRect()
+    const activeRect = active.getBoundingClientRect()
+    indicatorLeft.value = activeRect.left - containerRect.left
+    indicatorWidth.value = activeRect.width
+  })
+}
+
+watch(viewMode, updateIndicator)
+
+onMounted(() => {
+  loadArticles()
+  nextTick(updateIndicator)
+})
 </script>
 
 <template>
@@ -90,45 +117,70 @@ onMounted(loadArticles)
   </div>
   <hr>
   <div class="center-card-content">
-    <!-- 模式切换 -->
-    <div class="view-tabs">
+    <!-- 模式切换 + 操作 -->
+    <div class="arch-toolbar">
+      <div class="view-tabs" ref="tabsRef">
+      <div class="view-tabs-indicator" :style="{ left: indicatorLeft + 'px', width: indicatorWidth + 'px' }"></div>
       <button
         :class="['view-tab', { active: viewMode === 'category' }]"
         @click="viewMode = 'category'"
         aria-label="按分类查看"
-      >按分类</button>
+      >分类</button>
       <button
         :class="['view-tab', { active: viewMode === 'year' }]"
         @click="viewMode = 'year'"
         aria-label="按年查看"
-      >按年</button>
+      >年份</button>
       <button
         :class="['view-tab', { active: viewMode === 'month' }]"
         @click="viewMode = 'month'"
         aria-label="按月查看"
-      >按月</button>
+      >月份</button>
+    </div>
+      <button class="expand-all-btn" @click="toggleExpandAll">
+        {{ expandedKey === '_all' ? '全部收起' : '全部展开' }}
+      </button>
     </div>
 
-    <div v-for="g in groups" :key="g.name" class="arch-group">
-      <a href="#" class="arch-header" @click.prevent="toggleGroup(g.name)">
+    <div v-for="g in groups" :key="g.name" class="arch-group" :class="{ timeline: isTimeline }">
+      <a
+        href="#"
+        class="arch-header"
+        :class="{ expanded: isExpanded(g.name) }"
+        @click.prevent="toggleGroup(g.name)"
+      >
+        <span v-if="isTimeline" class="timeline-dot"></span>
         <span class="arch-name">{{ g.name }}</span>
         <span class="arch-count">{{ g.items.length }} 篇</span>
-        <span class="arch-arrow">{{ expandedKey === g.name ? '▾' : '▸' }}</span>
+        <span class="arch-arrow" :class="{ open: isExpanded(g.name) }">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
       </a>
 
-      <Transition name="fold">
-        <div v-if="expandedKey === g.name" class="arch-list">
+      <div class="arch-body" :class="{ open: isExpanded(g.name) }">
+        <div class="arch-list">
           <RouterLink
             v-for="a in g.items"
             :key="a.id"
             :to="`/post/${a.id}`"
             class="arch-item"
+            :class="{ 'has-timeline': isTimeline }"
           >
-            <span class="arch-title">{{ a.title }}</span>
-            <span class="arch-date">{{ a.date }}</span>
+            <span v-if="isTimeline" class="item-dot"></span>
+            <span class="item-title">{{ a.title }}</span>
+            <span class="item-tags" v-if="a.tags && a.tags.length">
+              <span v-for="t in a.tags.slice(0, 2)" :key="t" class="item-tag">{{ t }}</span>
+            </span>
+            <span class="item-date">{{ a.date }}</span>
           </RouterLink>
         </div>
-      </Transition>
+      </div>
+    </div>
+
+    <div v-if="!groups.length" class="arch-empty">
+      <p>暂无文章</p>
     </div>
   </div>
 </template>
@@ -142,58 +194,116 @@ onMounted(loadArticles)
   gap: 10px;
 }
 
+/* ===== 工具栏 ===== */
+.arch-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  gap: 10px;
+}
+
 .view-tabs {
   display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 4px;
+  background: var(--common-bg);
+  padding: 3px;
+  border-radius: 24px;
+  border: 1px solid var(--common-color-1);
+  position: relative;
+}
+
+.view-tabs-indicator {
+  position: absolute;
+  top: 3px;
+  height: calc(100% - 6px);
+  border-radius: 20px;
+  background: var(--common-color-1);
+  transition: left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .view-tab {
-  padding: 5px 18px;
+  padding: 4px 16px;
   border-radius: 20px;
-  border: 1px solid var(--common-color-1);
+  border: none;
   background: transparent;
   color: var(--common-text);
   font-size: 13px;
   cursor: pointer;
-  transition:
-    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  transition: color 0.25s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .view-tab.active {
+  color: var(--common-content);
+}
+
+.expand-all-btn {
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--common-color-1);
+  background: transparent;
+  color: var(--common-text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.expand-all-btn:hover {
   background: var(--common-color-1);
   color: var(--common-content);
 }
 
+/* ===== 分组卡片 ===== */
 .arch-group {
-  margin-bottom: 2px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--common-color-1);
+  background: var(--common-bg);
+  transition: box-shadow 0.2s ease;
 }
 
+.arch-group:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.arch-group.timeline {
+  padding-left: 0;
+}
+
+/* ===== 分组头部 ===== */
 .arch-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 12px 16px;
   text-decoration: none;
   color: var(--common-text);
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .arch-header:hover {
-  background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
-  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
+}
+
+.arch-header.expanded {
+  background: color-mix(in srgb, var(--common-color-1) 5%, transparent);
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--common-color-1);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .arch-name {
@@ -204,57 +314,136 @@ onMounted(loadArticles)
 .arch-count {
   font-size: 12px;
   color: var(--common-text);
-  opacity: 0.5;
+  opacity: 0.45;
   margin-right: auto;
 }
 
 .arch-arrow {
-  font-size: 12px;
+  display: flex;
+  align-items: center;
   color: var(--common-text);
   opacity: 0.4;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.arch-arrow.open {
+  transform: rotate(90deg);
+}
+
+/* ===== 展开/收起主体 ===== */
+.arch-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.arch-body.open {
+  grid-template-rows: 1fr;
 }
 
 .arch-list {
-  padding: 4px 0 8px 0;
+  overflow: hidden;
+  min-height: 0;
+  padding: 0;
 }
 
+/* ===== 文章条目 ===== */
 .arch-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 8px 14px;
+  gap: 10px;
+  padding: 10px 16px 10px 20px;
   text-decoration: none;
   color: var(--common-text);
-  border-bottom: 1px solid var(--common-color-1);
-  opacity: 0.8;
-  transition: background-color 0.15s ease, color 0.15s ease, opacity 0.12s ease;
+  border-bottom: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  transition: background-color 0.15s ease, padding-left 0.2s ease;
+  position: relative;
+}
+
+.arch-item:last-child {
+  border-bottom: none;
 }
 
 .arch-item:hover {
-  opacity: 1;
-  background: var(--common-bg);
+  background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
+  padding-left: 24px;
 }
 
-.arch-title {
+.arch-item.has-timeline {
+  padding-left: 42px;
+  position: relative;
+}
+
+.arch-item.has-timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--common-color-1);
+  opacity: 0.2;
+}
+
+.arch-item.has-timeline::after {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--common-color-1);
+  opacity: 0.3;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.arch-item.has-timeline:hover::after {
+  opacity: 0.8;
+  transform: translateY(-50%) scale(1.3);
+}
+
+.item-dot {
+  display: none;
+}
+
+.item-title {
   font-size: 14px;
-}
-
-.arch-date {
-  font-size: 12px;
-  opacity: 0.5;
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  margin-left: 16px;
 }
 
-/* 展开动画 */
-.fold-enter-active,
-.fold-leave-active {
-  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
+.item-tags {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
-.fold-enter-from,
-.fold-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
+.item-tag {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
+  color: var(--common-text);
+  opacity: 0.7;
+}
+
+.item-date {
+  font-size: 12px;
+  opacity: 0.4;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ===== 空状态 ===== */
+.arch-empty {
+  text-align: center;
+  padding: 40px 0;
+  opacity: 0.5;
 }
 </style>

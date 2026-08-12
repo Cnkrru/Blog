@@ -9,6 +9,7 @@ import Toc from '../components/p-center/Toc.vue'
 import TocButton from '../components/p-center/TocButton.vue'
 import PostMenu from '../components/p-center/PostMenu.vue'
 import ArticleNav from '../components/p-center/ArticleNav.vue'
+import FontSizeControl from '../components/p-center/FontSizeControl.vue'
 
 import Comment from '../components/api/Comment.vue'
 import RelatedArticles from '../components/p-center/RelatedArticles.vue'
@@ -173,6 +174,7 @@ onMounted(() => {
             <h2>{{ post?.title || '文章详情' }}</h2>
         </div>
         <div class="center-head-tools">
+            <FontSizeControl />
             <BackToTop />
             <PostMenu v-model:show="showPostMenu" />
             <TocButton v-model:show="showToc" />

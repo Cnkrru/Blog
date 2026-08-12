@@ -11,7 +11,7 @@
         <span class="line-count" v-if="showLineNumbers">{{ code.split('\n').length }} lines</span>
       </div>
     </div>
-    <div class="code-content-wrapper" :class="{ 'loading': !isLoaded }">
+    <div class="code-content-wrapper" :class="{ 'loading': !isLoaded, 'collapsed': collapsed && isCollapsible }">
       <div v-if="showLineNumbers" class="line-numbers">
         <span v-for="line in generateLineNumbers()" :key="line" class="line-number">{{ line }}</span>
       </div>
@@ -30,6 +30,18 @@
         <div class="loading-spinner"></div>
         <span class="loading-text">Loading syntax highlighting...</span>
       </div>
+      <!-- 折叠按钮 -->
+      <div v-if="isCollapsible && collapsed" class="code-fold-overlay" @click="toggleCollapse">
+        <div class="code-fold-gradient"></div>
+        <button class="code-fold-btn">
+          <span class="svg-icon fold-icon" :style="{ width: '16px', height: '16px' }" v-html="chevronDownSvg"></span>
+          <span class="fold-text">展开全部 ({{ lineCount }} 行)</span>
+        </button>
+      </div>
+      <button v-else-if="isCollapsible && !collapsed" class="code-fold-toggle" @click="toggleCollapse">
+        <span class="svg-icon fold-icon" :style="{ width: '14px', height: '14px' }" v-html="chevronDownSvg"></span>
+        <span class="fold-text">收起</span>
+      </button>
     </div>
   </div>
 </template>
@@ -40,6 +52,7 @@ import CodeRender from './CodeRender.vue'
 import CodePreview from './CodePreview.vue'
 import { useCodeStore } from '../../stores'
 import { CDN_VERSIONS } from '../../utils/constants'
+import chevronDownSvg from '@/assets/svg/chevron-down.svg?raw'
 
 const props = withDefaults(defineProps<{
   code: string
@@ -56,6 +69,15 @@ const codeRef = ref(null)
 const lineOverlayRef = ref(null)
 const highlightedLine = ref(0)
 const codeStore = useCodeStore()
+const collapsed = ref(true)
+
+const FOLD_LINE_THRESHOLD = 15
+const lineCount = computed(() => props.code.split('\n').length)
+const isCollapsible = computed(() => lineCount.value > FOLD_LINE_THRESHOLD)
+
+function toggleCollapse() {
+  collapsed.value = !collapsed.value
+}
 
 function highlightLine(n: number) {
   highlightedLine.value = n
@@ -195,6 +217,90 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   position: relative;
   display: flex;
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+}
+
+/* 代码折叠 */
+.code-content-wrapper.collapsed {
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.code-fold-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12px;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.code-fold-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.code-fold-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  z-index: 1;
+}
+
+.code-fold-btn:hover {
+  transform: translateY(-1px);
+}
+
+.code-fold-btn:active {
+  transform: translateY(0);
+}
+
+.fold-icon {
+  display: flex;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.code-fold-toggle {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  transition: background-color 0.2s, opacity 0.2s;
+  z-index: 5;
+  opacity: 0.6;
+}
+
+.code-fold-toggle:hover {
+  opacity: 1;
+}
+
+.code-fold-toggle .fold-icon {
+  transform: rotate(180deg);
 }
 
 /* 行高亮 overlay */
@@ -444,6 +550,26 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 /* 代码内容区 */
 .code-content-wrapper {
   background-color: color-mix(in srgb, var(--common-color-1) 5%, transparent);
+}
+
+/* 折叠渐变 */
+.code-fold-gradient {
+  background: linear-gradient(transparent, color-mix(in srgb, var(--common-color-1) 8%, transparent) 40%, color-mix(in srgb, var(--common-color-1) 12%, transparent) 100%);
+}
+
+.code-fold-btn {
+  background: var(--common-color-1);
+  color: var(--common-content);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
+}
+
+.code-fold-btn:hover {
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
+}
+
+.code-fold-toggle {
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
 /* 行号 */

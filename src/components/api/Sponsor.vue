@@ -50,7 +50,7 @@ if (typeof window !== 'undefined') {
             </div>
 
             <div class="sponsor-qr">
-              <img :src="activeTab === 'wechat' ? sponsor.wechat : sponsor.alipay" :alt="activeTab === 'wechat' ? '微信赞赏码' : '支付宝收款码'" class="qr-image" />
+              <img :src="activeTab === 'wechat' ? sponsor.wechat : sponsor.alipay" :alt="activeTab === 'wechat' ? '微信赞赏码' : '支付宝收款码'" class="qr-image" loading="lazy" />
             </div>
 
             <p class="sponsor-thanks">感谢你的支持</p>

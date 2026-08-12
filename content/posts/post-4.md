@@ -3,7 +3,7 @@ title: Frontend-返回顶部组件
 date: 2026-04-19
 updated: 2026-08-06
 category: 前端
-tags: [前端, 组件]
+tags: [前端]
 description: 详细介绍前端组件——返回顶部，介绍组件如何制作。
 keywords: 前端, 组件, 返回顶部, TypeScript
 ---

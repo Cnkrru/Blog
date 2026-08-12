@@ -3,7 +3,7 @@
 
 <template>
     <div class="avator-card">
-        <img src="/src/assets/imgs/avator.jpg" alt="Cnkrru的头像">
+        <img src="/src/assets/imgs/avator.jpg" alt="Cnkrru的头像" loading="lazy">
     </div>
 </template>
 

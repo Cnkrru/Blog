@@ -9,9 +9,11 @@ const currentLayout = computed(() => themeStore.currentLayout)
 const glassAlpha = computed(() => themeStore.glassAlpha)
 const bgType = computed(() => themeStore.bgType)
 
+const isAutoSwitch = computed(() => themeStore.isAutoSwitch)
 const setStyle = (style: 'ink' | 'sakura' | 'purple' | 'cyan') => themeStore.setStyle(style)
 const setLayout = (layout: 'card' | 'compact' | 'minimal') => themeStore.setLayout(layout)
 const setBgType = (type: 'image' | 'video') => themeStore.setBgType(type)
+const toggleAutoSwitch = () => themeStore.setAutoSwitch(!isAutoSwitch.value)
 
 let glassSaveTimer: ReturnType<typeof setTimeout> | null = null
 const onGlassInput = (e: Event) => {
@@ -130,6 +132,27 @@ useHead({
         <span class="slider-value">{{ Math.round(glassAlpha * 100) }}%</span>
       </div>
       <p class="slider-hint">越低越通透（MAC 玻璃感越强），越高越实色</p>
+    </section>
+
+    <!-- 系统主题跟随 -->
+    <section class="setting-block">
+      <h3 class="setting-title">系统主题跟随</h3>
+      <div class="toggle-row">
+        <button
+          class="toggle-switch"
+          :class="{ active: isAutoSwitch }"
+          @click="toggleAutoSwitch"
+          :aria-label="isAutoSwitch ? '关闭系统主题跟随' : '开启系统主题跟随'"
+          role="switch"
+          :aria-checked="isAutoSwitch"
+        >
+          <span class="toggle-track">
+            <span class="toggle-thumb"></span>
+          </span>
+        </button>
+        <span class="toggle-label">{{ isAutoSwitch ? '已开启' : '已关闭' }}</span>
+      </div>
+      <p class="slider-hint">开启后自动跟随系统亮暗模式，手动切换主题会临时覆盖，下次系统变化时恢复跟随</p>
     </section>
 
     <!-- 背景类型 -->
@@ -288,6 +311,58 @@ useHead({
   font-size: 12px;
   opacity: 0.6;
   margin-top: 6px;
+}
+
+/* 开关组件 */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-switch {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggle-track {
+  display: block;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: #ccc;
+  position: relative;
+  transition: background-color 0.25s ease;
+}
+
+.toggle-switch.active .toggle-track {
+  background: var(--common-color-1);
+}
+
+.toggle-thumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-thumb {
+  transform: translateX(20px);
+}
+
+.toggle-label {
+  font-size: 14px;
+  color: var(--common-text);
+  opacity: 0.7;
 }
 
 /* 移动端适配 */

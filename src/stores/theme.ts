@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { applyThemeCss, applyLayoutCss } from '../utils/cssLoader'
 import bgVideoDefault from '../assets/imgs/bg.mp4'
 
 export const useThemeStore = defineStore('theme', () => {
@@ -11,6 +12,11 @@ export const useThemeStore = defineStore('theme', () => {
   const hasUserPreference = ref<boolean>(false)
   const bgType = ref<'image' | 'video'>('image')
   const bgVideoUrl = ref<string>(bgVideoDefault)
+  const articleFontSize = ref<number>(16)
+
+  // 系统主题监听相关
+  let mediaQuery: MediaQueryList | null = null
+  let mediaListener: ((e: MediaQueryListEvent) => void) | null = null
 
   const isDark = computed<boolean>(() => currentTheme.value === 'dark')
   const isLight = computed<boolean>(() => currentTheme.value === 'light')
@@ -26,10 +32,12 @@ export const useThemeStore = defineStore('theme', () => {
 
   const applyStyleDom = (): void => {
     document.documentElement.setAttribute('data-style', currentStyle.value)
+    applyThemeCss(currentStyle.value)
   }
 
   const applyLayoutDom = (): void => {
     document.documentElement.setAttribute('data-layout', currentLayout.value)
+    applyLayoutCss(currentLayout.value)
   }
 
   const applyGlassDom = (): void => {
@@ -40,6 +48,32 @@ export const useThemeStore = defineStore('theme', () => {
     document.documentElement.setAttribute('data-bg-type', bgType.value)
     if (bgVideoUrl.value) {
       document.documentElement.style.setProperty('--bg-video-url', `url(${bgVideoUrl.value})`)
+    }
+  }
+
+  const applyFontSizeDom = (): void => {
+    document.documentElement.style.setProperty('--article-font-size', `${articleFontSize.value}px`)
+  }
+
+  function startAutoSwitch(): void {
+    stopAutoSwitch()
+    if (typeof window === 'undefined') return
+    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    mediaListener = (e: MediaQueryListEvent) => {
+      if (isAutoSwitch.value) {
+        currentTheme.value = e.matches ? 'dark' : 'light'
+        applyThemeDom()
+        savePreference()
+      }
+    }
+    mediaQuery.addEventListener('change', mediaListener)
+  }
+
+  function stopAutoSwitch(): void {
+    if (mediaQuery && mediaListener) {
+      mediaQuery.removeEventListener('change', mediaListener)
+      mediaListener = null
+      mediaQuery = null
     }
   }
 
@@ -83,6 +117,17 @@ export const useThemeStore = defineStore('theme', () => {
 
   const setAutoSwitch = (enabled: boolean): void => {
     isAutoSwitch.value = enabled
+    if (enabled) {
+      // 立即应用系统偏好
+      if (typeof window !== 'undefined') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        currentTheme.value = prefersDark ? 'dark' : 'light'
+        applyThemeDom()
+      }
+      startAutoSwitch()
+    } else {
+      stopAutoSwitch()
+    }
     savePreference()
   }
 
@@ -105,11 +150,17 @@ export const useThemeStore = defineStore('theme', () => {
     savePreference()
   }
 
+  const setArticleFontSize = (size: number): void => {
+    articleFontSize.value = Math.max(14, Math.min(20, size))
+    document.documentElement.style.setProperty('--article-font-size', `${articleFontSize.value}px`)
+    savePreference()
+  }
+
   const initTheme = (): void => {
     if (typeof window === 'undefined') return
     const saved = localStorage.getItem('theme-preference')
     if (saved) {
-      const { theme, style, layout, glass, auto, bgType: savedBg, bgVideoUrl: savedVideo } = JSON.parse(saved)
+      const { theme, style, layout, glass, auto, bgType: savedBg, bgVideoUrl: savedVideo, fontSize } = JSON.parse(saved)
       currentTheme.value = (theme as 'light' | 'dark') ?? 'dark'
       currentStyle.value = (style as 'ink' | 'sakura' | 'purple' | 'cyan') ?? 'ink'
       currentLayout.value = (layout as 'card' | 'compact' | 'minimal') ?? 'card'
@@ -117,6 +168,7 @@ export const useThemeStore = defineStore('theme', () => {
       isAutoSwitch.value = auto !== false
       bgType.value = (savedBg as 'image' | 'video') ?? 'image'
       bgVideoUrl.value = (savedVideo as string) || bgVideoDefault
+      articleFontSize.value = typeof fontSize === 'number' ? Math.max(14, Math.min(20, fontSize)) : 16
       hasUserPreference.value = true
     } else {
       currentTheme.value = 'dark'
@@ -131,6 +183,15 @@ export const useThemeStore = defineStore('theme', () => {
     applyLayoutDom()
     applyGlassDom()
     applyBgDom()
+    applyFontSizeDom()
+
+    // 如果开启了自动跟随，应用系统偏好并开始监听
+    if (isAutoSwitch.value) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      currentTheme.value = prefersDark ? 'dark' : 'light'
+      applyThemeDom()
+      startAutoSwitch()
+    }
   }
 
   const savePreference = (): void => {
@@ -143,7 +204,8 @@ export const useThemeStore = defineStore('theme', () => {
         glass: glassAlpha.value,
         auto: isAutoSwitch.value,
         bgType: bgType.value,
-        bgVideoUrl: bgVideoUrl.value
+        bgVideoUrl: bgVideoUrl.value,
+        fontSize: articleFontSize.value
       }))
     } catch (e) {
       console.warn('[themeStore] 保存主题偏好失败:', e)
@@ -151,6 +213,7 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   const resetToDefault = (): void => {
+    stopAutoSwitch()
     currentTheme.value = 'dark'
     currentStyle.value = 'ink'
     currentLayout.value = 'card'
@@ -158,13 +221,16 @@ export const useThemeStore = defineStore('theme', () => {
     isAutoSwitch.value = false
     bgType.value = 'image'
     bgVideoUrl.value = bgVideoDefault
+    articleFontSize.value = 16
     hasUserPreference.value = false
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('theme-preference')
     }
-    document.documentElement.setAttribute('data-theme', 'light')
+    document.documentElement.setAttribute('data-theme', 'dark')
     document.documentElement.setAttribute('data-style', 'ink')
+    applyThemeCss('ink')
     document.documentElement.setAttribute('data-layout', 'card')
+    applyLayoutCss('card')
     document.documentElement.style.setProperty('--glass-alpha', '0.78')
     document.documentElement.setAttribute('data-bg-type', 'image')
     document.documentElement.style.removeProperty('--bg-video-url')
@@ -179,6 +245,7 @@ export const useThemeStore = defineStore('theme', () => {
     hasUserPreference,
     bgType,
     bgVideoUrl,
+    articleFontSize,
     isDark,
     isLight,
     setTheme,
@@ -190,6 +257,7 @@ export const useThemeStore = defineStore('theme', () => {
     setAutoSwitch,
     setBgType,
     setBgVideoUrl,
+    setArticleFontSize,
     initTheme,
     savePreference,
     resetToDefault

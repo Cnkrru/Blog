@@ -36,18 +36,64 @@
       </div>
     </div>
     <div v-else class="markdown-content" v-html="markdownContent"></div>
-    <!-- 自定义灯箱-->
-    <div v-if="showLightbox" class="lightbox-overlay" @click="closeLightbox">
-      <div class="lightbox-content" @click.stop>
-        <button class="lightbox-close" @click="closeLightbox">&times;</button>
-        <img :src="lightboxImages[currentImageIndex].src" :alt="lightboxImages[currentImageIndex].title">
-        <div class="lightbox-title">{{ lightboxImages[currentImageIndex].title }}</div>
-        <div class="lightbox-nav">
-          <button class="lightbox-prev" @click="prevImage" :disabled="currentImageIndex === 0">&lt;</button>
-          <button class="lightbox-next" @click="nextImage" :disabled="currentImageIndex === lightboxImages.length - 1">&gt;</button>
+    <!-- 自定义灯箱（Teleport 到 body）-->
+    <Teleport to="body">
+      <Transition name="lightbox">
+        <div
+          v-if="showLightbox"
+          class="lightbox-overlay"
+          @click="closeLightbox"
+          @keydown="onLightboxKeydown"
+          tabindex="-1"
+          ref="lightboxRef"
+        >
+          <!-- 关闭按钮 — 固定在右上角 -->
+          <button class="lightbox-close" @click="closeLightbox" aria-label="关闭">
+            <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="xSvg"></span>
+          </button>
+
+          <!-- 图片计数器 — 顶部居中 pill -->
+          <div class="lightbox-counter" v-if="lightboxImages.length > 1">
+            {{ currentImageIndex + 1 }} / {{ lightboxImages.length }}
+          </div>
+
+          <!-- 左侧导航箭头 -->
+          <div
+            class="lightbox-nav-btn lightbox-nav-prev"
+            @click="prevImage"
+            @click.stop
+            v-if="currentImageIndex > 0"
+            aria-label="上一张"
+          >
+            <span class="svg-icon" :style="{ width: '28px', height: '28px' }" v-html="arrowLeftSvg"></span>
+          </div>
+
+          <!-- 图片主体 — 点击图片不关闭 -->
+          <div class="lightbox-image-area" @click.stop>
+            <img
+              :src="lightboxImages[currentImageIndex].src"
+              :alt="lightboxImages[currentImageIndex].title"
+              :key="currentImageIndex"
+              class="lightbox-img"
+            >
+            <div class="lightbox-title" v-if="lightboxImages[currentImageIndex].title">
+              {{ lightboxImages[currentImageIndex].title }}
+            </div>
+          </div>
+
+          <!-- 右侧导航箭头 -->
+          <div
+            class="lightbox-nav-btn lightbox-nav-next"
+            @click="nextImage"
+            @click.stop
+            v-if="currentImageIndex < lightboxImages.length - 1"
+            aria-label="下一张"
+          >
+            <span class="svg-icon" :style="{ width: '28px', height: '28px' }" v-html="arrowRightSvg"></span>
+          </div>
         </div>
-      </div>
-    </div>
+      </Transition>
+    </Teleport>
   </div>
 
   <!-- 选中文字引用弹出 -->
@@ -70,7 +116,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import copySvg from '@/assets/svg/copy.svg?raw'
+import xSvg from '@/assets/svg/x.svg?raw'
+import arrowLeftSvg from '@/assets/svg/arrow-left.svg?raw'
+import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
 import { useRoute } from 'vue-router'
+import { useNotificationStore } from '../../stores'
 import MermaidRender from './MermaidRender.vue'
 import KatexRender from './KatexRender.vue'
 import HighlightRender from './HighlightRender.vue'
@@ -88,6 +138,7 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
+const notificationStore = useNotificationStore()
 const postId = computed(() => route.params.id as string || '')
 
 const markdownContent = ref('')
@@ -576,6 +627,7 @@ function copyQuote() {
   const quote = `> ${selectedText.value}\n>\n> — From: ${source}`
   navigator.clipboard.writeText(quote).then(() => {
     quoteCopied.value = true
+    notificationStore.addNotification('引用已复制到剪贴板', { type: 'success', duration: 2000 })
     setTimeout(() => {
       showQuotePopup.value = false
       quoteCopied.value = false
@@ -590,6 +642,7 @@ function copyQuote() {
     document.execCommand('copy')
     document.body.removeChild(ta)
     quoteCopied.value = true
+    notificationStore.addNotification('引用已复制到剪贴板', { type: 'success', duration: 2000 })
     setTimeout(() => {
       showQuotePopup.value = false
       quoteCopied.value = false
@@ -606,10 +659,17 @@ function closeQuotePopup() {
 const openLightbox = (index) => {
   currentImageIndex.value = index
   showLightbox.value = true
+  document.body.style.overflow = 'hidden'
+  // 聚焦到 overlay 以接收键盘事件
+  nextTick(() => {
+    const overlay = document.querySelector('.lightbox-overlay')
+    if (overlay) (overlay as HTMLElement).focus()
+  })
 }
 
 const closeLightbox = () => {
   showLightbox.value = false
+  document.body.style.overflow = ''
 }
 
 const prevImage = () => {
@@ -622,6 +682,12 @@ const nextImage = () => {
   if (currentImageIndex.value < lightboxImages.value.length - 1) {
     currentImageIndex.value++
   }
+}
+
+const onLightboxKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowLeft') prevImage()
+  if (e.key === 'ArrowRight') nextImage()
 }
 
 onMounted(() => {
@@ -696,7 +762,10 @@ watch(() => props.content, () => {
 /* 确保Markdown内容可见 */
 .markdown-content {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  line-height: 1.6;
+  font-size: var(--article-font-size, 16px);
+  line-height: 1.75;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   padding: 1rem;
 }
 
@@ -826,69 +895,109 @@ watch(() => props.content, () => {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 1000;
+  outline: none;
 }
 
-.lightbox-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 8px;
-  padding: 20px;
-  text-align: center;
-}
-
+/* 关闭按钮 — 右上角固定 */
 .lightbox-close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1010;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   border: none;
-  font-size: 24px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
-.lightbox-content img {
-  max-width: 100%;
-  max-height: 70vh;
+.lightbox-close:hover {
+  transform: scale(1.1);
+}
+
+/* 图片计数器 — 顶部居中 pill 标签 */
+.lightbox-counter {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1010;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+/* 图片主体区域 */
+.lightbox-image-area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90vw;
+  max-height: 85vh;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 80vh;
   object-fit: contain;
-  margin-bottom: 15px;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .lightbox-title {
-  margin-bottom: 15px;
-  font-size: 16px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  max-width: 80vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.lightbox-nav {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.lightbox-prev,
-.lightbox-next {
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 16px;
+/* 导航箭头按钮 */
+.lightbox-nav-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1010;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, transform 0.2s, opacity 0.2s;
+  opacity: 0;
 }
 
-.lightbox-prev:hover,
-.lightbox-next:hover {
-  transform: translateY(-2px);
+.lightbox-overlay:hover .lightbox-nav-btn {
+  opacity: 1;
 }
 
-.lightbox-prev:disabled,
-.lightbox-next:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+.lightbox-nav-prev {
+  left: 20px;
+}
+
+.lightbox-nav-next {
+  right: 20px;
+}
+
+.lightbox-nav-btn:hover {
+  transform: translateY(-50%) scale(1.1);
 }
 </style>
 
@@ -977,34 +1086,71 @@ watch(() => props.content, () => {
 /* 灯箱颜色 */
 .lightbox-overlay {
   background-color: rgba(0, 0, 0, 0.8);
-}
-
-.lightbox-content {
-  background-color: var(--common-bg);
-  box-shadow: 0 4px 20px var(--common-shadow);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .lightbox-close {
-  color: var(--common-text);
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.lightbox-close:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-counter {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .lightbox-title {
-  color: var(--common-text);
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
-/* 灯箱导航颜色 */
-.lightbox-prev,
-.lightbox-next {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-1);
-  color: var(--common-content);
-  box-shadow: 0 2px 8px var(--common-shadow);
+/* 导航箭头颜色 */
+.lightbox-nav-btn {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-.lightbox-prev:hover,
-.lightbox-next:hover {
-  background-color: var(--common-hover);
-  box-shadow: 0 4px 12px var(--common-shadow);
+.lightbox-nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 灯箱过渡动画 */
+.lightbox-enter-active {
+  transition: opacity 0.25s ease;
+}
+.lightbox-enter-active .lightbox-img {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lightbox-leave-active {
+  transition: opacity 0.2s ease;
+}
+.lightbox-leave-active .lightbox-img {
+  transition: transform 0.2s ease;
+}
+.lightbox-enter-from {
+  opacity: 0;
+}
+.lightbox-enter-from .lightbox-img {
+  transform: scale(0.93);
+}
+.lightbox-leave-to {
+  opacity: 0;
+}
+.lightbox-leave-to .lightbox-img {
+  transform: scale(0.95);
 }
 </style>
 
@@ -1023,13 +1169,39 @@ watch(() => props.content, () => {
     font-size: 1.25rem;
   }
   
-  .lightbox-content {
-    max-width: 95%;
-    padding: 10px;
+  .lightbox-close {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
   }
-  
-  .lightbox-content img {
-    max-height: 60vh;
+
+  .lightbox-counter {
+    top: 16px;
+    padding: 3px 12px;
+    font-size: 11px;
+  }
+
+  .lightbox-img {
+    max-height: 70vh;
+  }
+
+  .lightbox-title {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  .lightbox-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .lightbox-nav-prev {
+    left: 12px;
+  }
+
+  .lightbox-nav-next {
+    right: 12px;
   }
 }
 </style>

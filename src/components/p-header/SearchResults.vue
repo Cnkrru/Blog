@@ -15,33 +15,35 @@ const handleResultClick = (item) => {
 </script>
 
 <template>
-  <div v-if="show" class="search-results">
-    <div v-if="results.length === 0" class="search-empty">
-      搜索: "{{ escapeHtml(searchText) }}" - 未找到结果
+  <Transition name="search-fade">
+    <div v-if="show" class="search-results">
+      <div v-if="results.length === 0" class="search-empty">
+        搜索: "{{ escapeHtml(searchText) }}" - 未找到结果
+      </div>
+
+      <template v-else>
+        <div class="search-counter">
+          {{ results.length }} 个结果
+        </div>
+
+        <div
+          v-for="item in results"
+          :key="item.id"
+          class="search-result-item"
+          @click="handleResultClick(item)"
+        >
+          <div class="result-title" v-html="highlightMatch(escapeHtml(item.title), searchText)"></div>
+          <div class="result-meta">
+            分类: <span v-html="highlightMatch(escapeHtml(item.category || ''), searchText)"></span> |
+            ID: <span v-html="highlightMatch(escapeHtml(item.id), searchText)"></span>
+          </div>
+          <div class="result-tags" v-if="item.tags && item.tags.length > 0">
+            <span v-for="tag in item.tags" :key="tag" class="tag">{{ tag }}</span>
+          </div>
+        </div>
+      </template>
     </div>
-
-    <template v-else>
-      <div class="search-counter">
-        {{ results.length }} 个结果
-      </div>
-
-      <div
-        v-for="item in results"
-        :key="item.id"
-        class="search-result-item"
-        @click="handleResultClick(item)"
-      >
-        <div class="result-title" v-html="highlightMatch(escapeHtml(item.title), searchText)"></div>
-        <div class="result-meta">
-          分类: <span v-html="highlightMatch(escapeHtml(item.category || ''), searchText)"></span> |
-          ID: <span v-html="highlightMatch(escapeHtml(item.id), searchText)"></span>
-        </div>
-        <div class="result-tags" v-if="item.tags && item.tags.length > 0">
-          <span v-for="tag in item.tags" :key="tag" class="tag">{{ tag }}</span>
-        </div>
-      </div>
-    </template>
-  </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -156,5 +158,23 @@ const handleResultClick = (item) => {
   .search-results {
     max-height: 60vh;
   }
+}
+</style>
+
+<!-- 搜索结果显示动画 — 非 scoped，因为 Transition 的 class 需作用于 .search-results 根元素 -->
+<style>
+.search-fade-enter-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.search-fade-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.search-fade-enter-from {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.search-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 </style>

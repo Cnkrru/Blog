@@ -3,7 +3,7 @@ title: Docsify转为VitePress
 date: 2026-07-29
 updated: 2026-08-11
 category: 前端
-tags: [SSG]
+tags: [前端]
 history:
   - 2026-08-07 补充迁移后性能对比数据
   - 2026-08-01 整理VitePress配置最佳实践

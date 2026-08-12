@@ -2,6 +2,7 @@
 import { onMounted, computed, watch } from 'vue'
 import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
 import MarkdownRender from './MarkdownRender.vue'
+import SkeletonScreen from './SkeletonScreen.vue'
 import { useContentLoader } from '../../utils/useContentLoader'
 import { useArticlesStore } from '../../stores'
 
@@ -77,10 +78,9 @@ watch(() => props.type, () => loadContentData())
 
 <template>
   <div class="content-loader">
-    <!-- 加载状态 -->
-    <div v-if="loading" class="loading-message">
-      <div class="loading-spinner"></div>
-      <p>加载中...</p>
+    <!-- 加载状态 — 骨架屏 -->
+    <div v-if="loading" class="skeleton-wrapper">
+      <SkeletonScreen />
     </div>
     
     <!-- 错误状态 -->
@@ -119,30 +119,9 @@ watch(() => props.type, () => loadContentData())
   min-height: 300px;
 }
 
-/* 加载状态 */
-.loading-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 50px 20px;
-  min-height: 300px;
-  gap: 16px;
+.skeleton-wrapper {
+  width: 100%;
   animation: fadeIn 0.3s ease;
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.loading-message p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
 }
 
 /* 错误状态 */
@@ -187,35 +166,14 @@ watch(() => props.type, () => loadContentData())
 
 /* 动画 */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>
 
 <style scoped>
 /* 颜色样式 */
-.loading-message {
-  color: var(--common-text);
-}
-
-.loading-spinner {
-  border: 3px solid rgba(0, 0, 0, 0.1);
-  border-top-color: var(--common-color-1);
+.skeleton-wrapper {
 }
 
 /* 错误状态颜色 */
@@ -228,11 +186,6 @@ watch(() => props.type, () => loadContentData())
   border: 1px solid var(--common-color-2);
 }
 
-/* 暗色主题适配 */
-:deep(html.dark) .loading-spinner {
-  border-color: rgba(255, 255, 255, 0.1);
-  border-top-color: var(--common-color-1);
-}
 </style>
 
 <style scoped>

@@ -2,12 +2,11 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import { useArticlesStore, useTagStore, useThemeStore } from '../stores'
+import { useArticlesStore, useTagStore } from '../stores'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 
 const store = useArticlesStore()
 const tagStore = useTagStore()
-const themeStore = useThemeStore()
 
 useHead({
   title: '标签 - Cnkrru\'s Blog',
@@ -16,16 +15,16 @@ useHead({
     { name: 'keywords', content: '标签云,时间线,文章时间轴,博客标签' },
     { name: 'robots', content: 'index, follow' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://cnkrru.top/timeline' },
+    { property: 'og:url', content: 'https://cnkrru.top/tag' },
     { property: 'og:title', content: '标签 - Cnkrru\'s Blog' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:url', content: 'https://cnkrru.top/timeline' },
+    { name: 'twitter:url', content: 'https://cnkrru.top/tag' },
     { name: 'twitter:title', content: '标签 - Cnkrru\'s Blog' }
   ],
   link: [
-    { rel: 'canonical', href: 'https://cnkrru.top/timeline' }
+    { rel: 'canonical', href: 'https://cnkrru.top/tag' }
   ]
 })
 
@@ -36,7 +35,6 @@ const tagArticles = ref<any[]>([])
 const searchQuery = ref('')
 const zoomLevel = ref(1) // 0=年, 1=月
 
-const isDarkTheme = computed(() => themeStore.isDark)
 const tagStats = computed(() => tagStore.tagStats)
 const sortBy = computed(() => tagStore.sortBy)
 
@@ -45,22 +43,6 @@ const filteredTags = computed(() => {
   const q = searchQuery.value.toLowerCase()
   return tagStats.value.filter((s: any) => s.tag.toLowerCase().includes(q))
 })
-
-const getRelatedTags = (tag: string) => {
-  return tagStore.getRelatedTags(tag, 5)
-}
-
-const getTagGradient = (stat: any) => {
-  const maxCount = Math.max(...tagStats.value.map((s: any) => s.count), 1)
-  const ratio = stat.count / maxCount
-  const hue1 = isDarkTheme.value ? 270 : 330
-  const hue2 = isDarkTheme.value ? 300 : 350
-  const sat1 = 70 + ratio * 30
-  const sat2 = 80 + ratio * 20
-  const light1 = isDarkTheme.value ? 60 + ratio * 15 : 88 - ratio * 18
-  const light2 = isDarkTheme.value ? 50 + ratio * 10 : 75 - ratio * 12
-  return `linear-gradient(135deg, hsl(${hue1}, ${sat1}%, ${light1}%), hsl(${hue2}, ${sat2}%, ${light2}%))`
-}
 
 const filteredArticles = computed(() => {
   let list = articles.value
@@ -126,34 +108,6 @@ function clearSearch() {
   searchQuery.value = ''
 }
 
-// 文章统计数据面板
-const chartData = computed(() => {
-  const sorted = [...filteredArticles.value].sort((a, b) => parseInt(a.id) - parseInt(b.id))
-  return sorted.map(a => ({
-    id: a.id,
-    title: a.title,
-    tagsCount: Array.isArray(a.tags) ? a.tags.length : 0,
-    descLen: a.description ? a.description.length : 0,
-    hasCategory: !!a.category,
-    tags: Array.isArray(a.tags) ? a.tags.slice(0, 2).join(', ') : ''
-  }))
-})
-
-const statsSummary = computed(() => {
-  const total = articles.value.length
-  if (total === 0) return { total: 0, avgTags: 0, maxTags: 0, withCategory: 0 }
-  const tagCounts = articles.value.map(a => Array.isArray(a.tags) ? a.tags.length : 0)
-  const withCat = articles.value.filter(a => !!a.category).length
-  return {
-    total,
-    avgTags: (tagCounts.reduce((s, c) => s + c, 0) / total).toFixed(1),
-    maxTags: Math.max(...tagCounts),
-    withCategory: withCat
-  }
-})
-
-const maxDescLen = computed(() => Math.max(...chartData.value.map(d => d.descLen), 1))
-
 onMounted(async () => {
   try {
     const data = await store.fetchArticles()
@@ -215,62 +169,6 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- 选中标签 & 相关标签 -->
-      <div v-if="selectedTag" class="selected-tag-info">
-        <div class="selected-tag-header">
-          <span class="sel-label">当前标签: <strong>{{ selectedTag }}</strong></span>
-          <span class="sel-count">{{ tagArticles.length }} 篇文章</span>
-          <button class="sel-clear" @click="selectTag(selectedTag)" aria-label="清除筛选">x 清除</button>
-        </div>
-        <div v-if="getRelatedTags(selectedTag).length > 0" class="related-tags-row">
-          <span class="related-label">相关标签:</span>
-          <span
-            v-for="r in getRelatedTags(selectedTag)"
-            :key="r.tag"
-            @click="selectTag(r.tag)"
-            class="related-chip"
-            :title="`相关性: ${(r as any).score?.toFixed(2)}`"
-          >{{ r.tag }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 数据统计面板 -->
-    <div v-if="!loading && articles.length > 0" class="stats-panel">
-      <div class="stats-summary">
-        <div class="stat-box">
-          <span class="stat-num">{{ statsSummary.total }}</span>
-          <span class="stat-label">文章总数</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-num">{{ statsSummary.avgTags }}</span>
-          <span class="stat-label">平均标签数</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-num">{{ statsSummary.maxTags }}</span>
-          <span class="stat-label">最多标签数</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-num">{{ statsSummary.withCategory }}</span>
-          <span class="stat-label">有分类的文章</span>
-        </div>
-      </div>
-
-      <div class="chart-title">文章标签分布</div>
-      <div class="bar-chart">
-        <div
-          v-for="d in chartData"
-          :key="d.id"
-          class="bar-item"
-          :title="`${d.title}: ${d.tagsCount} 标签 (${d.tags || '无'})`"
-        >
-          <div
-            class="bar-fill"
-            :style="{ height: `${(d.tagsCount / Math.max(statsSummary.maxTags, 1)) * 100}%` }"
-          ></div>
-          <span class="bar-label">{{ d.id }}</span>
-        </div>
-      </div>
     </div>
 
     <hr>
@@ -457,56 +355,6 @@ onMounted(async () => {
 }
 
 /* 选中标签信息 */
-.selected-tag-info {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--common-shadow);
-}
-
-.selected-tag-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.sel-label {
-  font-size: 14px;
-}
-
-.sel-count {
-  font-size: 12px;
-}
-
-.sel-clear {
-  padding: 2px 10px;
-  border-radius: 12px;
-  border: 1px solid var(--common-shadow);
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.related-tags-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-}
-
-.related-label {
-  font-size: 12px;
-}
-
-.related-chip {
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  cursor: pointer;
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 25%, transparent);
-}
-
 /* 时间线上方 */
 .timeline-top-bar {
   display: flex;
@@ -686,78 +534,6 @@ onMounted(async () => {
   text-align: center;
   padding: 40px;
 }
-
-/* 数据统计面板 */
-.stats-panel {
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid var(--common-shadow);
-  margin-top: 12px;
-}
-
-.stats-summary {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.stat-box {
-  flex: 1;
-  min-width: 80px;
-  text-align: center;
-  padding: 12px 8px;
-  border-radius: 10px;
-  border: 1px solid var(--common-shadow);
-}
-
-.stat-num {
-  display: block;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.stat-label {
-  display: block;
-  font-size: 11px;
-  margin-top: 4px;
-}
-
-.chart-title {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-
-.bar-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  height: 120px;
-  padding: 0 4px;
-}
-
-.bar-item {
-  flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-}
-
-.bar-fill {
-  width: 80%;
-  max-width: 40px;
-  border-radius: 4px 4px 0 0;
-  transition: height 0.4s ease;
-  min-height: 4px;
-}
-
-.bar-label {
-  font-size: 10px;
-}
 </style>
 
 <!-- 颜色样式 -->
@@ -822,39 +598,6 @@ onMounted(async () => {
   color: var(--common-text);
   opacity: 0.4;
 }
-.selected-tag-info {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.25));
-  border: 1px solid var(--common-shadow);
-}
-.sel-label {
-  color: var(--common-text);
-}
-.sel-count {
-  color: var(--common-text);
-  opacity: 0.5;
-}
-.sel-clear {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
-  color: var(--common-text);
-  border: 1px solid var(--common-shadow);
-}
-.sel-clear:hover {
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border-color: var(--common-color-1);
-}
-.related-label {
-  color: var(--common-text);
-  opacity: 0.6;
-}
-.related-chip {
-  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
-  color: var(--common-text);
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 25%, transparent);
-}
-.related-chip:hover {
-  background: color-mix(in srgb, var(--common-color-1) 35%, transparent);
-}
 .zoom-btn {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
   color: var(--common-text);
@@ -910,37 +653,6 @@ onMounted(async () => {
 }
 .tl-label-text {
   color: var(--common-text);
-}
-.stats-panel {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.25));
-  border: 1px solid var(--common-shadow);
-}
-.stat-box {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.15));
-  border: 1px solid var(--common-shadow);
-}
-.stat-num {
-  color: var(--common-color-1);
-}
-.stat-label {
-  color: var(--common-text);
-  opacity: 0.5;
-}
-.chart-title {
-  color: var(--common-text);
-}
-.bar-chart {
-  border-bottom: 1px solid var(--common-shadow);
-}
-.bar-fill {
-  background: linear-gradient(180deg, var(--common-color-1), color-mix(in srgb, var(--common-color-1) 60%, transparent));
-}
-.bar-fill:hover {
-  filter: brightness(1.15);
-}
-.bar-label {
-  color: var(--common-text);
-  opacity: 0.5;
 }
 .skeleton-container .tl-dot-skel {
   background: var(--common-shadow);

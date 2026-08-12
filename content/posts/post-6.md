@@ -3,7 +3,7 @@ title: Frontend-主题切换
 date: 2026-04-21
 updated: 2026-08-10
 category: 前端
-tags: [前端, 主题]
+tags: [前端]
 history:
   - 2026-08-07 适配CSS变量方案，移除硬编码颜色
   - 2026-07-10 新增Sakura樱粉主题和Compact布局

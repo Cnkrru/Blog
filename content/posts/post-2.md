@@ -2,8 +2,8 @@
 title: 功能测试汇总
 date: 2026-04-16
 updated: 2026-08-12
-category: 测试
-tags: [测试, Markdown, 代码高亮, 灯箱, 通知系统, Mermaid, KaTeX, CSV, JSON, YAML, TOML]
+category: 随笔
+tags: [随笔]
 history:
   - 2026-08-12 新增JSON/YAML/TOML结构化数据渲染测试
   - 2026-08-12 新增CSV表格渲染测试

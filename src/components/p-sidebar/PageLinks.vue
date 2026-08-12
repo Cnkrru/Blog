@@ -7,9 +7,8 @@
         <li ><router-link to="/home" class="page-card"> 首页 </router-link></li>
         <li ><router-link to="/about" class="page-card"> 关于 </router-link></li>
         <li ><router-link to="/archives" class="page-card"> 归档 </router-link></li>
-        <li ><router-link to="/timeline" class="page-card"> 标签 </router-link></li>
-        <li ><router-link to="/links" class="page-card"> 友链 </router-link></li>
-        <li ><router-link to="/search" class="page-card"> 搜索 </router-link></li>
+        <li ><router-link to="/tag" class="page-card"> 标签 </router-link></li>
+        <li ><router-link to="/links" class="page-card"> 链接 </router-link></li>
         <li ><router-link to="/projects" class="page-card"> 项目 </router-link></li>
         <li ><router-link to="/settings" class="page-card"> 设置 </router-link></li>
       </ul>

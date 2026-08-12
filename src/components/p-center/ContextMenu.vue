@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useScrollStore } from '../../stores/scroll'
 import homeSvg from '@/assets/svg/home.svg?raw'
 import refreshCwSvg from '@/assets/svg/refresh-cw.svg?raw'
 import arrowUpSvg from '@/assets/svg/arrow-up.svg?raw'
 import copySvg from '@/assets/svg/copy.svg?raw'
 
 const router = useRouter()
+const scrollStore = useScrollStore()
 const visible = ref(false)
 const x = ref(0)
 const y = ref(0)
+const menuRef = ref<HTMLElement | null>(null)
+
+const MENU_WIDTH = 190
+const MENU_HEIGHT = 200
 
 const menuItems = [
   {
@@ -25,7 +31,7 @@ const menuItems = [
   {
     icon: 'up',
     label: '返回顶部',
-    action: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+    action: () => scrollStore.scrollToTop(),
   },
   {
     icon: 'copy',
@@ -36,45 +42,60 @@ const menuItems = [
 
 const closeMenu = () => { visible.value = false }
 
-const handleContextMenu = (e: MouseEvent) => {
-  e.preventDefault()
-  x.value = e.clientX
-  y.value = e.clientY
-  visible.value = true
-  adjustPosition()
+function calcPosition(cx: number, cy: number, w: number, h: number) {
+  let left = cx
+  let top = cy
+  if (left + w > window.innerWidth) left = window.innerWidth - w - 8
+  if (top + h > window.innerHeight) top = window.innerHeight - h - 8
+  return { left: Math.max(4, left), top: Math.max(4, top) }
 }
 
-const adjustPosition = () => {
-  if (!visible.value) return
+const handleContextMenu = (e: MouseEvent) => {
+  e.preventDefault()
+  // 先以估算尺寸定位，避免闪烁
+  const pos = calcPosition(e.clientX, e.clientY, MENU_WIDTH, MENU_HEIGHT)
+  x.value = pos.left
+  y.value = pos.top
+  visible.value = true
+  // 渲染后用实际尺寸微调
   nextTick(() => {
-    const menu = document.querySelector('.anime-context-menu') as HTMLElement
-    if (!menu) return
-    const rect = menu.getBoundingClientRect()
-    if (x.value + rect.width > window.innerWidth) x.value -= rect.width
-    if (y.value + rect.height > window.innerHeight) y.value -= rect.height
+    if (!menuRef.value) return
+    const rect = menuRef.value.getBoundingClientRect()
+    const finePos = calcPosition(e.clientX, e.clientY, rect.width, rect.height)
+    x.value = finePos.left
+    y.value = finePos.top
   })
 }
 
 const handleClick = () => closeMenu()
 const handleKeydown = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
+const handleResize = () => { if (visible.value) closeMenu() }
 
 onMounted(() => {
   document.addEventListener('contextmenu', handleContextMenu)
   document.addEventListener('click', handleClick)
   document.addEventListener('keydown', handleKeydown)
+  window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
   document.removeEventListener('contextmenu', handleContextMenu)
   document.removeEventListener('click', handleClick)
   document.removeEventListener('keydown', handleKeydown)
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
 <template>
   <Teleport to="body">
     <Transition name="menu-pop">
-      <div v-if="visible" class="anime-context-menu" :style="{ left: `${x}px`, top: `${y}px` }" @click.stop>
+      <div
+        v-if="visible"
+        ref="menuRef"
+        class="anime-context-menu"
+        :style="{ left: `${x}px`, top: `${y}px` }"
+        @click.stop
+      >
         <div class="menu-header">
           <span class="menu-title">菜单</span>
         </div>
@@ -85,13 +106,9 @@ onUnmounted(() => {
           class="menu-item"
           @click="item.action(); closeMenu()"
         >
-          <!-- Home -->
           <span v-if="item.icon === 'home'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="homeSvg"></span>
-          <!-- Refresh -->
           <span v-else-if="item.icon === 'refresh'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="refreshCwSvg"></span>
-          <!-- Up -->
           <span v-else-if="item.icon === 'up'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="arrowUpSvg"></span>
-          <!-- Copy -->
           <span v-else-if="item.icon === 'copy'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="copySvg"></span>
           <span class="menu-label">{{ item.label }}</span>
         </div>

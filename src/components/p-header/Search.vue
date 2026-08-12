@@ -99,20 +99,6 @@ const handleKeyPress = (e) => {
   if (e.key === 'Enter') {
     const query = searchText.value.trim()
 
-    if (query === 'cmd') {
-      router.push('/terminal')
-      searchText.value = ''
-      showResults.value = false
-      return
-    }
-
-    if (query) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
-      searchText.value = ''
-      showResults.value = false
-      return
-    }
-
     if (searchResults.value.length > 0) {
       router.push(`/post/${searchResults.value[0].id}`)
       searchText.value = ''

@@ -44,7 +44,7 @@ export function generateSitemap(posts: Post[]): string {
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/timeline</loc>
+    <loc>${siteConfig.domain}/tag</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

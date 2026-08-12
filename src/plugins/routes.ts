@@ -21,8 +21,12 @@ export function getIncludedRoutes(rootDir: string): string[] {
     '/about',
     '/archives',
     '/links',
+    '/links/apply',
     '/projects',
-    '/timeline',
+    '/project',
+    '/settings',
+    '/tag',
+    '/changelog',
     '/post'
   ]
 }

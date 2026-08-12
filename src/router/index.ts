@@ -55,15 +55,9 @@ const routes: RouteRecordRaw[] = [
     },
     // 标签页面
     {
-        path: '/timeline',
+        path: '/tag',
         name: 'Timeline',
         component: () => import('../pages/Timeline.vue')
-    },
-    // 搜索页面
-    {
-        path: '/search',
-        name: 'Search',
-        component: () => import('../pages/SearchPage.vue')
     },
     // 友链申请页面
     {

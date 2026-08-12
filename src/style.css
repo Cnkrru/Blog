@@ -158,6 +158,16 @@ body:not(.dark-theme) img[src*="/og/"] {
     filter: invert(1);
 }
 
+/*==============================文章图片暗色模式适配==============================*/
+body.dark-theme .markdown-content img {
+    filter: brightness(0.85) contrast(1.05);
+    transition: filter 0.3s ease;
+}
+
+body.dark-theme .markdown-content img:hover {
+    filter: brightness(1) contrast(1);
+}
+
 /*==============================移动端触摸优化==============================*/
 @media (pointer: coarse) {
     .nav-btn, .page-btn, .control-btn, .chip-btn, .toggle-btn,
@@ -206,4 +216,18 @@ body:not(.dark-theme) img[src*="/og/"] {
 .svg-icon svg {
   width: 100%;
   height: 100%;
+}
+
+/*==============================统一的焦点指示器==============================*/
+:focus-visible {
+  outline: 2px solid var(--common-color-1);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 按钮默认不显示焦点框，仅键盘导航时显示 */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+  outline: none;
 }
