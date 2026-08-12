@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
+import ArticleCover from '../content/ArticleCover.vue'
 import { useArticlesStore } from '../../stores'
 
 const props = defineProps<{ currentArticleId: string; currentArticleCategory: string }>()
@@ -96,7 +97,7 @@ onUnmounted(() => {
           :style="{ animationDelay: `${idx * 0.08}s` }"
         >
           <div class="related-card-cover">
-            <img :src="`/og/post-${article.id}.svg`" :alt="article.title" loading="lazy" />
+            <ArticleCover :article="article" />
           </div>
           <div class="related-card-body">
             <span v-if="article.category" class="related-card-category">{{ article.category }}</span>
@@ -174,13 +175,6 @@ onUnmounted(() => {
   width: 100%;
   aspect-ratio: 1.91 / 1;
   overflow: hidden;
-  background: var(--common-bg);
-}
-
-.related-card-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .related-card-body {

@@ -18,12 +18,10 @@ useHead({
     { property: 'og:description', content: 'Cnkrru的个人项目展示' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
-    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/projects' },
     { name: 'twitter:title', content: '项目 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: 'Cnkrru的个人项目展示' },
-    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
+    { name: 'twitter:description', content: 'Cnkrru的个人项目展示' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/projects' }

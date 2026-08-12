@@ -18,12 +18,10 @@ useHead({
     { property: 'og:description', content: '关于Cnkrru和Cnkrru\'s Blog，了解作者的个人经历、技术技能和創作初衷' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
-    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/about' },
     { name: 'twitter:title', content: '关于 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: '关于Cnkrru和Cnkrru\'s Blog，了解作者的个人经历、技术技能和创作初衷' },
-    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
+    { name: 'twitter:description', content: '关于Cnkrru和Cnkrru\'s Blog，了解作者的个人经历、技术技能和创作初衷' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/about' }

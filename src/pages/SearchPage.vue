@@ -9,10 +9,7 @@ const route = useRoute()
 
 useHead({
   title: '搜索 - Cnkrru\'s Blog',
-  meta: [
-    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
-    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
-  ],
+  meta: [],
   link: [{ rel: 'canonical', href: 'https://cnkrru.top/search' }]
 })
 

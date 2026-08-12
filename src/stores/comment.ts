@@ -2,22 +2,16 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useThemeStore } from './theme'
 
-const GISCUS_CSS_BASE = 'https://cnkrru.github.io/static'
+const GISCUS_CSS_BASE = '/comment'
 
 function getGiscusThemeUrl(): string {
   const themeStore = useThemeStore()
   const isDark = themeStore.isDark
   const style = themeStore.currentStyle
 
-  if (style === 'ink') {
-    return isDark
-      ? `${GISCUS_CSS_BASE}/giscus-ink-dark.css`
-      : `${GISCUS_CSS_BASE}/giscus-ink-light.css`
-  }
-  // sakura
   return isDark
-    ? `${GISCUS_CSS_BASE}/giscus-sakura-dark.css`
-    : `${GISCUS_CSS_BASE}/giscus-sakura-light.css`
+    ? `${GISCUS_CSS_BASE}/giscus-${style}-dark.css`
+    : `${GISCUS_CSS_BASE}/giscus-${style}-light.css`
 }
 
 export const useCommentStore = defineStore('comment', () => {

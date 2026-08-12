@@ -18,10 +18,8 @@ useHead({
     { property: 'og:title', content: '归档 - Cnkrru\'s Blog' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
-    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:url', content: 'https://cnkrru.top/archives' },
-    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
+    { name: 'twitter:url', content: 'https://cnkrru.top/archives' }
   ],
   link: [{ rel: 'canonical', href: 'https://cnkrru.top/archives' }]
 })

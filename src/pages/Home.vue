@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import Announcement from './Announcement.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
+import ArticleCover from '../components/content/ArticleCover.vue'
 import PageNav from '../components/p-center/PageNav.vue'
 import { useArticlesStore } from '../stores/index'
 
@@ -22,12 +23,10 @@ useHead({
     { property: 'og:description', content: '欢迎来到Cnkrru\'s Blog，分享技术和生活的个人空间' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
-    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/home' },
     { name: 'twitter:title', content: '首页 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: '欢迎来到Cnkrru\'s Blog，分享技术和生活的个人空间' },
-    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
+    { name: 'twitter:description', content: '欢迎来到Cnkrru\'s Blog，分享技术和生活的个人空间' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/home' }
@@ -133,7 +132,7 @@ onMounted(() => loadArticles())
             class="post-card pinned"
           >
             <div class="card-cover">
-              <img :src="`/og/post-${a.id}.svg`" :alt="a.title" />
+              <ArticleCover :article="a" />
               <span class="pin-badge">📌</span>
             </div>
             <div class="card-info">
@@ -157,7 +156,7 @@ onMounted(() => loadArticles())
           class="post-card"
         >
           <div class="card-cover">
-            <img :src="`/og/post-${a.id}.svg`" :alt="a.title" />
+            <ArticleCover :article="a" />
           </div>
           <div class="card-info">
             <h3 class="card-title">{{ a.title }}</h3>
@@ -231,11 +230,7 @@ onMounted(() => loadArticles())
   overflow: hidden;
 }
 
-.card-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+
 
 .pin-badge {
   position: absolute;
@@ -371,7 +366,7 @@ onMounted(() => loadArticles())
   border-color: color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
 .post-card.pinned { border-color: color-mix(in srgb, var(--common-color-1) 50%, transparent); }
-.card-cover { background: var(--common-bg); }
+
 .card-title { color: var(--common-text); }
 .card-date { color: var(--common-text); }
 .card-cat {

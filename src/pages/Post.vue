@@ -64,10 +64,6 @@ useHead({
       content: 'article'
     },
     {
-      property: 'og:image',
-      content: post.value ? `https://cnkrru.top/og/post-${post.value.id}.svg` : 'https://cnkrru.top/og/default.svg'
-    },
-    {
       property: 'og:site_name',
       content: 'Cnkrru\'s Blog'
     },
@@ -90,10 +86,6 @@ useHead({
     {
       name: 'twitter:description',
       content: post.value ? (post.value.description || `${post.value.title} - 我的博客文章`) : '文章详情' 
-    },
-    {
-      name: 'twitter:image',
-      content: post.value ? `https://cnkrru.top/og/post-${post.value.id}.svg` : 'https://cnkrru.top/og/default.svg'
     },
     {
       name: 'twitter:site',
@@ -119,7 +111,6 @@ useHead({
           '@type': 'Person',
           'name': post.value.author || '作者名'
         },
-        'image': `https://cnkrru.top/og/post-${post.value.id}.svg`,
         'url': `https://cnkrru.top/post/${postId.value}`
       })
     }

@@ -20,11 +20,9 @@ useHead({
     { property: 'og:title', content: '标签 - Cnkrru\'s Blog' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
-    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/timeline' },
-    { name: 'twitter:title', content: '标签 - Cnkrru\'s Blog' },
-    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
+    { name: 'twitter:title', content: '标签 - Cnkrru\'s Blog' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/timeline' }

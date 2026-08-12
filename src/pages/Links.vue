@@ -18,12 +18,10 @@ useHead({
     { property: 'og:description', content: 'Cnkrru\'s Blog推荐的有趣网站和资源链接' },
     { property: 'og:locale', content: 'zh_CN' },
     { property: 'og:site_name', content: "Cnkrru's Blog" },
-    { property: 'og:image', content: 'https://cnkrru.top/og/default.svg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:url', content: 'https://cnkrru.top/links' },
     { name: 'twitter:title', content: '友链 - Cnkrru\'s Blog' },
-    { name: 'twitter:description', content: 'Cnkrru\'s Blog推荐的有趣网站和资源链接' },
-    { name: 'twitter:image', content: 'https://cnkrru.top/og/default.svg' }
+    { name: 'twitter:description', content: 'Cnkrru\'s Blog推荐的有趣网站和资源链接' }
   ],
   link: [
     { rel: 'canonical', href: 'https://cnkrru.top/links' }
