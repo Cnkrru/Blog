@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import questionSvg from '@/assets/svg/question.svg?raw'
 import thumbsUpSvg from '@/assets/svg/thumbs-up.svg?raw'
 import thumbsDownSvg from '@/assets/svg/thumbs-down.svg?raw'
@@ -19,7 +20,7 @@ const upCount = ref(0)
 const downCount = ref(0)
 const storageKey = `article-feedback-${props.postId}`
 
-function apiHeaders(): HeadersInit {
+function apiHeaders(): Record<string, string> {
   return {
     'Authorization': `Bearer ${TOKEN}`,
     'Content-Type': 'application/json'
@@ -27,18 +28,18 @@ function apiHeaders(): HeadersInit {
 }
 
 async function apiGet(name: string) {
-  const res = await fetch(`${API_BASE}/${WORKSPACE}/${name}`, { headers: apiHeaders() })
-  return res.json()
+  const { data } = await axios.get(`${API_BASE}/${WORKSPACE}/${name}`, { headers: apiHeaders() })
+  return data
 }
 
 async function apiUp(name: string) {
-  const res = await fetch(`${API_BASE}/${WORKSPACE}/${name}/up`, { headers: apiHeaders() })
-  return res.json()
+  const { data } = await axios.post(`${API_BASE}/${WORKSPACE}/${name}/up`, null, { headers: apiHeaders() })
+  return data
 }
 
 async function apiDown(name: string) {
-  const res = await fetch(`${API_BASE}/${WORKSPACE}/${name}/down`, { headers: apiHeaders() })
-  return res.json()
+  const { data } = await axios.post(`${API_BASE}/${WORKSPACE}/${name}/down`, null, { headers: apiHeaders() })
+  return data
 }
 
 onMounted(async () => {

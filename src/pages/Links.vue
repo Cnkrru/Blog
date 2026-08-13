@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
+import axios from 'axios'
 import { useHead } from '@vueuse/head'
 import PageNav from '../components/p-center/PageNav.vue'
 import mailSvg from '@/assets/svg/mail.svg?raw'
@@ -67,11 +68,7 @@ function checkAllLinks() {
 
 const loadLinks = async () => {
     try {
-        const response = await fetch('/config/links.json')
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`)
-        }
-        const data = await response.json()
+        const { data } = await axios.get('/config/links.json')
         links.value = data
         categorizeLinks()
         checkAllLinks()

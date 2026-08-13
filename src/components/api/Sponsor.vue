@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import heartSvg from '@/assets/svg/heart.svg?raw'
 import xSvg from '@/assets/svg/x.svg?raw'
 
@@ -9,8 +10,8 @@ const sponsor = ref<any>({ enabled: false })
 
 const loadConfig = async () => {
   try {
-    const res = await fetch('/config/sponsor.json')
-    if (res.ok) sponsor.value = await res.json()
+    const { data } = await axios.get('/config/sponsor.json')
+    sponsor.value = data
   } catch (e) { console.error('加载赞助配置失败:', e) }
 }
 

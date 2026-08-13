@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import axios from 'axios'
 import sunSvg from '@/assets/svg/sun.svg?raw'
 import cloudSvg from '@/assets/svg/cloud.svg?raw'
 import cloudFogSvg from '@/assets/svg/cloud-fog.svg?raw'
@@ -72,59 +73,31 @@ const fetchLocationAndWeather = async (): Promise<void> => {
   error.value = ''
 
   try {
-      const fetchWithTimeout = (url: string, options = {}, timeout = 10000): Promise<Response> => {
-        return new Promise((resolve, reject) => {
-          const timer = setTimeout((): void => {
-            reject(new Error('请求超时'))
-          }, timeout)
-          
-          fetch(url, options)
-            .then((response: Response): void => {
-              clearTimeout(timer)
-              resolve(response)
-            })
-            .catch((err: Error): void => {
-              clearTimeout(timer)
-              reject(err)
-            })
-        })
-      }
-
       let ipData: IPData | null = null
       try {
         try {
-          const ipResponse: Response = await fetchWithTimeout('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon')
-          if (ipResponse.ok) {
-            ipData = await ipResponse.json()
-            if (ipData.status === 'fail') {
-              throw new Error('ip-api 返回失败状态')
-            }
-          } else {
-            throw new Error('ip-api 请求失败')
+          const { data: ipDataRaw } = await axios.get('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon', { timeout: 10000 })
+          if (ipDataRaw.status === 'fail') {
+            throw new Error('ip-api 返回失败状态')
           }
+          ipData = ipDataRaw
         } catch (e) {
           try {
-            const ipinfoResponse: Response = await fetchWithTimeout('https://ipinfo.io/json')
-            if (ipinfoResponse.ok) {
-              const ipinfoData = await ipinfoResponse.json()
-              if (ipinfoData.city) {
-                ipData = {
-                  city: ipinfoData.city,
-                  countryCode: ipinfoData.country,
-                  lat: parseFloat(ipinfoData.loc.split(',')[0]),
-                  lon: parseFloat(ipinfoData.loc.split(',')[1])
-                }
-              } else {
-                throw new Error('ipinfo.io 无城市数据')
+            const { data: ipinfoData } = await axios.get('https://ipinfo.io/json', { timeout: 10000 })
+            if (ipinfoData.city) {
+              ipData = {
+                city: ipinfoData.city,
+                countryCode: ipinfoData.country,
+                lat: parseFloat(ipinfoData.loc.split(',')[0]),
+                lon: parseFloat(ipinfoData.loc.split(',')[1])
               }
             } else {
-              throw new Error('ipinfo.io 请求失败')
+              throw new Error('ipinfo.io 无城市数据')
             }
           } catch (e) {
             try {
-              const ipifyResponse: Response = await fetchWithTimeout('https://api.ipify.org?format=json')
-              if (ipifyResponse.ok) {
-                const ipifyData = await ipifyResponse.json()
+              const { data: ipifyData } = await axios.get('https://api.ipify.org?format=json', { timeout: 10000 })
+              if (ipifyData) {
                 ipData = {
                   city: 'Changchun',
                   countryCode: 'CN',
@@ -154,9 +127,7 @@ const fetchLocationAndWeather = async (): Promise<void> => {
     const country = ipData.countryCode || ''
     locationInfo.value = { city, country }
 
-    const weatherResponse: Response = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${ipData.lat}&longitude=${ipData.lon}&current=temperature_2m,weather_code&timezone=auto`)
-    if (!weatherResponse.ok) throw new Error('获取天气失败')
-    const weatherData: WeatherData = await weatherResponse.json()
+    const { data: weatherData } = await axios.get<WeatherData>(`https://api.open-meteo.com/v1/forecast?latitude=${ipData.lat}&longitude=${ipData.lon}&current=temperature_2m,weather_code&timezone=auto`, { timeout: 10000 })
 
     if (weatherData.current) {
       weather.value = {

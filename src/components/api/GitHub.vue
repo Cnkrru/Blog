@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 const props = defineProps<{ username: string }>()
 
@@ -81,48 +82,24 @@ const fetchGitHubData = async () => {
   error.value = ''
 
   try {
-    // 创建带超时的 fetch
-    const fetchWithTimeout = (url, options = {}, timeout = 10000) => {
-      return new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-          reject(new Error('请求超时'))
-        }, timeout)
-        
-        fetch(url, options)
-          .then(response => {
-            clearTimeout(timer)
-            resolve(response)
-          })
-          .catch(err => {
-            clearTimeout(timer)
-            reject(err)
-          })
-      })
-    }
-
     // 获取用户信息
-    const userResponse = await fetchWithTimeout(`https://api.github.com/users/${props.username}`)
-    if (!userResponse.ok) {
-      if (userResponse.status === 403) {
-        throw new Error('GitHub API 请求已达上限，请稍后再试')
-      } else if (userResponse.status === 404) {
-        throw new Error('未找到该用户')
-      } else {
-        throw new Error(`获取用户信息失败 (${userResponse.status})`)
-      }
-    }
-    userData.value = await userResponse.json()
+    const userResponse = await axios.get(`https://api.github.com/users/${props.username}`, { timeout: 10000 })
+    userData.value = userResponse.data
 
     // 获取用户仓库（按星标数排序）
-    const reposResponse = await fetchWithTimeout(
-      `https://api.github.com/users/${props.username}/repos?sort=stars&per_page=6`
+    const reposResponse = await axios.get(
+      `https://api.github.com/users/${props.username}/repos?sort=stars&per_page=6`,
+      { timeout: 10000 }
     )
-    if (reposResponse.ok) {
-      const repos = await reposResponse.json()
-      reposData.value = repos.filter(repo => !repo.fork).slice(0, 6)
+    reposData.value = reposResponse.data.filter(repo => !repo.fork).slice(0, 6)
+  } catch (err: any) {
+    if (err.response?.status === 403) {
+      error.value = 'GitHub API 请求已达上限，请稍后再试'
+    } else if (err.response?.status === 404) {
+      error.value = '未找到该用户'
+    } else {
+      error.value = err.message || '获取用户信息失败'
     }
-  } catch (err) {
-    error.value = err.message
   } finally {
     loading.value = false
   }

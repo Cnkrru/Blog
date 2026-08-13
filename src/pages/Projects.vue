@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 import { useHead } from '@vueuse/head'
 import PageNav from '../components/p-center/PageNav.vue'
 import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
@@ -35,11 +36,7 @@ const totalPages = ref(1)
 
 const loadProjects = async () => {
     try {
-        const response = await fetch('/config/projects.json')
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`)
-        }
-        const data = await response.json()
+        const { data } = await axios.get('/config/projects.json')
         projects.value = data
         categorizeProjects()
     } catch (error) {

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import axios from 'axios'
 
 interface Song {
   title: string
@@ -415,9 +416,7 @@ export const useMusicStore = defineStore('music', () => {
 
   const loadMusicConfig = async (): Promise<void> => {
     try {
-      const response = await fetch('/config/music.json')
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      const data = await response.json()
+      const { data } = await axios.get('/config/music.json')
       playlist.value = data.songs
       initializePlayer()
     } catch (error) {

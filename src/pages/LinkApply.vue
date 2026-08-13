@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import axios from 'axios'
 import { useHead } from '@vueuse/head'
 
 useHead({
@@ -16,14 +17,12 @@ const formspreeId = 'xkoajadl'
 async function submitForm() {
   submitting.value = true
   try {
-    const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form.value)
-    })
-    if (res.ok) {
-      submitted.value = true
-    }
+    await axios.post(
+      `https://formspree.io/f/${formspreeId}`,
+      form.value,
+      { headers: { 'Content-Type': 'application/json' } }
+    )
+    submitted.value = true
   } catch (e) { console.error('提交失败:', e) } finally {
     submitting.value = false
   }

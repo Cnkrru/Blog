@@ -109,6 +109,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import axios from 'axios'
 import { useThemeStore } from '../../stores'
 
 const themeStore = useThemeStore()
@@ -216,11 +217,7 @@ const fetchArticleData = async () => {
   error.value = null
 
   try {
-    const response = await fetch('/config/search.json')
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: 无法加载文章数据`)
-    }
-    const articles = await response.json()
+    const { data: articles } = await axios.get('/config/search.json')
     return articles
   } catch (err) {
     error.value = err.message

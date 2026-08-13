@@ -3,6 +3,7 @@
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import axios from 'axios'
 import type { Article } from '../types/index'
 
 export const useArticlesStore = defineStore('articles', () => {
@@ -30,9 +31,8 @@ export const useArticlesStore = defineStore('articles', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await fetch('/config/search.json')
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      articles.value = await response.json()
+      const { data } = await axios.get('/config/search.json')
+      articles.value = data
       lastFetchTime.value = now
       return articles.value
     } catch (err: any) {

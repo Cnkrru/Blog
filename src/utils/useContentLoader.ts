@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import axios from 'axios'
 import { useContentStore, useArticlesStore } from '../stores/index'
 import { parseFrontmatter } from '../utils/markdown'
 
@@ -63,11 +64,7 @@ export function useContentLoader(type: string, id: string | string[] | undefined
 
         case 'project':
           // 加载项目数据
-          const projectRes = await fetch('/config/projects.json')
-          if (!projectRes.ok) {
-            throw new Error(`HTTP ${projectRes.status}`)
-          }
-          const projectData = await projectRes.json()
+          const { data: projectData } = await axios.get('/config/projects.json')
           itemData = projectData.find(item => item.id === id)
           
           if (itemData) {
