@@ -80,7 +80,12 @@
     border-radius: 0;
   }
   html[data-layout="compact"] .center-card {
+    height: auto;
+    max-height: none;
     border-radius: 0;
+  }
+  html[data-layout="compact"] .center-container {
+    max-width: none;
   }
   html[data-layout="compact"] .center-header-area {
     gap: 0;
@@ -96,6 +101,47 @@
     padding: 0;
   }
   html[data-layout="compact"] .footer-card {
+    border-radius: 0;
+  }
+}
+
+/* 平板端（769-1024px）：无空隙风格，Sidebar 和 Center 紧贴，中间以朱砂线分隔 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html[data-layout="compact"] .mid-flex {
+    gap: 0;
+    align-items: stretch;
+  }
+  html[data-layout="compact"] .left-asider-S {
+    width: 220px;
+  }
+  html[data-layout="compact"] .left-asider-card {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    border-right: 1px solid var(--common-color-1);
+  }
+  html[data-layout="compact"] .center-S {
+    width: auto;
+    flex: 1;
+  }
+  html[data-layout="compact"] .center-container {
+    max-width: none;
+  }
+  html[data-layout="compact"] .center-card {
+    height: auto;
+    min-height: 500px;
+    max-height: none;
+    border-radius: 0;
+  }
+  html[data-layout="compact"] .center-header-area {
+    gap: 0;
+  }
+  html[data-layout="compact"] .center-card .center-head-card {
+    border-radius: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--common-color-1);
+  }
+  html[data-layout="compact"] .center-card .center-card-content {
     border-radius: 0;
   }
 }

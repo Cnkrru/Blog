@@ -89,34 +89,5 @@ import Weather from './api/Weather.vue'
     }
 }
 
-/* 小桌面 */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .left-asider-S {
-        width: 20%;
-    }
-    .left-asider-card {
-        width: 180px;
-        height: auto;
-        border-radius: 14px;
-    }
-}
 
-/* 标准桌面 */
-@media (min-width: 1025px) and (max-width: 1280px) {
-    .left-asider-S {
-        width: 18%;
-    }
-    .left-asider-card {
-        width: 200px;
-        border-radius: 14px;
-    }
-}
-
-/* 大桌面 */
-@media (min-width: 1281px) {
-    .left-asider-card {
-        width: 210px;
-        height: 680px;
-    }
-}
 </style>

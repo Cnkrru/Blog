@@ -67,3 +67,38 @@
     border-radius: 10px;
   }
 }
+
+/* 平板端（769-1024px）：保持卡片式风格，适配中等屏幕 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html[data-layout="card"] .mid-flex {
+    gap: 16px;
+  }
+  html[data-layout="card"] .left-asider-S {
+    width: 220px;
+  }
+  html[data-layout="card"] .left-asider-card {
+    width: 100%;
+    height: auto;
+    min-height: 500px;
+    border-radius: 14px;
+  }
+  html[data-layout="card"] .center-S {
+    width: auto;
+    flex: 1;
+  }
+  html[data-layout="card"] .center-card {
+    height: auto;
+    min-height: 500px;
+    max-height: none;
+    border-radius: 14px;
+  }
+  html[data-layout="card"] .center-header-area {
+    gap: 6px;
+  }
+  html[data-layout="card"] .center-card .center-head-card {
+    border-radius: 10px;
+  }
+  html[data-layout="card"] .center-card .center-card-content {
+    border-radius: 10px;
+  }
+}

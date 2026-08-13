@@ -175,33 +175,5 @@
     }
 }
 
-@media (max-width: 1024px) {
-    .center-S {
-        width: calc(100% - 20% - 15px);
-        max-width: 100%;
-    }
-    .center-card {
-        height: 580px;
-        border-radius: 14px;
-    }
-}
 
-@media (max-width: 1280px) {
-    .center-S {
-        width: calc(100% - 18% - 20px);
-    }
-    .center-card {
-        height: 640px;
-        border-radius: 16px;
-    }
-}
-
-@media (min-width: 1281px) {
-    .center-S {
-        width: 1200px;
-    }
-    .center-card {
-        height: 680px;
-    }
-}
 </style>
