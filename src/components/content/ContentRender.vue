@@ -31,9 +31,8 @@ const loadPrevNextPosts = async () => {
   if (props.type === 'post') {
     try {
       const searchData = await articlesStore.fetchArticles()
-      // 先按 ID 排序，排除 changelog
+      // 先按 ID 排序
       const sortedPosts = searchData
-        .filter(item => item.id !== 'changelog')
         .sort((a, b) => {
           const idA = isNaN(parseInt(a.id)) ? a.id : parseInt(a.id)
           const idB = isNaN(parseInt(b.id)) ? b.id : parseInt(b.id)

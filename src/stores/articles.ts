@@ -15,7 +15,6 @@ export const useArticlesStore = defineStore('articles', () => {
   // 所有 md 文件，通过 import.meta.glob 自动收集，新增文章无需手动维护
   const mdModules = {
     ...import.meta.glob('../../content/posts/*.md', { query: '?raw', import: 'default', eager: false }),
-    ...import.meta.glob('../../content/logs/*.md', { query: '?raw', import: 'default', eager: false }),
     ...import.meta.glob('../../content/projects/*.md', { query: '?raw', import: 'default', eager: false }),
   }
 
@@ -79,7 +78,6 @@ export const useArticlesStore = defineStore('articles', () => {
    * 文件命名规则：
    *   数字 id (0,1,2...)  -> content/posts/post-{id}.md
    *   字符串 id           -> content/posts/{id}.md
-   *   changelog           -> content/logs/changelog.md
    *   project-N           -> content/projects/project-{N}.md
    */
   const loadMarkdown = async (id: string): Promise<string | null> => {
@@ -87,7 +85,6 @@ export const useArticlesStore = defineStore('articles', () => {
       `../../content/posts/post-${id}.md`,
       `../../content/posts/${id}.md`,
       `../../content/projects/${id}.md`,
-      `../../content/logs/${id}.md`,
     ]
 
     for (const path of candidates) {

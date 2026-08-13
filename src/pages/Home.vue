@@ -65,7 +65,7 @@ const loadArticles = async () => {
     loading.value = true
     error.value = null
     const data = await store.fetchArticles()
-    articles.value = data.filter(a => a.id !== 'terminal' && a.id !== 'changelog')
+    articles.value = data.filter(a => a.id !== 'terminal')
     pinnedPosts.value = articles.value.filter(a => a.pinned === true)
     hasPinned.value = pinnedPosts.value.length > 0
     calculateTotalPages()

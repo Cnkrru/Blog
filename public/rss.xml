@@ -5,24 +5,104 @@
     <link>https://cnkrru.top/</link>
     <description>个人技术博客，分享前端开发、技术学习和生活点滴</description>
     <atom:link href="https://cnkrru.top/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 07 Aug 2026 04:36:49 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 05:00:14 GMT</lastBuildDate>
     <language>zh-CN</language>
 
     
     <item>
-      <title>C_Cpp学习2</title>
+      <title>CPP-Qt学习与AL开发日志-1</title>
+      <link>https://cnkrru.top/post/23</link>
+      <description>记录Qt学习</description>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/23</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-giscus评论嵌入</title>
+      <link>https://cnkrru.top/post/18</link>
+      <description>介绍前端组件：giscus评论的制作方法以及如何自定义CSS</description>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/18</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-ASCII控制台输出艺术字</title>
+      <link>https://cnkrru.top/post/19</link>
+      <description>介绍前端组件：控制台输出艺术字制作方法</description>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/19</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-页面分享组件</title>
+      <link>https://cnkrru.top/post/20</link>
+      <description>介绍前端组件：页面分享制作方法</description>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/20</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-页面赞助组件</title>
+      <link>https://cnkrru.top/post/21</link>
+      <description>介绍前端组件：页面赞助组件制作方法</description>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/21</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-通知按钮组件</title>
+      <link>https://cnkrru.top/post/22</link>
+      <description>介绍前端组件：通知按钮组件制作方法</description>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/22</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-阅读进度条组件</title>
+      <link>https://cnkrru.top/post/12</link>
+      <description>介绍前端组件：阅读进度条的制作方法</description>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/12</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-Scroll-Screen</title>
       <link>https://cnkrru.top/post/13</link>
-      <description>C库学习</description>
-      <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
+      <description>介绍前端Web API：scrollAPI以及screen属性</description>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
       <guid>https://cnkrru.top/post/13</guid>
     </item>
     
     <item>
-      <title>C_Cpp学习</title>
-      <link>https://cnkrru.top/post/12</link>
-      <description>Cpp库学习</description>
-      <pubDate>Thu, 06 Aug 2026 00:00:00 GMT</pubDate>
-      <guid>https://cnkrru.top/post/12</guid>
+      <title>Frontend-CSS变量</title>
+      <link>https://cnkrru.top/post/14</link>
+      <description>介绍前端CSS属性</description>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/14</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-动态效果-樱花-雪花</title>
+      <link>https://cnkrru.top/post/15</link>
+      <description>介绍前端CSS属性</description>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/15</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-WebAPI-Fetch</title>
+      <link>https://cnkrru.top/post/16</link>
+      <description>介绍前端如何获取后端返回的数据</description>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/16</guid>
+    </item>
+    
+    <item>
+      <title>Frontend-获取后端API的数据</title>
+      <link>https://cnkrru.top/post/17</link>
+      <description>介绍前端如何获取后端返回的数据</description>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/17</guid>
     </item>
     
     <item>
@@ -34,7 +114,7 @@
     </item>
     
     <item>
-      <title>shell与git 常用指令</title>
+      <title>shell与git常用指令</title>
       <link>https://cnkrru.top/post/10</link>
       <description>记录一些shell，git常用指令</description>
       <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
@@ -42,7 +122,7 @@
     </item>
     
     <item>
-      <title>VitePress-1-快速开始</title>
+      <title>VitePress-1</title>
       <link>https://cnkrru.top/post/9</link>
       <description>详细介绍VitePress-1-快速开始。</description>
       <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>
@@ -66,7 +146,7 @@
     </item>
     
     <item>
-      <title>Frontend-网站年龄组件设计</title>
+      <title>Frontend-建站时长</title>
       <link>https://cnkrru.top/post/7</link>
       <description>详细介绍前端组件——网站年龄组件，介绍组件如何制作。</description>
       <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
@@ -100,17 +180,9 @@
     <item>
       <title>功能测试汇总</title>
       <link>https://cnkrru.top/post/2</link>
-      <description>本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表等测试。</description>
+      <description>本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表、CSV表格渲染、JSON/YAML/TOML结构化数据渲染等测试。</description>
       <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
       <guid>https://cnkrru.top/post/2</guid>
-    </item>
-    
-    <item>
-      <title>网站更新日志</title>
-      <link>https://cnkrru.top/post/changelog</link>
-      <description>记录网站的更新历史和功能变更</description>
-      <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
-      <guid>https://cnkrru.top/post/changelog</guid>
     </item>
     
     <item>

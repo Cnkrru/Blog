@@ -69,7 +69,6 @@ npm run preview
 ```
 content/           # Markdown 文章源文件
 ├── posts/         # 博客文章
-├── logs/          # 更新日志
 ├── projects/      # 项目展示
 ├── about/         # 关于页面
 └── announcement/  # 公告

@@ -25,7 +25,7 @@ const searchCache = new RedisLikeCache({
 onMounted(async () => {
   try {
     const data = await store.fetchArticles()
-    searchData.value = data.filter(item => item.id !== 'terminal' && item.id !== 'changelog')
+    searchData.value = data.filter(item => item.id !== 'terminal')
 
     searchIndex = new ElasticsearchLikeScorer()
     searchIndex.buildInvertedIndex(searchData.value)

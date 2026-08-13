@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
-const navigateToChangelog = () => {
-  router.push('/changelog')
-}
 </script>
 
 <template>
   <div class="welcome-saying-card">
-    <p @click="navigateToChangelog" class="welcome-link">欢迎来到我的博客</p>
+    <p class="welcome-link">欢迎来到我的博客</p>
   </div>
 </template>
 

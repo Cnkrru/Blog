@@ -31,7 +31,7 @@ const expandAll = ref(false)
 const loadArticles = async () => {
   try {
     const data = await store.fetchArticles()
-    articles.value = data.filter((a: any) => a.id !== 'changelog').sort((a, b) => parseInt(b.id) - parseInt(a.id))
+    articles.value = data.sort((a, b) => parseInt(b.id) - parseInt(a.id))
   } catch (e) { console.error('加载文章列表失败:', e); articles.value = [] }
 }
 

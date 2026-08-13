@@ -111,7 +111,7 @@ function clearSearch() {
 onMounted(async () => {
   try {
     const data = await store.fetchArticles()
-    articles.value = data.filter((a: any) => a.id !== 'terminal' && a.id !== 'changelog')
+    articles.value = data.filter((a: any) => a.id !== 'terminal')
     await tagStore.loadTags(articles.value)
   } finally {
     loading.value = false

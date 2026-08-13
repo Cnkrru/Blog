@@ -26,7 +26,6 @@ export function getIncludedRoutes(rootDir: string): string[] {
     '/project',
     '/settings',
     '/tag',
-    '/changelog',
     '/post'
   ]
 }

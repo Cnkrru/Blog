@@ -373,29 +373,6 @@
     "path": "./html/posts/post-2.html"
   },
   {
-    "id": "changelog",
-    "title": "网站更新日志",
-    "date": "2026-04-16",
-    "updated": "2026-08-07",
-    "category": "网站公告",
-    "tags": [
-      "网站公告",
-      "更新日志"
-    ],
-    "description": "记录网站的更新历史和功能变更",
-    "keywords": "更新日志,网站更新,功能变更",
-    "author": "Cnkrru",
-    "history": [
-      "2026-08-07 新增编辑历史功能、PDF打印、OG图自动生成",
-      "2026-08-06 新增文章反馈组件、PWA离线支持",
-      "2026-07-29 新增JSON-LD结构化数据、图片灯箱",
-      "2026-07-10 新增Sakura樱粉主题和音乐播放器",
-      "2026-05-15 新增代码高亮、KaTeX公式和Mermaid图表"
-    ],
-    "seoTitle": "网站更新日志 - Tech Blog",
-    "path": "./html/changelog.html"
-  },
-  {
     "id": "0",
     "title": "欢迎来到我的博客",
     "date": "2026-03-29",

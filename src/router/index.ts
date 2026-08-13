@@ -71,12 +71,6 @@ const routes: RouteRecordRaw[] = [
         name: 'Settings',
         component: () => import('../pages/Settings.vue')
     },
-    // 更新日志页面
-    {
-        path: '/changelog',
-        name: 'Changelog',
-        component: () => import('../pages/Changelog.vue')
-    },
     // 404页面
     {
         path: '/:pathMatch(.*)*',
