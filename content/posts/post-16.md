@@ -1,78 +1,79 @@
 ---
-title: Frontend-阅读进度条组件
+title: Frontend-WebAPI-Fetch
 date: 2026-08-10
 category: 前端
 tags: [前端]
-description: 介绍前端组件：阅读进度条的制作方法
+description: 介绍前端如何获取后端返回的数据
 keywords: frontend
 ---
-## 制作方法
-1. 阅读进度条根据当前页面高度/全部页面高度来计算进度
-2. 获取参数需要了解Web API的DOM模型的部分属性
-3. 使用JS实时更新CSS变量
-    - `document.documentElement.style.setProperty(<css变量>,<参数> )`
-    - 绑定scroll事件
-4. 注意事项：
-    - 不绑定事件不会实时更新CSS最新状态
-> scroll常见于制作返回顶部组件，关于这个API，详细请看:[Frontend-Scroll-Screen](post-17.md)
+## Fetch API
+> fetchAPI用于与后端进行数据来往
+- 前端JS内置库，支持异步
+- 请求类型
+
+|请求|作用|
+|---|---|
+|get|获取数据|
+|post|发送数据|
+|put|更新数据（全部）|
+|patch|更新数据（局部）|
+|delete|删除数据|
+
+- 直接写fetch太麻烦了，一般用axios库，是封装好的请求库
 ---
-## 示例代码
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        :root {
-            --progress-width: 50%;
-        }
-        .progress-container {
-            width: 100%;
-            height: 20px;
-            background-color: #f3f3f3;
-            border-radius: 10px;
-            position: fixed;
-        }
-
-        .progress-bar {
-            width: var(--progress-width);
-            height: 100%;
-            background-color: #4caf50;
-            transition: width 0.5s ease-in-out;
-        }
-
-        .placeholder {
-            height: 2000px;
-            overflow: auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="progress-container">
-        <div class="progress-bar"></div>
-    </div>
-    <div class="placeholder"></div>
-    <script>
-        function updateProgressBar() {
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-            const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-            const maxScroll = scrollHeight - clientHeight;
-            const scrollPercentage = maxScroll > 0 ? Math.min((scrollTop / maxScroll) * 100, 100) : 0;
-            document.documentElement.style.setProperty('--progress-width', `${scrollPercentage}%`);
-        }
-        
-        window.addEventListener('scroll', updateProgressBar);
-    </script>
-</body>
-</html>
+## axios
+> 文档:[axios中文文档](https://axios.org.cn/docs/intro)
+> 第三方文档:[axios第三方hugo文档](http://www.axios-js.com/zh-cn/docs/index.html)
+### axios API
+1. axios(config)
+```javascript
+// 发送 POST 请求
+axios({
+    method: 'post',
+    url: '/user/12345',
+    data: {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+    }
+});
 ```
+2. 各种方法对应函数
+`axios.<类型>(<参数>)`
+
+|类型|参数|
+|---|---|
+|request|config|
+|get|url,[config]|
+|delete|url,[config]|
+|head|url,[config]|
+|options|url,[config]|
+|post|url,[data,[config]]|
+|put|url,[data,[config]]|
+|patch|url,[data,[config]]|
+
+3. 并发处理函数
+    - `axios.all(<参数>)`
+    - `axios.spread(<参数>)`
+示例:
+```javascript
+function getUserAccount() {
+  return axios.get('/user/12345');
+}
+
+function getUserPermissions() {
+  return axios.get('/user/12345/permissions');
+}
+
+axios.all([getUserAccount(), getUserPermissions()])
+  .then(axios.spread(function (acct, perms) {
+  }));
+```
+### 注意事项
+1. axios默认异步
+2. axios在`.then()`中的数据默认不外用，涉及调用API获取的数据，最好在`then`工作域内完成操作
 ---
-> 编辑于2026-08-09
+> 编辑于2026-08-10
 
 > 作者：Cnkrru
 
 > 联系方式：3253884026@qq.com
-

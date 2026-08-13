@@ -1,5 +1,22 @@
 [
   {
+    "id": "27",
+    "title": "CPP-Qt学习与AL开发日志-1",
+    "date": "2026-08-13",
+    "updated": "",
+    "category": "Cpp",
+    "tags": [
+      "Cpp",
+      "Qt"
+    ],
+    "description": "记录Qt学习",
+    "keywords": "Qt",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "CPP-Qt学习与AL开发日志-1 - Tech Blog",
+    "path": "./html/posts/post-27.html"
+  },
+  {
     "id": "22",
     "title": "Frontend-giscus评论嵌入",
     "date": "2026-08-11",
@@ -62,6 +79,22 @@
     "history": [],
     "seoTitle": "Frontend-页面赞助组件 - Tech Blog",
     "path": "./html/posts/post-25.html"
+  },
+  {
+    "id": "26",
+    "title": "Frontend-通知按钮组件",
+    "date": "2026-08-11",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "介绍前端组件：通知按钮组件制作方法",
+    "keywords": "frontend",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Frontend-通知按钮组件 - Tech Blog",
+    "path": "./html/posts/post-26.html"
   },
   {
     "id": "16",
@@ -193,48 +226,44 @@
   },
   {
     "id": "13",
-    "title": "C_Cpp学习2",
+    "title": "Cpp学习",
     "date": "2026-08-07",
     "updated": "",
-    "category": "C_Cpp",
+    "category": "Cpp",
     "tags": [
-      "C",
       "Cpp"
     ],
-    "description": "C库学习",
-    "keywords": "C",
+    "description": "Cpp学习",
+    "keywords": "Cpp",
     "author": "Cnkrru",
     "history": [],
-    "seoTitle": "C_Cpp学习2 - Tech Blog",
+    "seoTitle": "Cpp学习 - Tech Blog",
     "path": "./html/posts/post-13.html"
   },
   {
     "id": "12",
-    "title": "C_Cpp学习",
+    "title": "Cpp学习",
     "date": "2026-08-06",
     "updated": "2026-08-07",
-    "category": "C_Cpp",
+    "category": "Cpp",
     "tags": [
-      "C",
       "Cpp"
     ],
     "description": "Cpp库学习",
     "keywords": "Cpp",
     "author": "Cnkrru",
     "history": [],
-    "seoTitle": "C_Cpp学习 - Tech Blog",
+    "seoTitle": "Cpp学习 - Tech Blog",
     "path": "./html/posts/post-12.html"
   },
   {
     "id": "11",
     "title": "Docsify转为VitePress",
     "date": "2026-07-29",
-    "updated": "2026-08-07",
+    "updated": "2026-08-11",
     "category": "前端",
     "tags": [
-      "前端",
-      "VitePress",
-      "Docsify"
+      "前端"
     ],
     "description": "将个人导航站点从Docsify v4迁移至VitePress的完整记录，包含旧配置存档、迁移原因以及VitePress配置详情。",
     "keywords": "Docsify, VitePress, 导航站, 站点迁移, 静态站点生成器, SSG",
@@ -268,13 +297,12 @@
   },
   {
     "id": "9",
-    "title": "VitePress-1-快速开始",
+    "title": "VitePress-1",
     "date": "2026-04-23",
     "updated": "2026-08-07",
     "category": "前端",
     "tags": [
-      "前端",
-      "VitePress"
+      "前端"
     ],
     "description": "详细介绍VitePress-1-快速开始。",
     "keywords": "VitePress, 快速开始",
@@ -283,7 +311,7 @@
       "2026-08-07 补充VitePress与Docsify对比分析",
       "2026-07-29 同步迁移经验到独立文章"
     ],
-    "seoTitle": "VitePress-1-快速开始 - Tech Blog",
+    "seoTitle": "VitePress-1 - Tech Blog",
     "path": "./html/posts/post-9.html"
   },
   {
@@ -309,8 +337,7 @@
     "updated": "2026-08-10",
     "category": "前端",
     "tags": [
-      "前端",
-      "主题"
+      "前端"
     ],
     "description": "详细介绍前端组件——主题切换，介绍组件如何制作。",
     "keywords": "前端组件, 主题切换, TypeScript",
@@ -344,10 +371,9 @@
     "title": "Frontend-HTML-CSS组件",
     "date": "2026-04-20",
     "updated": "2026-08-09",
-    "category": "技术",
+    "category": "前端",
     "tags": [
-      "前端",
-      "组件"
+      "前端"
     ],
     "description": "详细介绍前端组件——HTML-CSS组件，介绍这些只需要HTML和CSS的简单组件如何制作。",
     "keywords": "HTML-CSS, 前端, 组件",
@@ -379,8 +405,7 @@
     "updated": "2026-08-06",
     "category": "前端",
     "tags": [
-      "前端",
-      "组件"
+      "前端"
     ],
     "description": "详细介绍前端组件——返回顶部，介绍组件如何制作。",
     "keywords": "前端, 组件, 返回顶部, TypeScript",
@@ -393,21 +418,17 @@
     "id": "2",
     "title": "功能测试汇总",
     "date": "2026-04-16",
-    "updated": "2026-08-07",
-    "category": "测试",
+    "updated": "2026-08-12",
+    "category": "随笔",
     "tags": [
-      "测试",
-      "Markdown",
-      "代码高亮",
-      "灯箱",
-      "通知系统",
-      "Mermaid",
-      "KaTeX"
+      "随笔"
     ],
-    "description": "本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表等测试。",
-    "keywords": "Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX",
+    "description": "本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表、CSV表格渲染、JSON/YAML/TOML结构化数据渲染等测试。",
+    "keywords": "Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX, CSV, JSON, YAML, TOML",
     "author": "Cnkrru",
     "history": [
+      "2026-08-12 新增JSON/YAML/TOML结构化数据渲染测试",
+      "2026-08-12 新增CSV表格渲染测试",
       "2026-08-07 新增灯箱和PDF打印功能测试",
       "2026-07-20 补充Mermaid图表和KaTeX公式测试用例",
       "2026-05-10 新增代码高亮和通知系统测试"
@@ -463,10 +484,9 @@
     "title": "个人博客介绍",
     "date": "2026-03-29",
     "updated": "2026-08-08",
-    "category": "前端",
+    "category": "随笔",
     "tags": [
-      "前端",
-      "博客"
+      "随笔"
     ],
     "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，提供快速、优雅的写作和阅读体验。",
     "keywords": "个人博客, Vue 3, Vite, 前端项目, Markdown, 代码高亮, 数学公式, 响应式设计",

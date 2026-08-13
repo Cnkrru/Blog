@@ -12,7 +12,7 @@ description: 详细介绍前端组件——主题切换，介绍组件如何制�
 keywords: 前端组件, 主题切换, TypeScript
 ---
 ## 制作方法
-1. 一般使用CSS变量的方式来实现，关于CSS变量详见于:[Frontend-CSS变量](post-18.md)
+1. 一般使用CSS变量的方式来实现，关于CSS变量详见于:[Frontend-CSS变量](post-14.md)
 2. 按钮绑定一下`click`事件就行
 ---
 ```html
