@@ -56,8 +56,8 @@ const routes: RouteRecordRaw[] = [
     // 标签页面
     {
         path: '/tag',
-        name: 'Timeline',
-        component: () => import('../pages/Timeline.vue')
+        name: 'Tag',
+        component: () => import('../pages/Tag.vue')
     },
     // 友链申请页面
     {
