@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { useContentStore, useArticlesStore } from '../stores/index'
 import { parseFrontmatter } from '../utils/markdown'
 
-export function useContentLoader(type, id) {
+export function useContentLoader(type: string, id: string | string[] | undefined) {
   const contentStore = useContentStore()
   const articlesStore = useArticlesStore()
   

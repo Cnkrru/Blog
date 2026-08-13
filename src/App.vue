@@ -90,18 +90,22 @@ onUnmounted(() => {
       <Header />
       <main class="mid-flex">
         <Sidebar />
-        <Transition name="page-fade" mode="out-in">
-          <Center :key="route.fullPath">
-            <router-view />
-          </Center>
-        </Transition>
+        <router-view v-slot="{ Component: RouteComponent }">
+          <Transition name="page-fade" mode="out-in">
+            <Center :key="route.fullPath">
+              <component :is="RouteComponent" />
+            </Center>
+          </Transition>
+        </router-view>
       </main>
       <Footer />
     </template>
     <template v-else>
-      <Transition name="page-fade" mode="out-in">
-        <router-view :key="route.fullPath" />
-      </Transition>
+      <router-view v-slot="{ Component: RouteComponent }">
+        <Transition name="page-fade" mode="out-in">
+          <component :is="RouteComponent" :key="route.fullPath" />
+        </Transition>
+      </router-view>
     </template>
   </div>
 </template>
