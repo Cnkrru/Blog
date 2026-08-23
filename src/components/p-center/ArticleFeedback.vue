@@ -21,10 +21,13 @@ const downCount = ref(0)
 const storageKey = `article-feedback-${props.postId}`
 
 function apiHeaders(): Record<string, string> {
-  return {
-    'Authorization': `Bearer ${TOKEN}`,
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json'
   }
+  if (TOKEN) {
+    headers['Authorization'] = `Bearer ${TOKEN}`
+  }
+  return headers
 }
 
 async function apiGet(name: string) {

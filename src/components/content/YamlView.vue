@@ -188,7 +188,7 @@ watch(() => props.code, parseData)
 
 watch(viewMode, () => {
   if (viewMode.value === 'source') highlightSource()
-})
+}, { flush: 'post' })
 </script>
 
 <style scoped>

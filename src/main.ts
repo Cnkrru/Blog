@@ -9,6 +9,13 @@ import App from './App.vue'
 import { createAppRouter } from './router/index.ts'
 import { pinia } from './stores/index'
 
+// 开发环境下注销残留的 Service Worker，避免干扰 Vite 热更新
+if (import.meta.env.DEV) {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((r) => r.forEach((reg) => reg.unregister()))
+  }
+}
+
 // 主题与布局样式已改为按需加载，由 theme store 的 cssLoader 负责
 
 

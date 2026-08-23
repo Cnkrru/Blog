@@ -231,3 +231,15 @@ a:focus:not(:focus-visible),
 input:focus:not(:focus-visible) {
   outline: none;
 }
+
+/*==============================代码高亮（清除 Prism 默认浅色适配）==============================
+ * Prism 默认主题为浅色背景设计：
+ *   1. .token 的 text-shadow: 0 1px white（深色背景上产生白色重影）
+ *   2. .token.operator/.entity/.url 的 background: rgba(255,255,255,0.5)（深色背景上形成浅色矩形块）
+ * 深色代码块下需统一清除，覆盖所有代码块与结构化源码视图。
+ *==============================================================*/
+code .token,
+pre .token {
+  text-shadow: none !important;
+  background: transparent !important;
+}

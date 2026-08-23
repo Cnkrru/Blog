@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useHead } from '@vueuse/head'
 import { useThemeStore } from '../stores'
+import FontSizeControl from '../components/p-center/FontSizeControl.vue'
 
 const themeStore = useThemeStore()
 const currentStyle = computed(() => themeStore.currentStyle)
@@ -178,6 +179,15 @@ useHead({
           <span class="opt-desc">动态视频背景，播放 bg.mp4</span>
         </button>
       </div>
+    </section>
+
+    <!-- 文章字号 -->
+    <section class="setting-block">
+      <h3 class="setting-title">文章字号</h3>
+      <div class="fontsize-row">
+        <FontSizeControl />
+      </div>
+      <p class="slider-hint">调整文章正文的字体大小，点击数字可重置为 16px</p>
     </section>
 
     <p class="setting-tip">设置会自动保存，刷新后依然生效。</p>
@@ -414,5 +424,11 @@ useHead({
   .setting-tip {
     font-size: 12px;
   }
+}
+
+/* 文章字号 */
+.fontsize-row {
+  display: flex;
+  justify-content: flex-start;
 }
 </style>

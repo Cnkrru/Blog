@@ -10,6 +10,7 @@ declare global {
     updateGiscusTheme?: (theme: string) => void
     refreshComments?: () => void
     hljs: any
+    Prism: any
     mermaid: any
     katex: any
     renderMathInElement: any

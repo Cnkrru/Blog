@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import Prism from 'prismjs'
+import 'prismjs/themes/prism.min.css'
 
 export interface CodeSettings {
   theme: string
@@ -21,6 +23,66 @@ export interface CodeStats {
 }
 
 const CDN_PRISM = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0'
+
+// 语言别名标准化（Prism 只认小写 + 特定命名）
+const LANG_ALIAS: Record<string, string> = {
+  js: 'javascript',
+  ts: 'typescript',
+  py: 'python',
+  sh: 'bash',
+  shell: 'bash',
+  'c++': 'cpp',
+  yml: 'yaml',
+  cs: 'csharp',
+  rb: 'ruby',
+  md: 'markdown',
+  xml: 'html',
+  svg: 'html',
+  // vue 不是 Prism 官方语言，模板本质是 HTML，映射到 markup/html 高亮
+  vue: 'html'
+}
+
+function normalizeLang(lang?: string): string {
+  if (!lang) return 'plaintext'
+  const lower = lang.toLowerCase()
+  return LANG_ALIAS[lower] || lower
+}
+
+// Prism 核心自带语言，无需额外组件
+const CORE_LANGS = new Set<string>([
+  'html', 'markup', 'css', 'clike', 'javascript', 'xml', 'svg', 'mathml'
+])
+
+// 常用语言 → 动态加载的组件模块（vite 自动按需拆包）
+const LANG_MODULES: Record<string, () => Promise<unknown>> = {
+  python: () => import('prismjs/components/prism-python'),
+  typescript: () => import('prismjs/components/prism-typescript'),
+  json: () => import('prismjs/components/prism-json'),
+  json5: () => import('prismjs/components/prism-json5'),
+  bash: () => import('prismjs/components/prism-bash'),
+  c: () => import('prismjs/components/prism-c'),
+  cpp: () => import('prismjs/components/prism-cpp'),
+  csharp: () => import('prismjs/components/prism-csharp'),
+  cmake: () => import('prismjs/components/prism-cmake'),
+  yaml: () => import('prismjs/components/prism-yaml'),
+  toml: () => import('prismjs/components/prism-toml'),
+  sql: () => import('prismjs/components/prism-sql'),
+  markdown: () => import('prismjs/components/prism-markdown'),
+  ruby: () => import('prismjs/components/prism-ruby'),
+  java: () => import('prismjs/components/prism-java'),
+  go: () => import('prismjs/components/prism-go'),
+  rust: () => import('prismjs/components/prism-rust'),
+  php: () => import('prismjs/components/prism-php'),
+  docker: () => import('prismjs/components/prism-docker'),
+  git: () => import('prismjs/components/prism-git'),
+  ini: () => import('prismjs/components/prism-ini'),
+  diff: () => import('prismjs/components/prism-diff'),
+  regex: () => import('prismjs/components/prism-regex'),
+  nginx: () => import('prismjs/components/prism-nginx')
+}
+
+const loadedLangs = new Set<string>()
+const loading = new Map<string, Promise<void>>()
 
 export const useCodeStore = defineStore('code', () => {
   const prismLoaded = ref<boolean>(false)
@@ -168,85 +230,33 @@ export const useCodeStore = defineStore('code', () => {
 
   // ======== 共享 Prism.js 加载 ========
 
-  // 存储加载中的 Promise，避免重复加载
-  let prismLoadingPromise: Promise<void> | null = null
-
-  /** 确保 Prism 核心 + CSS + 常用语言已加载 */
+  /** 确保 Prism 核心 + CSS 已加载（本地打包，无需异步） */
   async function ensurePrismLoaded(): Promise<void> {
     if (prismLoaded.value) return
-    if (prismLoadingPromise) return prismLoadingPromise
-
-    prismLoadingPromise = new Promise<void>((resolve, reject) => {
-      if (window.Prism) {
-        prismLoaded.value = true
-        resolve()
-        return
-      }
-
-      // 加载 CSS
-      const cssLink = document.createElement('link')
-      cssLink.rel = 'stylesheet'
-      cssLink.href = `${CDN_PRISM}/themes/prism.min.css`
-      document.head.appendChild(cssLink)
-
-      // 加载核心 JS
-      const script = document.createElement('script')
-      script.src = `${CDN_PRISM}/prism.min.js`
-      script.onload = () => {
-        // 加载常用语言组件
-        const languages = ['javascript', 'typescript', 'css', 'html', 'json', 'python', 'bash', 'vue', 'c', 'cpp', 'yaml', 'toml']
-        let loadedCount = 0
-
-        const checkComplete = () => {
-          if (loadedCount >= languages.length) {
-            prismLoaded.value = true
-            resolve()
-          }
-        }
-
-        languages.forEach(lang => {
-          const langScript = document.createElement('script')
-          langScript.src = `${CDN_PRISM}/components/prism-${lang}.min.js`
-          langScript.onload = () => {
-            addLoadedLanguage(lang)
-            loadedCount++
-            checkComplete()
-          }
-          langScript.onerror = () => {
-            loadedCount++
-            checkComplete()
-          }
-          document.head.appendChild(langScript)
-        })
-      }
-      script.onerror = reject
-      document.head.appendChild(script)
-    })
-
-    return prismLoadingPromise
+    // 本地已随包打包核心，挂到 window 供组件使用
+    ;(window as any).Prism = Prism
+    prismLoaded.value = true
+    return
   }
 
-  /** 确保指定语言组件已加载 */
+  /** 确保指定语言组件已加载（按需动态 import） */
   async function ensureLanguageLoaded(lang: string): Promise<void> {
-    if (!window.Prism) {
-      await ensurePrismLoaded()
+    const normalized = normalizeLang(lang)
+    if (normalized === 'plaintext') return
+    if (CORE_LANGS.has(normalized) || (window as any).Prism?.languages?.[normalized] || loadedLangs.has(normalized)) {
+      return
     }
-
-    if (window.Prism && window.Prism.languages[lang]) return
-
-    // 检查是否已经在加载中（通过 loadedLanguages 判断）
-    if (loadedLanguages.value.includes(lang)) return
-
-    return new Promise<void>((resolve) => {
-      const script = document.createElement('script')
-      script.src = `${CDN_PRISM}/components/prism-${lang}.min.js`
-      script.onload = () => {
-        addLoadedLanguage(lang)
-        resolve()
-      }
-      script.onerror = () => resolve() // 加载失败不阻塞
-      document.head.appendChild(script)
-    })
+    const loader = LANG_MODULES[normalized]
+    if (!loader) return
+    if (!loading.has(normalized)) {
+      loading.set(
+        normalized,
+        loader()
+          .then(() => { loadedLangs.add(normalized) })
+          .catch(() => { /* 加载失败不阻塞渲染 */ })
+      )
+    }
+    await loading.get(normalized)!
   }
 
   const init = (): void => {

@@ -8,14 +8,14 @@
       <div class="header-actions">
         <CodeRender v-if="showCopyButton" :code="code" />
         <CodePreview v-if="language && (language.toLowerCase() === 'html' || language.toLowerCase() === 'htmlembedded')" :code="code" />
-        <span class="line-count" v-if="showLineNumbers">{{ code.split('\n').length }} lines</span>
+        <span class="line-count" v-if="showLineNumbers">{{ displayCode.split('\n').length }} lines</span>
       </div>
     </div>
     <div class="code-content-wrapper" :class="{ 'loading': !isLoaded, 'collapsed': collapsed && isCollapsible }">
       <div v-if="showLineNumbers" class="line-numbers">
         <span v-for="line in generateLineNumbers()" :key="line" class="line-number">{{ line }}</span>
       </div>
-      <pre class="code-content"><code ref="codeRef" :class="`language-${normalizedLanguage}`">{{ code }}</code></pre>
+      <pre class="code-content"><code ref="codeRef" :class="`language-${normalizedLanguage}`">{{ displayCode }}</code></pre>
       <!-- 行号高亮的 overlay 层 -->
       <div v-if="showLineNumbers" class="line-highlight-overlay" ref="lineOverlayRef">
         <div
@@ -72,7 +72,8 @@ const codeStore = useCodeStore()
 const collapsed = ref(true)
 
 const FOLD_LINE_THRESHOLD = 15
-const lineCount = computed(() => props.code.split('\n').length)
+const displayCode = computed(() => props.code.replace(/\n$/, ''))
+const lineCount = computed(() => displayCode.value.split('\n').length)
 const isCollapsible = computed(() => lineCount.value > FOLD_LINE_THRESHOLD)
 
 function toggleCollapse() {
@@ -119,10 +120,13 @@ const highlightCode = async () => {
   }
 
   // 计算代码统计信息
-  const lines = props.code.split('\n').length
-  const chars = props.code.length
+	  const lines = displayCode.value.split('\n').length
+	  const chars = props.code.length
   codeStore.updateCodeStats(lines, chars)
   codeStore.incrementHighlightCount()
+
+  // 确保语言组件已加载（非核心语言如 python/sql 需按需动态加载）
+  await codeStore.ensureLanguageLoaded(normalizedLanguage.value)
 
   // 使用 Prism.highlightElement
   try {
@@ -134,7 +138,7 @@ const highlightCode = async () => {
 
 // 生成行号
 const generateLineNumbers = () => {
-  const lines = props.code.split('\n').length
+  const lines = displayCode.value.split('\n').length
   return Array.from({ length: lines }, (_, i) => i + 1)
 }
 
@@ -347,7 +351,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 
 .line-number {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   opacity: 0.7;
   transition: opacity 0.3s ease;
 }
@@ -526,6 +530,11 @@ watch(() => codeStore.lineNumbersEnabled, () => {
    color: #fff;
    
 }
+.language-badge[data-lang="cmake"] {
+  background-color: #064f8c;
+   color: #fff;
+   
+}
 
 .lang-dot {
   background-color: currentColor;
@@ -636,7 +645,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   }
 
   .line-number {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .line-count {

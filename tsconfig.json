@@ -32,8 +32,6 @@
     "noUnusedParameters": false,
     // 检查 switch 穿透
     "noFallthroughCasesInSwitch": true,
-    // 部署根路径
-    "baseUrl": ".",
     // 路径别名映射
     "paths": {
       "@/*": ["src/*"]

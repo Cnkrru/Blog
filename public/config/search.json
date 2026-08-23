@@ -1,5 +1,37 @@
 [
   {
+    "id": "25",
+    "title": "Github Action配置",
+    "date": "2026-08-16",
+    "updated": "",
+    "category": "git",
+    "tags": [
+      "git"
+    ],
+    "description": "记录GitHub Action如何配置",
+    "keywords": "GITHUB",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Github Action配置 - Tech Blog",
+    "path": "./html/posts/post-25.html"
+  },
+  {
+    "id": "24",
+    "title": "Frontend-复制代码组件",
+    "date": "2026-08-14",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "介绍前端组件：复制代码组件制作方法",
+    "keywords": "frontend",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Frontend-复制代码组件 - Tech Blog",
+    "path": "./html/posts/post-24.html"
+  },
+  {
     "id": "23",
     "title": "CPP-Qt学习与AL开发日志-1",
     "date": "2026-08-13",
@@ -194,7 +226,7 @@
   },
   {
     "id": "11",
-    "title": "Docsify转为VitePress",
+    "title": "Docsify配置",
     "date": "2026-07-29",
     "updated": "2026-08-11",
     "category": "前端",
@@ -208,7 +240,7 @@
       "2026-08-07 补充迁移后性能对比数据",
       "2026-08-01 整理VitePress配置最佳实践"
     ],
-    "seoTitle": "Docsify转为VitePress - Tech Blog",
+    "seoTitle": "Docsify配置 - Tech Blog",
     "path": "./html/posts/post-11.html"
   },
   {

@@ -1,5 +1,5 @@
 ---
-title: Docsify转为VitePress
+title: Docsify配置
 date: 2026-07-29
 updated: 2026-08-11
 category: 前端
