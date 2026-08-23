@@ -8,6 +8,7 @@ import { dirname } from 'path'
 import { fileURLToPath, URL } from 'node:url'
 
 import copyJsFilesPlugin from './src/plugins/copy-js-files'
+import copyImagesPlugin from './src/plugins/copy-images'
 import { manualChunks } from './src/plugins/chunks'
 import { getIncludedRoutes } from './src/plugins/routes'
 import { onSsgFinished } from './src/plugins/seo'
@@ -69,7 +70,8 @@ export default defineConfig(
       // 一般和该文件的头部导入一样
       plugins: [
         vue(),
-        copyJsFilesPlugin()
+        copyJsFilesPlugin(),
+        copyImagesPlugin()
       ],
 
       // SSG选项

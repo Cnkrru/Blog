@@ -5,9 +5,25 @@
     <link>https://cnkrru.top/</link>
     <description>个人技术博客，分享前端开发、技术学习和生活点滴</description>
     <atom:link href="https://cnkrru.top/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 15 Aug 2026 12:59:46 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 23 Aug 2026 07:51:20 GMT</lastBuildDate>
     <language>zh-CN</language>
 
+    
+    <item>
+      <title>AL开发日志-1-electron介绍与初始化</title>
+      <link>https://cnkrru.top/post/26</link>
+      <description>记录APP：AL的开发过程</description>
+      <pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/26</guid>
+    </item>
+    
+    <item>
+      <title>Github Action配置</title>
+      <link>https://cnkrru.top/post/25</link>
+      <description>记录GitHub Action如何配置</description>
+      <pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/25</guid>
+    </item>
     
     <item>
       <title>Frontend-复制代码组件</title>
@@ -18,9 +34,9 @@
     </item>
     
     <item>
-      <title>CPP-Qt学习与AL开发日志-1</title>
+      <title>Cmake介绍</title>
       <link>https://cnkrru.top/post/23</link>
-      <description>记录Qt学习</description>
+      <description>记录Cpp相关知识</description>
       <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
       <guid>https://cnkrru.top/post/23</guid>
     </item>
