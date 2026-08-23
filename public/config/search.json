@@ -1,5 +1,21 @@
 [
   {
+    "id": "26",
+    "title": "AL开发日志-1-electron介绍与初始化",
+    "date": "2026-08-23",
+    "updated": "",
+    "category": "AL",
+    "tags": [
+      "AL"
+    ],
+    "description": "记录APP：AL的开发过程",
+    "keywords": "AL",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "AL开发日志-1-electron介绍与初始化 - Tech Blog",
+    "path": "./html/posts/post-26.html"
+  },
+  {
     "id": "25",
     "title": "Github Action配置",
     "date": "2026-08-16",
@@ -33,19 +49,18 @@
   },
   {
     "id": "23",
-    "title": "CPP-Qt学习与AL开发日志-1",
+    "title": "Cmake介绍",
     "date": "2026-08-13",
     "updated": "",
     "category": "Cpp",
     "tags": [
-      "Cpp",
-      "Qt"
+      "Cpp"
     ],
-    "description": "记录Qt学习",
-    "keywords": "Qt",
+    "description": "记录Cpp相关知识",
+    "keywords": "Cpp",
     "author": "Cnkrru",
     "history": [],
-    "seoTitle": "CPP-Qt学习与AL开发日志-1 - Tech Blog",
+    "seoTitle": "Cmake介绍 - Tech Blog",
     "path": "./html/posts/post-23.html"
   },
   {
