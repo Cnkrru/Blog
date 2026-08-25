@@ -174,7 +174,7 @@
     position: absolute;
     right: -5px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scale(var(--handle-scale, 1));
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -182,8 +182,8 @@
     transition: transform 0.15s ease;
 }
 
-.volume-bar:hover .volume-handle {
-    transform: translateY(-50%) scale(1.3);
+.volume-bar:hover {
+    --handle-scale: 1.3;
 }
 
 .player-list,
@@ -219,17 +219,17 @@
     position: absolute;
     right: -6px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: var(--dot-transform, translateY(-50%));
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    opacity: 0;
+    opacity: var(--dot-opacity, 0);
     transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
-.progress-bar:hover .progress-fill::after {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.25);
+.progress-bar:hover {
+    --dot-opacity: 1;
+    --dot-transform: translateY(-50%) scale(1.25);
 }
 
 .time-display {
@@ -248,16 +248,39 @@
     display: none;
 }
 
-.playing .pause-icon,
-.muted .mute-icon,
-.volume-low .volume-low-icon {
-    display: block;
+.playing {
+    --show-play: none;
+    --show-pause: block;
 }
 
-.playing .play-icon,
-.muted .volume-icon,
-.volume-low .volume-icon {
-    display: none;
+.muted {
+    --show-volume: none;
+    --show-mute: block;
+}
+
+.volume-low {
+    --show-volume: none;
+    --show-volume-low: block;
+}
+
+.pause-icon {
+    display: var(--show-pause, none);
+}
+
+.mute-icon {
+    display: var(--show-mute, none);
+}
+
+.volume-low-icon {
+    display: var(--show-volume-low, none);
+}
+
+.play-icon {
+    display: var(--show-play, block);
+}
+
+.volume-icon {
+    display: var(--show-volume, block);
 }
 
 /* ============================== 播放列表弹窗 ============================== */
@@ -369,12 +392,12 @@
 .playlist-item-status {
     font-size: 14px;
     margin-left: 10px;
-    opacity: 0;
+    opacity: var(--status-opacity, 0);
     transition: opacity 0.2s ease;
 }
 
-.playlist-items li.active .playlist-item-status {
-    opacity: 1;
+.playlist-items li.active {
+    --status-opacity: 1;
 }
 </style>
 

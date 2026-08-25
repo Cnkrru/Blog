@@ -125,13 +125,13 @@ if (typeof window !== 'undefined') {
 .sponsor-thanks { margin-top: 12px; font-size: 12px; opacity: 0.4; }
 
 .modal-fade-enter-active,
-.modal-fade-leave-active { transition: opacity 0.25s ease; }
-.modal-fade-enter-active .sponsor-modal,
-.modal-fade-leave-active .sponsor-modal { transition: transform 0.25s ease; }
-.modal-fade-enter-from { opacity: 0; }
-.modal-fade-enter-from .sponsor-modal { transform: scale(0.92) translateY(12px); }
-.modal-fade-leave-to { opacity: 0; }
-.modal-fade-leave-to .sponsor-modal { transform: scale(0.92) translateY(12px); }
+.modal-fade-leave-active { transition: opacity 0.25s ease; --sp-modal-transition: transform 0.25s ease; }
+.sponsor-modal {
+  transition: var(--sp-modal-transition, none);
+  transform: var(--sp-modal-transform, none);
+}
+.modal-fade-enter-from { opacity: 0; --sp-modal-transform: scale(0.92) translateY(12px); }
+.modal-fade-leave-to { opacity: 0; --sp-modal-transform: scale(0.92) translateY(12px); }
 </style>
 
 <!-- 颜色 — 使用 CSS 变量，无 body.dark-theme 硬编码 -->

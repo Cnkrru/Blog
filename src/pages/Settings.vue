@@ -343,13 +343,14 @@ useHead({
   width: 44px;
   height: 24px;
   border-radius: 12px;
-  background: #ccc;
+  background: var(--track-bg, #ccc);
   position: relative;
   transition: background-color 0.25s ease;
 }
 
-.toggle-switch.active .toggle-track {
-  background: var(--common-color-1);
+.toggle-switch.active {
+  --track-bg: var(--common-color-1);
+  --thumb-translate: translateX(20px);
 }
 
 .toggle-thumb {
@@ -361,12 +362,9 @@ useHead({
   position: absolute;
   top: 2px;
   left: 2px;
+  transform: var(--thumb-translate, none);
   transition: transform 0.25s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-switch.active .toggle-thumb {
-  transform: translateX(20px);
 }
 
 .toggle-label {

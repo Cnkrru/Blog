@@ -88,17 +88,20 @@ const theme = useThemeStore()
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 100%
+  background: var(
+    --skel-shimmer-bg,
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      transparent 100%
+    )
   );
   animation: shimmer 1.8s ease-in-out infinite;
 }
 
-.skeleton-container.dark-theme .skeleton-block::after {
-  background: linear-gradient(
+.skeleton-container.dark-theme {
+  --skel-shimmer-bg: linear-gradient(
     90deg,
     transparent 0%,
     rgba(255, 255, 255, 0.08) 50%,

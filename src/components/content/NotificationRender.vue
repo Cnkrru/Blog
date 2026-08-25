@@ -211,13 +211,14 @@ if (typeof window !== 'undefined') {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #fff;
+  background: var(--notif-icon-bg, transparent);
+  color: var(--notif-icon-color, #fff);
 }
 
-.notification.success .notif-icon { background: var(--color-success); }
-.notification.error .notif-icon { background: var(--color-error); }
-.notification.warning .notif-icon { background: var(--color-warning); color: #1a1a2e; }
-.notification.info .notif-icon { background: var(--common-color-1); }
+.notification.success { --notif-icon-bg: var(--color-success); }
+.notification.error { --notif-icon-bg: var(--color-error); }
+.notification.warning { --notif-icon-bg: var(--color-warning); --notif-icon-color: #1a1a2e; }
+.notification.info { --notif-icon-bg: var(--common-color-1); }
 
 /* ── 内容 ── */
 .notif-content {

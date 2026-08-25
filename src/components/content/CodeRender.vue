@@ -192,6 +192,7 @@ onMounted(() => {
 .copy-button.copied-success {
     transform: translateY(-2px) scale(1.05);
     animation: successPulse 0.6s ease;
+    --check-animation: checkBounce 0.5s ease;
 }
 
 .copy-button.copied-success:hover {
@@ -214,30 +215,32 @@ onMounted(() => {
     opacity: 0.8;
 }
 
-.copy-button.loading .loading-spinner {
-    animation: spin 0.8s linear infinite;
-}
-
 /* 状态文本样式 */
 .status-text {
     display: flex;
     align-items: center;
     gap: 4px;
     transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+    --icon-font-size: 14px;
+    --icon-transition: transform 0.3s ease;
 }
 
-.status-text .copy-icon,
-.status-text .check-icon {
-    font-size: 14px;
-    transition: transform 0.3s ease;
+.copy-icon,
+.check-icon {
+    font-size: var(--icon-font-size, 14px);
+    transition: var(--icon-transition, transform 0.3s ease);
 }
 
-.copy-button:hover .copy-icon {
-    transform: scale(1.2);
+.check-icon {
+    animation: var(--check-animation, none);
 }
 
-.copy-button.copied-success .check-icon {
-    animation: checkBounce 0.5s ease;
+.copy-icon {
+    transform: var(--copy-icon-hover-scale, none);
+}
+
+.copy-button:hover {
+    --copy-icon-hover-scale: scale(1.2);
 }
 
 /* 加载动画 */

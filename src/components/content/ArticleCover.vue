@@ -101,6 +101,8 @@ const coverVars = computed(() => {
   top: calc(-10% + var(--cover-d1-offset, 0%));
   right: -8%;
   background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
+  transform: var(--deco-1-transform, none);
+  transition: var(--deco-1-transition, none);
 }
 
 .deco-2 {
@@ -109,6 +111,8 @@ const coverVars = computed(() => {
   bottom: calc(-8% + var(--cover-d2-offset, 0%));
   left: -6%;
   background: color-mix(in srgb, var(--common-color-1) 6%, transparent);
+  transform: var(--deco-2-transform, none);
+  transition: var(--deco-2-transition, none);
 }
 
 .deco-3 {
@@ -196,20 +200,18 @@ const coverVars = computed(() => {
 }
 
 /* 移入动效 */
-.post-card:hover .article-cover .deco-1 {
-  transform: scale(1.15);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.post-card:hover .article-cover .deco-2 {
-  transform: scale(1.1);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+.article-cover:hover {
+  --deco-1-transform: scale(1.15);
+  --deco-1-transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --deco-2-transform: scale(1.1);
+  --deco-2-transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* 移动端隐藏动效 */
 @media (hover: none) {
-  .post-card:hover .article-cover .deco-1,
-  .post-card:hover .article-cover .deco-2 {
-    transform: none;
+  .article-cover:hover {
+    --deco-1-transform: none;
+    --deco-2-transform: none;
   }
 }
 

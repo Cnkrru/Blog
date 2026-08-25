@@ -432,20 +432,17 @@ onMounted(async () => {
 
 .tl-card:hover {
   transform: translateX(6px);
+  --connector-width: 26px;
 }
 
 .tl-connector {
-  width: 20px;
+  width: var(--connector-width, 20px);
   height: 2px;
   flex-shrink: 0;
   margin-top: 20px;
   margin-right: 8px;
   margin-left: -28px;
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
-}
-
-.tl-card:hover .tl-connector {
-  width: 26px;
 }
 
 .tl-card-body {
@@ -580,14 +577,12 @@ onMounted(async () => {
   color: var(--common-content);
   border-color: var(--common-color-1);
   box-shadow: 0 2px 12px var(--common-shadow);
+  --active-num-color: var(--common-content);
+  --active-num-opacity: 0.8;
 }
 .tag-num {
-  color: var(--common-color-1);
-  opacity: 0.7;
-}
-.tag-item.active .tag-num {
-  color: var(--common-content);
-  opacity: 0.8;
+  color: var(--active-num-color, var(--common-color-1));
+  opacity: var(--active-num-opacity, 0.7);
 }
 .tag-empty {
   color: var(--common-text);
@@ -626,10 +621,12 @@ onMounted(async () => {
 .tl-card-body {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.25));
   border: 1px solid var(--common-shadow);
+  border-color: var(--card-body-border-color, var(--common-shadow));
+  box-shadow: var(--card-body-shadow, none);
 }
-.tl-card:hover .tl-card-body {
-  border-color: var(--common-color-1);
-  box-shadow: 0 4px 12px var(--common-shadow);
+.tl-card:hover {
+  --card-body-border-color: var(--common-color-1);
+  --card-body-shadow: 0 4px 12px var(--common-shadow);
 }
 .tl-title {
   color: var(--common-text);
@@ -649,12 +646,17 @@ onMounted(async () => {
 .label-text {
   color: var(--common-text);
 }
-.skeleton-container .dot-skel {
-  background: var(--common-shadow);
+.skeleton-container {
+  --dot-skel-bg: var(--common-shadow);
+  --card-skel-bg: linear-gradient(90deg, var(--common-shadow) 25%, color-mix(in srgb, var(--common-color-1) 15%, transparent) 50%, var(--common-shadow) 75%);
+  --card-skel-size: 200% 100%;
 }
-.skeleton-container .card-skel {
-  background: linear-gradient(90deg, var(--common-shadow) 25%, color-mix(in srgb, var(--common-color-1) 15%, transparent) 50%, var(--common-shadow) 75%);
-  background-size: 200% 100%;
+.dot-skel {
+  background: var(--dot-skel-bg, none);
+}
+.card-skel {
+  background: var(--card-skel-bg, none);
+  background-size: var(--card-skel-size, 200% 100%);
 }
 .empty-tl {
   color: var(--common-text);

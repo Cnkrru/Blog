@@ -38,40 +38,60 @@ onMounted(() => {
     }
 }
 
-body.immersive-reading .left-blank,
-body.immersive-reading .left-asider-s,
-body.immersive-reading .left-center-blank,
-body.immersive-reading .footer-blank,
-body.immersive-reading .footer-flex,
-body.immersive-reading .footer-s {
-    display: none;
+/* ===== 沉浸阅读：用 body 级 CSS 变量把状态下发，避免跨界后代组合选择器 =====
+   body.immersive-reading（及其 compact 变体）只定义 --ir-* 变量；
+   布局/基座类只读 var(--ir-*) 并取自身基础值作兜底，从而去掉「父状态类＋子元素类」的后代组合写法。 */
+body.immersive-reading {
+    --ir-hide: none;
+    --ir-mf-pl: 20px;
+    --ir-mf-pr: 20px;
+    --ir-mf-ai: flex-start;
+    --ir-ccs-w: 1400px;
+    --ir-ccs-mw: 1400px;
+    --ir-cc-mh: none;
+    --ir-cc-h: auto;
 }
-
-body.immersive-reading .center-s {
-    width: 1400px;
-    max-width: 1400px;
-}
-
-body.immersive-reading .mid-flex {
-    padding-left: 20px;
-    padding-right: 20px;
-    align-items: flex-start;
-}
-
 /* 无空隙布局下进入沉浸阅读：保持贴满，不出现 1400px 收缩与左右留白 */
-.layout-compact body.immersive-reading .center-s {
-    width: auto;
-    max-width: none;
-    flex: 1;
-}
-.layout-compact body.immersive-reading .mid-flex {
-    padding-left: 0;
-    padding-right: 0;
+.layout-compact body.immersive-reading {
+    --ir-mf-pl: 0;
+    --ir-mf-pr: 0;
+    --ir-ccs-w: auto;
+    --ir-ccs-mw: none;
 }
 
-body.immersive-reading .center-card {
-    max-height: none !important;
-    height: auto !important;
+/* 隐藏左右留白、侧边栏与页脚等布局碎片（兜底取各自基础显示值） */
+.left-blank,
+.left-center-blank,
+.footer-blank {
+    display: var(--ir-hide, block);
+}
+.footer-s {
+    display: var(--ir-hide, block);
+}
+.left-asider-s {
+    display: var(--ir-hide, flex) !important;
+}
+.footer-flex {
+    display: var(--ir-hide, flex) !important;
+}
+
+/* 主内容版心宽度（immersive 1400px / compact auto） */
+.center-s {
+    width: var(--ir-ccs-w, 1200px);
+    max-width: var(--ir-ccs-mw, none);
+}
+
+/* 主内容区左右内边距与纵向对齐 */
+.mid-flex {
+    padding-left: var(--ir-mf-pl, 0);
+    padding-right: var(--ir-mf-pr, 0);
+    align-items: var(--ir-mf-ai, flex-start);
+}
+
+/* 内容卡片撑满整页 */
+.center-card {
+    max-height: var(--ir-cc-mh, 680px);
+    height: var(--ir-cc-h, 680px);
 }
 </style>
 
@@ -83,17 +103,11 @@ body.immersive-reading .center-card {
 <!-- 响应式设计媒体查询 -->
 <style>
 @media (max-width: 480px) {
-    body.immersive-reading .center-s {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-    body.immersive-reading .mid-flex {
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-    }
-    .layout-compact body.immersive-reading .mid-flex {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+    body.immersive-reading {
+        --ir-ccs-w: 100%;
+        --ir-ccs-mw: 100%;
+        --ir-mf-pl: 10px;
+        --ir-mf-pr: 10px;
     }
 }
 </style>

@@ -274,6 +274,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   display: flex;
   align-items: center;
   transition: transform 0.25s ease;
+  transform: var(--fold-icon-transform, none);
 }
 
 .fold-toggle {
@@ -292,14 +293,11 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   transition: background-color 0.2s, opacity 0.2s;
   z-index: 5;
   opacity: 0.6;
+  --fold-icon-transform: rotate(180deg);
 }
 
 .fold-toggle:hover {
   opacity: 1;
-}
-
-.fold-toggle .fold-icon {
-  transform: rotate(180deg);
 }
 
 /* 行高亮 overlay */
@@ -327,8 +325,8 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   min-height: 100px;
 }
 
-.code-container.show-lines .code-content {
-  padding-left: 8px;
+.code-container.show-lines {
+  --code-content-padding-left: 8px;
 }
 
 .line-numbers {
@@ -359,6 +357,7 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   flex: 1;
   margin: 0;
   padding: 16px;
+  padding-left: var(--code-content-padding-left, 16px);
   overflow-x: auto;
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 14px;

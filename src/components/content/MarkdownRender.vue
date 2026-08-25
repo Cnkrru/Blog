@@ -906,11 +906,11 @@ watch(() => props.content, () => {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s, transform 0.2s, opacity 0.2s;
-  opacity: 0;
+  opacity: var(--lightbox-nav-opacity, 0);
 }
 
-.lightbox-overlay:hover .lightbox-nav {
-  opacity: 1;
+.lightbox-overlay:hover {
+  --lightbox-nav-opacity: 1;
 }
 
 .lightbox-prev {
@@ -1055,27 +1055,23 @@ watch(() => props.content, () => {
 /* 灯箱过渡动画 */
 .lightbox-enter-active {
   transition: opacity 0.25s ease;
-}
-.lightbox-enter-active .lightbox-img {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --lightbox-img-transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .lightbox-leave-active {
   transition: opacity 0.2s ease;
-}
-.lightbox-leave-active .lightbox-img {
-  transition: transform 0.2s ease;
+  --lightbox-img-transition: transform 0.2s ease;
 }
 .lightbox-enter-from {
   opacity: 0;
-}
-.lightbox-enter-from .lightbox-img {
-  transform: scale(0.93);
+  --lightbox-img-transform: scale(0.93);
 }
 .lightbox-leave-to {
   opacity: 0;
+  --lightbox-img-transform: scale(0.95);
 }
-.lightbox-leave-to .lightbox-img {
-  transform: scale(0.95);
+.lightbox-img {
+  transition: var(--lightbox-img-transition, none);
+  transform: var(--lightbox-img-transform, none);
 }
 </style>
 

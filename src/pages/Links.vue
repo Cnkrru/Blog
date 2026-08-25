@@ -259,16 +259,16 @@ onMounted(() => {
     transform: none;
 }
 
-.pagination .active a {
+.pagination li.active a {
     border-color: inherit;
 }
 
-.pagination .disabled a {
+.pagination li.disabled a {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-.pagination .disabled a:hover {
+.pagination li.disabled a:hover {
     transform: none;
 }
 
@@ -412,19 +412,19 @@ onMounted(() => {
     background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
 }
 
-.pagination .active a {
+.pagination li.active a {
     background: var(--common-color-1);
     color: var(--common-content);
     border-color: var(--common-color-1);
 }
 
-.pagination .disabled a {
+.pagination li.disabled a {
     background: transparent;
     color: var(--common-text);
     opacity: 0.4;
 }
 
-.pagination .disabled a:hover {
+.pagination li.disabled a:hover {
     background: transparent;
 }
 </style>

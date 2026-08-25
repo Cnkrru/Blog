@@ -133,6 +133,7 @@ onUnmounted(() => {
   justify-content: center;
   width: 24px;
   height: 24px;
+  transform: var(--nav-icon-scale, none);
   transition: transform 0.3s ease;
 }
 
@@ -143,16 +144,18 @@ onUnmounted(() => {
   gap: 4px;
   overflow: hidden;
   min-width: 0;
+  align-items: var(--nav-alignment, stretch);
+  text-align: var(--nav-text-align, start);
 }
 
-.nav-btn.prev .nav-text {
-  align-items: flex-start;
-  text-align: left;
+.nav-btn.prev {
+  --nav-alignment: flex-start;
+  --nav-text-align: left;
 }
 
-.nav-btn.next .nav-text {
-  align-items: flex-end;
-  text-align: right;
+.nav-btn.next {
+  --nav-alignment: flex-end;
+  --nav-text-align: right;
 }
 
 .nav-label {
@@ -193,11 +196,8 @@ onUnmounted(() => {
   cursor: not-allowed;
 }
 
-.nav-btn:not(.disabled):hover .nav-icon {
-  transform: scale(1.1);
-}
-
 .nav-btn:not(.disabled):hover {
+  --nav-icon-scale: 1.1;
   transform: translateY(-2px);
 }
 

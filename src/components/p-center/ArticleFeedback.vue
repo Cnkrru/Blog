@@ -277,16 +277,16 @@ async function submit(type) {
   border-radius: 11px;
   font-size: 0.75rem;
   font-weight: 600;
-  background: color-mix(in srgb, var(--common-text) 10%, transparent);
-  color: var(--common-text);
-  opacity: 0.7;
+  background: var(--fb-badge-bg, color-mix(in srgb, var(--common-text) 10%, transparent));
+  color: var(--fb-badge-color, var(--common-text));
+  opacity: var(--fb-badge-opacity, 0.7);
   transition: background 0.25s ease, color 0.25s ease;
 }
 
-.feedback-btn.active .btn-count {
-  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
-  color: var(--common-color-1);
-  opacity: 1;
+.feedback-btn.active {
+  --fb-badge-bg: color-mix(in srgb, var(--common-color-1) 20%, transparent);
+  --fb-badge-color: var(--common-color-1);
+  --fb-badge-opacity: 1;
 }
 
 /* 感谢反馈 */

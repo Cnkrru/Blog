@@ -210,13 +210,13 @@ const closeDropdown = () => {
   gap: 6px;
 }
 
+.showCategoryDropdown {
+  --page-nav-arrow-rotate: 180deg;
+}
 .dropdown-arrow {
   font-size: 10px;
   transition: transform 0.2s ease;
-}
-
-.showCategoryDropdown .dropdown-arrow {
-  transform: rotate(180deg);
+  transform: rotate(var(--page-nav-arrow-rotate, 0deg));
 }
 
 .dropdown-card {

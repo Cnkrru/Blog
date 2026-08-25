@@ -146,9 +146,6 @@ onUnmounted(() => {
   margin-bottom: 12px;
 }
 
-.math-dark .loading-spinner {
-}
-
 .math-error {
   display: flex;
   flex-direction: column;
@@ -162,13 +159,6 @@ onUnmounted(() => {
   padding: 10px 0;
   min-height: 100px;
   transition: opacity 0.3s ease;
-}
-
-/* 暗色主题适配 */
-.math-dark :deep(.katex) {
-}
-
-.math-dark :deep(.katex-display) {
 }
 </style>
 
@@ -184,6 +174,8 @@ onUnmounted(() => {
   background-color: var(--common-bg);
   box-shadow: 0 2px 4px var(--common-shadow);
   border: 1px solid var(--common-color-1);
+  --katex-color: var(--common-text);
+  --katex-display-border-color: var(--common-color-1);
 }
 
 .loading-spinner {
@@ -197,12 +189,12 @@ onUnmounted(() => {
 }
 
 /* 暗色主题适配 */
-.math-dark :deep(.katex) {
-  color: var(--common-text);
+:deep(.katex) {
+  color: var(--katex-color, inherit);
 }
 
-.math-dark :deep(.katex-display) {
-  border-color: var(--common-color-1);
+:deep(.katex-display) {
+  border-color: var(--katex-display-border-color, inherit);
 }
 </style>
 

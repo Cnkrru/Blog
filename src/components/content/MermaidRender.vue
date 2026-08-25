@@ -167,9 +167,6 @@ watch(() => isDarkTheme.value, () => {
   margin-bottom: 16px;
 }
 
-.mermaid-dark .loading-spinner {
-}
-
 .mermaid-error {
   display: flex;
   flex-direction: column;
@@ -190,10 +187,6 @@ watch(() => isDarkTheme.value, () => {
   max-width: 100%;
   height: auto;
 }
-
-/* 暗色主题适配 */
-.mermaid-dark :deep(.mermaid) {
-}
 </style>
 
 <style scoped>
@@ -208,6 +201,7 @@ watch(() => isDarkTheme.value, () => {
   background-color: var(--common-bg);
   box-shadow: 0 2px 4px var(--common-shadow);
   border: 1px solid var(--common-color-1);
+  --mermaid-filter: brightness(0.9);
 }
 
 .loading-spinner {
@@ -220,8 +214,8 @@ watch(() => isDarkTheme.value, () => {
 }
 
 /* 暗色主题适配 */
-.mermaid-dark :deep(.mermaid) {
-  filter: brightness(0.9);
+:deep(.mermaid) {
+  filter: var(--mermaid-filter, none);
 }
 </style>
 
