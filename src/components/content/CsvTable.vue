@@ -6,10 +6,10 @@
         <span class="csv-dot"></span>
         <span class="csv-lang">csv</span>
       </span>
-      <div class="csv-header-actions">
+      <div class="csv-actions">
         <CodeRender :code="code" />
         <button
-          class="csv-toggle-btn"
+          class="csv-toggle"
           :class="{ active: viewMode === 'source' }"
           @click="viewMode = 'source'"
           title="查看源码"
@@ -18,7 +18,7 @@
           源码
         </button>
         <button
-          class="csv-toggle-btn"
+          class="csv-toggle"
           :class="{ active: viewMode === 'preview' }"
           @click="viewMode = 'preview'"
           title="查看表格"
@@ -31,7 +31,7 @@
     </div>
 
     <!-- 预览模式：表格 -->
-    <div v-if="viewMode === 'preview'" class="csv-table-scroll">
+    <div v-if="viewMode === 'preview'" class="csv-scroll">
       <table class="csv-table">
         <thead v-if="hasHeader">
           <tr>
@@ -138,7 +138,7 @@ const hasHeader = computed(() => header.value.length > 0)
   border-bottom: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
-.csv-header-actions {
+.csv-actions {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -168,7 +168,7 @@ const hasHeader = computed(() => header.value.length > 0)
 }
 
 /* ---- 切换按钮 ---- */
-.csv-toggle-btn {
+.csv-toggle {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -182,12 +182,12 @@ const hasHeader = computed(() => header.value.length > 0)
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.csv-toggle-btn:hover {
+.csv-toggle:hover {
   background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   border-color: var(--common-color-1);
 }
 
-.csv-toggle-btn.active {
+.csv-toggle.active {
   background: var(--common-color-1);
   border-color: var(--common-color-1);
   color: var(--common-content);
@@ -204,7 +204,7 @@ const hasHeader = computed(() => header.value.length > 0)
 }
 
 /* ---- 表格预览 ---- */
-.csv-table-scroll {
+.csv-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -281,7 +281,7 @@ const hasHeader = computed(() => header.value.length > 0)
     font-size: 10px;
   }
 
-  .csv-toggle-btn {
+  .csv-toggle {
     padding: 2px 8px;
     font-size: 11px;
   }

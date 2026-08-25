@@ -19,7 +19,7 @@ const toggleTheme = () => {
 
 <template>
   <div
-    class="button-style theme-toggle-btn"
+    class="button-style theme-btn"
     title="切换主题"
     @click="toggleTheme"
     :aria-label="isDarkTheme ? '切换到亮色主题' : '切换到暗色主题'"
@@ -37,12 +37,12 @@ const toggleTheme = () => {
 
 <!-- 布局样式 -->
 <style scoped>
-.theme-toggle-btn {
+.theme-btn {
   position: relative;
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
-.theme-toggle-btn.animating {
+.theme-btn.animating {
   animation: spinBounce 0.4s ease;
 }
 

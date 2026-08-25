@@ -24,11 +24,11 @@
           <AdmonitionRender :type="block.admonitionType" :title="block.admonitionTitle" :content="block.content" />
         </div>
         <!-- Toast 按钮 -->
-        <span v-else-if="block.type === 'toast-btn'" class="toast-btn-container">
+        <span v-else-if="block.type === 'toast-btn'" class="toast-wrap">
           <ToastButton :type="block.toastType" :text="block.toastText" />
         </span>
         <!-- 彩蛋动画块 -->
-        <div v-else-if="block.type === 'easter-egg'" class="easter-egg-container">
+        <div v-else-if="block.type === 'easter-egg'" class="egg-container">
           <EasterEggAnimation :text="block.text" :final-text="block.finalText" />
         </div>
         <!-- 普通Markdown内容 -->
@@ -59,7 +59,7 @@
 
           <!-- 左侧导航箭头 -->
           <div
-            class="lightbox-nav-btn lightbox-nav-prev"
+            class="lightbox-nav lightbox-prev"
             @click="prevImage"
             @click.stop
             v-if="currentImageIndex > 0"
@@ -69,7 +69,7 @@
           </div>
 
           <!-- 图片主体 — 点击图片不关闭 -->
-          <div class="lightbox-image-area" @click.stop>
+          <div class="lightbox-area" @click.stop>
             <img
               :src="lightboxImages[currentImageIndex].src"
               :alt="lightboxImages[currentImageIndex].title"
@@ -83,7 +83,7 @@
 
           <!-- 右侧导航箭头 -->
           <div
-            class="lightbox-nav-btn lightbox-nav-next"
+            class="lightbox-nav lightbox-next"
             @click="nextImage"
             @click.stop
             v-if="currentImageIndex < lightboxImages.length - 1"
@@ -863,7 +863,7 @@ watch(() => props.content, () => {
 }
 
 /* 图片主体区域 */
-.lightbox-image-area {
+.lightbox-area {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -893,7 +893,7 @@ watch(() => props.content, () => {
 }
 
 /* 导航箭头按钮 */
-.lightbox-nav-btn {
+.lightbox-nav {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
@@ -909,19 +909,19 @@ watch(() => props.content, () => {
   opacity: 0;
 }
 
-.lightbox-overlay:hover .lightbox-nav-btn {
+.lightbox-overlay:hover .lightbox-nav {
   opacity: 1;
 }
 
-.lightbox-nav-prev {
+.lightbox-prev {
   left: 20px;
 }
 
-.lightbox-nav-next {
+.lightbox-next {
   right: 20px;
 }
 
-.lightbox-nav-btn:hover {
+.lightbox-nav:hover {
   transform: translateY(-50%) scale(1.1);
 }
 </style>
@@ -1039,7 +1039,7 @@ watch(() => props.content, () => {
 }
 
 /* 导航箭头颜色 */
-.lightbox-nav-btn {
+.lightbox-nav {
   background-color: rgba(255, 255, 255, 0.15);
   color: #fff;
   backdrop-filter: blur(8px);
@@ -1047,7 +1047,7 @@ watch(() => props.content, () => {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-.lightbox-nav-btn:hover {
+.lightbox-nav:hover {
   background-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -1116,16 +1116,16 @@ watch(() => props.content, () => {
     margin-top: 8px;
   }
 
-  .lightbox-nav-btn {
+  .lightbox-nav {
     width: 40px;
     height: 40px;
   }
 
-  .lightbox-nav-prev {
+  .lightbox-prev {
     left: 12px;
   }
 
-  .lightbox-nav-next {
+  .lightbox-next {
     right: 12px;
   }
 }

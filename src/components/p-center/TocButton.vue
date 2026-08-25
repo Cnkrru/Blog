@@ -21,7 +21,7 @@ const toggleToc = () => {
 </script>
 
 <template>
-  <div class="toc-btn-container" :class="{ 'dark-theme': isDarkTheme }">
+  <div class="toc-wrap" :class="{ 'dark-theme': isDarkTheme }">
     <button
       class="toc-btn"
       @click="toggleToc"
@@ -32,14 +32,14 @@ const toggleToc = () => {
       <!-- 列表图标（默认） -->
       <span
         v-if="!tocStore.show"
-        class="svg-icon toc-btn-icon"
+        class="svg-icon toc-icon"
         :style="{ width: '16px', height: '16px' }"
         v-html="listSvg"
       ></span>
       <!-- 关闭图标（展开时） -->
       <span
         v-else
-        class="svg-icon toc-btn-icon"
+        class="svg-icon toc-icon"
         :style="{ width: '14px', height: '14px' }"
         v-html="xSvg"
       ></span>
@@ -48,7 +48,7 @@ const toggleToc = () => {
 </template>
 
 <style scoped>
-.toc-btn-container {
+.toc-wrap {
   display: flex;
   align-items: center;
 }
@@ -69,7 +69,7 @@ const toggleToc = () => {
   position: relative;
 }
 
-.toc-btn-icon {
+.toc-icon {
   color: #fff;
   transition: transform 0.25s ease;
 }
@@ -94,7 +94,7 @@ const toggleToc = () => {
     width: 32px;
     height: 32px;
   }
-  .toc-btn-icon {
+  .toc-icon {
     width: 14px;
     height: 14px;
   }

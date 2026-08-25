@@ -92,7 +92,7 @@ onUnmounted(() => {
       <div
         v-if="visible"
         ref="menuRef"
-        class="anime-context-menu"
+        class="context-menu"
         :style="{ left: `${x}px`, top: `${y}px` }"
         @click.stop
       >
@@ -118,7 +118,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.anime-context-menu {
+.context-menu {
   position: fixed;
   z-index: 99999;
   min-width: 190px;

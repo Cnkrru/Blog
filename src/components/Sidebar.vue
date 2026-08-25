@@ -8,7 +8,7 @@ import Weather from './api/Weather.vue'
 
 <template>
     <aside class="left-asider-s">
-        <div class="left-asider-container">
+        <div class="asider-container">
         <div class="left-asider-card">
             <!-- 头像设计 -->
             <Avatar />
@@ -37,7 +37,7 @@ import Weather from './api/Weather.vue'
 }
 
     /* 左侧边栏版心 */
-.left-asider-container {
+.asider-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;

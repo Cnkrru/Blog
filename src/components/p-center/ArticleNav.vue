@@ -1,37 +1,37 @@
 <template>
-  <div class="post-nav-container">
+  <div class="nav-wrap">
     <button
-      class="post-nav-btn prev"
+      class="nav-btn prev"
       :class="{ disabled: !prevPost, loading: loadingPrev }"
       @click="handlePrev"
       :disabled="!prevPost"
       aria-label="上一篇文章"
     >
-      <span class="post-nav-btn-icon">
+      <span class="nav-icon">
         <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="arrowLeftSvg"></span>
       </span>
-      <div class="post-nav-btn-text">
-        <span class="post-nav-btn-label">上一篇</span>
-        <span class="post-nav-btn-title">{{ prevPost?.title || '暂无' }}</span>
+      <div class="nav-text">
+        <span class="nav-label">上一篇</span>
+        <span class="nav-title">{{ prevPost?.title || '暂无' }}</span>
       </div>
-      <div v-if="loadingPrev" class="post-nav-loading"></div>
+      <div v-if="loadingPrev" class="nav-loading"></div>
     </button>
 
     <button
-      class="post-nav-btn next"
+      class="nav-btn next"
       :class="{ disabled: !nextPost, loading: loadingNext }"
       @click="handleNext"
       :disabled="!nextPost"
       aria-label="下一篇文章"
     >
-      <div class="post-nav-btn-text">
-        <span class="post-nav-btn-label">下一篇</span>
-        <span class="post-nav-btn-title">{{ nextPost?.title || '暂无' }}</span>
+      <div class="nav-text">
+        <span class="nav-label">下一篇</span>
+        <span class="nav-title">{{ nextPost?.title || '暂无' }}</span>
       </div>
-      <span class="post-nav-btn-icon">
+      <span class="nav-icon">
         <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="arrowRightSvg"></span>
       </span>
-      <div v-if="loadingNext" class="post-nav-loading"></div>
+      <div v-if="loadingNext" class="nav-loading"></div>
     </button>
   </div>
 </template>
@@ -90,7 +90,7 @@ onUnmounted(() => {
 
 <style scoped>
 /* ========== 布局与结构 (Layout) ========== */
-.post-nav-container {
+.nav-wrap {
   position: relative;
   width: 100%;
   margin: 30px 0;
@@ -101,7 +101,7 @@ onUnmounted(() => {
   border-radius: 16px;
 }
 
-.post-nav-btn {
+.nav-btn {
   flex: 1;
   display: flex;
   align-items: center;
@@ -116,17 +116,17 @@ onUnmounted(() => {
   border: none;
 }
 
-.post-nav-btn.prev {
+.nav-btn.prev {
   justify-content: flex-start;
   gap: 12px;
 }
 
-.post-nav-btn.next {
+.nav-btn.next {
   justify-content: flex-end;
   gap: 12px;
 }
 
-.post-nav-btn-icon {
+.nav-icon {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -136,7 +136,7 @@ onUnmounted(() => {
   transition: transform 0.3s ease;
 }
 
-.post-nav-btn-text {
+.nav-text {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -145,24 +145,24 @@ onUnmounted(() => {
   min-width: 0;
 }
 
-.post-nav-btn.prev .post-nav-btn-text {
+.nav-btn.prev .nav-text {
   align-items: flex-start;
   text-align: left;
 }
 
-.post-nav-btn.next .post-nav-btn-text {
+.nav-btn.next .nav-text {
   align-items: flex-end;
   text-align: right;
 }
 
-.post-nav-btn-label {
+.nav-label {
   font-size: 12px;
   font-weight: 500;
   opacity: 0.7;
   letter-spacing: 0.5px;
 }
 
-.post-nav-btn-title {
+.nav-title {
   font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
@@ -172,7 +172,7 @@ onUnmounted(() => {
   max-width: 100%;
 }
 
-.post-nav-loading {
+.nav-loading {
   position: absolute;
   top: 0;
   left: 0;
@@ -188,28 +188,28 @@ onUnmounted(() => {
 }
 
 /* 交互状态 */
-.post-nav-btn.disabled {
+.nav-btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.post-nav-btn:not(.disabled):hover .post-nav-btn-icon {
+.nav-btn:not(.disabled):hover .nav-icon {
   transform: scale(1.1);
 }
 
-.post-nav-btn:not(.disabled):hover {
+.nav-btn:not(.disabled):hover {
   transform: translateY(-2px);
 }
 
-.post-nav-btn:not(.disabled):active {
+.nav-btn:not(.disabled):active {
   transform: translateY(-1px);
 }
 
-.post-nav-btn.loading {
+.nav-btn.loading {
   cursor: wait;
 }
 
-.post-nav-btn:focus {
+.nav-btn:focus {
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
@@ -217,30 +217,30 @@ onUnmounted(() => {
 
 <style scoped>
 /* ========== 样式与主题 (Theme) — 使用 CSS 变量，无 body.dark-theme 硬编码 ========== */
-.post-nav-container {
+.nav-wrap {
   background: transparent;
   border: none;
 }
 
-.post-nav-btn {
+.nav-btn {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
   border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
   color: var(--common-text);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.post-nav-btn:hover {
+.nav-btn:hover {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.8));
   border-color: var(--common-color-1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.post-nav-btn-label,
-.post-nav-btn-title {
+.nav-label,
+.nav-title {
   color: var(--common-text);
 }
 
-.post-nav-btn-icon {
+.nav-icon {
   color: var(--common-color-1);
 }
 </style>
@@ -248,69 +248,69 @@ onUnmounted(() => {
 <style scoped>
 /* ========== 响应式适配 (Responsive) ========== */
 @media (max-width: 640px) {
-  .post-nav-container {
+  .nav-wrap {
     flex-direction: column;
     gap: 8px;
     padding: 6px;
   }
 
-  .post-nav-btn {
+  .nav-btn {
     padding: 12px 15px;
     min-height: 60px;
   }
 
-  .post-nav-btn-label {
+  .nav-label {
     font-size: 11px;
   }
 
-  .post-nav-btn-title {
+  .nav-title {
     font-size: 12px;
   }
 
-  .post-nav-btn-icon {
+  .nav-icon {
     width: 20px;
     height: 20px;
   }
 }
 
 @media (min-width: 640px) and (max-width: 767px) {
-  .post-nav-container {
+  .nav-wrap {
     gap: 12px;
     padding: 6px;
   }
 
-  .post-nav-btn {
+  .nav-btn {
     padding: 14px 18px;
     min-height: 68px;
   }
 
-  .post-nav-btn-label {
+  .nav-label {
     font-size: 12px;
   }
 
-  .post-nav-btn-title {
+  .nav-title {
     font-size: 13px;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .post-nav-btn {
+  .nav-btn {
     padding: 15px 22px;
     min-height: 70px;
   }
 
-  .post-nav-btn-title {
+  .nav-title {
     font-size: 13.5px;
   }
 }
 
 @media (min-width: 1280px) and (max-width: 1536px) {
-  .post-nav-btn {
+  .nav-btn {
     padding: 18px 24px;
     min-height: 76px;
   }
 
-  .post-nav-btn-title {
+  .nav-title {
     font-size: 14.5px;
   }
 }

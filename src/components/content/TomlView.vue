@@ -1,15 +1,15 @@
 <template>
-  <div class="toml-view-container" :class="{ 'has-error': parseError }">
+  <div class="tv-container" :class="{ 'has-error': parseError }">
     <!-- 头部栏 -->
     <div class="tv-header">
       <span class="tv-badge">
         <span class="tv-dot"></span>
         <span class="tv-lang">toml</span>
       </span>
-      <div class="tv-header-actions">
+      <div class="tv-actions">
         <CodeRender :code="code" />
         <button
-          class="tv-toggle-btn"
+          class="tv-toggle"
           :class="{ active: viewMode === 'preview' }"
           @click="viewMode = 'preview'"
           title="查看结构化视图"
@@ -18,7 +18,7 @@
           结构化
         </button>
         <button
-          class="tv-toggle-btn"
+          class="tv-toggle"
           :class="{ active: viewMode === 'source' }"
           @click="viewMode = 'source'"
           title="查看源码"
@@ -36,7 +36,7 @@
         <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="alertTriangleSvg"></span>
         <span>{{ parseError }}</span>
       </div>
-      <div v-else class="tv-tree-wrapper">
+      <div v-else class="tv-tree">
         <JsonTree :data="parsedData" />
       </div>
     </div>
@@ -260,7 +260,7 @@ watch(viewMode, () => {
 </script>
 
 <style scoped>
-.toml-view-container {
+.tv-container {
   margin: 12px 0;
   border-radius: 10px;
   overflow: hidden;
@@ -268,7 +268,7 @@ watch(viewMode, () => {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
   box-shadow: 0 1px 3px var(--common-shadow);
 }
-.toml-view-container.has-error {
+.tv-container.has-error {
   border-color: color-mix(in srgb, #ef4444 30%, transparent);
 }
 .tv-header {
@@ -279,7 +279,7 @@ watch(viewMode, () => {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
   border-bottom: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
-.tv-header-actions {
+.tv-actions {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -305,7 +305,7 @@ watch(viewMode, () => {
   flex-shrink: 0;
 }
 .tv-lang { font-size: 12px; font-weight: 600; }
-.tv-toggle-btn {
+.tv-toggle {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -318,11 +318,11 @@ watch(viewMode, () => {
   color: var(--common-text);
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-.tv-toggle-btn:hover {
+.tv-toggle:hover {
   background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   border-color: var(--common-color-1);
 }
-.tv-toggle-btn.active {
+.tv-toggle.active {
   background: var(--common-color-1);
   border-color: var(--common-color-1);
   color: var(--common-content);
@@ -345,7 +345,7 @@ watch(viewMode, () => {
   color: #ef4444;
   background: color-mix(in srgb, #ef4444 8%, transparent);
 }
-.tv-tree-wrapper { padding: 8px 12px; }
+.tv-tree { padding: 8px 12px; }
 .tv-source {
   margin: 0;
   padding: 16px;
@@ -366,9 +366,9 @@ watch(viewMode, () => {
 @media (max-width: 768px) {
   .tv-header { padding: 6px 12px; }
   .tv-badge { padding: 2px 6px; font-size: 10px; }
-  .tv-toggle-btn { padding: 2px 8px; font-size: 11px; }
+  .tv-toggle { padding: 2px 8px; font-size: 11px; }
   .tv-source { padding: 12px; font-size: 12px; }
   .tv-stats { font-size: 8px; padding: 1px 4px; }
-  .tv-tree-wrapper { padding: 6px 8px; }
+  .tv-tree { padding: 6px 8px; }
 }
 </style>

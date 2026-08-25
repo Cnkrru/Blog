@@ -29,12 +29,12 @@ function toggle() {
 </script>
 
 <template>
-  <div class="edit-history-wrapper">
-    <div class="edit-history-card">
+  <div class="edit-wrap">
+    <div class="edit-card">
       <!-- 发布信息行 -->
       <div class="date-row">
         <div class="date-block">
-          <div class="date-icon-wrap">
+          <div class="date-wrap">
             <span class="svg-icon" :style="{ width: '15px', height: '15px' }" v-html="calendarSvg"></span>
           </div>
           <div class="date-info">
@@ -44,7 +44,7 @@ function toggle() {
         </div>
 
         <div v-if="hasUpdated" class="date-block">
-          <div class="date-icon-wrap is-update">
+          <div class="date-wrap is-update">
             <span class="svg-icon" :style="{ width: '15px', height: '15px' }" v-html="refreshCwSvg"></span>
           </div>
           <div class="date-info">
@@ -80,12 +80,12 @@ function toggle() {
 
 <style scoped>
 /* ── 布局 ── */
-.edit-history-wrapper {
+.edit-wrap {
   width: 100%;
   margin: 8px 0;
 }
 
-.edit-history-card {
+.edit-card {
   width: 100%;
   padding: 12px 16px;
   border-radius: 10px;
@@ -110,7 +110,7 @@ function toggle() {
   gap: 8px;
 }
 
-.date-icon-wrap {
+.date-wrap {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -122,7 +122,7 @@ function toggle() {
   color: var(--common-color-1);
 }
 
-.date-icon-wrap.is-update {
+.date-wrap.is-update {
   background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
 }
 
@@ -271,19 +271,19 @@ function toggle() {
 
 <style scoped>
 @media (max-width: 640px) {
-  .edit-history-card {
+  .edit-card {
     padding: 10px 12px;
     border-radius: 8px;
   }
   .date-row {
     gap: 16px;
   }
-  .date-icon-wrap {
+  .date-wrap {
     width: 28px;
     height: 28px;
     border-radius: 7px;
   }
-  .date-icon-wrap svg {
+  .date-wrap svg {
     width: 13px;
     height: 13px;
   }

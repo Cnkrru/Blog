@@ -169,7 +169,7 @@ onMounted(async () => {
     <hr>
 
     <!-- 时间线区域 -->
-    <div class="timeline-top-bar">
+    <div class="timeline-bar">
       <div class="zoom-controls">
         <button
           :class="['zoom-btn', { active: zoomLevel === 0 }]"
@@ -185,8 +185,8 @@ onMounted(async () => {
     <!-- Loading -->
     <div v-if="loading" class="skeleton-container">
       <div v-for="n in 4" :key="n" class="tl-skel">
-        <div class="tl-dot-skel"></div>
-        <div class="tl-card-skel"></div>
+        <div class="dot-skel"></div>
+        <div class="card-skel"></div>
       </div>
     </div>
 
@@ -195,9 +195,9 @@ onMounted(async () => {
       <div class="timeline-line"></div>
 
       <div v-for="group in timelineGroups" :key="group.label" class="tl-group">
-        <div class="tl-group-label">
+        <div class="group-label">
           <div class="tl-dot"></div>
-          <span class="tl-label-text">{{ group.label }}</span>
+          <span class="label-text">{{ group.label }}</span>
           <span class="tl-count">{{ group.articles.length }} 篇</span>
         </div>
         <div class="tl-cards">
@@ -207,13 +207,13 @@ onMounted(async () => {
             :to="`/post/${article.id}`"
             class="tl-card"
           >
-            <div class="tl-card-connector"></div>
+            <div class="tl-connector"></div>
             <div class="tl-card-body">
-              <div class="tl-card-header">
-                <span class="tl-card-title">{{ article.title }}</span>
-                <span class="tl-card-date">{{ article.date }}</span>
+              <div class="tl-header">
+                <span class="tl-title">{{ article.title }}</span>
+                <span class="tl-date">{{ article.date }}</span>
               </div>
-              <div class="tl-card-meta">
+              <div class="tl-meta">
                 <span v-if="article.category" class="tl-cat">{{ article.category }}</span>
                 <span v-for="tag in (article.tags || []).slice(0, 3)" :key="tag" class="tl-tag">{{ tag }}</span>
               </div>
@@ -351,7 +351,7 @@ onMounted(async () => {
 
 /* 选中标签信息 */
 /* 时间线上方 */
-.timeline-top-bar {
+.timeline-bar {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 12px;
@@ -390,7 +390,7 @@ onMounted(async () => {
   position: relative;
 }
 
-.tl-group-label {
+.group-label {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -408,7 +408,7 @@ onMounted(async () => {
   z-index: 2;
 }
 
-.tl-label-text {
+.label-text {
   font-size: 16px;
   font-weight: 700;
 }
@@ -434,7 +434,7 @@ onMounted(async () => {
   transform: translateX(6px);
 }
 
-.tl-card-connector {
+.tl-connector {
   width: 20px;
   height: 2px;
   flex-shrink: 0;
@@ -444,7 +444,7 @@ onMounted(async () => {
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
 }
 
-.tl-card:hover .tl-card-connector {
+.tl-card:hover .tl-connector {
   width: 26px;
 }
 
@@ -455,25 +455,25 @@ onMounted(async () => {
   border: 1px solid var(--common-shadow);
 }
 
-.tl-card-header {
+.tl-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
 }
 
-.tl-card-title {
+.tl-title {
   font-size: 14px;
   font-weight: 600;
 }
 
-.tl-card-date {
+.tl-date {
   font-size: 11px;
   white-space: nowrap;
   margin-left: 12px;
 }
 
-.tl-card-meta {
+.tl-meta {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -505,14 +505,14 @@ onMounted(async () => {
   gap: 8px;
 }
 
-.tl-dot-skel {
+.dot-skel {
   width: 16px;
   height: 16px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.tl-card-skel {
+.card-skel {
   flex: 1;
   height: 56px;
   border-radius: 8px;
@@ -619,7 +619,7 @@ onMounted(async () => {
   color: var(--common-text);
   opacity: 0.5;
 }
-.tl-card-connector {
+.tl-connector {
   background: var(--common-color-1);
   opacity: 0.3;
 }
@@ -631,10 +631,10 @@ onMounted(async () => {
   border-color: var(--common-color-1);
   box-shadow: 0 4px 12px var(--common-shadow);
 }
-.tl-card-title {
+.tl-title {
   color: var(--common-text);
 }
-.tl-card-date {
+.tl-date {
   color: var(--common-text);
   opacity: 0.5;
 }
@@ -646,13 +646,13 @@ onMounted(async () => {
   border: 1px solid var(--common-color-1);
   color: var(--common-text);
 }
-.tl-label-text {
+.label-text {
   color: var(--common-text);
 }
-.skeleton-container .tl-dot-skel {
+.skeleton-container .dot-skel {
   background: var(--common-shadow);
 }
-.skeleton-container .tl-card-skel {
+.skeleton-container .card-skel {
   background: linear-gradient(90deg, var(--common-shadow) 25%, color-mix(in srgb, var(--common-color-1) 15%, transparent) 50%, var(--common-shadow) 75%);
   background-size: 200% 100%;
 }
@@ -669,21 +669,21 @@ onMounted(async () => {
     padding-left: 20px;
   }
 
-  .tl-group-label {
+  .group-label {
     left: -20px;
   }
 
-  .tl-card-header {
+  .tl-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
 
-  .tl-card-date {
+  .tl-date {
     margin-left: 0;
   }
 
-  .tl-card-connector {
+  .tl-connector {
     width: 10px;
     margin-left: -18px;
   }

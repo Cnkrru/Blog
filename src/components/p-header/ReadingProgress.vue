@@ -82,16 +82,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="reading-progress-container">
+  <div class="progress-container">
     <div
-      class="reading-progress-bar"
+      class="progress-track"
       :style="{ width: `${progress}%` }"
     ></div>
   </div>
 </template>
 
 <style scoped>
-.reading-progress-container {
+.progress-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -100,7 +100,7 @@ onUnmounted(() => {
   z-index: 1001;
 }
 
-.reading-progress-bar {
+.progress-track {
   height: 100%;
   transition: width 0.15s ease;
   border-radius: 0 3px 3px 0;
@@ -108,12 +108,12 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-.reading-progress-container {
+.progress-container {
   background-color: var(--common-color-1);
   opacity: 0.25;
 }
 
-.reading-progress-bar {
+.progress-track {
   background: var(--common-gradient);
   box-shadow: 0 0 6px var(--common-color-1);
 }

@@ -25,7 +25,7 @@ const handleResultClick = (item) => {
         <div
           v-for="item in results"
           :key="item.id"
-          class="search-result-item"
+          class="search-item"
           @click="handleResultClick(item)"
         >
           <div class="result-title" v-html="highlightMatch(escapeHtml(item.title), searchText)"></div>
@@ -66,7 +66,7 @@ const handleResultClick = (item) => {
   font-size: 12px;
 }
 
-.search-result-item {
+.search-item {
   padding: 12px 16px;
   border-radius: 8px;
   margin: 2px 4px;
@@ -74,11 +74,11 @@ const handleResultClick = (item) => {
   cursor: pointer;
 }
 
-.search-result-item:first-child {
+.search-item:first-child {
   border-radius: 10px 10px 8px 8px;
 }
 
-.search-result-item:last-child {
+.search-item:last-child {
   border-radius: 8px 8px 10px 10px;
 }
 
@@ -126,12 +126,12 @@ const handleResultClick = (item) => {
   border-bottom: 1px solid var(--common-color-1);
 }
 
-.search-result-item {
+.search-item {
   background-color: transparent;
   color: var(--common-text);
 }
 
-.search-result-item:hover {
+.search-item:hover {
   background-color: color-mix(in srgb, var(--common-color-1) 15%, transparent);
 }
 

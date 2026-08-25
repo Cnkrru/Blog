@@ -160,7 +160,7 @@ onUnmounted(() => {
           <div class="seal-border">
             <span class="seal-text">Cnkrru</span>
           </div>
-          <div class="seal-border-inner"></div>
+          <div class="seal-inner"></div>
         </div>
       </div>
     </Teleport>
@@ -267,7 +267,7 @@ onUnmounted(() => {
   justify-content: center;
   background: transparent;
 }
-.seal-border-inner {
+.seal-inner {
   position: absolute;
   inset: 4px;
   border: 1px solid rgba(196, 30, 58, 0.5);

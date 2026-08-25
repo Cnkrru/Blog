@@ -34,9 +34,9 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
         class="toc-arrow"
         @click.prevent.stop="emit('toggle', node.id)"
       >
-        <span class="svg-icon toc-arrow-icon" :class="{ rot: !isCollapsed() }" :style="{ width: '10px', height: '10px' }" v-html="chevronRightSvg"></span>
+        <span class="svg-icon toc-icon" :class="{ rot: !isCollapsed() }" :style="{ width: '10px', height: '10px' }" v-html="chevronRightSvg"></span>
       </span>
-      <span v-else class="toc-arrow-placeholder"></span>
+      <span v-else class="toc-holder"></span>
 
       <!-- 标题序号 -->
       <span v-if="node.numbering" class="toc-num">{{ node.numbering }}</span>
@@ -48,7 +48,7 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
     <!-- 子节点折叠容器 -->
     <div
       v-if="hasChildren()"
-      class="toc-children-wrapper"
+      class="toc-childwrap"
       :class="{ collapsed: isCollapsed() }"
     >
       <ul
@@ -160,16 +160,16 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
 .lv-5 .toc-arrow { left: 48px; }
 .lv-6 .toc-arrow { left: 60px; }
 
-.toc-arrow-icon {
+.toc-icon {
   transition: transform 0.2s ease;
   opacity: 0.7;
 }
 
-.toc-arrow-icon.rot {
+.toc-icon.rot {
   transform: rotate(90deg);
 }
 
-.toc-arrow-placeholder {
+.toc-holder {
   width: 16px;
   flex-shrink: 0;
 }
@@ -202,12 +202,12 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
 }
 
 /* ========== 子节点容器 ========== */
-.toc-children-wrapper {
+.toc-childwrap {
   overflow: hidden;
   transition: max-height 0.2s ease;
 }
 
-.toc-children-wrapper.collapsed {
+.toc-childwrap.collapsed {
   max-height: 0;
 }
 

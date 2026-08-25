@@ -1,5 +1,5 @@
 <template>
-  <button class="toast-btn" :class="`toast-btn-${type}`" @click="triggerToast">
+  <button class="toast-btn" :class="`toast-${type}`" @click="triggerToast">
     {{ text }}
   </button>
 </template>
@@ -50,41 +50,41 @@ function triggerToast() {
 }
 
 /* ── info ── */
-.toast-btn-info {
+.toast-info {
   color: var(--common-color-1);
   border-color: color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
-.toast-btn-info:hover {
+.toast-info:hover {
   background: color-mix(in srgb, var(--common-color-1) 12%, transparent);
   border-color: var(--common-color-1);
 }
 
 /* ── success ── */
-.toast-btn-success {
+.toast-success {
   color: var(--color-success);
   border-color: color-mix(in srgb, var(--color-success) 40%, transparent);
 }
-.toast-btn-success:hover {
+.toast-success:hover {
   background: color-mix(in srgb, var(--color-success) 12%, transparent);
   border-color: var(--color-success);
 }
 
 /* ── warning ── */
-.toast-btn-warning {
+.toast-warning {
   color: var(--color-warning);
   border-color: color-mix(in srgb, var(--color-warning) 40%, transparent);
 }
-.toast-btn-warning:hover {
+.toast-warning:hover {
   background: color-mix(in srgb, var(--color-warning) 12%, transparent);
   border-color: var(--color-warning);
 }
 
 /* ── error ── */
-.toast-btn-error {
+.toast-error {
   color: var(--color-error);
   border-color: color-mix(in srgb, var(--color-error) 40%, transparent);
 }
-.toast-btn-error:hover {
+.toast-error:hover {
   background: color-mix(in srgb, var(--color-error) 12%, transparent);
   border-color: var(--color-error);
 }

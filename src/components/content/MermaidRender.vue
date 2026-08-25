@@ -1,5 +1,5 @@
 <template>
-  <div class="mermaid-container" :class="{ 'mermaid-container-dark': isDarkTheme }">
+  <div class="mermaid-container" :class="{ 'mermaid-dark': isDarkTheme }">
     <div v-if="loading" class="mermaid-loading">
       <div class="loading-spinner"></div>
       <span>加载图表中...</span>
@@ -147,7 +147,7 @@ watch(() => isDarkTheme.value, () => {
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
-.mermaid-container-dark {
+.mermaid-dark {
 }
 
 .mermaid-loading {
@@ -167,7 +167,7 @@ watch(() => isDarkTheme.value, () => {
   margin-bottom: 16px;
 }
 
-.mermaid-container-dark .loading-spinner {
+.mermaid-dark .loading-spinner {
 }
 
 .mermaid-error {
@@ -192,7 +192,7 @@ watch(() => isDarkTheme.value, () => {
 }
 
 /* 暗色主题适配 */
-.mermaid-container-dark :deep(.mermaid) {
+.mermaid-dark :deep(.mermaid) {
 }
 </style>
 
@@ -204,7 +204,7 @@ watch(() => isDarkTheme.value, () => {
   border: 1px solid var(--common-color-1);
 }
 
-.mermaid-container-dark {
+.mermaid-dark {
   background-color: var(--common-bg);
   box-shadow: 0 2px 4px var(--common-shadow);
   border: 1px solid var(--common-color-1);
@@ -220,7 +220,7 @@ watch(() => isDarkTheme.value, () => {
 }
 
 /* 暗色主题适配 */
-.mermaid-container-dark :deep(.mermaid) {
+.mermaid-dark :deep(.mermaid) {
   filter: brightness(0.9);
 }
 </style>

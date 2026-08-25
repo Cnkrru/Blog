@@ -6,7 +6,7 @@
     <div class="cover-deco deco-3"></div>
 
     <!-- 装饰线 -->
-    <div class="cover-accent-line"></div>
+    <div class="cover-line"></div>
 
     <!-- 内容 -->
     <div class="cover-content">
@@ -121,7 +121,7 @@ const coverVars = computed(() => {
 }
 
 /* 装饰线 */
-.cover-accent-line {
+.cover-line {
   position: absolute;
   top: 16px;
   left: var(--cover-line-left, 16px);

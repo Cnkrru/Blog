@@ -141,7 +141,7 @@ const handleError = (err) => {
     <div id="site-stats-container"></div>
     <div class="center-head-card">
         <h2>{{ project?.name || '项目详情' }}</h2>
-        <div class="center-head-card-tools">
+        <div class="head-tools">
             <BackToTop />
             <PostMenu v-model:show="showPostMenu" />
             <TocButton v-model:show="showToc" />
@@ -173,7 +173,7 @@ const handleError = (err) => {
 
         <hr v-if="!loading && !error">
         
-        <div class="read-center-card-footer" v-if="!loading && !error">
+        <div class="read-footer" v-if="!loading && !error">
             <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
         </div>
         
@@ -194,7 +194,7 @@ const handleError = (err) => {
     padding: 50px 0;
 }
 
-.center-head-card-tools {
+.head-tools {
     display: flex;
     justify-content: flex-end;
     align-items: center;

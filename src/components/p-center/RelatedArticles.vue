@@ -85,10 +85,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="related-articles-wrapper">
-    <div class="related-articles-container">
-      <h3 class="related-articles-title">相关文章推荐</h3>
-      <div class="related-articles-grid">
+  <div class="related-wrap">
+    <div class="related-box">
+      <h3 class="related-head">相关文章推荐</h3>
+      <div class="related-grid">
         <RouterLink
           v-for="(article, idx) in relatedArticles"
           :key="article.id"
@@ -96,15 +96,15 @@ onUnmounted(() => {
           class="related-card"
           :style="{ animationDelay: `${idx * 0.08}s` }"
         >
-          <div class="related-card-cover">
+          <div class="related-cover">
             <ArticleCover :article="article" />
           </div>
-          <div class="related-card-body">
-            <span v-if="article.category" class="related-card-category">{{ article.category }}</span>
-            <div class="related-card-title">{{ article.title }}</div>
-            <div class="related-card-meta">
-              <span class="related-card-date">{{ article.date }}</span>
-              <span v-if="article.tags && article.tags.length > 0" class="related-card-tags">
+          <div class="related-body">
+            <span v-if="article.category" class="related-cat">{{ article.category }}</span>
+            <div class="related-title">{{ article.title }}</div>
+            <div class="related-meta">
+              <span class="related-date">{{ article.date }}</span>
+              <span v-if="article.tags && article.tags.length > 0" class="related-tags">
                 <span v-for="tag in article.tags.slice(0, 2)" :key="tag" class="tag">{{ tag }}</span>
               </span>
             </div>
@@ -116,12 +116,12 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.related-articles-wrapper {
+.related-wrap {
   width: 100%;
   margin: 20px 0;
 }
 
-.related-articles-container {
+.related-box {
   width: 100%;
   padding: 14px;
   border-radius: 12px;
@@ -129,14 +129,14 @@ onUnmounted(() => {
   border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
-.related-articles-title {
+.related-head {
   margin: 0 0 14px 0;
   font-size: 16px;
   font-weight: bold;
   color: var(--common-text);
 }
 
-.related-articles-grid {
+.related-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -171,13 +171,13 @@ onUnmounted(() => {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
 }
 
-.related-card-cover {
+.related-cover {
   width: 100%;
   aspect-ratio: 1.91 / 1;
   overflow: hidden;
 }
 
-.related-card-body {
+.related-body {
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
@@ -185,7 +185,7 @@ onUnmounted(() => {
   flex: 1;
 }
 
-.related-card-category {
+.related-cat {
   display: inline-block;
   padding: 2px 8px;
   font-size: 11px;
@@ -194,7 +194,7 @@ onUnmounted(() => {
   width: fit-content;
 }
 
-.related-card-title {
+.related-title {
   font-size: 13px;
   font-weight: 500;
   line-height: 1.4;
@@ -204,7 +204,7 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
-.related-card-meta {
+.related-meta {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -212,11 +212,11 @@ onUnmounted(() => {
   margin-top: auto;
 }
 
-.related-card-date {
+.related-date {
   flex-shrink: 0;
 }
 
-.related-card-tags {
+.related-tags {
   display: flex;
   gap: 4px;
 }
@@ -240,16 +240,16 @@ onUnmounted(() => {
   border-color: var(--common-color-1);
 }
 
-.related-card-category {
+.related-cat {
   background-color: var(--common-color-1);
   color: #fff;
 }
 
-.related-card-title {
+.related-title {
   color: var(--common-text);
 }
 
-.related-card-meta {
+.related-meta {
   color: var(--common-text);
   opacity: 0.7;
 }
@@ -262,32 +262,32 @@ onUnmounted(() => {
 
 <style scoped>
 @media (max-width: 640px) {
-  .related-articles-grid {
+  .related-grid {
     grid-template-columns: 1fr;
   }
 
-  .related-articles-container {
+  .related-box {
     padding: 12px;
     margin: 15px 0;
   }
   
-  .related-articles-title {
+  .related-head {
     font-size: 14px;
     margin-bottom: 12px;
   }
   
-  .related-card-title {
+  .related-title {
     font-size: 13px;
   }
   
-  .related-card-meta {
+  .related-meta {
     font-size: 11px;
     flex-wrap: wrap;
   }
 }
 
 @media (min-width: 640px) and (max-width: 1023px) {
-  .related-articles-grid {
+  .related-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }

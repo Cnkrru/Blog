@@ -12,7 +12,7 @@ const toggleMobileMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 
   const leftAsider = document.querySelector('.left-asider-s')
-  const mobileMenuOverlay = document.getElementById('mobile-menu-overlay')
+  const mobileMenuOverlay = document.getElementById('menu-overlay')
   
   if (leftAsider && mobileMenuOverlay) {
     if (isMenuOpen.value) 
@@ -31,7 +31,7 @@ const toggleMobileMenu = () => {
 
 // 点击遮罩层关闭菜单
 const handleOverlayClick = (event) => {
-  if (event.target.id === 'mobile-menu-overlay') {
+  if (event.target.id === 'menu-overlay') {
     toggleMobileMenu()
   }
 }
@@ -57,11 +57,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="mobile-menu-container">
+  <div class="menu-container">
     <!-- 移动端菜单按钮 -->
     <div 
-      class="button-style mobile-menu-toggle" 
-      id="mobile-menu-toggle" 
+      class="button-style menu-button" 
+      id="menu-button" 
       title="菜单"
       @click="toggleMobileMenu"
     >
@@ -71,8 +71,8 @@ onUnmounted(() => {
     <!-- 移动端菜单遮罩层 -->
     <Teleport to="body">
       <div
-        class="mobile-menu-overlay"
-        id="mobile-menu-overlay"
+        class="menu-overlay"
+        id="menu-overlay"
         @click="handleOverlayClick"
       ></div>
     </Teleport>
@@ -81,11 +81,11 @@ onUnmounted(() => {
 
 <!-- 布局样式 -->
 <style scoped>
-.mobile-menu-container {
+.menu-container {
   display: none;
 }
 
-.mobile-menu-overlay {
+.menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -95,14 +95,14 @@ onUnmounted(() => {
   display: none;
 }
 
-.mobile-menu-overlay.active {
+.menu-overlay.active {
   display: block;
 }
 </style>
 
 <!-- 颜色样式 -->
 <style scoped>
-.mobile-menu-overlay {
+.menu-overlay {
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -113,10 +113,10 @@ onUnmounted(() => {
 <!-- 响应式设计媒体查询 -->
 <style scoped>
 @media (max-width: 768px) {
-  .mobile-menu-container {
+  .menu-container {
     display: block;
   }
-  .mobile-menu-toggle {
+  .menu-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -124,7 +124,7 @@ onUnmounted(() => {
     cursor: pointer;
   }
 
-  .mobile-menu-overlay {
+  .menu-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -134,7 +134,7 @@ onUnmounted(() => {
     z-index: 999;
   }
 
-  .mobile-menu-overlay.active {
+  .menu-overlay.active {
     display: block;
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="json-tree-node" :style="{ paddingLeft: depth > 0 ? '20px' : '0' }">
+  <div class="json-node" :style="{ paddingLeft: depth > 0 ? '20px' : '0' }">
     <!-- 对象 / 数组 -->
     <div v-if="isObject(data)" class="tree-branch">
       <div
@@ -168,7 +168,7 @@ function onCollapseAll() {
 </script>
 
 <style scoped>
-.json-tree-node {
+.json-node {
   font-family: 'Fira Code', 'Consolas', 'SF Mono', monospace;
   font-size: 13px;
   line-height: 1.7;
@@ -333,7 +333,7 @@ function onCollapseAll() {
 
 <style scoped>
 @media (max-width: 768px) {
-  .json-tree-node {
+  .json-node {
     font-size: 12px;
   }
 

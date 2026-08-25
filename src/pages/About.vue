@@ -74,7 +74,7 @@ onMounted(() => {
     </div>
     <hr>
     <div class="center-card-content">
-        <div class="about-center-card-body">
+        <div class="about-body">
             <div v-if="loading" class="loading-message">
                 <p>加载中...</p>
             </div>
@@ -95,13 +95,13 @@ onMounted(() => {
 
 <style scoped>
 /* 布局样式 */
-.about-center-card-body {
+.about-body {
     width: 100%;
     height: auto;
     overflow: visible;
 }
 
-.about-center-card-footer {
+.about-footer {
     width: 100%;
     height: 100px;
     line-height: 1.5;
@@ -125,13 +125,13 @@ onMounted(() => {
 <style scoped>
 /* 响应式设计媒体查询 */
 @media (max-width: 640px) {
-    .about-center-card-footer {
+    .about-footer {
         height: 120px;
     }
 }
 
 @media (max-width: 768px) {
-    .about-center-card-footer {
+    .about-footer {
         height: 100px;
     }
 }

@@ -120,7 +120,7 @@ onMounted(() => {
     <!-- 模式切换 + 操作 -->
     <div class="arch-toolbar">
       <div class="view-tabs" ref="tabsRef">
-      <div class="view-tabs-indicator" :style="{ left: indicatorLeft + 'px', width: indicatorWidth + 'px' }"></div>
+      <div class="tabs-indicator" :style="{ left: indicatorLeft + 'px', width: indicatorWidth + 'px' }"></div>
       <button
         :class="['view-tab', { active: viewMode === 'category' }]"
         @click="viewMode = 'category'"
@@ -137,7 +137,7 @@ onMounted(() => {
         aria-label="按月查看"
       >月份</button>
     </div>
-      <button class="expand-all-btn" @click="toggleExpandAll">
+      <button class="expand-btn" @click="toggleExpandAll">
         {{ expandedKey === '_all' ? '全部收起' : '全部展开' }}
       </button>
     </div>
@@ -213,7 +213,7 @@ onMounted(() => {
   position: relative;
 }
 
-.view-tabs-indicator {
+.tabs-indicator {
   position: absolute;
   top: 3px;
   height: calc(100% - 6px);
@@ -241,7 +241,7 @@ onMounted(() => {
   color: var(--common-content);
 }
 
-.expand-all-btn {
+.expand-btn {
   padding: 4px 14px;
   border-radius: 20px;
   border: 1px solid var(--common-color-1);
@@ -252,7 +252,7 @@ onMounted(() => {
   transition: all 0.2s ease;
 }
 
-.expand-all-btn:hover {
+.expand-btn:hover {
   background: var(--common-color-1);
   color: var(--common-content);
 }

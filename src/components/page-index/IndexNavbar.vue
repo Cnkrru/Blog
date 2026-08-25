@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-menu-container">
+  <div class="nav-container">
     <ul class="nav-menu">
       <li v-for="(section, index) in sections" :key="section.id" class="nav-item">
         <a
@@ -34,7 +34,7 @@ const navigateTo = (path) => {
 </script>
 
 <style scoped>
-.nav-menu-container {
+.nav-container {
   display: flex;
   align-items: center;
 }

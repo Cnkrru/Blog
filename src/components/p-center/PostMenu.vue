@@ -85,19 +85,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="post-menu-container">
+  <div class="menu-wrap">
     <!-- 文章菜单按钮 -->
-    <div class="post-menu-btn-container">
-      <button class="post-menu-btn" @click="toggleMenu" :title="show ? '关闭菜单' : '文章菜单'" aria-label="文章菜单">
+    <div class="menu-toggle">
+      <button class="menu-btn" @click="toggleMenu" :title="show ? '关闭菜单' : '文章菜单'" aria-label="文章菜单">
         <span
           v-if="!show"
-          class="svg-icon menu-btn-icon"
+          class="svg-icon btn-icon"
           :style="{ width: '18px', height: '18px' }"
           v-html="menuSvg"
         ></span>
         <span
           v-else
-          class="svg-icon menu-btn-icon"
+          class="svg-icon btn-icon"
           :style="{ width: '16px', height: '16px' }"
           v-html="xSvg"
         ></span>
@@ -106,23 +106,23 @@ onMounted(() => {
 
     <!-- 文章菜单卡片 -->
     <Teleport to="body">
-      <div class="post-menu-card" :class="{ active: show }">
+      <div class="menu-card" :class="{ active: show }">
         <!-- 头部 -->
-        <div class="post-menu-card-header">
-          <div class="post-menu-header-left">
-            <span class="svg-icon post-menu-header-icon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
+        <div class="menu-header">
+          <div class="menu-title">
+            <span class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
             <h3>文章菜单</h3>
-            <span class="post-menu-count">{{ posts.length }}</span>
+            <span class="menu-count">{{ posts.length }}</span>
           </div>
-          <button class="post-menu-close-btn" @click="toggleMenu" title="关闭" aria-label="关闭菜单">
+          <button class="menu-close" @click="toggleMenu" title="关闭" aria-label="关闭菜单">
             <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
           </button>
         </div>
 
-        <div class="post-menu-divider"></div>
+        <div class="menu-line"></div>
 
         <!-- 搜索和排序 -->
-        <div class="post-menu-controls">
+        <div class="menu-actions">
           <!-- 搜索框 -->
           <div class="search-box">
             <span class="svg-icon search-icon" :style="{ width: '14px', height: '14px' }" v-html="searchSvg"></span>
@@ -130,9 +130,9 @@ onMounted(() => {
               type="text"
               v-model="searchKeyword"
               placeholder="搜索文章标题或标签..."
-              class="menu-search-input"
+              class="search-input"
             />
-            <button v-if="searchKeyword" @click="clearSearch" class="menu-clear-search-btn" title="清除" aria-label="清除搜索">
+            <button v-if="searchKeyword" @click="clearSearch" class="search-clear" title="清除" aria-label="清除搜索">
               <span class="svg-icon" :style="{ width: '12px', height: '12px' }" v-html="xSvg"></span>
             </button>
           </div>
@@ -158,15 +158,15 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="post-menu-divider"></div>
+        <div class="menu-line"></div>
 
         <!-- 文章列表 -->
-        <div class="post-menu-card-content">
+        <div class="menu-body">
           <ul class="post-list">
             <li
               v-for="(post, index) in posts"
               :key="post.id"
-              class="post-list-item"
+              class="list-item"
               @click="navigateToPost(post.id)"
             >
               <span class="post-index">{{ index + 1 }}</span>
@@ -179,7 +179,7 @@ onMounted(() => {
               </div>
             </li>
           </ul>
-          <div v-if="!posts.length" class="post-list-empty">
+          <div v-if="!posts.length" class="post-empty">
             <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="searchSvg"></span>
             <span>没有匹配的文章</span>
           </div>
@@ -191,7 +191,7 @@ onMounted(() => {
 
 <style scoped>
 /* ============================== 卡片容器 ============================== */
-.post-menu-card {
+.menu-card {
   position: fixed;
   top: 50%;
   right: 0;
@@ -210,12 +210,12 @@ onMounted(() => {
   box-shadow: -4px 0 28px color-mix(in srgb, var(--common-shadow) 50%, transparent);
 }
 
-.post-menu-card.active {
+.menu-card.active {
   transform: translate(0, -50%);
 }
 
 /* ============================== 卡片头部 ============================== */
-.post-menu-card-header {
+.menu-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -223,19 +223,19 @@ onMounted(() => {
   user-select: none;
 }
 
-.post-menu-header-left {
+.menu-title {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.post-menu-header-icon {
+.menu-icon {
   color: var(--common-text);
   opacity: 0.5;
   flex-shrink: 0;
 }
 
-.post-menu-card-header h3 {
+.menu-header h3 {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
@@ -243,7 +243,7 @@ onMounted(() => {
   letter-spacing: 0.3px;
 }
 
-.post-menu-count {
+.menu-count {
   font-size: 10px;
   font-weight: 500;
   padding: 1px 6px;
@@ -254,7 +254,7 @@ onMounted(() => {
   line-height: 1.5;
 }
 
-.post-menu-close-btn {
+.menu-close {
   width: 26px;
   height: 26px;
   border-radius: 6px;
@@ -269,20 +269,20 @@ onMounted(() => {
   transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
 }
 
-.post-menu-close-btn:hover {
+.menu-close:hover {
   opacity: 0.8;
   background: color-mix(in srgb, var(--common-text) 6%, transparent);
   transform: rotate(90deg);
 }
 
-.post-menu-divider {
+.menu-line {
   height: 1px;
   background: color-mix(in srgb, var(--common-text) 8%, transparent);
   margin: 0 16px;
 }
 
 /* ============================== 搜索和排序 ============================== */
-.post-menu-controls {
+.menu-actions {
   padding: 10px 16px;
 }
 
@@ -305,7 +305,7 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.menu-search-input {
+.search-input {
   width: 100%;
   padding: 7px 32px 7px 32px;
   border-radius: 8px;
@@ -317,17 +317,17 @@ onMounted(() => {
   outline: none;
 }
 
-.menu-search-input::placeholder {
+.search-input::placeholder {
   color: var(--common-text);
   opacity: 0.3;
 }
 
-.menu-search-input:focus {
+.search-input:focus {
   border-color: color-mix(in srgb, var(--common-color-1) 40%, transparent);
   background: color-mix(in srgb, var(--common-text) 3%, transparent);
 }
 
-.menu-clear-search-btn {
+.search-clear {
   position: absolute;
   right: 6px;
   top: 50%;
@@ -346,7 +346,7 @@ onMounted(() => {
   transition: opacity 0.15s ease, background-color 0.15s ease;
 }
 
-.menu-clear-search-btn:hover {
+.search-clear:hover {
   opacity: 0.8;
   background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
@@ -385,7 +385,7 @@ onMounted(() => {
 }
 
 /* ============================== 文章列表 ============================== */
-.post-menu-card-content {
+.menu-body {
   padding: 0 0 6px;
   max-height: calc(70vh - 130px);
   overflow-y: auto;
@@ -393,15 +393,15 @@ onMounted(() => {
   scrollbar-color: color-mix(in srgb, var(--common-text) 12%, transparent) transparent;
 }
 
-.post-menu-card-content::-webkit-scrollbar {
+.menu-body::-webkit-scrollbar {
   width: 4px;
 }
 
-.post-menu-card-content::-webkit-scrollbar-track {
+.menu-body::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.post-menu-card-content::-webkit-scrollbar-thumb {
+.menu-body::-webkit-scrollbar-thumb {
   background: color-mix(in srgb, var(--common-text) 12%, transparent);
   border-radius: 2px;
 }
@@ -412,7 +412,7 @@ onMounted(() => {
   margin: 0;
 }
 
-.post-list-item {
+.list-item {
   padding: 9px 16px;
   cursor: pointer;
   display: flex;
@@ -429,7 +429,7 @@ onMounted(() => {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.post-list-item:hover {
+.list-item:hover {
   background: color-mix(in srgb, var(--common-color-1) 8%, transparent);
 }
 
@@ -466,7 +466,7 @@ onMounted(() => {
   font-weight: 500;
 }
 
-.post-list-item:hover .post-title {
+.list-item:hover .post-title {
   color: var(--common-color-1);
 }
 
@@ -494,7 +494,7 @@ onMounted(() => {
 }
 
 /* 空状态 */
-.post-list-empty {
+.post-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -506,12 +506,12 @@ onMounted(() => {
 }
 
 /* ============================== 菜单按钮 ============================== */
-.post-menu-btn-container {
+.menu-toggle {
   display: flex;
   align-items: center;
 }
 
-.post-menu-btn {
+.menu-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -526,39 +526,39 @@ onMounted(() => {
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.menu-btn-icon {
+.btn-icon {
   color: #fff;
 }
 
-.post-menu-btn:hover {
+.menu-btn:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
 
-.post-menu-btn:active {
+.menu-btn:active {
   transform: scale(0.95);
 }
 
 /* ============================== 响应式 ============================== */
 @media (max-width: 640px) {
-  .post-menu-card {
+  .menu-card {
     width: 260px;
     max-height: 60vh;
   }
-  .post-menu-card-header { padding: 10px 14px 8px; }
-  .post-menu-card-header h3 { font-size: 13px; }
-  .post-menu-controls { padding: 8px 14px; }
-  .post-menu-card-content { max-height: calc(60vh - 120px); }
-  .post-list-item { padding: 7px 14px; }
+  .menu-header { padding: 10px 14px 8px; }
+  .menu-header h3 { font-size: 13px; }
+  .menu-actions { padding: 8px 14px; }
+  .menu-body { max-height: calc(60vh - 120px); }
+  .list-item { padding: 7px 14px; }
   .post-title { font-size: 12px; }
-  .post-menu-btn { width: 32px; height: 32px; }
+  .menu-btn { width: 32px; height: 32px; }
 }
 
 @media (max-width: 768px) {
-  .post-menu-card { width: 280px; }
+  .menu-card { width: 280px; }
 }
 
 @media (max-width: 1024px) {
-  .post-menu-card { width: 290px; }
+  .menu-card { width: 290px; }
 }
 </style>

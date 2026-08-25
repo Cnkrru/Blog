@@ -54,7 +54,7 @@ const closeDropdown = () => {
 </script>
 
 <template>
-  <div class="page-nav-container" @click="closeDropdown">
+  <div class="page-nav" @click="closeDropdown">
     <div class="pagination-bar">
       <button
         class="nav-btn prev-btn"
@@ -126,7 +126,7 @@ const closeDropdown = () => {
 </template>
 
 <style scoped>
-.page-nav-container {
+.page-nav {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -347,7 +347,7 @@ const closeDropdown = () => {
 
 <style scoped>
 @media (max-width: 768px) {
-  .page-nav-container {
+  .page-nav {
     padding: 10px;
   }
 
@@ -386,7 +386,7 @@ const closeDropdown = () => {
 }
 
 @media (max-width: 480px) {
-  .page-nav-container {
+  .page-nav {
     padding: 8px 6px;
     gap: 6px;
   }

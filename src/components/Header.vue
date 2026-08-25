@@ -31,7 +31,7 @@ const router = useRouter()
             <Search />
             
             <!-- 功能按钮 -->
-            <div class="button-class-card">
+            <div class="button-card">
               
               <!-- 移动端菜单按钮 -->
               <MobileMenu />
@@ -102,7 +102,7 @@ const router = useRouter()
 
 /*==========功能按钮设计==========*/
     /* 功能按钮卡片设计 */
-.button-class-card {
+.button-card {
     width: fit-content;
     height: 40px;
 
@@ -213,7 +213,7 @@ const router = useRouter()
     padding: 6px;
   }
 
-  .button-class-card {
+  .button-card {
     justify-content: center;
     gap: 4px;
   }
@@ -237,7 +237,7 @@ const router = useRouter()
     gap: 10px;
   }
 
-  .button-class-card {
+  .button-card {
     justify-content: center;
   }
 

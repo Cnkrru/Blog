@@ -117,7 +117,7 @@ onUnmounted(() => {
         role="alert"
         aria-live="polite"
       >
-        <div class="install-prompt-body">
+        <div class="prompt-body">
           <!-- 图标 -->
           <div class="install-icon">
             <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="downloadSvg"></span>
@@ -131,10 +131,10 @@ onUnmounted(() => {
 
           <!-- 按钮组 -->
           <div class="install-actions">
-            <button class="install-btn install-btn-secondary" @click="handleDismiss">
+            <button class="install-btn install-secondary" @click="handleDismiss">
               稍后再说
             </button>
-            <button class="install-btn install-btn-primary" @click="handleInstall">
+            <button class="install-btn install-primary" @click="handleInstall">
               安装
             </button>
           </div>
@@ -164,7 +164,7 @@ onUnmounted(() => {
 }
 
 /* ── 主体 ── */
-.install-prompt-body {
+.prompt-body {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -226,26 +226,26 @@ onUnmounted(() => {
   transform: scale(0.96);
 }
 
-.install-btn-primary {
+.install-primary {
   border: none;
   background: linear-gradient(135deg, var(--common-color-1), var(--common-hover));
   color: #fff;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
-.install-btn-primary:hover {
+.install-primary:hover {
   box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 45%, transparent);
   filter: brightness(1.08);
 }
 
-.install-btn-secondary {
+.install-secondary {
   border: 1px solid color-mix(in srgb, var(--common-text) 15%, transparent);
   background: transparent;
   color: var(--common-text);
   opacity: 0.7;
 }
 
-.install-btn-secondary:hover {
+.install-secondary:hover {
   opacity: 1;
   background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
@@ -276,7 +276,7 @@ onUnmounted(() => {
     width: calc(100% - 20px);
   }
 
-  .install-prompt-body {
+  .prompt-body {
     flex-wrap: wrap;
     gap: 10px;
     padding: 12px 14px;

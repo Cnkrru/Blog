@@ -90,8 +90,8 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 </script>
 
 <template>
-  <div class="reading-time-wrapper">
-    <div v-if="readingTime" class="reading-time-card">
+  <div class="reading-wrap">
+    <div v-if="readingTime" class="reading-card">
       <!-- 字数 -->
       <div class="metric-block">
         <div class="metric-icon">
@@ -109,24 +109,24 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
       <!-- 中文 -->
       <div class="metric-block metric-sm">
         <div class="metric-info">
-          <span class="metric-value-sm">{{ formatNum(readingTime.chineseCount) }}</span>
-          <span class="metric-label-sm">中文</span>
+          <span class="metric-vsm">{{ formatNum(readingTime.chineseCount) }}</span>
+          <span class="metric-lsm">中文</span>
         </div>
       </div>
 
       <!-- 英文 -->
       <div class="metric-block metric-sm">
         <div class="metric-info">
-          <span class="metric-value-sm">{{ formatNum(readingTime.englishCount) }}</span>
-          <span class="metric-label-sm">英文</span>
+          <span class="metric-vsm">{{ formatNum(readingTime.englishCount) }}</span>
+          <span class="metric-lsm">英文</span>
         </div>
       </div>
 
       <!-- 代码 -->
       <div class="metric-block metric-sm">
         <div class="metric-info">
-          <span class="metric-value-sm">{{ formatNum(readingTime.codeCount) }}</span>
-          <span class="metric-label-sm">代码</span>
+          <span class="metric-vsm">{{ formatNum(readingTime.codeCount) }}</span>
+          <span class="metric-lsm">代码</span>
         </div>
       </div>
 
@@ -149,12 +149,12 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 <style scoped>
 /* ── 布局 ── */
-.reading-time-wrapper {
+.reading-wrap {
   width: 100%;
   margin: 8px 0;
 }
 
-.reading-time-card {
+.reading-card {
   width: 100%;
   padding: 10px 16px;
   border-radius: 10px;
@@ -206,7 +206,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
-.metric-value-sm {
+.metric-vsm {
   font-size: 14px;
   font-weight: 700;
   color: var(--common-text);
@@ -223,7 +223,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
   line-height: 1;
 }
 
-.metric-label-sm {
+.metric-lsm {
   font-size: 10px;
   color: var(--common-text);
   opacity: 0.4;
@@ -246,7 +246,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 <style scoped>
 @media (max-width: 640px) {
-  .reading-time-card {
+  .reading-card {
     padding: 8px 10px;
     border-radius: 8px;
     gap: 0;
@@ -262,7 +262,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
     height: 12px;
   }
   .metric-value,
-  .metric-value-sm {
+  .metric-vsm {
     font-size: 13px;
   }
   .metric-divider {

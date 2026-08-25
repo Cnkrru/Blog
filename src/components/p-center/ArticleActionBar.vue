@@ -7,7 +7,7 @@ defineProps(['title', 'url', 'description'])
 
 <template>
   <div class="action-bar">
-    <div class="action-bar-inner">
+    <div class="action-inner">
       <ShareButton
         :title="title"
         :url="url"
@@ -26,7 +26,7 @@ defineProps(['title', 'url', 'description'])
   margin: 16px 0;
 }
 
-.action-bar-inner {
+.action-inner {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -46,7 +46,7 @@ defineProps(['title', 'url', 'description'])
 }
 
 @media (max-width: 640px) {
-  .action-bar-inner {
+  .action-inner {
     flex-direction: column;
     gap: 8px;
     padding: 10px 14px;

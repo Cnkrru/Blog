@@ -95,7 +95,7 @@ async function submit(type) {
 </script>
 
 <template>
-  <div class="article-feedback">
+  <div class="feedback-wrap">
     <div class="feedback-card">
       <div class="feedback-question">
         <span class="question-icon">
@@ -112,7 +112,7 @@ async function submit(type) {
           title="有用"
           @click="submit('up')"
         >
-          <span class="btn-icon-wrap">
+          <span class="btn-wrap">
             <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="thumbsUpSvg"></span>
           </span>
           <span class="btn-text">有用</span>
@@ -126,7 +126,7 @@ async function submit(type) {
           title="没用"
           @click="submit('down')"
         >
-          <span class="btn-icon-wrap">
+          <span class="btn-wrap">
             <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="thumbsDownSvg"></span>
           </span>
           <span class="btn-text">没用</span>
@@ -145,7 +145,7 @@ async function submit(type) {
 </template>
 
 <style scoped>
-.article-feedback {
+.feedback-wrap {
   display: flex;
   justify-content: center;
   padding: 28px 0 20px;
@@ -256,7 +256,7 @@ async function submit(type) {
   opacity: 1;
 }
 
-.btn-icon-wrap {
+.btn-wrap {
   display: flex;
   align-items: center;
   flex-shrink: 0;

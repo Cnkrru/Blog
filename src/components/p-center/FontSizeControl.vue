@@ -22,7 +22,7 @@ const isAtMax = computed(() => theme.articleFontSize >= MAX)
 </script>
 
 <template>
-  <div class="font-size-control" title="文章字体大小">
+  <div class="size-control" title="文章字体大小">
     <button
       class="size-btn"
       @click="decrease"
@@ -36,7 +36,7 @@ const isAtMax = computed(() => theme.articleFontSize >= MAX)
       <span class="size-value">{{ theme.articleFontSize }}</span>
       <span class="size-unit">px</span>
       <div class="size-bar">
-        <div class="size-bar-fill" :style="{ width: `${progress}%` }"></div>
+        <div class="size-fill" :style="{ width: `${progress}%` }"></div>
       </div>
     </div>
 
@@ -52,7 +52,7 @@ const isAtMax = computed(() => theme.articleFontSize >= MAX)
 </template>
 
 <style scoped>
-.font-size-control {
+.size-control {
   display: flex;
   align-items: center;
   height: 36px;
@@ -141,7 +141,7 @@ const isAtMax = computed(() => theme.articleFontSize >= MAX)
   left: 0;
 }
 
-.size-bar-fill {
+.size-fill {
   height: 100%;
   border-radius: 1px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -150,7 +150,7 @@ const isAtMax = computed(() => theme.articleFontSize >= MAX)
 
 /* 移动端适配 */
 @media (max-width: 640px) {
-  .font-size-control {
+  .size-control {
     height: 32px;
     border-radius: 16px;
     padding: 0 3px;

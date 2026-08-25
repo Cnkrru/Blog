@@ -170,10 +170,10 @@ onMounted(() => {
 <template>
     <div id="site-stats-container"></div>
     <div class="center-head-card">
-        <div class="center-head-title">
+        <div class="head-title">
             <h2>{{ post?.title || '文章详情' }}</h2>
         </div>
-        <div class="center-head-tools">
+        <div class="head-tools">
             
             <BackToTop />
             <PostMenu v-model:show="showPostMenu" />
@@ -217,7 +217,7 @@ onMounted(() => {
         
         <hr v-if="!loading && !error">
 
-        <div class="read-center-card-footer" v-if="!loading && !error">
+        <div class="read-footer" v-if="!loading && !error">
             <p>© 2026 Cnkrru's Blog. All rights reserved.</p>
         </div>
 
@@ -245,12 +245,12 @@ onMounted(() => {
     padding: 50px 0;
 }
 
-.center-head-title {
+.head-title {
     flex: 1;
     min-width: 0;
 }
 
-.center-head-tools {
+.head-tools {
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -260,7 +260,7 @@ onMounted(() => {
 
 /* 移动端 */
 @media (max-width: 640px) {
-    .center-head-title {
+    .head-title {
         width: 100%;
     }
 
@@ -270,7 +270,7 @@ onMounted(() => {
         white-space: normal;
     }
 
-    .center-head-tools {
+    .head-tools {
         gap: 6px;
     }
 }

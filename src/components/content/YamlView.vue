@@ -1,15 +1,15 @@
 <template>
-  <div class="yaml-view-container" :class="{ 'has-error': parseError }">
+  <div class="yv-container" :class="{ 'has-error': parseError }">
     <!-- 头部栏 -->
     <div class="yv-header">
       <span class="yv-badge">
         <span class="yv-dot"></span>
         <span class="yv-lang">yaml</span>
       </span>
-      <div class="yv-header-actions">
+      <div class="yv-actions">
         <CodeRender :code="code" />
         <button
-          class="yv-toggle-btn"
+          class="yv-toggle"
           :class="{ active: viewMode === 'preview' }"
           @click="viewMode = 'preview'"
           title="查看结构化视图"
@@ -18,7 +18,7 @@
           结构化
         </button>
         <button
-          class="yv-toggle-btn"
+          class="yv-toggle"
           :class="{ active: viewMode === 'source' }"
           @click="viewMode = 'source'"
           title="查看源码"
@@ -40,7 +40,7 @@
         <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="alertTriangleSvg"></span>
         <span>{{ parseError }}</span>
       </div>
-      <div v-else class="yv-tree-wrapper">
+      <div v-else class="yv-tree">
         <JsonTree :data="parsedData" />
       </div>
     </div>
@@ -170,7 +170,7 @@ watch(viewMode, () => {
 </script>
 
 <style scoped>
-.yaml-view-container {
+.yv-container {
   margin: 12px 0;
   border-radius: 10px;
   overflow: hidden;
@@ -178,7 +178,7 @@ watch(viewMode, () => {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
   box-shadow: 0 1px 3px var(--common-shadow);
 }
-.yaml-view-container.has-error {
+.yv-container.has-error {
   border-color: color-mix(in srgb, #ef4444 30%, transparent);
 }
 .yv-header {
@@ -189,7 +189,7 @@ watch(viewMode, () => {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
   border-bottom: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
-.yv-header-actions {
+.yv-actions {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -215,7 +215,7 @@ watch(viewMode, () => {
   flex-shrink: 0;
 }
 .yv-lang { font-size: 12px; font-weight: 600; }
-.yv-toggle-btn {
+.yv-toggle {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -228,11 +228,11 @@ watch(viewMode, () => {
   color: var(--common-text);
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-.yv-toggle-btn:hover {
+.yv-toggle:hover {
   background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   border-color: var(--common-color-1);
 }
-.yv-toggle-btn.active {
+.yv-toggle.active {
   background: var(--common-color-1);
   border-color: var(--common-color-1);
   color: var(--common-content);
@@ -272,7 +272,7 @@ watch(viewMode, () => {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.yv-tree-wrapper { padding: 8px 12px; }
+.yv-tree { padding: 8px 12px; }
 .yv-source {
   margin: 0;
   padding: 16px;
@@ -293,9 +293,9 @@ watch(viewMode, () => {
 @media (max-width: 768px) {
   .yv-header { padding: 6px 12px; }
   .yv-badge { padding: 2px 6px; font-size: 10px; }
-  .yv-toggle-btn { padding: 2px 8px; font-size: 11px; }
+  .yv-toggle { padding: 2px 8px; font-size: 11px; }
   .yv-source { padding: 12px; font-size: 12px; }
   .yv-stats { font-size: 8px; padding: 1px 4px; }
-  .yv-tree-wrapper { padding: 6px 8px; }
+  .yv-tree { padding: 6px 8px; }
 }
 </style>

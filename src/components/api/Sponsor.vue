@@ -29,7 +29,7 @@ if (typeof window !== 'undefined') {
 <template>
   <div v-if="sponsor.enabled" class="sponsor-wrap">
     <button class="sponsor-btn" @click="toggleModal">
-      <span class="svg-icon sp-btn-icon" :style="{ width: '16px', height: '16px' }" v-html="heartSvg"></span>
+      <span class="svg-icon sp-icon" :style="{ width: '16px', height: '16px' }" v-html="heartSvg"></span>
       赞赏
     </button>
 
@@ -78,7 +78,7 @@ if (typeof window !== 'undefined') {
   transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .sponsor-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--common-shadow); }
-.sp-btn-icon { flex-shrink: 0; }
+.sp-icon { flex-shrink: 0; }
 
 .sponsor-overlay {
   position: fixed;

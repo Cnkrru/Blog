@@ -8,8 +8,8 @@ const theme = useThemeStore()
   <div class="skeleton-container" :class="{ 'dark-theme': theme.isDark }">
     <!-- 标题骨架 -->
     <div class="skeleton-title">
-      <div class="skeleton-block title-line-1"></div>
-      <div class="skeleton-block title-line-2"></div>
+      <div class="skeleton-block title-line1"></div>
+      <div class="skeleton-block title-line2"></div>
     </div>
 
     <!-- 元信息骨架 -->
@@ -26,7 +26,7 @@ const theme = useThemeStore()
     </div>
 
     <!-- 图片骨架 -->
-    <div class="skeleton-image-placeholder">
+    <div class="skel-image">
       <div class="skeleton-block image-block"></div>
     </div>
 
@@ -41,7 +41,7 @@ const theme = useThemeStore()
 
     <!-- 代码块骨架 -->
     <div class="skeleton-code">
-      <div class="skeleton-block code-header-bar"></div>
+      <div class="skeleton-block code-headbar"></div>
       <div class="skeleton-block code-line w-80"></div>
       <div class="skeleton-block code-line w-70"></div>
       <div class="skeleton-block code-line w-90"></div>
@@ -119,12 +119,12 @@ const theme = useThemeStore()
   margin-bottom: 20px;
 }
 
-.title-line-1 {
+.title-line1 {
   height: 28px;
   width: 72%;
 }
 
-.title-line-2 {
+.title-line2 {
   height: 16px;
   width: 45%;
 }
@@ -152,7 +152,7 @@ const theme = useThemeStore()
 }
 
 /* 图片 */
-.skeleton-image-placeholder {
+.skel-image {
   margin-bottom: 24px;
 }
 
@@ -173,7 +173,7 @@ const theme = useThemeStore()
   background: rgba(128, 128, 128, 0.06);
 }
 
-.code-header-bar {
+.code-headbar {
   height: 14px;
   width: 25%;
   margin-bottom: 4px;

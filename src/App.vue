@@ -75,8 +75,8 @@ onUnmounted(() => {
   <div id="app">
     <VideoBackground />
     <!-- 页面加载进度条 -->
-    <div v-if="progressVisible" class="page-progress-bar">
-      <div class="page-progress-fill" :style="{ width: progressWidth }"></div>
+    <div v-if="progressVisible" class="progress-bar">
+      <div class="progress-fill" :style="{ width: progressWidth }"></div>
     </div>
     <WebAnalytics />
     <SpeedInsights />
@@ -112,7 +112,7 @@ onUnmounted(() => {
 
 <!-- 页面加载进度条 -->
 <style scoped>
-.page-progress-bar {
+.progress-bar {
   position: fixed;
   top: 0;
   left: 0;
@@ -122,7 +122,7 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-.page-progress-fill {
+.progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--common-color-1), var(--common-hover), #ff6b9d);
   transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);

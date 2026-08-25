@@ -16,13 +16,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="console-easter-egg">
+  <div class="console-egg">
   </div>
 </template>
 
 <!-- 布局样式 -->
 <style scoped>
-.console-easter-egg {
+.console-egg {
   display: none;
 }
 </style>

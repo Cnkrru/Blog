@@ -179,21 +179,21 @@ onUnmounted(() => {
     <div class="toc-card" :class="{ active: show }">
       <!-- 头部 -->
       <div class="toc-header">
-        <div class="toc-header-left">
-          <span class="svg-icon toc-header-icon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
+        <div class="toc-hleft">
+          <span class="svg-icon toc-hicon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
           <h3 class="toc-title">目录</h3>
           <span v-if="toc.length" class="toc-count">{{ toc.length }}</span>
         </div>
-        <div class="toc-header-actions">
+        <div class="toc-hactn">
           <button
-            class="toc-tb-btn"
+            class="toc-tbtn"
             :title="expandedAll ? '折叠全部' : '展开全部'"
             @click="expandedAll ? collapseAll() : expandAll()"
           >
             <span v-if="expandedAll" class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="minusSvg"></span>
             <span v-else class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="plusSvg"></span>
           </button>
-          <button class="toc-close-btn" @click="toggleToc" title="关闭">
+          <button class="toc-close" @click="toggleToc" title="关闭">
             <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
           </button>
         </div>
@@ -259,13 +259,13 @@ onUnmounted(() => {
   user-select: none;
 }
 
-.toc-header-left {
+.toc-hleft {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.toc-header-icon {
+.toc-hicon {
   color: var(--common-text);
   opacity: 0.5;
   flex-shrink: 0;
@@ -290,13 +290,13 @@ onUnmounted(() => {
   line-height: 1.5;
 }
 
-.toc-header-actions {
+.toc-hactn {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.toc-tb-btn {
+.toc-tbtn {
   width: 26px;
   height: 26px;
   border-radius: 6px;
@@ -311,12 +311,12 @@ onUnmounted(() => {
   transition: opacity 0.15s ease, background-color 0.15s ease;
 }
 
-.toc-tb-btn:hover {
+.toc-tbtn:hover {
   opacity: 0.8;
   background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
-.toc-close-btn {
+.toc-close {
   width: 26px;
   height: 26px;
   border-radius: 6px;
@@ -331,7 +331,7 @@ onUnmounted(() => {
   transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
 }
 
-.toc-close-btn:hover {
+.toc-close:hover {
   opacity: 0.8;
   background: color-mix(in srgb, var(--common-text) 6%, transparent);
   transform: rotate(90deg);

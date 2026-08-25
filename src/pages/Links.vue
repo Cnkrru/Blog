@@ -150,12 +150,12 @@ onMounted(() => {
                     <div class="link-name">
                       {{ link.name }}
                       <span
-                        class="link-status-icon"
+                        class="status-icon"
                         :class="linkStatus[link.id] || 'checking'"
                       ></span>
                     </div>
                     <div class="link-description">{{ link.description }}</div>
-                    <div class="link-status-text" :class="linkStatus[link.id] || 'checking'">
+                    <div class="status-text" :class="linkStatus[link.id] || 'checking'">
                       {{ linkStatus[link.id] === 'online' ? '在线' : linkStatus[link.id] === 'offline' ? '无法访问' : '检测中...' }}
                     </div>
                 </a>
@@ -163,7 +163,7 @@ onMounted(() => {
         </template>
     </div>
     <hr>
-    <div class="apply-link-wrap">
+    <div class="apply-wrap">
       <RouterLink to="/links/apply" class="apply-link"><span class="svg-icon apply-icon" :style="{ width: '15px', height: '15px' }" v-html="mailSvg"></span>申请友链</RouterLink>
     </div>
 
@@ -272,7 +272,7 @@ onMounted(() => {
     transform: none;
 }
 
-.apply-link-wrap {
+.apply-wrap {
   text-align: center;
   padding: 16px 0;
 }
@@ -345,7 +345,7 @@ onMounted(() => {
   gap: 8px;
 }
 
-.link-status-icon {
+.status-icon {
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -353,35 +353,35 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.link-status-icon.online {
+.status-icon.online {
   background: var(--color-success);
   box-shadow: 0 0 6px var(--color-success);
 }
 
-.link-status-icon.offline {
+.status-icon.offline {
   background: var(--color-error);
   box-shadow: 0 0 6px var(--color-error);
 }
 
-.link-status-icon.checking {
+.status-icon.checking {
   background: var(--color-warning);
   animation: dotPulse 1.2s ease-in-out infinite;
 }
 
-.link-status-text {
+.status-text {
   font-size: 11px;
   margin-top: 4px;
 }
 
-.link-status-text.online {
+.status-text.online {
   color: var(--color-success);
 }
 
-.link-status-text.offline {
+.status-text.offline {
   color: var(--color-error);
 }
 
-.link-status-text.checking {
+.status-text.checking {
   color: var(--color-warning);
 }
 

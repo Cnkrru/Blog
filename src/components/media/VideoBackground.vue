@@ -2,12 +2,12 @@
   <Teleport to="body">
     <div
       v-if="visible"
-      class="video-bg-container"
+      class="video-container"
       aria-hidden="true"
     >
       <video
         ref="videoRef"
-        class="video-bg-element"
+        class="video-element"
         autoplay
         muted
         loop
@@ -20,7 +20,7 @@
         <source :src="videoUrl" type="video/mp4">
       </video>
       <!-- 暗色遮罩：确保文字可读性 -->
-      <div class="video-bg-overlay"></div>
+      <div class="video-overlay"></div>
     </div>
   </Teleport>
 </template>
@@ -57,7 +57,7 @@ watch(videoUrl, () => {
 </script>
 
 <style scoped>
-.video-bg-container {
+.video-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -67,7 +67,7 @@ watch(videoUrl, () => {
   overflow: hidden;
 }
 
-.video-bg-element {
+.video-element {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -79,7 +79,7 @@ watch(videoUrl, () => {
   object-fit: cover;
 }
 
-.video-bg-overlay {
+.video-overlay {
   position: absolute;
   top: 0;
   left: 0;

@@ -1,15 +1,15 @@
 <template>
-  <div class="json-view-container" :class="{ 'has-error': parseError }">
+  <div class="jv-container" :class="{ 'has-error': parseError }">
     <!-- 头部栏 -->
     <div class="jv-header">
       <span class="jv-badge">
         <span class="jv-dot"></span>
         <span class="jv-lang">json</span>
       </span>
-      <div class="jv-header-actions">
+      <div class="jv-actions">
         <CodeRender :code="code" />
         <button
-          class="jv-toggle-btn"
+          class="jv-toggle"
           :class="{ active: viewMode === 'preview' }"
           @click="viewMode = 'preview'"
           title="查看结构化视图"
@@ -18,7 +18,7 @@
           结构化
         </button>
         <button
-          class="jv-toggle-btn"
+          class="jv-toggle"
           :class="{ active: viewMode === 'source' }"
           @click="viewMode = 'source'"
           title="查看源码"
@@ -36,7 +36,7 @@
         <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="alertTriangleSvg"></span>
         <span>{{ parseError }}</span>
       </div>
-      <div v-else class="jv-tree-wrapper">
+      <div v-else class="jv-tree">
         <JsonTree :data="parsedData" />
       </div>
     </div>
@@ -152,7 +152,7 @@ watch(viewMode, () => {
 </script>
 
 <style scoped>
-.json-view-container {
+.jv-container {
   margin: 12px 0;
   border-radius: 10px;
   overflow: hidden;
@@ -161,7 +161,7 @@ watch(viewMode, () => {
   box-shadow: 0 1px 3px var(--common-shadow);
 }
 
-.json-view-container.has-error {
+.jv-container.has-error {
   border-color: color-mix(in srgb, #ef4444 30%, transparent);
 }
 
@@ -175,7 +175,7 @@ watch(viewMode, () => {
   border-bottom: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
-.jv-header-actions {
+.jv-actions {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -210,7 +210,7 @@ watch(viewMode, () => {
 }
 
 /* ---- 切换按钮 ---- */
-.jv-toggle-btn {
+.jv-toggle {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -224,12 +224,12 @@ watch(viewMode, () => {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.jv-toggle-btn:hover {
+.jv-toggle:hover {
   background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   border-color: var(--common-color-1);
 }
 
-.jv-toggle-btn.active {
+.jv-toggle.active {
   background: var(--common-color-1);
   border-color: var(--common-color-1);
   color: var(--common-content);
@@ -263,7 +263,7 @@ watch(viewMode, () => {
 }
 
 /* ---- 树形内容 ---- */
-.jv-tree-wrapper {
+.jv-tree {
   padding: 8px 12px;
 }
 
@@ -300,7 +300,7 @@ watch(viewMode, () => {
     font-size: 10px;
   }
 
-  .jv-toggle-btn {
+  .jv-toggle {
     padding: 2px 8px;
     font-size: 11px;
   }
@@ -315,7 +315,7 @@ watch(viewMode, () => {
     padding: 1px 4px;
   }
 
-  .jv-tree-wrapper {
+  .jv-tree {
     padding: 6px 8px;
   }
 }

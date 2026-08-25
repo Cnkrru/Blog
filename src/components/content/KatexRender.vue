@@ -1,5 +1,5 @@
 <template>
-  <div class="math-container" :class="{ 'math-container-dark': isDarkTheme }">
+  <div class="math-container" :class="{ 'math-dark': isDarkTheme }">
     <div v-if="loading" class="math-loading">
       <div class="loading-spinner"></div>
       <span>加载数学公式中...</span>
@@ -126,7 +126,7 @@ onUnmounted(() => {
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
-.math-container-dark {
+.math-dark {
 }
 
 .math-loading {
@@ -146,7 +146,7 @@ onUnmounted(() => {
   margin-bottom: 12px;
 }
 
-.math-container-dark .loading-spinner {
+.math-dark .loading-spinner {
 }
 
 .math-error {
@@ -165,10 +165,10 @@ onUnmounted(() => {
 }
 
 /* 暗色主题适配 */
-.math-container-dark :deep(.katex) {
+.math-dark :deep(.katex) {
 }
 
-.math-container-dark :deep(.katex-display) {
+.math-dark :deep(.katex-display) {
 }
 </style>
 
@@ -180,7 +180,7 @@ onUnmounted(() => {
   border: 1px solid var(--common-color-1);
 }
 
-.math-container-dark {
+.math-dark {
   background-color: var(--common-bg);
   box-shadow: 0 2px 4px var(--common-shadow);
   border: 1px solid var(--common-color-1);
@@ -197,11 +197,11 @@ onUnmounted(() => {
 }
 
 /* 暗色主题适配 */
-.math-container-dark :deep(.katex) {
+.math-dark :deep(.katex) {
   color: var(--common-text);
 }
 
-.math-container-dark :deep(.katex-display) {
+.math-dark :deep(.katex-display) {
   border-color: var(--common-color-1);
 }
 </style>

@@ -45,7 +45,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
 </script>
 
 <template>
-  <div class="not-found-wrapper">
+  <div class="nf-wrapper">
     <div class="floating-dots">
       <span
         v-for="dot in floatingDots"
@@ -55,7 +55,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
       ></span>
     </div>
 
-    <div class="not-found-content">
+    <div class="nf-content">
       <div class="error-code">
         <span class="digit">4</span>
         <span class="digit zero">0</span>
@@ -84,7 +84,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
 
 <!-- 布局样式 -->
 <style scoped>
-.not-found-wrapper {
+.nf-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
@@ -110,7 +110,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
   animation: float ease-in-out infinite;
 }
 
-.not-found-content {
+.nf-content {
   position: relative;
   z-index: 10;
   text-align: center;
@@ -213,7 +213,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
 
 <!-- 颜色样式 -->
 <style scoped>
-.not-found-wrapper {
+.nf-wrapper {
   background: var(--common-bg);
 }
 
@@ -264,7 +264,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
     font-size: 14px;
   }
 
-  .not-found-content {
+  .nf-content {
     padding: 20px;
   }
 }
