@@ -140,6 +140,7 @@ onUnmounted(() => {
       <span class="svg-icon" :style="{ width: '16px', height: '16px' }" v-html="searchSvg"></span>
     </span>
     <input
+      class="text-input"
       type="text"
       placeholder="搜索"
       v-model="searchText"

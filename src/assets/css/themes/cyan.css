@@ -42,16 +42,11 @@
 .style-cyan body {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%2306b6d4' stroke='%23e0f7fa' stroke-width='0.5'/></svg>") 4 2, auto;
 }
-.style-cyan a, .style-cyan button, .style-cyan select, .style-cyan summary, .style-cyan [role="button"], .style-cyan label[for] {
+.style-cyan a, .style-cyan button, .style-cyan select, .style-cyan summary {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%2306b6d4'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
 }
-.style-cyan input[type="text"],
-.style-cyan input[type="search"],
-.style-cyan input[type="password"],
-.style-cyan input[type="email"],
-.style-cyan input[type="url"],
-.style-cyan textarea,
-.style-cyan [contenteditable="true"] {
+.style-cyan .text-input,
+.style-cyan textarea {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%2306b6d4'/></svg>") 11 10, text;
 }
 

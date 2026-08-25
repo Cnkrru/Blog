@@ -130,7 +130,7 @@ onMounted(() => {
               type="text"
               v-model="searchKeyword"
               placeholder="搜索文章标题或标签..."
-              class="search-input"
+              class="search-input text-input"
             />
             <button v-if="searchKeyword" @click="clearSearch" class="search-clear" title="清除" aria-label="清除搜索">
               <span class="svg-icon" :style="{ width: '12px', height: '12px' }" v-html="xSvg"></span>

@@ -130,7 +130,7 @@ onMounted(async () => {
             v-model="searchQuery"
             type="text"
             placeholder="搜索标签..."
-            class="search-input"
+            class="search-input text-input"
           >
           <button v-if="searchQuery" @click="clearSearch" class="clear-btn" aria-label="清除搜索">x</button>
         </div>

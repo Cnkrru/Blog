@@ -44,16 +44,11 @@
 .style-ink body {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%232b2722' stroke='%23b23a2e' stroke-width='0.5'/></svg>") 4 2, auto;
 }
-.style-ink a, .style-ink button, .style-ink select, .style-ink summary, .style-ink [role="button"], .style-ink label[for] {
+.style-ink a, .style-ink button, .style-ink select, .style-ink summary {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%23b23a2e'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%23b23a2e' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
 }
-.style-ink input[type="text"],
-.style-ink input[type="search"],
-.style-ink input[type="password"],
-.style-ink input[type="email"],
-.style-ink input[type="url"],
-.style-ink textarea,
-.style-ink [contenteditable="true"] {
+.style-ink .text-input,
+.style-ink textarea {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%232b2722'/></svg>") 11 10, text;
 }
 

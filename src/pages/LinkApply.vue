@@ -46,22 +46,22 @@ async function submitForm() {
 
       <label class="field">
         <span>网站名称</span>
-        <input v-model="form.name" type="text" required placeholder="你的网站名" />
+        <input class="text-input" v-model="form.name" type="text" required placeholder="你的网站名" />
       </label>
 
       <label class="field">
         <span>网站链接</span>
-        <input v-model="form.url" type="url" required placeholder="https://" />
+        <input class="text-input" v-model="form.url" type="url" required placeholder="https://" />
       </label>
 
       <label class="field">
         <span>网站描述</span>
-        <input v-model="form.description" type="text" placeholder="简短介绍（选填）" />
+        <input class="text-input" v-model="form.description" type="text" placeholder="简短介绍（选填）" />
       </label>
 
       <label class="field">
         <span>你的邮箱</span>
-        <input v-model="form.email" type="email" placeholder="用于回复通知（选填）" />
+        <input class="text-input" v-model="form.email" type="email" placeholder="用于回复通知（选填）" />
       </label>
 
       <button type="submit" class="submit-btn" :disabled="submitting">

@@ -42,16 +42,11 @@
 .style-purple body {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%238b5cf6' stroke='%23ede6f7' stroke-width='0.5'/></svg>") 4 2, auto;
 }
-.style-purple a, .style-purple button, .style-purple select, .style-purple summary, .style-purple [role="button"], .style-purple label[for] {
+.style-purple a, .style-purple button, .style-purple select, .style-purple summary {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%238b5cf6'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%238b5cf6' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
 }
-.style-purple input[type="text"],
-.style-purple input[type="search"],
-.style-purple input[type="password"],
-.style-purple input[type="email"],
-.style-purple input[type="url"],
-.style-purple textarea,
-.style-purple [contenteditable="true"] {
+.style-purple .text-input,
+.style-purple textarea {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%238b5cf6'/></svg>") 11 10, text;
 }
 
