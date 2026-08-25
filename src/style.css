@@ -153,11 +153,6 @@ body.dark-theme ::-webkit-scrollbar-thumb {
     scrollbar-color: var(--common-color-1) transparent;
 }
 
-/*==============================OG 图片暗色主题适配==============================*/
-body:not(.dark-theme) img[src*="/og/"] {
-    filter: invert(1);
-}
-
 /*==============================文章图片暗色模式适配==============================*/
 body.dark-theme .markdown-content img {
     filter: brightness(0.85) contrast(1.05);
