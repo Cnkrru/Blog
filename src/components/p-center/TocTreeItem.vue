@@ -75,7 +75,24 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
 .toc-item {
   position: relative;
   list-style: none;
+  /* 层级/状态样式变量：由 lv-N、active 在父级下发，子块引用，避免后代组合 */
+  --toc-indent: 16px;
+  --toc-link-color: var(--common-text);
+  --toc-link-bg: transparent;
+  --toc-link-weight: 400;
+  --toc-num-opacity: 0.25;
+  --toc-num-color: var(--common-text);
+  border-left: 1px solid color-mix(in srgb, var(--common-text) 10%, transparent);
+  margin-left: 0;
 }
+
+/* 层级缩进变量 */
+.lv-1 { --toc-indent: 16px; }
+.lv-2 { --toc-indent: 28px; }
+.lv-3 { --toc-indent: 40px; }
+.lv-4 { --toc-indent: 52px; }
+.lv-5 { --toc-indent: 64px; }
+.lv-6 { --toc-indent: 76px; }
 
 /* ========== 链接行 ========== */
 .toc-link {
@@ -83,8 +100,11 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
   align-items: center;
   gap: 6px;
   padding: 5px 12px 5px 0;
+  padding-left: var(--toc-indent);
   text-decoration: none;
-  color: var(--common-text);
+  color: var(--toc-link-color);
+  background: var(--toc-link-bg);
+  font-weight: var(--toc-link-weight);
   font-size: 13px;
   line-height: 1.5;
   cursor: pointer;
@@ -100,35 +120,15 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
   background: color-mix(in srgb, var(--common-text) 4%, transparent);
 }
 
-/* 活跃项 */
-.toc-item.active > .toc-link {
-  color: var(--common-color-1);
-  font-weight: 500;
-  background: color-mix(in srgb, var(--common-color-1) 6%, transparent);
-}
-
-/* ========== 层级缩进 ========== */
-.lv-1 > .toc-link { padding-left: 16px; }
-.lv-2 > .toc-link { padding-left: 28px; }
-.lv-3 > .toc-link { padding-left: 40px; }
-.lv-4 > .toc-link { padding-left: 52px; }
-.lv-5 > .toc-link { padding-left: 64px; }
-.lv-6 > .toc-link { padding-left: 76px; }
-
-/* ========== 层级指示线（左侧竖线） ========== */
-.toc-item {
-  border-left: 1px solid color-mix(in srgb, var(--common-text) 10%, transparent);
-  margin-left: 0;
-}
-
+/* 活跃项：状态变量由 .toc-item.active 下发 */
 .toc-item.active {
+  --toc-link-color: var(--common-color-1);
+  --toc-link-bg: color-mix(in srgb, var(--common-color-1) 6%, transparent);
+  --toc-link-weight: 500;
+  --toc-num-opacity: 0.6;
+  --toc-num-color: var(--common-color-1);
   border-left-color: var(--common-color-1);
   border-left-width: 2.5px;
-}
-
-/* 子项缩进指示线 */
-.toc-item .toc-item {
-  border-left-color: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
 /* ========== 展开/折叠箭头 ========== */
@@ -145,20 +145,13 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
   transition: opacity 0.15s ease, color 0.15s ease;
   margin-left: -16px;
   position: absolute;
-  left: 0;
+  left: calc(var(--toc-indent) - 16px);
 }
 
 .toc-arrow:hover {
   opacity: 0.8;
   color: var(--common-color-1);
 }
-
-.lv-1 .toc-arrow { left: 0; }
-.lv-2 .toc-arrow { left: 12px; }
-.lv-3 .toc-arrow { left: 24px; }
-.lv-4 .toc-arrow { left: 36px; }
-.lv-5 .toc-arrow { left: 48px; }
-.lv-6 .toc-arrow { left: 60px; }
 
 .toc-icon {
   transition: transform 0.2s ease;
@@ -179,15 +172,10 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
   font-size: 10px;
   min-width: 18px;
   text-align: right;
-  color: var(--common-text);
-  opacity: 0.25;
+  color: var(--toc-num-color);
+  opacity: var(--toc-num-opacity);
   flex-shrink: 0;
   font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-}
-
-.toc-item.active .toc-num {
-  opacity: 0.6;
-  color: var(--common-color-1);
 }
 
 /* ========== 标题文本 ========== */
