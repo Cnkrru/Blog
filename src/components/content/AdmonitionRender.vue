@@ -119,31 +119,34 @@ defineProps(['type', 'title', 'content'])
   color: var(--common-text);
 }
 
-/* 重置内部元素间距（class 下子级标签，2.3 允许） */
-.admonition-body :deep(p) {
+/* v-html 注入的正文内容（无 scoped 属性，非 scoped 命中；子级标签 2.3 允许） */
+</style>
+
+<style>
+.admonition-body p {
   margin: 0 0 0.6rem 0;
 }
-.admonition-body :deep(p:last-child) {
+.admonition-body p:last-child {
   margin-bottom: 0;
 }
-.admonition-body :deep(code) {
+.admonition-body code {
   font-size: 0.85em;
   padding: 0.15em 0.4em;
   border-radius: 4px;
   background: var(--ad-code-bg);
 }
-.admonition-body :deep(pre) {
+.admonition-body pre {
   margin: 0.5rem 0;
 }
-.admonition-body :deep(ul),
-.admonition-body :deep(ol) {
+.admonition-body ul,
+.admonition-body ol {
   margin: 0.4rem 0;
   padding-left: 1.5rem;
 }
-.admonition-body :deep(li) {
+.admonition-body li {
   margin: 0.2rem 0;
 }
-.admonition-body :deep(a) {
+.admonition-body a {
   text-decoration: underline;
   text-underline-offset: 2px;
   color: var(--ad-a);

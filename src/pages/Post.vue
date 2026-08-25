@@ -264,7 +264,7 @@ onMounted(() => {
         width: 100%;
     }
 
-    :deep(.center-head-card h2) {
+    .center-head-card h2 {
         font-size: 15px;
         line-height: 1.4;
         white-space: normal;

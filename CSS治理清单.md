@@ -15,8 +15,12 @@
   通过父级 CSS 变量下发、子元素引用变量、补独立状态类等方式，消除了组件内部的后代/子代组合选择器，提交 `9d85f9b`（17 文件约 60 处）。组件 `src/components`（含页面级 `src/pages`）中已无 `.a .b` / `.a > .b` 残留。
 - **P2 主题/布局作用域跨界（`.style-*` / `.layout-*` / `body.dark-theme` + 全局基座类）⏳ 待治理**
   主题 4 文件各 21、布局 card/compact 各 15、minimal 2、`style.css` 3。详见下文第一节 P2 小节。
-- **P3 `:deep` 属性跨界（scoped 穿透命中外层/子组件类）⏳ 待治理**
-  `Center.vue`、`KatexRender.vue`、`MermaidRender.vue`、`JsonTree.vue`、`Comment.vue`、`About.vue`。
+- **P3 `:deep` scoped 穿透 ✅ 已完成**
+  按命中对象分类治理（含此前清单之外的几处）：
+  - **① 第三方库渲染 DOM → 拆独立非 scoped `<style>` 块、去 `:deep`**：`KatexRender(.katex)`、`MermaidRender(.mermaid)`、`HighlightRender(.hljs)`、`ShareButton(.a2a_kit)`、`Header` 多个子组件共享的 `.button-style/.emoji-burst/images`（并入已有非 scoped 块 + keyframes + 响应式）。
+  - **② `html.dark` 深色态 → 删除死规则**：`JsonTree`、`Comment` 的 `:deep(html.dark)` 从未生效——整个代码库不挂 `html.dark` 类，深色由 `body.dark-theme`（theme store）驱动，直接删除、视觉不变。
+  - **③ Vue 子组件/插槽根**：`About` 的 `:deep(.github-container)` 为冗余（GitHub 根无 margin）删除；`Post` 的 `:deep(.center-head-card h2)` 为 self-deep 去掉；`AdmonitionRender` 的 `.admonition-body :deep(p/a/code…)` 为 v-html 动态内容，转非 scoped `.admonition-body p` 等（子级标签，2.3 允许）。
+  - **Center.vue** 的布局跨界 `:deep(.center-head-card/.center-card-content)` 与 `slot` 根布局相关，并入 **P2** 一并处理。
 
 ---
 

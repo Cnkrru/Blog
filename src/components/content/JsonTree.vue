@@ -312,23 +312,6 @@ function onCollapseAll() {
 .value-other {
   color: var(--common-text);
 }
-
-/* 暗色适配 */
-:deep(html.dark) .value-string {
-  color: #4ade80;
-}
-
-:deep(html.dark) .value-number {
-  color: #60a5fa;
-}
-
-:deep(html.dark) .value-boolean {
-  color: #fbbf24;
-}
-
-:deep(html.dark) .value-null {
-  color: #9ca3af;
-}
 </style>
 
 <style scoped>

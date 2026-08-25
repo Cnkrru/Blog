@@ -187,13 +187,15 @@ onUnmounted(() => {
 .math-error {
   color: var(--color-error);
 }
+</style>
 
-/* 暗色主题适配 */
-:deep(.katex) {
+<style>
+/* katex 库渲染的 DOM，需非 scoped 命中 */
+.katex {
   color: var(--katex-color, inherit);
 }
 
-:deep(.katex-display) {
+.katex-display {
   border-color: var(--katex-display-border-color, inherit);
 }
 </style>

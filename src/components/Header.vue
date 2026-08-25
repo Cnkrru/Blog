@@ -118,10 +118,11 @@ const router = useRouter()
     flex-shrink: 0;
 }
 
-/* vue的deep特性：父子间可用，在父级组件里直接定义子级组件的CSS，提高代码复用率 */
+/* 功能按钮共享样式（由多个子组件复用的 .button-style，非 scoped 命中） */
+</style>
 
-/* 功能按钮设计 */
-:deep(.button-style) {
+<style>
+.button-style {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -141,16 +142,16 @@ const router = useRouter()
     box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
-:deep(.button-style:hover) {
+.button-style:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
 
-:deep(.button-style.animating) {
+.button-style.animating {
     animation: buttonSpinBounce 0.4s ease;
 }
 
-:deep(.emoji-burst) {
+.emoji-burst {
     position: absolute;
     font-size: 20px;
     animation: emojiBurst 0.4s ease;
@@ -179,20 +180,32 @@ const router = useRouter()
 }
 }
 
-:deep(.button-style img) {
+.button-style img {
     width: 20px;
     height: 20px;
     transition: transform 0.3s ease;
 }
-</style>
 
-<!-- 颜色样式 -->
-<style>
-/* 统一按钮风格：与 PostMenu/TocButton 一致 — 主题色背景 + 白色 SVG */
-.button-style {
-    background: var(--common-color-1);
-    border: 1px solid var(--common-color-1);
-    color: #fff;
+@media (max-width: 480px) {
+  .button-style {
+    width: 30px;
+    height: 30px;
+  }
+  .button-style img {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .button-style {
+    width: 32px;
+    height: 32px;
+  }
+  .button-style img {
+    width: 16px;
+    height: 16px;
+  }
 }
 </style>
 
@@ -217,16 +230,6 @@ const router = useRouter()
     justify-content: center;
     gap: 4px;
   }
-
-  :deep(.button-style) {
-    width: 30px;
-    height: 30px;
-  }
-
-  :deep(.button-style img) {
-    width: 14px;
-    height: 14px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -239,16 +242,6 @@ const router = useRouter()
 
   .button-card {
     justify-content: center;
-  }
-
-  :deep(.button-style) {
-    width: 32px;
-    height: 32px;
-  }
-
-  :deep(.button-style img) {
-    width: 16px;
-    height: 16px;
   }
 }
 

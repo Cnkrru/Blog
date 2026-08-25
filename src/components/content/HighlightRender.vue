@@ -392,16 +392,6 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   font-weight: 500;
 }
 
-/* 代码高亮样式 */
-:deep(.hljs) {
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  font-family: 'Fira Code', 'Consolas', monospace;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
 /* 动画 */
 @keyframes fadeIn {
   from {
@@ -412,6 +402,18 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   }
 }
 
+</style>
+
+<style>
+/* hljs 代码高亮库渲染的 DOM，需非 scoped 命中 */
+.hljs {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
 </style>
 
 <style scoped>

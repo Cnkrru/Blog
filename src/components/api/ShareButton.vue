@@ -66,11 +66,16 @@ watch(() => props.url, () => { if (scriptLoaded.value) initButtons() })
   color: var(--common-text);
   opacity: 0.6;
 }
-:deep(.a2a_kit a) {
+</style>
+
+<style>
+/* a2a 分享库渲染的 DOM，需非 scoped 命中 */
+.a2a_kit a {
   border-radius: 8px !important;
   transition: transform 0.15s ease, opacity 0.15s ease !important;
 }
-:deep(.a2a_kit a:hover) {
+
+.a2a_kit a:hover {
   transform: translateY(-2px) !important;
   opacity: 0.8 !important;
 }

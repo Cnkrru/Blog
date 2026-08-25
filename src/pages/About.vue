@@ -116,10 +116,6 @@ onMounted(() => {
     margin: 30px 0;
     width: 100%;
 }
-
-.github-section :deep(.github-container) {
-    margin: 0;
-}
 </style>
 
 <style scoped>

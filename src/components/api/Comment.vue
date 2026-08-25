@@ -233,16 +233,6 @@ onUnmounted(() => {
 .error-text {
     color: var(--common-color-1);
 }
-
-/* 暗色主题适配 */
-:deep(html.dark) .loading-spinner {
-    border-color: rgba(255, 255, 255, 0.1);
-    border-top-color: var(--common-color-1);
-}
-
-:deep(html.dark) .error-text {
-    color: var(--common-color-1);
-}
 </style>
 
 <style scoped>

@@ -174,16 +174,18 @@ watch(() => isDarkTheme.value, () => {
   justify-content: center;
   padding: 40px;
   min-height: 300px;
-}
+}</style>
 
-/* Mermaid 样式 */
-:deep(.mermaid) {
+<style>
+/* mermaid 库渲染的 DOM，需非 scoped 命中 */
+.mermaid {
   font-family: 'Fira Code', 'Consolas', monospace;
   min-height: 300px;
   width: 100%;
+  filter: var(--mermaid-filter, none);
 }
 
-:deep(.mermaid svg) {
+.mermaid svg {
   max-width: 100%;
   height: auto;
 }
@@ -211,11 +213,6 @@ watch(() => isDarkTheme.value, () => {
 
 .mermaid-error {
   color: var(--color-error);
-}
-
-/* 暗色主题适配 */
-:deep(.mermaid) {
-  filter: var(--mermaid-filter, none);
 }
 </style>
 
