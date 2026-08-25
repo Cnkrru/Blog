@@ -11,7 +11,7 @@ const toggleMobileMenu = () => {
   //反转移动端侧边栏标志位
   isMenuOpen.value = !isMenuOpen.value
 
-  const leftAsider = document.querySelector('.left-asider-S')
+  const leftAsider = document.querySelector('.left-asider-s')
   const mobileMenuOverlay = document.getElementById('mobile-menu-overlay')
   
   if (leftAsider && mobileMenuOverlay) {

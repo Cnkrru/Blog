@@ -13,7 +13,7 @@ const socialLinks = globalStore.socialLinks
 
 <template>
   <footer class="footer-flex">
-    <div class="footer-S">
+    <div class="footer-s">
       <nav class="footer-container">
         <div class="footer-card">
           <!-- 社交链接 -->
@@ -62,7 +62,7 @@ const socialLinks = globalStore.socialLinks
   padding: 20px 0 28px;
 }
 
-.footer-S {
+.footer-s {
   width: 95%;
   max-width: 1400px;
   margin: 0 auto;
@@ -146,7 +146,7 @@ const socialLinks = globalStore.socialLinks
 
 <style scoped>
 @media (max-width: 480px) {
-  .footer-S {
+  .footer-s {
     height: auto;
     padding: 6px 0;
   }
@@ -165,14 +165,14 @@ const socialLinks = globalStore.socialLinks
 }
 
 @media (max-width: 768px) {
-  .footer-S {
+  .footer-s {
     height: auto;
     padding: 10px 0;
   }
 }
 
 @media (min-width: 1281px) {
-  .footer-S {
+  .footer-s {
     max-width: 1400px;
   }
 }

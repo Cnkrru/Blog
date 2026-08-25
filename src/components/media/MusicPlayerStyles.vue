@@ -70,7 +70,7 @@
     min-width: 0;
 }
 
-#player-title {
+.player-title {
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
@@ -79,7 +79,7 @@
     margin: 0 0 3px 0;
 }
 
-#player-artist {
+.player-artist {
     font-size: 12px;
     font-weight: 400;
     white-space: nowrap;
@@ -163,14 +163,14 @@
     overflow: visible;
 }
 
-#volume-fill {
+.volume-fill {
     height: 100%;
     border-radius: 1.5px;
     width: 80%;
     transition: width 0.1s linear;
 }
 
-#volume-handle {
+.volume-handle {
     position: absolute;
     right: -5px;
     top: 50%;
@@ -182,7 +182,7 @@
     transition: transform 0.15s ease;
 }
 
-.volume-bar:hover #volume-handle {
+.volume-bar:hover .volume-handle {
     transform: translateY(-50%) scale(1.3);
 }
 
@@ -206,7 +206,7 @@
     overflow: visible;
 }
 
-#progress-fill {
+.progress-fill {
     height: 100%;
     border-radius: 2px;
     width: 0%;
@@ -214,7 +214,7 @@
     position: relative;
 }
 
-#progress-fill::after {
+.progress-fill::after {
     content: '';
     position: absolute;
     right: -6px;
@@ -227,7 +227,7 @@
     transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
-.progress-bar:hover #progress-fill::after {
+.progress-bar:hover .progress-fill::after {
     opacity: 1;
     transform: translateY(-50%) scale(1.25);
 }
@@ -395,11 +395,11 @@
 }
 
 /* --- 歌曲信息 --- */
-#player-title {
+.player-title {
     color: var(--common-text);
 }
 
-#player-artist {
+.player-artist {
     color: var(--common-text);
     opacity: 0.5;
 }
@@ -409,11 +409,11 @@
     background: color-mix(in srgb, var(--common-text) 12%, transparent);
 }
 
-#progress-fill {
+.progress-fill {
     background: var(--common-color-1);
 }
 
-#progress-fill::after {
+.progress-fill::after {
     background: var(--common-color-1);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.15);
 }
@@ -454,11 +454,11 @@
     background: color-mix(in srgb, var(--common-text) 12%, transparent);
 }
 
-#volume-fill {
+.volume-fill {
     background: var(--common-color-1);
 }
 
-#volume-handle {
+.volume-handle {
     background: var(--common-color-1);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.15);
 }

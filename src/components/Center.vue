@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <section class="center-S">
+    <section class="center-s">
         <div class="center-container">
             <div class="center-card">
                 <!-- 头部区域 -->
@@ -17,7 +17,7 @@
 
 <style scoped>
 /* 主体部分的面积分配 */
-.center-S {
+.center-s {
     width: 1200px;
     height: 100%;
     display: flex;
@@ -117,7 +117,7 @@
 
 <style scoped>
 @media (max-width: 768px) {
-    .center-S {
+    .center-s {
         width: 100%;
         padding: 0;
     }
@@ -144,7 +144,7 @@
 }
 
 @media (max-width: 480px) {
-    .center-S {
+    .center-s {
         width: 100%;
         padding: 0;
     }

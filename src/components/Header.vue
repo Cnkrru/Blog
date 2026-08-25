@@ -21,7 +21,7 @@ const router = useRouter()
     <ReadingProgress />
     
     <header class="header-flex">
-      <div class="header-S">
+      <div class="header-s">
         <nav class="header-container">
           <div class="header-card">
             <!-- Logo -->
@@ -68,7 +68,7 @@ const router = useRouter()
 }
 
     /* 页眉面积分配 */
-.header-S {
+.header-s {
     max-width: 1800px;
     margin: 0 auto;
     width: 95%;
@@ -262,7 +262,7 @@ const router = useRouter()
 }
 
 @media (min-width: 1280px) {
-  .header-S {
+  .header-s {
     max-width: 1400px;
   }
 }

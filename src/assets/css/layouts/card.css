@@ -6,7 +6,7 @@
  *==============================================================*/
 @media (min-width: 1025px) {
   /* 三大区域容器：居中、留左右空白 */
-  html[data-layout="card"] .header-S {
+  html[data-layout="card"] .header-s {
     width: 95%;
     max-width: 1800px;
   }
@@ -15,7 +15,7 @@
     max-width: 1400px;
     margin: 0 auto;
   }
-  html[data-layout="card"] .footer-S {
+  html[data-layout="card"] .footer-s {
     width: 95%;
     max-width: 1400px;
   }
@@ -40,13 +40,13 @@
     gap: 24px;
     align-items: flex-start;
   }
-  html[data-layout="card"] .left-asider-S {
+  html[data-layout="card"] .left-asider-s {
     width: 220px;
   }
   html[data-layout="card"] .left-asider-card {
     border-radius: 14px;
   }
-  html[data-layout="card"] .center-S {
+  html[data-layout="card"] .center-s {
     width: 1200px;
   }
   html[data-layout="card"] .center-container {
@@ -73,7 +73,7 @@
   html[data-layout="card"] .mid-flex {
     gap: 16px;
   }
-  html[data-layout="card"] .left-asider-S {
+  html[data-layout="card"] .left-asider-s {
     width: 220px;
   }
   html[data-layout="card"] .left-asider-card {
@@ -82,7 +82,7 @@
     min-height: 500px;
     border-radius: 14px;
   }
-  html[data-layout="card"] .center-S {
+  html[data-layout="card"] .center-s {
     width: auto;
     flex: 1;
   }

@@ -84,7 +84,7 @@ hr {
     .mid-flex {
         padding: 0 5%;
     }
-    .mid-flex .center-S {
+    .mid-flex .center-s {
         width: 100% !important;
         max-width: 100%;
     }
@@ -97,7 +97,7 @@ hr {
     .mid-flex {
         padding: 0 3%;
     }
-    .mid-flex .center-S {
+    .mid-flex .center-s {
         width: 100% !important;
     }
 }

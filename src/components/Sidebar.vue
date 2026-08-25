@@ -7,7 +7,7 @@ import Weather from './api/Weather.vue'
 </script>
 
 <template>
-    <aside class="left-asider-S">
+    <aside class="left-asider-s">
         <div class="left-asider-container">
         <div class="left-asider-card">
             <!-- 头像设计 -->
@@ -29,7 +29,7 @@ import Weather from './api/Weather.vue'
 <style scoped>
 /*====================侧边栏设计====================*/
     /* 左侧边栏分布大小 - 桌面端默认 */
-.left-asider-S {
+.left-asider-s {
     width: 15%;
     height: 100%;
     display: flex;
@@ -63,7 +63,7 @@ import Weather from './api/Weather.vue'
 <style scoped>
 /* 移动端：侧边栏默认隐藏，点击菜单按钮时滑出 */
 @media (max-width: 768px) {
-    .left-asider-S {
+    .left-asider-s {
         position: fixed;
         top: 0;
         left: 0;
@@ -74,7 +74,7 @@ import Weather from './api/Weather.vue'
         transition: transform 0.3s ease;
     }
 
-    .left-asider-S.active {
+    .left-asider-s.active {
         transform: translateX(0);
     }
 

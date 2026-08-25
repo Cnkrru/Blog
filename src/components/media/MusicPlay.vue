@@ -185,8 +185,8 @@ onUnmounted(() => {
               <img id="player-cover" src="" alt="封面">
             </div>
             <div class="player-meta">
-              <h4 id="player-title">未选择歌曲</h4>
-              <p id="player-artist">未知艺术家</p>
+              <h4 id="player-title" class="player-title">未选择歌曲</h4>
+              <p id="player-artist" class="player-artist">未知艺术家</p>
             </div>
             <PlayerControls
               :is-playing="isPlaying"

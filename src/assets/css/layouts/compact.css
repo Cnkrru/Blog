@@ -7,9 +7,9 @@
  *==============================================================*/
 @media (min-width: 1025px) {
   /* 统一三大区域容器宽度，去掉左右留白，贴满视口 */
-  html[data-layout="compact"] .header-S,
+  html[data-layout="compact"] .header-s,
   html[data-layout="compact"] .mid-flex,
-  html[data-layout="compact"] .footer-S {
+  html[data-layout="compact"] .footer-s {
     width: 100%;
     max-width: none;
     margin: 0;
@@ -36,7 +36,7 @@
     gap: 0;
     align-items: stretch;
   }
-  html[data-layout="compact"] .left-asider-S {
+  html[data-layout="compact"] .left-asider-s {
     width: 220px;
   }
   html[data-layout="compact"] .left-asider-card {
@@ -44,7 +44,7 @@
     border-radius: 0;
     border-right: 1px solid var(--common-color-1);
   }
-  html[data-layout="compact"] .center-S {
+  html[data-layout="compact"] .center-s {
     width: auto;
     flex: 1;
   }
@@ -111,7 +111,7 @@
     gap: 0;
     align-items: stretch;
   }
-  html[data-layout="compact"] .left-asider-S {
+  html[data-layout="compact"] .left-asider-s {
     width: 220px;
   }
   html[data-layout="compact"] .left-asider-card {
@@ -120,7 +120,7 @@
     border-radius: 0;
     border-right: 1px solid var(--common-color-1);
   }
-  html[data-layout="compact"] .center-S {
+  html[data-layout="compact"] .center-s {
     width: auto;
     flex: 1;
   }

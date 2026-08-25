@@ -39,15 +39,15 @@ onMounted(() => {
 }
 
 body.immersive-reading .left-blank,
-body.immersive-reading .left-asider-S,
+body.immersive-reading .left-asider-s,
 body.immersive-reading .left-center-blank,
 body.immersive-reading .footer-blank,
 body.immersive-reading .footer-flex,
-body.immersive-reading .footer-S {
+body.immersive-reading .footer-s {
     display: none;
 }
 
-body.immersive-reading .center-S {
+body.immersive-reading .center-s {
     width: 1400px;
     max-width: 1400px;
 }
@@ -59,7 +59,7 @@ body.immersive-reading .mid-flex {
 }
 
 /* 无空隙布局下进入沉浸阅读：保持贴满，不出现 1400px 收缩与左右留白 */
-html[data-layout="compact"] body.immersive-reading .center-S {
+html[data-layout="compact"] body.immersive-reading .center-s {
     width: auto;
     max-width: none;
     flex: 1;
@@ -83,7 +83,7 @@ body.immersive-reading .center-card {
 <!-- 响应式设计媒体查询 -->
 <style>
 @media (max-width: 480px) {
-    body.immersive-reading .center-S {
+    body.immersive-reading .center-s {
         width: 100% !important;
         max-width: 100% !important;
     }
