@@ -20,7 +20,7 @@
   - **① 第三方库渲染 DOM → 拆独立非 scoped `<style>` 块、去 `:deep`**：`KatexRender(.katex)`、`MermaidRender(.mermaid)`、`HighlightRender(.hljs)`、`ShareButton(.a2a_kit)`、`Header` 多个子组件共享的 `.button-style/.emoji-burst/images`（并入已有非 scoped 块 + keyframes + 响应式）。
   - **② `html.dark` 深色态 → 删除死规则**：`JsonTree`、`Comment` 的 `:deep(html.dark)` 从未生效——整个代码库不挂 `html.dark` 类，深色由 `body.dark-theme`（theme store）驱动，直接删除、视觉不变。
   - **③ Vue 子组件/插槽根**：`About` 的 `:deep(.github-container)` 为冗余（GitHub 根无 margin）删除；`Post` 的 `:deep(.center-head-card h2)` 为 self-deep 去掉；`AdmonitionRender` 的 `.admonition-body :deep(p/a/code…)` 为 v-html 动态内容，转非 scoped `.admonition-body p` 等（子级标签，2.3 允许）。
-  - **Center.vue** 的布局跨界 `:deep(.center-head-card/.center-card-content)` 与 `slot` 根布局相关，并入 **P2** 一并处理。
+  - **Center.vue** 的布局跨界 `:deep(.center-head-card/.center-card-content)`：`.center-head-card/.center-card-content` 是被 JS（Toc/ReadingTime/ReadingProgress/MarkdownRender 的 `querySelector('.center-card-content')`）强依赖的跨页面滚动基座根类，因此转为 **非 scoped 全局定义**（去 `.center-header-area` 前缀与 `:deep`），命 slot 内各页面根元素。
 
 ---
 
