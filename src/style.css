@@ -1,7 +1,7 @@
 /*==============================================================
  * 全局基础样式（与风格/布局无关）
  * 风格与布局拆分到 assets/css/themes/* 与 assets/css/layouts/*
- * 由 <html data-style> 与 <html data-layout> 激活，见对应文件。
+ * 由 <html data-style> 与 <html class="layout-*"> 激活，见对应文件。
  * 这四个文件在 main.ts 中通过 JS import 引入（避免 PostCSS @import 路径问题）。
  *==============================================================*/
 
@@ -38,7 +38,7 @@ body {
 }
 
 /* 视频背景模式：隐藏 body 背景，由 VideoBackground 组件接管 */
-html[data-bg-type="video"] body {
+.bg-video body {
     background: none !important;
 }
 

@@ -133,7 +133,7 @@ onUnmounted(() => {
 
 <!-- 布局样式：.mid-flex 基础 flex 布局兜底（card 在 769-1024px 区间无 layout 文件覆盖，需此处兜底）。
      尺寸/间隙的最终值由 layouts/card.css（>=1025）与 layouts/compact.css（全宽度）以
-     html[data-layout] 前缀覆盖，其选择器权重高于此处 scoped，故不会冲突。 -->
+     .layout-card 前缀覆盖，其选择器权重高于此处 scoped，故不会冲突。 -->
 <style scoped>
 .mid-flex {
     width: 100%;

@@ -1,104 +1,104 @@
 /*==============================================================
  * 布局方案 A：卡片式（card）—— 默认基线
- * 通过 <html data-layout="card"> 激活。区域之间保留间隔，各区域独立圆角。
+ * 通过 <html class="layout-card"> 激活。区域之间保留间隔，各区域独立圆角。
  * 与 compact.css 对称：compact 改写下列属性以实现「无空隙」。
  * 仅桌面端（>=1025px）生效；移动端布局由组件自身响应式样式控制。
  *==============================================================*/
 @media (min-width: 1025px) {
   /* 三大区域容器：居中、留左右空白 */
-  html[data-layout="card"] .header-s {
+  .layout-card .header-s {
     width: 95%;
     max-width: 1800px;
   }
-  html[data-layout="card"] .mid-flex {
+  .layout-card .mid-flex {
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
   }
-  html[data-layout="card"] .footer-s {
+  .layout-card .footer-s {
     width: 95%;
     max-width: 1400px;
   }
 
   /* 垂直方向：区域外间距 + 圆角 */
-  html[data-layout="card"] .header-flex {
+  .layout-card .header-flex {
     padding: 10px;
   }
-  html[data-layout="card"] .header-card {
+  .layout-card .header-card {
     margin-bottom: 10px;
     border-radius: 14px;
   }
-  html[data-layout="card"] .footer-flex {
+  .layout-card .footer-flex {
     padding: 20px 0;
   }
-  html[data-layout="card"] .footer-card {
+  .layout-card .footer-card {
     border-radius: 16px;
   }
 
   /* 水平方向：Sidebar 与 Center 之间保留 24px 间隙 */
-  html[data-layout="card"] .mid-flex {
+  .layout-card .mid-flex {
     gap: 24px;
     align-items: flex-start;
   }
-  html[data-layout="card"] .left-asider-s {
+  .layout-card .left-asider-s {
     width: 220px;
   }
-  html[data-layout="card"] .left-asider-card {
+  .layout-card .left-asider-card {
     border-radius: 14px;
   }
-  html[data-layout="card"] .center-s {
+  .layout-card .center-s {
     width: 1200px;
   }
-  html[data-layout="card"] .center-container {
+  .layout-card .center-container {
     max-width: 1200px;
   }
-  html[data-layout="card"] .center-card {
+  .layout-card .center-card {
     border-radius: 16px;
   }
 
   /* center 内部：标题区与内容区之间 6px 间隙 + 各自圆角 */
-  html[data-layout="card"] .center-header-area {
+  .layout-card .center-header-area {
     gap: 6px;
   }
-  html[data-layout="card"] .center-card .center-head-card {
+  .layout-card .center-card .center-head-card {
     border-radius: 10px;
   }
-  html[data-layout="card"] .center-card .center-card-content {
+  .layout-card .center-card .center-card-content {
     border-radius: 10px;
   }
 }
 
 /* 平板端（769-1024px）：保持卡片式风格，适配中等屏幕 */
 @media (min-width: 769px) and (max-width: 1024px) {
-  html[data-layout="card"] .mid-flex {
+  .layout-card .mid-flex {
     gap: 16px;
   }
-  html[data-layout="card"] .left-asider-s {
+  .layout-card .left-asider-s {
     width: 220px;
   }
-  html[data-layout="card"] .left-asider-card {
+  .layout-card .left-asider-card {
     width: 100%;
     height: auto;
     min-height: 500px;
     border-radius: 14px;
   }
-  html[data-layout="card"] .center-s {
+  .layout-card .center-s {
     width: auto;
     flex: 1;
   }
-  html[data-layout="card"] .center-card {
+  .layout-card .center-card {
     height: auto;
     min-height: 500px;
     max-height: none;
     border-radius: 14px;
   }
-  html[data-layout="card"] .center-header-area {
+  .layout-card .center-header-area {
     gap: 6px;
   }
-  html[data-layout="card"] .center-card .center-head-card {
+  .layout-card .center-card .center-head-card {
     border-radius: 10px;
   }
-  html[data-layout="card"] .center-card .center-card-content {
+  .layout-card .center-card .center-card-content {
     border-radius: 10px;
   }
 }

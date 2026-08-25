@@ -3,6 +3,12 @@ import { ref, computed } from 'vue'
 import { applyThemeCss, applyLayoutCss } from '../utils/cssLoader'
 import bgVideoDefault from '../assets/imgs/bg.mp4'
 
+function setPrefixedClass(el, prefix, className) {
+  const cls = el.classList
+  ;[...cls].filter(c => c.startsWith(prefix)).forEach(c => cls.remove(c))
+  if (className) cls.add(prefix + className)
+}
+
 export const useThemeStore = defineStore('theme', () => {
   const currentTheme = ref('dark')
   const currentStyle = ref('ink')
@@ -31,12 +37,12 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   const applyStyleDom = () => {
-    document.documentElement.setAttribute('data-style', currentStyle.value)
+    setPrefixedClass(document.documentElement, 'style-', currentStyle.value)
     applyThemeCss(currentStyle.value)
   }
 
   const applyLayoutDom = () => {
-    document.documentElement.setAttribute('data-layout', currentLayout.value)
+    setPrefixedClass(document.documentElement, 'layout-', currentLayout.value)
     applyLayoutCss(currentLayout.value)
   }
 
@@ -45,7 +51,7 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   const applyBgDom = () => {
-    document.documentElement.setAttribute('data-bg-type', bgType.value)
+    setPrefixedClass(document.documentElement, 'bg-', bgType.value === 'video' ? 'video' : '')
     if (bgVideoUrl.value) {
       document.documentElement.style.setProperty('--bg-video-url', `url(${bgVideoUrl.value})`)
     }
@@ -227,12 +233,12 @@ export const useThemeStore = defineStore('theme', () => {
       localStorage.removeItem('theme-preference')
     }
     document.documentElement.setAttribute('data-theme', 'dark')
-    document.documentElement.setAttribute('data-style', 'ink')
+    setPrefixedClass(document.documentElement, 'style-', 'ink')
     applyThemeCss('ink')
-    document.documentElement.setAttribute('data-layout', 'card')
+    setPrefixedClass(document.documentElement, 'layout-', 'card')
     applyLayoutCss('card')
     document.documentElement.style.setProperty('--glass-alpha', '0.78')
-    document.documentElement.setAttribute('data-bg-type', 'image')
+    setPrefixedClass(document.documentElement, 'bg-', '')
     document.documentElement.style.removeProperty('--bg-video-url')
   }
 

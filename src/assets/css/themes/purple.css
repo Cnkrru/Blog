@@ -1,10 +1,10 @@
 /*==============================================================
  * 风格方案 C：紫韵（淡紫基调 / 夜幕星河）
- * 通过 <html data-style="purple"> 激活
+ * 通过 <html class="style-purple"> 激活
  *==============================================================*/
 
 /* 变量（亮色 · 淡紫 / 暗色 · 夜幕紫） */
-[data-style="purple"] {
+.style-purple {
   --common-color-1: #8b5cf6;        /* 紫罗兰主色 */
   --common-color-2: #f5f0ff;        /* 淡紫白 */
   --common-bg: #ede6f7;             /* 紫雾底 */
@@ -20,8 +20,8 @@
   --color-success: #28a745;
   --color-warning: #f59e0b;
 }
-[data-style="purple"].dark-theme,
-[data-style="purple"] body.dark-theme {
+.style-purple.dark-theme,
+.style-purple body.dark-theme {
   --common-color-1: #a78bfa;        /* 淡紫（夜幕上更亮） */
   --common-color-2: #1e1035;        /* 夜幕紫 */
   --common-bg: #0f0720;             /* 深夜幕紫 */
@@ -39,24 +39,24 @@
 }
 
 /* 鼠标指针：紫色 */
-[data-style="purple"] body {
+.style-purple body {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%238b5cf6' stroke='%23ede6f7' stroke-width='0.5'/></svg>") 4 2, auto;
 }
-[data-style="purple"] a, [data-style="purple"] button, [data-style="purple"] select, [data-style="purple"] summary, [data-style="purple"] [role="button"], [data-style="purple"] label[for] {
+.style-purple a, .style-purple button, .style-purple select, .style-purple summary, .style-purple [role="button"], .style-purple label[for] {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%238b5cf6'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%238b5cf6' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
 }
-[data-style="purple"] input[type="text"],
-[data-style="purple"] input[type="search"],
-[data-style="purple"] input[type="password"],
-[data-style="purple"] input[type="email"],
-[data-style="purple"] input[type="url"],
-[data-style="purple"] textarea,
-[data-style="purple"] [contenteditable="true"] {
+.style-purple input[type="text"],
+.style-purple input[type="search"],
+.style-purple input[type="password"],
+.style-purple input[type="email"],
+.style-purple input[type="url"],
+.style-purple textarea,
+.style-purple [contenteditable="true"] {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%238b5cf6'/></svg>") 11 10, text;
 }
 
 /* 遮罩 */
-[data-style="purple"] body::before {
+.style-purple body::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -64,12 +64,12 @@
   z-index: 0;
   pointer-events: none;
 }
-[data-style="purple"] body.dark-theme::before {
+.style-purple body.dark-theme::before {
   background: rgba(0, 0, 0, 0.6);
 }
 
 /* 四角紫韵晕染 */
-[data-style="purple"] body::after {
+.style-purple body::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -84,12 +84,12 @@
 }
 
 /* 全局卡片 - 紫韵毛玻璃 */
-[data-style="purple"] .header-card,
-[data-style="purple"] .footer-card,
-[data-style="purple"] .footer-element-card,
-[data-style="purple"] .left-asider-card,
-[data-style="purple"] .center-card,
-[data-style="purple"] .page-list-card {
+.style-purple .header-card,
+.style-purple .footer-card,
+.style-purple .footer-element-card,
+.style-purple .left-asider-card,
+.style-purple .center-card,
+.style-purple .page-list-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -100,12 +100,12 @@
   border-radius: 14px;
   border: 1px solid rgba(139, 92, 246, 0.12);
 }
-[data-style="purple"] body.dark-theme .header-card,
-[data-style="purple"] body.dark-theme .footer-card,
-[data-style="purple"] body.dark-theme .footer-element-card,
-[data-style="purple"] body.dark-theme .left-asider-card,
-[data-style="purple"] body.dark-theme .center-card,
-[data-style="purple"] body.dark-theme .page-list-card {
+.style-purple body.dark-theme .header-card,
+.style-purple body.dark-theme .footer-card,
+.style-purple body.dark-theme .footer-element-card,
+.style-purple body.dark-theme .left-asider-card,
+.style-purple body.dark-theme .center-card,
+.style-purple body.dark-theme .page-list-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -117,16 +117,16 @@
 }
 
 /* 标题紫韵下划线 */
-[data-style="purple"] h1,
-[data-style="purple"] h2,
-[data-style="purple"] h3,
-[data-style="purple"] h4,
-[data-style="purple"] h5,
-[data-style="purple"] h6 {
+.style-purple h1,
+.style-purple h2,
+.style-purple h3,
+.style-purple h4,
+.style-purple h5,
+.style-purple h6 {
   position: relative;
 }
-[data-style="purple"] h1::after,
-[data-style="purple"] h2::after {
+.style-purple h1::after,
+.style-purple h2::after {
   content: '';
   position: absolute;
   left: 0;
@@ -140,13 +140,13 @@
 }
 
 /* 链接紫韵晕染悬停 */
-[data-style="purple"] a:hover {
+.style-purple a:hover {
   color: var(--common-color-1);
   text-shadow: 0 0 8px rgba(139, 92, 246, 0.25);
 }
 
 /* 分隔线 */
-[data-style="purple"] hr {
+.style-purple hr {
   border: none;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--common-shadow), transparent);
@@ -154,7 +154,7 @@
 }
 
 /* 引用块紫色左侧点缀 */
-[data-style="purple"] blockquote {
+.style-purple blockquote {
   border-left: 4px solid var(--common-color-1);
   background: rgba(139, 92, 246, 0.07);
   border-radius: 0 8px 8px 0;
@@ -163,33 +163,33 @@
 }
 
 /* 内部小卡片 */
-[data-style="purple"] .center-head-card {
+.style-purple .center-head-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.08));
   box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
   border: 1px solid rgba(139, 92, 246, 0.12);
 }
-[data-style="purple"] .center-card-content {
+.style-purple .center-card-content {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.10));
 }
-[data-style="purple"] body.dark-theme .center-head-card {
+.style-purple body.dark-theme .center-head-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.10));
   border: 1px solid rgba(139, 92, 246, 0.15);
 }
-[data-style="purple"] body.dark-theme .center-card-content {
+.style-purple body.dark-theme .center-card-content {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.12));
 }
-[data-style="purple"] .page-card {
+.style-purple .page-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   border: 1px solid rgba(139, 92, 246, 0.12);
 }
-[data-style="purple"] body.dark-theme .page-card {
+.style-purple body.dark-theme .page-card {
   border: 1px solid rgba(139, 92, 246, 0.15);
 }
 
 /* 小屏隐藏下划线 */
 @media (max-width: 768px) {
-  [data-style="purple"] h1::after,
-  [data-style="purple"] h2::after {
+  .style-purple h1::after,
+  .style-purple h2::after {
     display: none;
   }
 }

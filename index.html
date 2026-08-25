@@ -24,8 +24,8 @@
           }
           var d = document.documentElement;
           d.setAttribute('data-theme', theme);
-          d.setAttribute('data-style', style);
-          d.setAttribute('data-layout', layout);
+          d.classList.add('style-' + style);
+          d.classList.add('layout-' + layout);
           d.style.setProperty('--glass-alpha', String(glass));
           // body 在脚本之后才解析，延迟补 dark-theme 类（CSS 用 body.dark-theme 分流）
           function applyBodyClass() {

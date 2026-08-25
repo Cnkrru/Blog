@@ -59,12 +59,12 @@ body.immersive-reading .mid-flex {
 }
 
 /* 无空隙布局下进入沉浸阅读：保持贴满，不出现 1400px 收缩与左右留白 */
-html[data-layout="compact"] body.immersive-reading .center-s {
+.layout-compact body.immersive-reading .center-s {
     width: auto;
     max-width: none;
     flex: 1;
 }
-html[data-layout="compact"] body.immersive-reading .mid-flex {
+.layout-compact body.immersive-reading .mid-flex {
     padding-left: 0;
     padding-right: 0;
 }
@@ -91,7 +91,7 @@ body.immersive-reading .center-card {
         padding-left: 10px !important;
         padding-right: 10px !important;
     }
-    html[data-layout="compact"] body.immersive-reading .mid-flex {
+    .layout-compact body.immersive-reading .mid-flex {
         padding-left: 0 !important;
         padding-right: 0 !important;
     }

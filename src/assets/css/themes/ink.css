@@ -1,11 +1,11 @@
 /*==============================================================
  * 风格方案 A：东方水墨（宣纸米白 / 浓墨 / 朱砂点睛）
- * 通过 <html data-style="ink"> 激活；:root 同时兜底（无 data-style 时默认水墨）
+ * 通过 <html class="style-ink"> 激活；:root 同时兜底（无 style-ink 类时默认水墨）
  *==============================================================*/
 
 /* 变量（亮色 · 宣纸米白 / 暗色 · 夜墨暖黑） */
 :root,
-[data-style="ink"] {
+.style-ink {
   --common-color-1: #b23a2e;        /* 朱砂红（点睛主色，更通透矿物感） */
   --common-color-2: #f3ede0;        /* 宣纸米白（略降饱和，更温润） */
   --common-bg: #efe9db;             /* 宣纸底色（比卡片面略深，拉开层次） */
@@ -22,8 +22,8 @@
   --color-warning: #f59e0b;    /* 警告 */
 }
 
-[data-style="ink"].dark-theme,
-[data-style="ink"] body.dark-theme {
+.style-ink.dark-theme,
+.style-ink body.dark-theme {
   --common-color-1: #d25043;    /* 亮朱砂（夜墨上更跳） */
   --common-color-2: #3a352c;    /* 夜墨 */
   --common-bg: #16140f;         /* 夜墨近黑（偏冷调更沉静） */
@@ -41,24 +41,24 @@
 }
 
 /* 鼠标指针：水墨色 */
-[data-style="ink"] body {
+.style-ink body {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2l12 4-5 3 3 7-4-2-3-7z' fill='%232b2722' stroke='%23b23a2e' stroke-width='0.5'/></svg>") 4 2, auto;
 }
-[data-style="ink"] a, [data-style="ink"] button, [data-style="ink"] select, [data-style="ink"] summary, [data-style="ink"] [role="button"], [data-style="ink"] label[for] {
+.style-ink a, .style-ink button, .style-ink select, .style-ink summary, .style-ink [role="button"], .style-ink label[for] {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='8' r='3' fill='%23b23a2e'/><path d='M8 16l2-3h4l2 3' fill='none' stroke='%23b23a2e' stroke-width='2' stroke-linecap='round'/></svg>") 12 3, pointer;
 }
-[data-style="ink"] input[type="text"],
-[data-style="ink"] input[type="search"],
-[data-style="ink"] input[type="password"],
-[data-style="ink"] input[type="email"],
-[data-style="ink"] input[type="url"],
-[data-style="ink"] textarea,
-[data-style="ink"] [contenteditable="true"] {
+.style-ink input[type="text"],
+.style-ink input[type="search"],
+.style-ink input[type="password"],
+.style-ink input[type="email"],
+.style-ink input[type="url"],
+.style-ink textarea,
+.style-ink [contenteditable="true"] {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10' y='2' width='3' height='20' rx='0.5' fill='%232b2722'/></svg>") 11 10, text;
 }
 
 /* 宣纸纹理遮罩 */
-[data-style="ink"] body::before {
+.style-ink body::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -69,7 +69,7 @@
   z-index: 0;
   pointer-events: none;
 }
-[data-style="ink"] body.dark-theme::before {
+.style-ink body.dark-theme::before {
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
     rgba(0, 0, 0, 0.6);
@@ -77,7 +77,7 @@
 }
 
 /* 四角淡墨晕染墨池（墨青 + 朱砂双主调，页面留白处晕开） */
-[data-style="ink"] body::after {
+.style-ink body::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -92,12 +92,12 @@
 }
 
 /* 全局卡片 - 宣纸质感（暖白面 + 暖墨阴影 + 圆角） */
-[data-style="ink"] .header-card,
-[data-style="ink"] .footer-card,
-[data-style="ink"] .footer-element-card,
-[data-style="ink"] .left-asider-card,
-[data-style="ink"] .center-card,
-[data-style="ink"] .page-list-card {
+.style-ink .header-card,
+.style-ink .footer-card,
+.style-ink .footer-element-card,
+.style-ink .left-asider-card,
+.style-ink .center-card,
+.style-ink .page-list-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -108,12 +108,12 @@
   border-radius: 14px;
   border: 1px solid rgba(74, 60, 40, 0.12);
 }
-[data-style="ink"] body.dark-theme .header-card,
-[data-style="ink"] body.dark-theme .footer-card,
-[data-style="ink"] body.dark-theme .footer-element-card,
-[data-style="ink"] body.dark-theme .left-asider-card,
-[data-style="ink"] body.dark-theme .center-card,
-[data-style="ink"] body.dark-theme .page-list-card {
+.style-ink body.dark-theme .header-card,
+.style-ink body.dark-theme .footer-card,
+.style-ink body.dark-theme .footer-element-card,
+.style-ink body.dark-theme .left-asider-card,
+.style-ink body.dark-theme .center-card,
+.style-ink body.dark-theme .page-list-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -125,16 +125,16 @@
 }
 
 /* 水墨国风增强：标题笔触下划线（朱砂 → 淡墨晕染） */
-[data-style="ink"] h1,
-[data-style="ink"] h2,
-[data-style="ink"] h3,
-[data-style="ink"] h4,
-[data-style="ink"] h5,
-[data-style="ink"] h6 {
+.style-ink h1,
+.style-ink h2,
+.style-ink h3,
+.style-ink h4,
+.style-ink h5,
+.style-ink h6 {
   position: relative;
 }
-[data-style="ink"] h1::after,
-[data-style="ink"] h2::after {
+.style-ink h1::after,
+.style-ink h2::after {
   content: '';
   position: absolute;
   left: 0;
@@ -148,13 +148,13 @@
 }
 
 /* 链接朱砂晕染悬停 */
-[data-style="ink"] a:hover {
+.style-ink a:hover {
   color: var(--common-color-1);
   text-shadow: 0 0 8px rgba(178, 58, 46, 0.25);
 }
 
 /* 分隔线墨色晕开 */
-[data-style="ink"] hr {
+.style-ink hr {
   border: none;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--common-shadow), transparent);
@@ -162,7 +162,7 @@
 }
 
 /* 引用块朱砂左侧点缀 */
-[data-style="ink"] blockquote {
+.style-ink blockquote {
   border-left: 4px solid var(--common-color-1);
   background: rgba(178, 58, 46, 0.06);
   border-radius: 0 8px 8px 0;
@@ -172,8 +172,8 @@
 
 /* 小屏隐藏笔触下划线，避免拥挤 */
 @media (max-width: 768px) {
-  [data-style="ink"] h1::after,
-  [data-style="ink"] h2::after {
+  .style-ink h1::after,
+  .style-ink h2::after {
     display: none;
   }
 }
@@ -181,26 +181,26 @@
 /* 内部小卡片（Center 标题区 / 内容区 / 侧边栏子卡）接入玻璃透明度变量
    - 标题区略深于主卡，内容区略浅于主卡，形成层次
    - 全部用 --glass-alpha 驱动，随设置页滑块实时变化 */
-[data-style="ink"] .center-head-card {
+.style-ink .center-head-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.08));
   box-shadow: 0 1px 3px rgba(74, 60, 40, 0.05);
   border: 1px solid rgba(74, 60, 40, 0.12);
 }
-[data-style="ink"] .center-card-content {
+.style-ink .center-card-content {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.10));
 }
-[data-style="ink"] body.dark-theme .center-head-card {
+.style-ink body.dark-theme .center-head-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) + 0.10));
   border: 1px solid rgba(245, 241, 232, 0.10);
 }
-[data-style="ink"] body.dark-theme .center-card-content {
+.style-ink body.dark-theme .center-card-content {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.12));
 }
 /* 侧边栏子卡（page-card 等）跟随主卡玻璃质感 */
-[data-style="ink"] .page-card {
+.style-ink .page-card {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   border: 1px solid rgba(74, 60, 40, 0.12);
 }
-[data-style="ink"] body.dark-theme .page-card {
+.style-ink body.dark-theme .page-card {
   border: 1px solid rgba(245, 241, 232, 0.10);
 }
