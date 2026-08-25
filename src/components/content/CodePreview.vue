@@ -1,11 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import { ref, nextTick } from 'vue'
 
-const props = defineProps<{ code: string }>()
+const props = defineProps(['code'])
 
 const show = ref(false)
 const iframeKey = ref(0)
-const iframeRef = ref<HTMLIFrameElement | null>(null)
+const iframeRef = ref(null)
 
 function runCode() {
   show.value = true

@@ -51,33 +51,24 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue'
 import codeSvg from '@/assets/svg/code.svg?raw'
 import tableSvg from '@/assets/svg/table.svg?raw'
 import CodeRender from './CodeRender.vue'
 
-const props = defineProps<{
-  code: string
-}>()
+const props = defineProps(['code'])
 
-const viewMode = ref<'preview' | 'source'>('preview')
+const viewMode = ref('preview')
 
 /* ========== CSV 解析器 ========== */
-interface ParsedCsv {
-  header: string[]
-  body: string[][]
-  rows: number
-  cols: number
-}
-
-function parseCsv(raw: string): ParsedCsv {
+function parseCsv(raw) {
   const lines = raw.trim().split(/\r?\n/).filter(l => l.trim() !== '')
   if (lines.length === 0) return { header: [], body: [], rows: 0, cols: 0 }
 
-  const result: string[][] = []
+  const result = []
   for (const line of lines) {
-    const row: string[] = []
+    const row = []
     let cell = ''
     let inQuotes = false
     for (let i = 0; i < line.length; i++) {

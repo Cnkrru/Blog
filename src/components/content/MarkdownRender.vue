@@ -113,7 +113,7 @@
   </Teleport>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import copySvg from '@/assets/svg/copy.svg?raw'
 import xSvg from '@/assets/svg/x.svg?raw'
@@ -131,15 +131,12 @@ import CsvTable from './CsvTable.vue'
 import JsonView from './JsonView.vue'
 import YamlView from './YamlView.vue'
 import TomlView from './TomlView.vue'
-import { CDN_VERSIONS } from '../../utils/constants'
 
-const props = defineProps<{
-  content: string
-}>()
+const props = defineProps(['content'])
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
-const postId = computed(() => route.params.id as string || '')
+const postId = computed(() => route.params.id || '')
 
 const markdownContent = ref('')
 const showLightbox = ref(false)
@@ -153,8 +150,8 @@ const orderedBlocks = ref([]) // 按顺序排列的内容块
 const renderMode = ref('normal') // normal 或 special-blocks
 
 // 提示块默认标题
-const defaultTitle = (type: string): string => {
-  const titles: Record<string, string> = {
+const defaultTitle = (type) => {
+  const titles = {
     info: '信息',
     success: '成功',
     warning: '警告',
@@ -166,57 +163,13 @@ const defaultTitle = (type: string): string => {
   return titles[type] || type
 }
 
-// 加载CDN资源
-const loadCDN = async () => {
-  
-  // 移除可能存在的旧脚本和样式
-  const cleanupOldResources = () => {
-    // 移除旧的marked.js
-    const oldMarkedScripts = document.querySelectorAll('script[src*="marked"]')
-    oldMarkedScripts.forEach(script => script.remove())
-    
-    // 重置全局变量
-    delete window.marked
+// 加载 marked（本地依赖，动态 import 避免进入 SSR 关键路径）
+let markedLib = null
+const getMarked = async () => {
+  if (!markedLib) {
+    markedLib = (await import('marked')).marked
   }
-  
-  cleanupOldResources()
-  
-  // 加载marked.js
-  await new Promise((resolve, reject) => {
-    const script = document.createElement('script')
-    script.src = `https://cdn.jsdelivr.net/npm/marked@${CDN_VERSIONS.marked}/marked.min.js`
-    script.onload = () => {
-      resolve()
-    }
-    script.onerror = () => {
-      console.error('marked.js加载失败，尝试备用链接')
-      // 尝试备用链接
-      const backupScript = document.createElement('script')
-      backupScript.src = `https://unpkg.com/marked@${CDN_VERSIONS.marked}/marked.min.js`
-      backupScript.onload = () => {
-        resolve()
-      }
-      backupScript.onerror = () => {
-        console.error('marked.js备用链接也加载失败')
-        reject(new Error('marked.js加载失败'))
-      }
-      document.head.appendChild(backupScript)
-    }
-    document.head.appendChild(script)
-  })
-  
-  // 配置marked
-  if (window.marked && typeof window.marked === 'object') {
-    // 确保marked是一个函数
-    if (typeof window.marked.parse === 'function') {
-    } else if (typeof window.marked === 'function') {
-    } else {
-      console.error('marked.js API结构异常', window.marked)
-    }
-  } else {
-    console.error('marked.js未正确加载', window.marked)
-    throw new Error('marked.js未正确加载')
-  }
+  return markedLib
 }
 
 // 提取特殊块
@@ -398,7 +351,7 @@ const extractOrderedBlocks = (content) => {
 const renderMarkdown = async () => {
   
   try {
-    await loadCDN()
+    const marked = await getMarked()
     
     // 提取特殊块
     extractSpecialBlocks(props.content)
@@ -416,32 +369,16 @@ const renderMarkdown = async () => {
       // 解析每个普通Markdown块
       const processedBlocks = blocks.map(block => {
         if (block.type === 'markdown') {
-          if (window.marked) {
-            if (typeof window.marked.parse === 'function') {
-              return {
-                ...block,
-                content: window.marked.parse(block.content)
-              }
-            } else if (typeof window.marked === 'function') {
-              return {
-                ...block,
-                content: window.marked(block.content)
-              }
-            }
+          return {
+            ...block,
+            content: marked.parse(block.content)
           }
-          return { ...block, content: `<p>Markdown解析器加载失败</p>` }
         }
         if (block.type === 'admonition') {
           // 将提示块内容也渲染为 Markdown
-          if (window.marked && block.content) {
-            const rendered = typeof window.marked.parse === 'function'
-              ? window.marked.parse(block.content)
-              : typeof window.marked === 'function'
-                ? window.marked(block.content)
-                : block.content
-            return { ...block, content: rendered }
-          }
-          return block
+          return block.content
+            ? { ...block, content: marked.parse(block.content) }
+            : block
         }
         return block
       })
@@ -455,19 +392,7 @@ const renderMarkdown = async () => {
       let processedContent = props.content.replace(/^---[\s\S]*?---\n?/, '')
       
       // 解析Markdown
-      if (window.marked) {
-        if (typeof window.marked.parse === 'function') {
-          markdownContent.value = window.marked.parse(processedContent)
-        } else if (typeof window.marked === 'function') {
-          markdownContent.value = window.marked(processedContent)
-        } else {
-          markdownContent.value = `<p>Markdown解析器API错误</p>`
-          console.error('Markdown解析器API错误', window.marked)
-        }
-      } else {
-        markdownContent.value = `<p>Markdown解析器加载失败</p>`
-        console.error('Markdown解析器加载失败')
-      }
+      markdownContent.value = marked.parse(processedContent)
     }
     
     // 添加图片点击事件、标题锚点和锚点链接滚动拦截
@@ -486,7 +411,7 @@ const renderMarkdown = async () => {
 
 
 // 存储图片点击监听器引用，用于清理
-const imageClickHandlers = new WeakMap<Element, (e: Event) => void>()
+const imageClickHandlers = new WeakMap()
 
 // 添加图片点击事件
 const addImageClickListeners = () => {
@@ -520,7 +445,7 @@ const addImageClickListeners = () => {
 }
 
 // 为标题生成 id，支持中文锚点跳转
-const generateHeadingId = (text: string): string => {
+const generateHeadingId = (text) => {
   return text
     .toLowerCase()
     .replace(/[^\w\u4e00-\u9fff]+/g, '-')
@@ -529,7 +454,7 @@ const generateHeadingId = (text: string): string => {
 
 const addHeadingIds = () => {
   setTimeout(() => {
-    const idCount = new Map<string, number>()
+    const idCount = new Map()
     const headings = document.querySelectorAll('.markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6')
     headings.forEach((h) => {
       const text = h.textContent?.trim() || ''
@@ -544,11 +469,11 @@ const addHeadingIds = () => {
 }
 
 // 存储事件监听器引用，用于组件卸载时清理
-const anchorContainers: Element[] = []
+const anchorContainers = []
 
 // 拦截锚点链接点击，使用 scroll API 滚动（与 Toc.vue 一致）
-const handleAnchorClick = (e: Event) => {
-  const target = e.target as HTMLElement
+const handleAnchorClick = (e) => {
+  const target = e.target
   const anchor = target.closest('a[href^="#"]')
   if (!anchor) return
 
@@ -590,9 +515,9 @@ const quotePopupPos = ref({ x: 0, y: 0 })
 const selectedText = ref('')
 const quoteCopied = ref(false)
 
-function handleTextSelection(e: MouseEvent) {
+function handleTextSelection(e) {
   // 确保点击在 markdown 内容区域
-  const target = e.target as HTMLElement
+  const target = e.target
   if (!target.closest('.markdown-content')) {
     setTimeout(() => { showQuotePopup.value = false }, 200)
     return
@@ -663,7 +588,7 @@ const openLightbox = (index) => {
   // 聚焦到 overlay 以接收键盘事件
   nextTick(() => {
     const overlay = document.querySelector('.lightbox-overlay')
-    if (overlay) (overlay as HTMLElement).focus()
+    if (overlay) overlay.focus()
   })
 }
 
@@ -684,7 +609,7 @@ const nextImage = () => {
   }
 }
 
-const onLightboxKeydown = (e: KeyboardEvent) => {
+const onLightboxKeydown = (e) => {
   if (e.key === 'Escape') closeLightbox()
   if (e.key === 'ArrowLeft') prevImage()
   if (e.key === 'ArrowRight') nextImage()

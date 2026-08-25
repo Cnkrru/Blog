@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
@@ -50,14 +50,14 @@ useHead({
   ]
 })
 
-const articles = ref<any[]>([])
+const articles = ref([])
 const currentPage = ref(1)
 const pageSize = ref(6)
 const totalPages = ref(1)
 const loading = ref(true)
-const error = ref<null | string>(null)
+const error = ref(null)
 
-const pinnedPosts = ref<any[]>([])
+const pinnedPosts = ref([])
 const hasPinned = ref(false)
 
 const loadArticles = async () => {
@@ -91,7 +91,7 @@ const getPaginatedArticles = () => {
   return others.slice(start, start + pageSize.value)
 }
 
-const changePage = (p: number) => {
+const changePage = (p) => {
   if (p >= 1 && p <= totalPages.value) currentPage.value = p
 }
 

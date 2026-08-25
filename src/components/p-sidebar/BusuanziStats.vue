@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const showPopup = ref(false)
@@ -11,16 +11,16 @@ const stats = ref({
   pagePv: '-'
 })
 
-let jsonpScript: HTMLScriptElement | null = null
+let jsonpScript = null
 let callbackName = ''
-let timeoutId: ReturnType<typeof setTimeout> | null = null
+let timeoutId = null
 
 const togglePopup = () => {
   showPopup.value = !showPopup.value
 }
 
-const closePopup = (e: MouseEvent) => {
-  const target = e.target as HTMLElement
+const closePopup = (e) => {
+  const target = e.target
   if (!target.closest('.busuanzi-popup') && !target.closest('.busuanzi-btn')) {
     showPopup.value = false
   }
@@ -34,7 +34,7 @@ const fetchBusuanzi = () => {
   callbackName = '_bsz_' + Math.floor(1099511627776 * Math.random())
 
   // 注册 JSONP 回调
-  ;(window as any)[callbackName] = (data: any) => {
+  ;window[callbackName] = (data) => {
     cleanup()
 
     if (data && typeof data === 'object') {
@@ -70,8 +70,8 @@ const fetchBusuanzi = () => {
 }
 
 const cleanup = () => {
-  if (callbackName && (window as any)[callbackName]) {
-    delete (window as any)[callbackName]
+  if (callbackName && window[callbackName]) {
+    delete window[callbackName]
   }
   if (jsonpScript && jsonpScript.parentElement) {
     jsonpScript.parentElement.removeChild(jsonpScript)
@@ -259,10 +259,6 @@ onUnmounted(() => {
   border: 2px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
   border-top-color: var(--common-color-1);
   animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 .popup-error {

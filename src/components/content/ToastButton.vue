@@ -4,13 +4,10 @@
   </button>
 </template>
 
-<script setup lang="ts">
-const props = defineProps<{
-  type: string
-  text: string
-}>()
+<script setup>
+const props = defineProps(['type', 'text'])
 
-const typeMap: Record<string, string> = {
+const typeMap = {
   success: 'success',
   error: 'error',
   warning: 'warning',
@@ -19,7 +16,7 @@ const typeMap: Record<string, string> = {
 
 function triggerToast() {
   if (typeof window === 'undefined' || !window.toast) return
-  const fn = (window.toast as any)[typeMap[props.type] || 'info']
+  const fn = window.toast[typeMap[props.type] || 'info']
   if (typeof fn === 'function') {
     fn(props.text)
   } else {

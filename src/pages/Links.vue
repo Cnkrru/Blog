@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, reactive } from 'vue'
 import axios from 'axios'
 import { useHead } from '@vueuse/head'
@@ -29,17 +29,17 @@ useHead({
   ]
 })
 
-const links = ref<any[]>([])
-const categories = ref<any[]>([])
+const links = ref([])
+const categories = ref([])
 const currentPage = ref(1)
 const totalPages = ref(1)
 
 // 友链状态检测
-const linkStatus = reactive<Record<string, 'checking' | 'online' | 'offline'>>({})
+const linkStatus = reactive({})
 const checkedCount = ref(0)
 const totalLinks = ref(0)
 
-async function checkLink(link: any) {
+async function checkLink(link) {
   const id = link.id
   linkStatus[id] = 'checking'
   try {
@@ -79,7 +79,7 @@ const loadLinks = async () => {
 }
 
 const categorizeLinks = () => {
-    const categoryMap: Record<string, any[]> = {}
+    const categoryMap = {}
 
     links.value.forEach(link => {
         const category = link.category
@@ -92,7 +92,7 @@ const categorizeLinks = () => {
     categories.value = Object.keys(categoryMap).map(category => {
         return {
             name: category,
-            links: categoryMap[category].sort((a: any, b: any) => {
+            links: categoryMap[category].sort((a, b) => {
                 return parseInt(b.id) - parseInt(a.id)
             })
         }
@@ -107,7 +107,7 @@ const getCurrentCategory = () => {
     return categories.value[currentPage.value - 1]
 }
 
-const changePage = (page: number) => {
+const changePage = (page) => {
     if (page >= 1 && page <= totalPages.value) {
         currentPage.value = page
     }

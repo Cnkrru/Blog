@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useThemeStore } from '../../stores/theme'
 import minusSvg from '@/assets/svg/minus.svg?raw'

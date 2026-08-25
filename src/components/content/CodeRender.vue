@@ -25,15 +25,15 @@
   </button>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useClipboardStore, useNotificationStore } from '../../stores'
 
-const props = defineProps<{ code: string }>()
+const props = defineProps(['code'])
 
 const route = useRoute()
-const postId = computed(() => route.params.id as string || '')
+const postId = computed(() => route.params.id || '')
 
 const clipboardStore = useClipboardStore()
 const notificationStore = useNotificationStore()
@@ -284,15 +284,6 @@ onMounted(() => {
     }
     100% {
         transform: scale(1);
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
     }
 }
 

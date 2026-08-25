@@ -21,18 +21,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import infoSvg from '@/assets/svg/info.svg?raw'
 import checkSvg from '@/assets/svg/check.svg?raw'
 import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
 import xSvg from '@/assets/svg/x.svg?raw'
 import fileTextSvg from '@/assets/svg/file-text.svg?raw'
 
-defineProps<{
-  type: string
-  title: string
-  content: string
-}>()
+defineProps(['type', 'title', 'content'])
 </script>
 
 <style scoped>

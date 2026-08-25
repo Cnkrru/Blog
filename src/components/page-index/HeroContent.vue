@@ -17,13 +17,13 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Heatmap from './Heatmap.vue'
 
 const router = useRouter()
-const navigateTo = (path: string) => router.push(path)
+const navigateTo = (path) => router.push(path)
 
 const texts = [
   'Welcome to Cnkrru\'s Blog',
@@ -33,7 +33,7 @@ let textIdx = 0
 let charIdx = 0
 let isDeleting = false
 const typingText = ref('')
-let timer: ReturnType<typeof setTimeout> | null = null
+let timer = null
 
 function type() {
   const current = texts[textIdx]

@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, watch, ref, nextTick } from 'vue'
 import shareSvg from '@/assets/svg/share.svg?raw'
 
-const props = defineProps<{ title: string; url: string; description?: string }>()
+const props = defineProps(['title', 'url', 'description'])
 
 const scriptLoaded = ref(false)
 
@@ -18,7 +18,7 @@ const loadShareScript = () => {
 
 const initButtons = () => {
   nextTick(() => {
-    if ((window as any).a2a?.init_all) (window as any).a2a.init_all()
+    if (window.a2a?.init_all) window.a2a.init_all()
   })
 }
 

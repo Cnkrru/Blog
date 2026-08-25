@@ -36,17 +36,17 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import arrowLeftSvg from '@/assets/svg/arrow-left.svg?raw'
 import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
 
-const props = withDefaults(defineProps<{ prevPost?: any; nextPost?: any }>(), {
-  prevPost: null,
-  nextPost: null
+const props = defineProps({
+  prevPost: { default: null },
+  nextPost: { default: null }
 })
 
-const emit = defineEmits<{ navigate: [post: any] }>()
+const emit = defineEmits(['navigate'])
 
 const loadingPrev = ref(false)
 const loadingNext = ref(false)

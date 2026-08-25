@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useHead } from '@vueuse/head'
 import { useThemeStore } from '../stores'
@@ -11,14 +11,14 @@ const glassAlpha = computed(() => themeStore.glassAlpha)
 const bgType = computed(() => themeStore.bgType)
 
 const isAutoSwitch = computed(() => themeStore.isAutoSwitch)
-const setStyle = (style: 'ink' | 'sakura' | 'purple' | 'cyan') => themeStore.setStyle(style)
-const setLayout = (layout: 'card' | 'compact' | 'minimal') => themeStore.setLayout(layout)
-const setBgType = (type: 'image' | 'video') => themeStore.setBgType(type)
+const setStyle = (style) => themeStore.setStyle(style)
+const setLayout = (layout) => themeStore.setLayout(layout)
+const setBgType = (type) => themeStore.setBgType(type)
 const toggleAutoSwitch = () => themeStore.setAutoSwitch(!isAutoSwitch.value)
 
-let glassSaveTimer: ReturnType<typeof setTimeout> | null = null
-const onGlassInput = (e: Event) => {
-  const val = Number((e.target as HTMLInputElement).value)
+let glassSaveTimer = null
+const onGlassInput = (e) => {
+  const val = Number(e.target.value)
   themeStore.setGlassAlphaLive(val)          // 实时改 CSS 变量（不写存储）
   if (glassSaveTimer) clearTimeout(glassSaveTimer)
   glassSaveTimer = setTimeout(() => themeStore.savePreference(), 150)  // 节流落盘

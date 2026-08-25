@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch, provide, nextTick, onMounted } from 'vue'
 import usersSvg from '@/assets/svg/users.svg?raw'
 import codeSvg from '@/assets/svg/code.svg?raw'
@@ -55,15 +55,13 @@ import JsonTree from './JsonTree.vue'
 import CodeRender from './CodeRender.vue'
 import { useCodeStore } from '../../stores'
 
-const props = defineProps<{
-  code: string
-}>()
+const props = defineProps(['code'])
 
 const codeStore = useCodeStore()
-const viewMode = ref<'preview' | 'source'>('preview')
-const parseError = ref<string | null>(null)
-const parsedData = ref<any>(null)
-const codeRef = ref<HTMLElement | null>(null)
+const viewMode = ref('preview')
+const parseError = ref(null)
+const parsedData = ref(null)
+const codeRef = ref(null)
 
 // 为 JsonTree 提供默认展开状态（必须用 ref 包裹，JsonTree 内部通过 .value 访问）
 const expandState = ref({ expanded: true, version: 0 })
@@ -85,7 +83,7 @@ function parseJson() {
   try {
     parsedData.value = JSON.parse(trimmed)
     viewMode.value = 'preview'
-  } catch (err: any) {
+  } catch (err) {
     parseError.value = `解析失败: ${err.message || '语法错误'}`
     viewMode.value = 'source'
   }
@@ -99,7 +97,7 @@ const statsText = computed(() => {
   return `${lines} 行 · ${nodes} 节点`
 })
 
-function countNodes(data: any): number {
+function countNodes(data) {
   if (data === null || data === undefined || typeof data !== 'object') return 1
   let count = 1
   if (Array.isArray(data)) {
@@ -138,7 +136,7 @@ async function highlightSource() {
   if (window.Prism) {
     nextTick(() => {
       try {
-        window.Prism.highlightElement(codeRef.value!)
+        window.Prism.highlightElement(codeRef.value)
       } catch {
         // 高亮失败不影响显示
       }

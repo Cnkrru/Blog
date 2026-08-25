@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import IndexLogo from '../components/page-index/IndexLogo.vue'
 import IndexNavbar from '../components/page-index/IndexNavbar.vue'
 import HeroContent from '../components/page-index/HeroContent.vue'

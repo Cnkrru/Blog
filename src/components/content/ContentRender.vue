@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, computed, watch } from 'vue'
 import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
 import MarkdownRender from './MarkdownRender.vue'
@@ -6,18 +6,9 @@ import SkeletonScreen from './SkeletonScreen.vue'
 import { useContentLoader } from '../../utils/useContentLoader'
 import { useArticlesStore } from '../../stores'
 
-const props = defineProps<{
-  id: string
-  type: 'post' | 'project'
-}>()
+const props = defineProps(['id', 'type'])
 
-const emit = defineEmits<{
-  'content-loaded': [content: any]
-  'loading': [loading: boolean]
-  'error': [error: string]
-  'prev-next-posts': [prev: any, next: any]
-  'update:toc': [toc: any]
-}>()
+const emit = defineEmits(['content-loaded', 'loading', 'error', 'prev-next-posts', 'update:toc'])
 
 // 使用 content loader
 const { content, markdownContent, loading, error: hasError, isLoaded, loadContent, retry } = useContentLoader(props.type, props.id)

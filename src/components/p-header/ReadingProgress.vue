@@ -1,14 +1,14 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const progress = ref(0)
-let targetElement: HTMLElement | null = null
-let observer: ResizeObserver | null = null
-let cachedContentCard: HTMLElement | null = null
+let targetElement = null
+let observer = null
+let cachedContentCard = null
 
-const findContentCard = (): HTMLElement | null => {
+const findContentCard = () => {
   if (cachedContentCard?.isConnected) {
     return cachedContentCard
   }
@@ -16,7 +16,7 @@ const findContentCard = (): HTMLElement | null => {
   return cachedContentCard
 }
 
-const handleScroll = (): void => {
+const handleScroll = () => {
   if (targetElement) {
     const scrollTop = targetElement.scrollTop
     const scrollHeight = targetElement.scrollHeight
@@ -30,7 +30,7 @@ const handleScroll = (): void => {
   }
 }
 
-const bindScroll = (el: HTMLElement | null): void => {
+const bindScroll = (el) => {
   if (targetElement) {
     targetElement.removeEventListener('scroll', handleScroll)
   }
@@ -49,17 +49,17 @@ const bindScroll = (el: HTMLElement | null): void => {
   handleScroll()
 }
 
-const refreshTarget = (): void => {
+const refreshTarget = () => {
   cachedContentCard = null
   const el = findContentCard()
   bindScroll(el)
 }
 
-const handleRouteChange = (): void => {
+const handleRouteChange = () => {
   setTimeout(refreshTarget, 100)
 }
 
-let removeRouteGuard: (() => void) | null = null
+let removeRouteGuard = null
 
 onMounted(() => {
   refreshTarget()

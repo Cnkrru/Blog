@@ -12,19 +12,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useMathStore, useThemeStore } from '../../stores'
-import { CDN_VERSIONS } from '../../utils/constants'
+import 'katex/dist/katex.min.css'
 
-const props = defineProps<{
-  latex: string
-}>()
+const props = defineProps(['latex'])
 
-const emit = defineEmits<{
-  'render-success': []
-  'render-error': [error: any]
-}>()
+const emit = defineEmits(['render-success', 'render-error'])
 
 const mathRef = ref(null)
 const lastRenderedLatex = ref('')
@@ -36,93 +31,14 @@ const isDarkTheme = computed(() => themeStore.isDark)
 const loading = computed(() => mathStore.loading)
 const error = computed(() => mathStore.error)
 
-// KaTeX CDN 链接列表（主链接 + 备用链接）
-const katexCdnLinks = {
-  css: [
-    `https://cdn.jsdelivr.net/npm/katex@${CDN_VERSIONS.katex}/dist/katex.min.css`,
-    `https://unpkg.com/katex@${CDN_VERSIONS.katex}/dist/katex.min.css`,
-    `https://cdnjs.cloudflare.com/ajax/libs/KaTeX/${CDN_VERSIONS.katex}/katex.min.css`
-  ],
-  js: [
-    `https://cdn.jsdelivr.net/npm/katex@${CDN_VERSIONS.katex}/dist/katex.min.js`,
-    `https://unpkg.com/katex@${CDN_VERSIONS.katex}/dist/katex.min.js`,
-    `https://cdnjs.cloudflare.com/ajax/libs/KaTeX/${CDN_VERSIONS.katex}/katex.min.js`
-  ],
-  autoRender: [
-    `https://cdn.jsdelivr.net/npm/katex@${CDN_VERSIONS.katex}/dist/contrib/auto-render.min.js`,
-    `https://unpkg.com/katex@${CDN_VERSIONS.katex}/dist/contrib/auto-render.min.js`,
-    `https://cdnjs.cloudflare.com/ajax/libs/KaTeX/${CDN_VERSIONS.katex}/contrib/auto-render.min.js`
-  ]
-}
-
-// 加载资源函数，支持备用链接
-const loadResource = (urls, type) => {
-  return new Promise((resolve, reject) => {
-    let currentIndex = 0
-
-    const tryLoad = () => {
-      if (currentIndex >= urls.length) {
-        reject(new Error(`${type} 加载失败，所有 CDN 链接都不可用`))
-        return
-      }
-
-      const url = urls[currentIndex]
-      let element
-
-      if (type === 'css') {
-        element = document.createElement('link')
-        element.rel = 'stylesheet'
-        element.href = url
-      } else if (type === 'js') {
-        element = document.createElement('script')
-        element.src = url
-      }
-
-      element.crossOrigin = 'anonymous'
-      element.onload = () => resolve()
-      element.onerror = () => {
-        console.warn(`CDN 加载失败: ${url}，尝试备用链接`)
-        currentIndex++
-        tryLoad()
-      }
-
-      if (type === 'css') {
-        document.head.appendChild(element)
-      } else if (type === 'js') {
-        document.head.appendChild(element)
-      }
-    }
-
-    tryLoad()
-  })
-}
-
-// 加载 KaTeX 库
-const loadKaTeX = () => {
-  return new Promise(async (resolve, reject) => {
-    if (window.katex) {
-      mathStore.setKaTeXLoaded(true)
-      resolve()
-      return
-    }
-
-    try {
-      // 加载 KaTeX CSS
-      await loadResource(katexCdnLinks.css, 'css')
-      
-      // 加载 KaTeX JS
-      await loadResource(katexCdnLinks.js, 'js')
-      
-      // 加载自动渲染插件（可选）
-      await loadResource(katexCdnLinks.autoRender, 'js')
-      
-      mathStore.setKaTeXLoaded(true)
-      resolve()
-    } catch (error) {
-      mathStore.setError('KaTeX 加载失败')
-      reject(error)
-    }
-  })
+// KaTeX（本地依赖，动态 import 避免进入 SSR 关键路径；CSS 已在上方静态引入）
+let katexLib = null
+const loadKaTeX = async () => {
+  if (!katexLib) {
+    katexLib = (await import('katex')).default
+    mathStore.setKaTeXLoaded(true)
+  }
+  return katexLib
 }
 
 // 渲染数学公式
@@ -152,23 +68,19 @@ const renderMath = async () => {
     // 清空容器
     mathRef.value.innerHTML = ''
     
-    // 渲染公式
-    if (window.katex) {
-      window.katex.render(props.latex, mathRef.value, {
-        throwOnError: false,
-        displayMode: true,
-        fleqn: false,
-        errorColor: 'var(--color-error)',
-        strict: 'ignore',
-        trust: true
-      })
-      
-      lastRenderedLatex.value = props.latex
-      mathStore.incrementRenderedCount()
-      emit('render-success', props.latex)
-    } else {
-      throw new Error('KaTeX 库未加载')
-    }
+    // 使用本地 KaTeX 渲染公式
+    katexLib.render(props.latex, mathRef.value, {
+      throwOnError: false,
+      displayMode: true,
+      fleqn: false,
+      errorColor: 'var(--color-error)',
+      strict: 'ignore',
+      trust: true
+    })
+    
+    lastRenderedLatex.value = props.latex
+    mathStore.incrementRenderedCount()
+    emit('render-success', props.latex)
   } catch (error) {
     console.error('渲染数学公式失败:', error)
     mathStore.setError('公式渲染错误: ' + error.message)
@@ -235,11 +147,6 @@ onUnmounted(() => {
 }
 
 .math-container-dark .loading-spinner {
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .math-error {

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticlesStore } from '../../stores'
@@ -7,16 +7,16 @@ import xSvg from '@/assets/svg/x.svg?raw'
 import listSvg from '@/assets/svg/list.svg?raw'
 import searchSvg from '@/assets/svg/search.svg?raw'
 
-const props = defineProps<{ show?: boolean }>()
+const props = defineProps(['show'])
 
-const emit = defineEmits<{ 'update:show': [show: boolean] }>()
+const emit = defineEmits(['update:show'])
 
 const router = useRouter()
 const articlesStore = useArticlesStore()
 
 const searchKeyword = ref('')
 const sortBy = ref('id')
-const sortOrder = ref<'asc' | 'desc'>('desc')
+const sortOrder = ref('desc')
 
 const filteredPosts = computed(() => {
   let result = [...articlesStore.articles]
@@ -56,12 +56,12 @@ const toggleMenu = () => {
   emit('update:show', !props.show)
 }
 
-const navigateToPost = (postId: string) => {
+const navigateToPost = (postId) => {
   router.push(`/post/${postId}`)
   emit('update:show', false)
 }
 
-const handleSortChange = (newSortBy: string) => {
+const handleSortChange = (newSortBy) => {
   if (sortBy.value === newSortBy) {
     sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
   } else {
@@ -74,7 +74,7 @@ const clearSearch = () => {
   searchKeyword.value = ''
 }
 
-const getSortIcon = (sortType: string) => {
+const getSortIcon = (sortType) => {
   if (sortBy.value !== sortType) return ''
   return sortOrder.value === 'desc' ? '↓' : '↑'
 }

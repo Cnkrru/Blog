@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script setup>
 import Sponsor from '../api/Sponsor.vue'
 import ShareButton from '../api/ShareButton.vue'
 
-defineProps<{ title: string; url: string; description?: string }>()
+defineProps(['title', 'url', 'description'])
 </script>
 
 <template>

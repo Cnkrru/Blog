@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 // Center组件作为内容外壳，不包含具体内容
 </script>
 

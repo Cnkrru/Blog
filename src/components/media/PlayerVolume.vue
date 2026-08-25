@@ -1,15 +1,15 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import volumeSvg from '@/assets/svg/volume.svg?raw'
 import volume1Svg from '@/assets/svg/volume-1.svg?raw'
 import volumeXSvg from '@/assets/svg/volume-x.svg?raw'
 
-const props = withDefaults(defineProps<{ volume?: number; isMuted?: boolean }>(), {
-  volume: 0.7,
-  isMuted: false
+const props = defineProps({
+  volume: { type: Number, default: 0.7 },
+  isMuted: { type: Boolean, default: false }
 })
 
-const emit = defineEmits<{ 'adjust-volume': [percent: number]; 'toggle-mute': [] }>()
+const emit = defineEmits(['adjust-volume', 'toggle-mute'])
 
 const volumeBarRef = ref(null)
 let isDraggingVolume = false

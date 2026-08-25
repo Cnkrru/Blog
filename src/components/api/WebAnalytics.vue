@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 // Web Analytics (Google Analytics + Baidu Analytics) 代码
 const isBrowser = typeof window !== 'undefined'
 

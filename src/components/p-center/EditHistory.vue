@@ -1,23 +1,14 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue'
 import calendarSvg from '@/assets/svg/calendar.svg?raw'
 import refreshCwSvg from '@/assets/svg/refresh-cw.svg?raw'
 import chevronDownSvg from '@/assets/svg/chevron-down.svg?raw'
 
-const props = defineProps<{
-  date: string
-  updated?: string
-  history?: string[]
-}>()
+const props = defineProps(['date', 'updated', 'history'])
 
 const expanded = ref(false)
 
-interface HistoryItem {
-  date: string
-  desc: string
-}
-
-const parsedHistory = computed<HistoryItem[]>(() => {
+const parsedHistory = computed(() => {
   if (!props.history || props.history.length === 0) return []
   return props.history.map(item => {
     const trimmed = item.trim()

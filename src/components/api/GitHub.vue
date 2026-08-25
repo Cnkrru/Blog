@@ -65,11 +65,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
-const props = defineProps<{ username: string }>()
+const props = defineProps(['username'])
 
 const loading = ref(false)
 const error = ref('')
@@ -92,7 +92,7 @@ const fetchGitHubData = async () => {
       { timeout: 10000 }
     )
     reposData.value = reposResponse.data.filter(repo => !repo.fork).slice(0, 6)
-  } catch (err: any) {
+  } catch (err) {
     if (err.response?.status === 403) {
       error.value = 'GitHub API 请求已达上限，请稍后再试'
     } else if (err.response?.status === 404) {

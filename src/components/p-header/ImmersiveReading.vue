@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import bookOpenSvg from '@/assets/svg/book-open.svg?raw'
@@ -7,7 +7,7 @@ const isImmersiveReading = ref(false)
 const isAnimating = ref(false)
 const router = useRouter()
 
-const toggleImmersiveReading = () : void => {
+const toggleImmersiveReading = () => {
   isImmersiveReading.value = true                           //沉浸阅读标志置为true
   isAnimating.value = true                                  //动画标志
   document.body.classList.toggle('immersive-reading')       //切换bodyCSS样式(功能实现)

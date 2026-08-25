@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, computed } from 'vue'
 import { useArticlesStore } from '../../stores'
 import fileTextSvg from '@/assets/svg/file-text.svg?raw'

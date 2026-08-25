@@ -107,7 +107,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import axios from 'axios'
 import { useThemeStore } from '../../stores'
@@ -131,12 +131,12 @@ const currentMonthData = ref([])
 // 自定义下拉菜单状态
 const yearDropdownOpen = ref(false)
 const monthDropdownOpen = ref(false)
-const yearSelectRef = ref<HTMLElement | null>(null)
-const monthSelectRef = ref<HTMLElement | null>(null)
-const yearMenuStyle = ref<Record<string, string>>({})
-const monthMenuStyle = ref<Record<string, string>>({})
+const yearSelectRef = ref(null)
+const monthSelectRef = ref(null)
+const yearMenuStyle = ref({})
+const monthMenuStyle = ref({})
 
-const positionMenu = async (selectRef: typeof yearSelectRef, menuStyle: typeof yearMenuStyle) => {
+const positionMenu = async (selectRef, menuStyle) => {
   await nextTick()
   const el = selectRef.value
   if (el) {
@@ -167,13 +167,13 @@ const toggleMonthDropdown = async () => {
   }
 }
 
-const selectYear = async (year: number) => {
+const selectYear = async (year) => {
   selectedYear.value = year
   yearDropdownOpen.value = false
   await updateHeatmapData()
 }
 
-const selectMonth = (month: number) => {
+const selectMonth = (month) => {
   selectedMonth.value = month
   monthDropdownOpen.value = false
   onMonthChange()
@@ -184,14 +184,14 @@ const closeDropdowns = () => {
   monthDropdownOpen.value = false
 }
 
-const handleClickOutside = (e: MouseEvent) => {
-  if (!yearSelectRef.value?.contains(e.target as Node) &&
-      !monthSelectRef.value?.contains(e.target as Node)) {
+const handleClickOutside = (e) => {
+  if (!yearSelectRef.value?.contains(e.target) &&
+      !monthSelectRef.value?.contains(e.target)) {
     closeDropdowns()
   }
 }
 
-const handleKeydown = (e: KeyboardEvent) => {
+const handleKeydown = (e) => {
   if (e.key === 'Escape') closeDropdowns()
 }
 
@@ -230,21 +230,21 @@ const fetchArticleData = async () => {
 
 const buildActivityMap = (articles) => {
   // date -> { published: count, updated: count, history: count }
-  const map = new Map<string, { published: number; updated: number; history: number }>()
+  const map = new Map()
 
-  const inc = (date: string, key: 'published' | 'updated' | 'history') => {
+  const inc = (date, key) => {
     if (!date) return
     const d = date.trim().slice(0, 10) // 取 YYYY-MM-DD
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return
     if (!map.has(d)) map.set(d, { published: 0, updated: 0, history: 0 })
-    map.get(d)![key]++
+    map.get(d)[key]++
   }
 
-  articles.forEach((article: any) => {
+  articles.forEach((article) => {
     if (article.date) inc(article.date, 'published')
     if (article.updated) inc(article.updated, 'updated')
     if (Array.isArray(article.history)) {
-      article.history.forEach((entry: string) => {
+      article.history.forEach((entry) => {
         const d = entry.trim().slice(0, 10)
         inc(d, 'history')
       })
@@ -600,10 +600,6 @@ const onMonthChange = () => {
 .legend-cell.lv4 {
   background: var(--common-color-1);
   opacity: 0.85;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 /* ============================== 响应式 ============================== */

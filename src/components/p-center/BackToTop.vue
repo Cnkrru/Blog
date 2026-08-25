@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, onUnmounted, computed, ref } from 'vue'
 import { useScrollStore } from '../../stores'
 import arrowUpSvg from '@/assets/svg/arrow-up.svg?raw'
@@ -22,12 +22,12 @@ const checkImmersiveMode = () => {
   }
 }
 
-const scrollToTop = (): void => {
+const scrollToTop = () => {
   scrollStore.scrollToTop()
 }
 
-let cleanupScrollListener: (() => void) | undefined
-let observer: MutationObserver | null = null
+let cleanupScrollListener = undefined
+let observer = null
 
 onMounted(() => {
   checkImmersiveMode()

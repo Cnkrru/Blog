@@ -24,7 +24,7 @@
   </Teleport>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useDynamicEffectsStore } from '../../stores/index'
 import sparklesSvg from '@/assets/svg/sparkles.svg?raw'
@@ -119,7 +119,7 @@ const destroySakura = () => {
 }
 
 // 基于索引的确定性伪随机，避免每次渲染雪花跳动
-function seededRandom(seed: number): number {
+function seededRandom(seed) {
   const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453
   return x - Math.floor(x)
 }

@@ -1,12 +1,12 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import heartSvg from '@/assets/svg/heart.svg?raw'
 import xSvg from '@/assets/svg/x.svg?raw'
 
 const showModal = ref(false)
-const activeTab = ref<'wechat' | 'alipay'>('wechat')
-const sponsor = ref<any>({ enabled: false })
+const activeTab = ref('wechat')
+const sponsor = ref({ enabled: false })
 
 const loadConfig = async () => {
   try {
@@ -20,7 +20,7 @@ const closeModal = () => { showModal.value = false }
 
 onMounted(loadConfig)
 if (typeof window !== 'undefined') {
-  window.addEventListener('keydown', (e: KeyboardEvent) => {
+  window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && showModal.value) closeModal()
   })
 }

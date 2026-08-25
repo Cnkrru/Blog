@@ -1,20 +1,16 @@
-<script setup lang="ts">
+<script setup>
 import { ref, watch, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 import xSvg from '@/assets/svg/x.svg?raw'
 
-const props = withDefaults(defineProps<{
-  audioContext?: any; isPlaying?: boolean;
-   isVisible?: boolean;
-   visualizerEnabled?: boolean 
-}>(), {
-  audioContext: null,
-  isPlaying: false,
-  isVisible: false,
-  visualizerEnabled: false
+const props = defineProps({
+  audioContext: { default: null },
+  isPlaying: { type: Boolean, default: false },
+  isVisible: { type: Boolean, default: false },
+  visualizerEnabled: { type: Boolean, default: false }
 })
 
-const emit = defineEmits<{ 'effect-change': [effect: any]; close: [] }>()
+const emit = defineEmits(['effect-change', 'close'])
 
 const musicStore = useMusicStore()
 
@@ -65,7 +61,7 @@ const toggleVisualizer = () => {
   })
 }
 
-const changeSurroundMode = (mode: string) => {
+const changeSurroundMode = (mode) => {
   emit('effect-change', {
     enabled: true,
     surroundMode: mode,
@@ -73,7 +69,7 @@ const changeSurroundMode = (mode: string) => {
   })
 }
 
-const changeEqPreset = (preset: string) => {
+const changeEqPreset = (preset) => {
   emit('effect-change', {
     enabled: true,
     surroundMode: currentSurroundMode.value,

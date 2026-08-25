@@ -1,5 +1,5 @@
 <template>
-  <div class="yaml-view-container" :class="{ 'has-error': parseError || cdnError }">
+  <div class="yaml-view-container" :class="{ 'has-error': parseError }">
     <!-- 头部栏 -->
     <div class="yv-header">
       <span class="yv-badge">
@@ -32,11 +32,7 @@
 
     <!-- 预览模式 -->
     <div v-if="viewMode === 'preview'" class="yv-preview">
-      <div v-if="cdnError" class="yv-error">
-        <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="alertTriangleSvg"></span>
-        <span>{{ cdnError }}</span>
-      </div>
-      <div v-else-if="!yamlReady" class="yv-loading">
+      <div v-if="!yamlReady" class="yv-loading">
         <span class="svg-icon yv-spin" :style="{ width: '16px', height: '16px' }" v-html="loadingSvg"></span>
         <span>加载解析器…</span>
       </div>
@@ -54,7 +50,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch, provide, nextTick, onMounted } from 'vue'
 import usersSvg from '@/assets/svg/users.svg?raw'
 import codeSvg from '@/assets/svg/code.svg?raw'
@@ -64,45 +60,28 @@ import JsonTree from './JsonTree.vue'
 import CodeRender from './CodeRender.vue'
 import { useCodeStore } from '../../stores'
 
-const props = defineProps<{
-  code: string
-}>()
+const props = defineProps(['code'])
 
 const codeStore = useCodeStore()
-const viewMode = ref<'preview' | 'source'>('preview')
-const parseError = ref<string | null>(null)
-const parsedData = ref<any>(null)
-const codeRef = ref<HTMLElement | null>(null)
+const viewMode = ref('preview')
+const parseError = ref(null)
+const parsedData = ref(null)
+const codeRef = ref(null)
 const yamlReady = ref(false)
-const cdnError = ref<string | null>(null)
 
 // 为 JsonTree 提供默认展开状态
 const expandState = ref({ expanded: true, version: 0 })
 provide('expandState', expandState)
 provide('highlightPath', '')
 
-/* ========== CDN 加载 js-yaml ========== */
-const CDN_JSYAML = 'https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js'
-
-function loadJsYaml(): Promise<void> {
-  if ((window as any).jsyaml) {
+/* ========== 本地加载 js-yaml ========== */
+let yamlLib = null
+async function loadJsYaml() {
+  if (!yamlLib) {
+    yamlLib = (await import('js-yaml')).default
     yamlReady.value = true
-    return Promise.resolve()
   }
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script')
-    script.src = CDN_JSYAML
-    script.onload = () => {
-      yamlReady.value = true
-      resolve()
-    }
-    script.onerror = () => {
-      cdnError.value = 'js-yaml 加载失败，已切换到源码视图'
-      viewMode.value = 'source'
-      reject(new Error('js-yaml 加载失败'))
-    }
-    document.head.appendChild(script)
-  })
+  return yamlLib
 }
 
 /* ========== 解析 ========== */
@@ -126,8 +105,7 @@ async function parseData() {
   }
 
   try {
-    const jsyaml = (window as any).jsyaml
-    const result = jsyaml.load(trimmed)
+    const result = yamlLib.load(trimmed)
     if (result === undefined || result === null) {
       parsedData.value = {}
     } else if (typeof result === 'object') {
@@ -136,7 +114,7 @@ async function parseData() {
       parsedData.value = { value: result }
     }
     viewMode.value = 'preview'
-  } catch (err: any) {
+  } catch (err) {
     parseError.value = `解析失败: ${err.message || '语法错误'}`
     viewMode.value = 'source'
   }
@@ -144,14 +122,14 @@ async function parseData() {
 
 /* ========== 统计 ========== */
 const statsText = computed(() => {
-  if (parseError.value || cdnError.value) return '解析失败'
+  if (parseError.value) return '解析失败'
   if (!yamlReady.value) return '加载中…'
   const lines = props.code.split('\n').length
   const nodes = countNodes(parsedData.value)
   return `${lines} 行 · ${nodes} 节点`
 })
 
-function countNodes(data: any): number {
+function countNodes(data) {
   if (data === null || data === undefined || typeof data !== 'object') return 1
   let count = 1
   if (Array.isArray(data)) {
@@ -172,7 +150,7 @@ async function highlightSource() {
   await codeStore.ensureLanguageLoaded('yaml')
   if (window.Prism) {
     nextTick(() => {
-      try { window.Prism.highlightElement(codeRef.value!) } catch { }
+      try { window.Prism.highlightElement(codeRef.value) } catch { }
     })
   }
 }

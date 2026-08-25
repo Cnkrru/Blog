@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { computed, ref } from 'vue'
 import { useThemeStore } from '../../stores'
 import sunSvg from '@/assets/svg/sun.svg?raw'

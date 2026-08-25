@@ -1,6 +1,6 @@
 <!-- review完成 -->
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import menuSvg from '@/assets/svg/menu.svg?raw'
 

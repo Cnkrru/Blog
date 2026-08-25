@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, onUnmounted, computed } from 'vue'
 import { useAnnouncementStore } from '../stores'
 import infoSvg from '@/assets/svg/info.svg?raw'
@@ -169,11 +169,6 @@ onUnmounted(() => {
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .modal-header {

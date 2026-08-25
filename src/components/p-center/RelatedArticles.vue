@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import ArticleCover from '../content/ArticleCover.vue'
 import { useArticlesStore } from '../../stores'
 
-const props = defineProps<{ currentArticleId: string; currentArticleCategory: string }>()
+const props = defineProps(['currentArticleId', 'currentArticleCategory'])
 
 const articlesStore = useArticlesStore()
 

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
@@ -16,7 +16,7 @@ const goHome = () => {
 }
 
 const countdown = ref(10)
-let timer: ReturnType<typeof setInterval> | null = null
+let timer = null
 
 onMounted(() => {
   timer = setInterval(() => {

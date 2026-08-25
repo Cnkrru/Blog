@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import Avatar from './p-sidebar/Avatar.vue'
 import WelcomeSaying from './p-sidebar/WelcomeSaying.vue'
 import PageLinks from './p-sidebar/PageLinks.vue'

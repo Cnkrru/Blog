@@ -55,7 +55,7 @@
   </Teleport>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch } from 'vue'
 import checkSvg from '@/assets/svg/check.svg?raw'
 import xSvg from '@/assets/svg/x.svg?raw'
@@ -65,8 +65,8 @@ import { useNotificationStore } from '../../stores'
 
 const notificationStore = useNotificationStore()
 
-const pausedIds = ref<Set<string>>(new Set())
-const timers = new Map<string, ReturnType<typeof setTimeout>>()
+const pausedIds = ref(new Set())
+const timers = new Map()
 
 const notifications = computed(() => {
   return notificationStore.notifications.map((n) => ({
@@ -75,7 +75,7 @@ const notifications = computed(() => {
   }))
 })
 
-function scheduleDismiss(id: string, duration: number) {
+function scheduleDismiss(id, duration) {
   if (timers.has(id)) clearTimeout(timers.get(id))
   if (duration <= 0) return
   timers.set(id, setTimeout(() => {
@@ -84,7 +84,7 @@ function scheduleDismiss(id: string, duration: number) {
   }, duration))
 }
 
-function pauseDismiss(id: string) {
+function pauseDismiss(id) {
   pausedIds.value = new Set([...pausedIds.value, id])
   if (timers.has(id)) {
     clearTimeout(timers.get(id))
@@ -92,7 +92,7 @@ function pauseDismiss(id: string) {
   }
 }
 
-function resumeDismiss(id: string) {
+function resumeDismiss(id) {
   pausedIds.value = new Set([...pausedIds.value].filter(i => i !== id))
   const n = notificationStore.notifications.find(n => n.id === id)
   if (n && n.duration > 0) {
@@ -100,7 +100,7 @@ function resumeDismiss(id: string) {
   }
 }
 
-function removeNotification(id: string) {
+function removeNotification(id) {
   pausedIds.value = new Set([...pausedIds.value].filter(i => i !== id))
   if (timers.has(id)) {
     clearTimeout(timers.get(id))
@@ -109,13 +109,13 @@ function removeNotification(id: string) {
   notificationStore.removeNotification(id)
 }
 
-function handleButtonClick(id: string, button: any) {
+function handleButtonClick(id, button) {
   if (button.action) button.action()
   removeNotification(id)
 }
 
 // 追踪已处理的 ID，用于检测新增通知
-const knownIds = ref<Set<string>>(new Set())
+const knownIds = ref(new Set())
 
 watch(
   () => notificationStore.notifications.length,
@@ -139,11 +139,11 @@ defineExpose({
 // 暴露全局 toast 方法
 if (typeof window !== 'undefined') {
   window.toast = {
-    success: (msg: string, dur?: number) => notificationStore.addNotification(msg, { type: 'success', duration: dur || 3000 }),
-    error: (msg: string, dur?: number) => notificationStore.addNotification(msg, { type: 'error', duration: dur || 5000 }),
-    warning: (msg: string, dur?: number) => notificationStore.addNotification(msg, { type: 'warning', duration: dur || 4000 }),
-    info: (msg: string, dur?: number) => notificationStore.addNotification(msg, { type: 'info', duration: dur || 3000 }),
-    add: (msg: string, opts?: any) => notificationStore.addNotification(msg, opts || {}),
+    success: (msg, dur) => notificationStore.addNotification(msg, { type: 'success', duration: dur || 3000 }),
+    error: (msg, dur) => notificationStore.addNotification(msg, { type: 'error', duration: dur || 5000 }),
+    warning: (msg, dur) => notificationStore.addNotification(msg, { type: 'warning', duration: dur || 4000 }),
+    info: (msg, dur) => notificationStore.addNotification(msg, { type: 'info', duration: dur || 3000 }),
+    add: (msg, opts) => notificationStore.addNotification(msg, opts || {}),
     clear: () => notificationStore.clearNotifications()
   }
 }

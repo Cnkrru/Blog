@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import printerSvg from '@/assets/svg/printer.svg?raw'
 
 function printPdf() {

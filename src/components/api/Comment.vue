@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
 import { useCommentStore, useThemeStore } from '../../stores'
 import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
@@ -8,7 +8,7 @@ const themeStore = useThemeStore()
 
 const isLoading = ref(false)
 const isLoaded = computed(() => commentStore.commentLoaded)
-const error = ref<string | null>(null)
+const error = ref(null)
 const commentCount = computed(() => commentStore.commentCount)
 
 // 监听主题和风格变化，同步更新 Giscus 评论样式
@@ -183,14 +183,6 @@ onUnmounted(() => {
     }
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
 </style>
 
 <style scoped>

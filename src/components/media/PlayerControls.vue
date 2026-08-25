@@ -1,19 +1,15 @@
-<script setup lang="ts">
+<script setup>
 import skipBackSvg from '@/assets/svg/skip-back.svg?raw'
 import playSvg from '@/assets/svg/play.svg?raw'
 import pauseSvg from '@/assets/svg/pause.svg?raw'
 import skipForwardSvg from '@/assets/svg/skip-forward.svg?raw'
 
-withDefaults(defineProps<{ isPlaying?: boolean; currentSong?: any }>(), {
-  isPlaying: false,
-  currentSong: null
+defineProps({
+  isPlaying: { type: Boolean, default: false },
+  currentSong: { default: null }
 })
 
-const emit = defineEmits<{
-  'toggle-play': [];
-   prev: [];
-   next: [] 
-}>()
+const emit = defineEmits(['toggle-play', 'prev', 'next'])
 
 const handleTogglePlay = () => {
   emit('toggle-play')

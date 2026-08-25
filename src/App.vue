@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { onMounted, onUnmounted, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useThemeStore } from './stores/index'
@@ -14,8 +14,8 @@ import NotificationRender from './components/content/NotificationRender.vue'
 import MouseTrail from './components/api/MouseTrail.vue'
 import ConsoleEasterEgg from './components/media/ConsoleEasterEgg.vue'
 import ContextMenu from './components/p-center/ContextMenu.vue'
-import VideoBackground from './components/background/VideoBackground.vue'
-import InstallPrompt from './components/pwa/InstallPrompt.vue'
+import VideoBackground from './components/media/VideoBackground.vue'
+import InstallPrompt from './components/p-footer/InstallPrompt.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,7 +27,7 @@ const themeStore = useThemeStore()
 // 页面加载进度条
 const progressWidth = ref('0%')
 const progressVisible = ref(false)
-let progressTimer: ReturnType<typeof setTimeout> | null = null
+let progressTimer = null
 
 router.beforeEach((_to, _from, next) => {
   progressVisible.value = true
@@ -54,7 +54,7 @@ router.onError(() => {
 })
 
 // Ctrl+C 快捷键：从极简模式退出至无空隙模式
-function onKeyDown(e: KeyboardEvent) {
+function onKeyDown(e) {
   if (e.ctrlKey && e.key === 'c' && themeStore.currentLayout === 'minimal') {
     e.preventDefault()
     themeStore.setLayout('compact')

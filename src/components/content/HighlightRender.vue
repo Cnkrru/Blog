@@ -46,23 +46,18 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
 import CodePreview from './CodePreview.vue'
 import { useCodeStore } from '../../stores'
-import { CDN_VERSIONS } from '../../utils/constants'
 import chevronDownSvg from '@/assets/svg/chevron-down.svg?raw'
 
-const props = withDefaults(defineProps<{
-  code: string
-  language?: string
-  showLineNumbers?: boolean
-  showCopyButton?: boolean
-}>(), {
-  language: 'plaintext',
-  showLineNumbers: true,
-  showCopyButton: true
+const props = defineProps({
+  code: null,
+  language: { type: String, default: 'plaintext' },
+  showLineNumbers: { type: Boolean, default: true },
+  showCopyButton: { type: Boolean, default: true }
 })
 
 const codeRef = ref(null)
@@ -80,7 +75,7 @@ function toggleCollapse() {
   collapsed.value = !collapsed.value
 }
 
-function highlightLine(n: number) {
+function highlightLine(n) {
   highlightedLine.value = n
 }
 const isLoaded = computed(() => codeStore.isPrismLoaded)
@@ -88,7 +83,7 @@ const showLineNumbers = computed(() => props.showLineNumbers && codeStore.lineNu
 const showCopyButton = computed(() => props.showCopyButton && codeStore.copyEnabled)
 
 // 语言名标准化：Prism.js 只认小写，且有自己的命名规则
-const langAlias: Record<string, string> = {
+const langAlias = {
   cpp: 'cpp', Cpp: 'cpp', CPP: 'cpp', 'c++': 'cpp', 'C++': 'cpp',
   c: 'c', C: 'c',
   js: 'javascript', JS: 'javascript',
@@ -418,14 +413,6 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 </style>
 
 <style scoped>

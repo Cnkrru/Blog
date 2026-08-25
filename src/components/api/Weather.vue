@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import sunSvg from '@/assets/svg/sun.svg?raw'
@@ -8,36 +8,15 @@ import cloudDrizzleSvg from '@/assets/svg/cloud-drizzle.svg?raw'
 import cloudSnowSvg from '@/assets/svg/cloud-snow.svg?raw'
 import cloudLightningSvg from '@/assets/svg/cloud-lightning.svg?raw'
 
-interface Weather {
-  temperature: number;
-  weatherCode: number;
-  weatherText: string;
-}
-
-interface IPData {
-  city: string;
-  countryCode: string;
-  lat: number;
-  lon: number;
-  status?: string;
-}
-
-interface WeatherData {
-  current: {
-    temperature_2m: number;
-    weather_code: number;
-  };
-}
-
-const weather = ref<Weather | null>(null)
+const weather = ref(null)
 const loading = ref(true)
 const error = ref('')
-const locationInfo = ref<{ city: string, country: string }>({
+const locationInfo = ref({
   city: '加载中..',
   country: ''
 })
 
-const cityNames: Record<string, string> = {
+const cityNames = {
   'Beijing': '北京', 'Shanghai': '上海', 'Guangzhou': '广州', 'Shenzhen': '深圳',
   'Hangzhou': '杭州', 'Nanjing': '南京', 'Wuhan': '武汉', 'Chengdu': '成都',
   'Xian': '西安', 'Chongqing': '重庆', 'Suzhou': '苏州', 'Dalian': '大连',
@@ -50,12 +29,12 @@ const cityNames: Record<string, string> = {
   'Singapore': '新加坡', 'Bangkok': '曼谷'
 }
 
-const getCityName = (city: string): string => {
+const getCityName = (city) => {
   if (!city) return '未知'
   return cityNames[city] || city
 }
 
-const getWeatherText = (code: number): string => {
+const getWeatherText = (code) => {
   if (code === 0) return '晴'
   if (code <= 3) return '多云'
   if (code <= 49) return '雾'
@@ -68,12 +47,12 @@ const getWeatherText = (code: number): string => {
   return '未知'
 }
 
-const fetchLocationAndWeather = async (): Promise<void> => {
+const fetchLocationAndWeather = async () => {
   loading.value = true
   error.value = ''
 
   try {
-      let ipData: IPData | null = null
+      let ipData = null
       try {
         try {
           const { data: ipDataRaw } = await axios.get('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon', { timeout: 10000 })
@@ -113,7 +92,7 @@ const fetchLocationAndWeather = async (): Promise<void> => {
           }
         }
       } 
-      catch (locationError: unknown) {
+      catch (locationError) {
         console.warn('位置获取失败，使用默认位置:', locationError)
         ipData = {
           city: 'Changchun',
@@ -127,7 +106,7 @@ const fetchLocationAndWeather = async (): Promise<void> => {
     const country = ipData.countryCode || ''
     locationInfo.value = { city, country }
 
-    const { data: weatherData } = await axios.get<WeatherData>(`https://api.open-meteo.com/v1/forecast?latitude=${ipData.lat}&longitude=${ipData.lon}&current=temperature_2m,weather_code&timezone=auto`, { timeout: 10000 })
+    const { data: weatherData } = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${ipData.lat}&longitude=${ipData.lon}&current=temperature_2m,weather_code&timezone=auto`, { timeout: 10000 })
 
     if (weatherData.current) {
       weather.value = {
@@ -137,7 +116,7 @@ const fetchLocationAndWeather = async (): Promise<void> => {
       }
     }
   } 
-  catch (err: unknown) {
+  catch (err) {
     error.value = '加载失败'
     console.warn('天气加载失败:', err)
     weather.value = {

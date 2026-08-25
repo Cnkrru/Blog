@@ -1,13 +1,9 @@
-<script setup lang="ts">
+<script setup>
 import { escapeHtml, highlightMatch } from '../../utils/helpers'
 
-const props = defineProps<{
-  searchText: string;
-   results?: any[];
-   show?: boolean 
-}>()
+const props = defineProps(['searchText', 'results', 'show'])
 
-const emit = defineEmits<{ 'result-click': [item: any] }>()
+const emit = defineEmits(['result-click'])
 
 const handleResultClick = (item) => {
   emit('result-click', item)

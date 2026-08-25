@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScrollStore } from '../../stores/scroll'
@@ -12,7 +12,7 @@ const scrollStore = useScrollStore()
 const visible = ref(false)
 const x = ref(0)
 const y = ref(0)
-const menuRef = ref<HTMLElement | null>(null)
+const menuRef = ref(null)
 
 const MENU_WIDTH = 190
 const MENU_HEIGHT = 200
@@ -42,7 +42,7 @@ const menuItems = [
 
 const closeMenu = () => { visible.value = false }
 
-function calcPosition(cx: number, cy: number, w: number, h: number) {
+function calcPosition(cx, cy, w, h) {
   let left = cx
   let top = cy
   if (left + w > window.innerWidth) left = window.innerWidth - w - 8
@@ -50,7 +50,7 @@ function calcPosition(cx: number, cy: number, w: number, h: number) {
   return { left: Math.max(4, left), top: Math.max(4, top) }
 }
 
-const handleContextMenu = (e: MouseEvent) => {
+const handleContextMenu = (e) => {
   e.preventDefault()
   // 先以估算尺寸定位，避免闪烁
   const pos = calcPosition(e.clientX, e.clientY, MENU_WIDTH, MENU_HEIGHT)
@@ -68,7 +68,7 @@ const handleContextMenu = (e: MouseEvent) => {
 }
 
 const handleClick = () => closeMenu()
-const handleKeydown = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
+const handleKeydown = (e) => { if (e.key === 'Escape') closeMenu() }
 const handleResize = () => { if (visible.value) closeMenu() }
 
 onMounted(() => {

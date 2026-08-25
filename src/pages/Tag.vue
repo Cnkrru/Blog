@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
@@ -28,10 +28,10 @@ useHead({
   ]
 })
 
-const articles = ref<any[]>([])
+const articles = ref([])
 const loading = ref(true)
-const selectedTag = ref<string | null>(null)
-const tagArticles = ref<any[]>([])
+const selectedTag = ref(null)
+const tagArticles = ref([])
 const searchQuery = ref('')
 const zoomLevel = ref(1) // 0=年, 1=月
 
@@ -41,7 +41,7 @@ const sortBy = computed(() => tagStore.sortBy)
 const filteredTags = computed(() => {
   if (!searchQuery.value) return tagStats.value
   const q = searchQuery.value.toLowerCase()
-  return tagStats.value.filter((s: any) => s.tag.toLowerCase().includes(q))
+  return tagStats.value.filter((s) => s.tag.toLowerCase().includes(q))
 })
 
 const filteredArticles = computed(() => {
@@ -52,22 +52,17 @@ const filteredArticles = computed(() => {
   return list
 })
 
-type TimelineGroup = {
-  label: string
-  articles: any[]
-}
-
-const timelineGroups = computed<TimelineGroup[]>(() => {
+const timelineGroups = computed(() => {
   const sorted = [...filteredArticles.value].sort((a, b) => {
     return new Date(b.date).getTime() - new Date(a.date).getTime()
   })
 
-  const groups: TimelineGroup[] = []
-  let currentGroup: TimelineGroup | null = null
+  const groups = []
+  let currentGroup = null
 
   sorted.forEach(article => {
     const d = new Date(article.date)
-    let label: string
+    let label
     if (zoomLevel.value === 0) {
       label = d.getFullYear().toString()
     } else {
@@ -84,7 +79,7 @@ const timelineGroups = computed<TimelineGroup[]>(() => {
   return groups
 })
 
-async function selectTag(tag: string) {
+async function selectTag(tag) {
   if (selectedTag.value === tag) {
     selectedTag.value = null
     tagArticles.value = []
@@ -99,7 +94,7 @@ async function selectTag(tag: string) {
   }
 }
 
-function changeSortBy(newSortBy: string) {
+function changeSortBy(newSortBy) {
   tagStore.setSortBy(newSortBy)
   tagStore.loadTags(articles.value)
 }
@@ -111,7 +106,7 @@ function clearSearch() {
 onMounted(async () => {
   try {
     const data = await store.fetchArticles()
-    articles.value = data.filter((a: any) => a.id !== 'terminal')
+    articles.value = data.filter((a) => a.id !== 'terminal')
     await tagStore.loadTags(articles.value)
   } finally {
     loading.value = false
@@ -158,9 +153,9 @@ onMounted(async () => {
           :class="['tag-item', { active: selectedTag === stat.tag }]"
           :style="{
             fontSize: `${13 + Math.min(stat.count / 2, 8)}px`,
-            opacity: 0.55 + Math.min(stat.count / Math.max(...tagStats.map((s: any) => s.count), 1), 1) * 0.45,
+            opacity: 0.55 + Math.min(stat.count / Math.max(...tagStats.map((s) => s.count), 1), 1) * 0.45,
           }"
-          :title="`频率: ${(stat as any).frequency?.toFixed(2)}, 数量: ${stat.count}`"
+          :title="`频率: ${(stat).frequency?.toFixed(2)}, 数量: ${stat.count}`"
         >
           {{ stat.tag }} <span class="tag-num">{{ stat.count }}</span>
         </span>

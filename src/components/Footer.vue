@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { useGlobalStore } from '../stores/global'
 import WebsiteAge from './p-footer/WebsiteAge.vue'
 import Copyright from './p-footer/CopyRight.vue'

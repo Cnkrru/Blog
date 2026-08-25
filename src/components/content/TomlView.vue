@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch, provide, nextTick, onMounted } from 'vue'
 import usersSvg from '@/assets/svg/users.svg?raw'
 import codeSvg from '@/assets/svg/code.svg?raw'
@@ -55,15 +55,13 @@ import JsonTree from './JsonTree.vue'
 import CodeRender from './CodeRender.vue'
 import { useCodeStore } from '../../stores'
 
-const props = defineProps<{
-  code: string
-}>()
+const props = defineProps(['code'])
 
 const codeStore = useCodeStore()
-const viewMode = ref<'preview' | 'source'>('preview')
-const parseError = ref<string | null>(null)
-const parsedData = ref<any>(null)
-const codeRef = ref<HTMLElement | null>(null)
+const viewMode = ref('preview')
+const parseError = ref(null)
+const parsedData = ref(null)
+const codeRef = ref(null)
 
 // 为 JsonTree 提供默认展开状态
 const expandState = ref({ expanded: true, version: 0 })
@@ -71,8 +69,8 @@ provide('expandState', expandState)
 provide('highlightPath', '')
 
 /* ========== 手写 TOML 解析器 ========== */
-function parseToml(input: string): Record<string, any> {
-  const result: Record<string, any> = {}
+function parseToml(input) {
+  const result = {}
   let currentTable = result
   const lines = input.split('\n')
 
@@ -98,7 +96,7 @@ function parseToml(input: string): Record<string, any> {
       const lastKey = keys[keys.length - 1]
       const parent = parentKeys.length ? navigateTo(result, parentKeys, true) : result
       if (!Array.isArray(parent[lastKey])) parent[lastKey] = []
-      const arr = parent[lastKey] as any[]
+      const arr = parent[lastKey]
       arr.push({})
       currentTable = arr[arr.length - 1]
       continue
@@ -115,7 +113,7 @@ function parseToml(input: string): Record<string, any> {
   return result
 }
 
-function navigateTo(root: any, keys: string[], create: boolean): any {
+function navigateTo(root, keys, create) {
   let curr = root
   for (const k of keys) {
     if (!(k in curr)) {
@@ -127,7 +125,7 @@ function navigateTo(root: any, keys: string[], create: boolean): any {
   return curr
 }
 
-function parseTomlValue(raw: string): any {
+function parseTomlValue(raw) {
   const v = raw.trim()
 
   // 数组
@@ -158,10 +156,10 @@ function parseTomlValue(raw: string): any {
   return v
 }
 
-function parseTomlArray(raw: string): any[] {
+function parseTomlArray(raw) {
   const inner = raw.slice(1, -1).trim()
   if (!inner) return []
-  const result: any[] = []
+  const result = []
   let buf = ''
   let depth = 0
   let inStr = false
@@ -207,7 +205,7 @@ function parseData() {
   try {
     parsedData.value = parseToml(trimmed)
     viewMode.value = 'preview'
-  } catch (err: any) {
+  } catch (err) {
     parseError.value = `解析失败: ${err.message || '语法错误'}`
     viewMode.value = 'source'
   }
@@ -221,7 +219,7 @@ const statsText = computed(() => {
   return `${lines} 行 · ${nodes} 节点`
 })
 
-function countNodes(data: any): number {
+function countNodes(data) {
   if (data === null || data === undefined || typeof data !== 'object') return 1
   let count = 1
   if (Array.isArray(data)) {
@@ -242,7 +240,7 @@ async function highlightSource() {
   await codeStore.ensureLanguageLoaded('toml')
   if (window.Prism) {
     nextTick(() => {
-      try { window.Prism.highlightElement(codeRef.value!) } catch { }
+      try { window.Prism.highlightElement(codeRef.value) } catch { }
     })
   }
 }

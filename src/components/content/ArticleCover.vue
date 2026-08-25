@@ -27,20 +27,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 
-interface ArticleCoverProps {
-  article: {
-    id: string
-    title: string
-    date: string
-    tags?: string[]
-    category?: string
-  }
-}
-
-const props = defineProps<ArticleCoverProps>()
+const props = defineProps(['article'])
 
 // 根据文章 ID 生成确定性视觉参数，确保每篇文章有独特的布局但全部使用主题色
 const coverVars = computed(() => {

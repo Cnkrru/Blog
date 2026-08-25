@@ -12,19 +12,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import { useMermaidStore, useThemeStore } from '../../stores'
-import { CDN_VERSIONS } from '../../utils/constants'
 
-const props = defineProps<{
-  code: string
-}>()
+const props = defineProps(['code'])
 
-const emit = defineEmits<{
-  'render-success': []
-  'render-error': [error: any]
-}>()
+const emit = defineEmits(['render-success', 'render-error'])
 
 const containerRef = ref(null)
 const lastRenderedCode = ref('')
@@ -37,71 +31,22 @@ const isDarkTheme = computed(() => themeStore.isDark)
 const loading = computed(() => mermaidStore.loading)
 const error = computed(() => mermaidStore.error)
 
-// Mermaid CDN 链接列表（主链接 + 备用链接）
-const mermaidCdnLinks = [
-  `https://cdn.jsdelivr.net/npm/mermaid@${CDN_VERSIONS.mermaid}/dist/mermaid.min.js`,
-  `https://unpkg.com/mermaid@${CDN_VERSIONS.mermaid}/dist/mermaid.min.js`,
-  `https://cdnjs.cloudflare.com/ajax/libs/mermaid/${CDN_VERSIONS.mermaid}/mermaid.min.js`
-]
-
-// 加载资源函数，支持备用链接
-const loadResource = (urls, type) => {
-  return new Promise((resolve, reject) => {
-    let currentIndex = 0
-
-    const tryLoad = () => {
-      if (currentIndex >= urls.length) {
-        reject(new Error(`${type} 加载失败，所有 CDN 链接都不可用`))
-        return
-      }
-
-      const url = urls[currentIndex]
-      const element = document.createElement('script')
-      element.src = url
-      element.crossOrigin = 'anonymous'
-      element.onload = () => resolve()
-      element.onerror = () => {
-        console.warn(`CDN 加载失败: ${url}，尝试备用链接`)
-        currentIndex++
-        tryLoad()
-      }
-
-      document.head.appendChild(element)
-    }
-
-    tryLoad()
-  })
-}
-
-// 加载 Mermaid CDN
-const loadMermaid = () => {
-  return new Promise((resolve, reject) => {
-    if (window.mermaid) {
-      mermaidStore.setMermaidLoaded(true)
-      if (!window.mermaidInitialized) {
-        initializeMermaid()
-      }
-      resolve()
-      return
-    }
-
-    loadResource(mermaidCdnLinks, 'Mermaid JS')
-      .then(() => {
-        mermaidStore.setMermaidLoaded(true)
-        initializeMermaid()
-        resolve()
-      })
-      .catch((err) => {
-        mermaidStore.setError('Mermaid 加载失败')
-        reject(err)
-      })
-  })
+// 加载 Mermaid（本地依赖，动态 import 避免进入 SSR 关键路径）
+let mermaidLib = null
+const loadMermaid = async () => {
+  if (!mermaidLib) {
+    mermaidLib = (await import('mermaid')).default
+    mermaidStore.setMermaidLoaded(true)
+    initializeMermaid()
+  }
+  return mermaidLib
 }
 
 // 初始化 Mermaid
 const initializeMermaid = () => {
+  if (!mermaidLib) return
   const theme = isDarkTheme.value ? 'dark' : 'default'
-  window.mermaid.initialize({
+  mermaidLib.initialize({
     startOnLoad: false,
     securityLevel: 'loose',
     theme: theme,
@@ -112,7 +57,6 @@ const initializeMermaid = () => {
       rankSpacing: 100
     }
   })
-  window.mermaidInitialized = true
 }
 
 // 渲染 Mermaid 图表
@@ -149,7 +93,7 @@ const renderMermaid = async () => {
     mermaidId.value = 'mermaid-' + Date.now() + '-' + Math.floor(Math.random() * 10000)
     
     // 使用 render 方法渲染
-    const { svg } = await window.mermaid.render(mermaidId.value, props.code)
+    const { svg } = await mermaidLib.render(mermaidId.value, props.code)
     
     // 插入 SVG
     containerRef.value.innerHTML = svg
@@ -224,11 +168,6 @@ watch(() => isDarkTheme.value, () => {
 }
 
 .mermaid-container-dark .loading-spinner {
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .mermaid-error {

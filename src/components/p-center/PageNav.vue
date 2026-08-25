@@ -1,18 +1,15 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue'
 
-const props = withDefaults(defineProps<{
-  type: string
-  currentPage: number
-  totalPages: number
-  categories?: any[]
-  currentCategory?: string
-}>(), {
-  categories: () => [],
-  currentCategory: ''
+const props = defineProps({
+  type: { type: String },
+  currentPage: { type: Number },
+  totalPages: { type: Number },
+  categories: { type: Array, default: () => [] },
+  currentCategory: { type: String, default: '' }
 })
 
-const emit = defineEmits<{ change: [page: number] }>()
+const emit = defineEmits(['change'])
 
 const showCategoryDropdown = ref(false)
 

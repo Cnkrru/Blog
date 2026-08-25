@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useTocStore } from '../../stores'
 import TocTreeItem from './TocTreeItem.vue'
@@ -8,19 +8,19 @@ import minusSvg from '@/assets/svg/minus.svg?raw'
 import xSvg from '@/assets/svg/x.svg?raw'
 import fileTextSvg from '@/assets/svg/file-text.svg?raw'
 
-const props = defineProps<{ show?: boolean }>()
-const emit = defineEmits<{ 'update:show': [show: boolean] }>()
+const props = defineProps(['show'])
+const emit = defineEmits(['update:show'])
 
 const tocStore = useTocStore()
 
-const tocContentRef = ref<HTMLElement | null>(null)
-const toc = ref<any[]>([])
-const collapsedSet = ref<Set<string>>(new Set())
+const tocContentRef = ref(null)
+const toc = ref([])
+const collapsedSet = ref(new Set())
 const expandedAll = ref(true)
 const activeId = ref('')
 
 // 生成标题编号
-function genNum(_index: number, level: number, counters: Record<number, number>): string {
+function genNum(_index, level, counters) {
   counters[level] = (counters[level] || 0) + 1
   for (let i = level + 1; i <= 6; i++) counters[i] = 0
   let n = ''
@@ -31,11 +31,11 @@ function genNum(_index: number, level: number, counters: Record<number, number>)
 }
 
 // 扁平 → 嵌套树
-function buildTree(flat: any[]): any[] {
-  const root: any[] = []
-  const stack: any[] = [{ level: 0, children: root }]
+function buildTree(flat) {
+  const root = []
+  const stack = [{ level: 0, children: root }]
   for (const item of flat) {
-    const node = { ...item, children: [] as any[] }
+    const node = { ...item, children: [] }
     while (stack.length > 0 && stack[stack.length - 1].level >= item.level) stack.pop()
     stack[stack.length - 1].children.push(node)
     stack.push(node)
@@ -45,7 +45,7 @@ function buildTree(flat: any[]): any[] {
 
 const treeToc = computed(() => buildTree(toc.value))
 
-function toggleCollapse(id: string) {
+function toggleCollapse(id) {
   const s = new Set(collapsedSet.value)
   s.has(id) ? s.delete(id) : s.add(id)
   collapsedSet.value = s
@@ -61,7 +61,7 @@ function expandAll() {
   expandedAll.value = true
 }
 
-function onTreeClick(id: string) {
+function onTreeClick(id) {
   const el = document.getElementById(id)
   if (!el) return
   const container = document.querySelector('.center-card-content')
@@ -81,8 +81,8 @@ function scanHeadings() {
     document.querySelector('.markdown-content')
   if (!ct) return
   const hds = ct.querySelectorAll('h1, h2, h3, h4, h5, h6')
-  const nv: any[] = []
-  const cnt: Record<number, number> = {}
+  const nv = []
+  const cnt = {}
   hds.forEach((h, i) => {
     const lv = parseInt(h.tagName.substring(1))
     const tx = h.textContent?.trim() || ''
@@ -96,7 +96,7 @@ function scanHeadings() {
 }
 
 // IntersectionObserver
-let obs: IntersectionObserver | null = null
+let obs = null
 function setupObs() {
   if (obs) obs.disconnect()
   const ct = document.querySelector('.center-card-content')
@@ -117,11 +117,11 @@ function setupObs() {
   }, { root: ct, rootMargin: '-10% 0px -70% 0px', threshold: 0 })
   toc.value.forEach(item => {
     const el = document.getElementById(item.id)
-    if (el) obs!.observe(el)
+    if (el) obs.observe(el)
   })
 }
 
-function unCollapseParents(id: string) {
+function unCollapseParents(id) {
   const idx = toc.value.findIndex(i => i.id === id)
   if (idx <= 0) return
   const item = toc.value[idx]

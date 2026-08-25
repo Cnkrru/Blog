@@ -1,47 +1,25 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onUnmounted } from 'vue'
 
-const props = withDefaults(defineProps<{ text?: string; finalText?: string }>(), {
-  text: '欢迎来到我的博客',
-  finalText: '欢迎来到我的博客'
+const props = defineProps({
+  text: { type: String, default: '欢迎来到我的博客' },
+  finalText: { type: String, default: '欢迎来到我的博客' }
 })
 
 const isAnimating = ref(false)
 const showSeal = ref(false)
-const phase = ref<'writing' | 'done' | 'seal'>('done')
+const phase = ref('done')
 
-interface CharItem {
-  char: string
-  x: number
-  y: number
-  tilt: number
-  id: number
-}
-const chars = ref<CharItem[]>([])
+const chars = ref([])
 
-interface InkDot {
-  x: number
-  y: number
-  dx: number
-  dy: number
-  size: number
-  id: number
-}
-const inkDots = ref<InkDot[]>([])
+const inkDots = ref([])
 
-interface InkDrop {
-  x: number
-  y: number
-  size: number
-  delay: number
-  id: number
-}
-const floatingDrops = ref<InkDrop[]>([])
+const floatingDrops = ref([])
 
 let uid = 0
-const timers: ReturnType<typeof setTimeout>[] = []
+const timers = []
 
-function sr(seed: number): number {
+function sr(seed) {
   return (Math.sin(seed * 9301 + 49297) * 49297) % 1
 }
 

@@ -1,27 +1,25 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import questionSvg from '@/assets/svg/question.svg?raw'
 import thumbsUpSvg from '@/assets/svg/thumbs-up.svg?raw'
 import thumbsDownSvg from '@/assets/svg/thumbs-down.svg?raw'
 
-const props = defineProps<{ postId: string }>()
+const props = defineProps(['postId'])
 
 // counterapi.dev 配置（在项目根目录 .env 文件中设置）
 const API_BASE = import.meta.env.VITE_COUNTERAPI_BASE || 'https://api.counterapi.dev/v2'
 const WORKSPACE = import.meta.env.VITE_COUNTERAPI_WORKSPACE
 const TOKEN = import.meta.env.VITE_COUNTERAPI_TOKEN
 
-type Feedback = 'up' | 'down' | null
-
-const feedback = ref<Feedback>(null)
+const feedback = ref(null)
 const showThanks = ref(false)
 const upCount = ref(0)
 const downCount = ref(0)
 const storageKey = `article-feedback-${props.postId}`
 
-function apiHeaders(): Record<string, string> {
-  const headers: Record<string, string> = {
+function apiHeaders() {
+  const headers = {
     'Content-Type': 'application/json'
   }
   if (TOKEN) {
@@ -30,17 +28,17 @@ function apiHeaders(): Record<string, string> {
   return headers
 }
 
-async function apiGet(name: string) {
+async function apiGet(name) {
   const { data } = await axios.get(`${API_BASE}/${WORKSPACE}/${name}`, { headers: apiHeaders() })
   return data
 }
 
-async function apiUp(name: string) {
+async function apiUp(name) {
   const { data } = await axios.post(`${API_BASE}/${WORKSPACE}/${name}/up`, null, { headers: apiHeaders() })
   return data
 }
 
-async function apiDown(name: string) {
+async function apiDown(name) {
   const { data } = await axios.post(`${API_BASE}/${WORKSPACE}/${name}/down`, null, { headers: apiHeaders() })
   return data
 }
@@ -67,7 +65,7 @@ onMounted(async () => {
   }
 })
 
-async function submit(type: Feedback) {
+async function submit(type) {
   if (feedback.value === type) {
     // 取消投票（仅清理本地状态，不修改服务端）
     feedback.value = null

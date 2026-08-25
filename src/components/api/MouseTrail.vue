@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useMouseStore, useThemeStore } from '../../stores'
 
@@ -16,7 +16,7 @@ const IDLE_TIMEOUT = 300 // 鼠标静止 300ms 后不生成新粒子
 const mouseStore = useMouseStore()
 const themeStore = useThemeStore()
 
-const isDarkTheme = computed(() => themeStore.isDarkTheme)
+const isDarkTheme = computed(() => themeStore.isDark)
 const isEnabled = computed(() => mouseStore.enabled)
 const trailLength = computed(() => mouseStore.trailLength)
 const trailSpeed = computed(() => mouseStore.trailSpeed)
@@ -24,6 +24,12 @@ const trailSize = computed(() => mouseStore.trailSize)
 const trailMode = computed(() => mouseStore.trailMode)
 const trailColor = computed(() => mouseStore.trailColor)
 const trailChars = computed(() => mouseStore.trailChars)
+
+// 明/暗主题下的轨迹颜色（渐变与随机模式共用）
+const TRAIL_COLORS = {
+  dark: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'],
+  light: ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6']
+}
 
 // 节流函数
 const throttle = (func, limit) => {
@@ -44,17 +50,13 @@ const getColor = (index, total) => {
   if (trailMode.value === 'fixed') {
     return trailColor.value
   } else if (trailMode.value === 'gradient') {
-    const colors = isDarkTheme.value 
-      ? ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7']
-      : ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6']
+    const colors = TRAIL_COLORS[isDarkTheme.value ? 'dark' : 'light']
     const ratio = index / total
     const colorIndex = Math.floor(ratio * colors.length)
     return colors[Math.min(colorIndex, colors.length - 1)]
   } else {
     // 随机颜色
-    const colors = isDarkTheme.value 
-      ? ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7']
-      : ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6']
+    const colors = TRAIL_COLORS[isDarkTheme.value ? 'dark' : 'light']
     return colors[Math.floor(Math.random() * colors.length)]
   }
 }
@@ -125,8 +127,6 @@ onMounted(() => {
   document.addEventListener('touchmove', mouseMoveHandler)
   document.addEventListener('mouseleave', handleMouseLeave)
   animationId = requestAnimationFrame(updateTrail)
-
-  mouseStore.setDarkTheme(isDarkTheme.value)
 })
 
 onUnmounted(() => {
@@ -139,8 +139,7 @@ onUnmounted(() => {
 })
 
 // 监听主题变化
-watch(() => isDarkTheme.value, (newValue) => {
-  mouseStore.setDarkTheme(newValue)
+watch(() => isDarkTheme.value, () => {
   // 清空轨迹，以便使用新主题的颜色
   trail.value = []
 })

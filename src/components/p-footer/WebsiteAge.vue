@@ -1,9 +1,9 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import clockSvg from '@/assets/svg/clock.svg?raw'
 
 const ageText = ref('')
-let timer: ReturnType<typeof setInterval> | null = null
+let timer = null
 
 function update() {
   const start = new Date('2026-03-28T12:00:00').getTime()

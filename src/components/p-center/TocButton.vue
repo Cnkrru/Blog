@@ -1,12 +1,12 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useTocStore, useThemeStore } from '../../stores'
 import listSvg from '@/assets/svg/list.svg?raw'
 import xSvg from '@/assets/svg/x.svg?raw'
 
-const props = defineProps<{ show?: boolean }>()
+const props = defineProps(['show'])
 
-const emit = defineEmits<{ 'update:show': [show: boolean] }>()
+const emit = defineEmits(['update:show'])
 
 const tocStore = useTocStore()
 const themeStore = useThemeStore()

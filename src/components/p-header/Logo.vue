@@ -1,6 +1,6 @@
 <!-- review完成 -->
 
-<script setup lang="ts">
+<script setup>
 </script>
 
 <template>

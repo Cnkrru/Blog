@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, defineAsyncComponent } from 'vue'
 import MarkdownRender from '../components/content/MarkdownRender.vue'
 const GitHub = defineAsyncComponent(() => import('../components/api/GitHub.vue'))

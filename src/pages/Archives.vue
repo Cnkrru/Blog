@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
@@ -23,9 +23,9 @@ useHead({
   link: [{ rel: 'canonical', href: 'https://cnkrru.top/archives' }]
 })
 
-const articles = ref<any[]>([])
-const viewMode = ref<'category' | 'year' | 'month'>('category')
-const expandedKey = ref<string | null>(null)
+const articles = ref([])
+const viewMode = ref('category')
+const expandedKey = ref(null)
 const expandAll = ref(false)
 
 const loadArticles = async () => {
@@ -36,7 +36,7 @@ const loadArticles = async () => {
 }
 
 const categoryGroups = computed(() => {
-  const map: Record<string, any[]> = {}
+  const map = {}
   articles.value.forEach(a => {
     const c = a.category || '未分类'
     if (!map[c]) map[c] = []
@@ -46,7 +46,7 @@ const categoryGroups = computed(() => {
 })
 
 const yearGroups = computed(() => {
-  const map: Record<string, any[]> = {}
+  const map = {}
   articles.value.forEach(a => {
     const y = new Date(a.date).getFullYear().toString()
     if (!map[y]) map[y] = []
@@ -56,7 +56,7 @@ const yearGroups = computed(() => {
 })
 
 const monthGroups = computed(() => {
-  const map: Record<string, any[]> = {}
+  const map = {}
   articles.value.forEach(a => {
     const d = new Date(a.date)
     const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
@@ -74,7 +74,7 @@ const groups = computed(() => {
 
 const isTimeline = computed(() => viewMode.value !== 'category')
 
-function toggleGroup(name: string) {
+function toggleGroup(name) {
   expandedKey.value = expandedKey.value === name ? null : name
 }
 
@@ -83,16 +83,16 @@ function toggleExpandAll() {
   expandedKey.value = expandAll.value ? '_all' : null
 }
 
-const isExpanded = (name: string) => expandedKey.value === name || expandedKey.value === '_all'
+const isExpanded = (name) => expandedKey.value === name || expandedKey.value === '_all'
 
-const tabsRef = ref<HTMLElement | null>(null)
+const tabsRef = ref(null)
 const indicatorLeft = ref(0)
 const indicatorWidth = ref(0)
 
 function updateIndicator() {
   nextTick(() => {
     if (!tabsRef.value) return
-    const active = tabsRef.value.querySelector('.view-tab.active') as HTMLElement | null
+    const active = tabsRef.value.querySelector('.view-tab.active')
     if (!active) return
     const containerRect = tabsRef.value.getBoundingClientRect()
     const activeRect = active.getBoundingClientRect()

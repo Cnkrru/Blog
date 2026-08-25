@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 /**
  * TocTreeItem - 递归TOC树节点组件
  * 用于渲染无限层级的文章目录树
@@ -6,21 +6,13 @@
 defineOptions({ name: 'TocTreeItem' })
 import chevronRightSvg from '@/assets/svg/chevron-right.svg?raw'
 
-const props = defineProps<{
-  node: any
-  activeId: string
-  collapsedSet: Set<string>
-  depth: number
-}>()
+const props = defineProps(['node', 'activeId', 'collapsedSet', 'depth'])
 
-const emit = defineEmits<{
-  (e: 'click', id: string): void
-  (e: 'toggle', id: string): void
-}>()
+const emit = defineEmits(['click', 'toggle'])
 
-const isActive = (): boolean => props.node.id === props.activeId
-const isCollapsed = (): boolean => props.collapsedSet.has(props.node.id)
-const hasChildren = (): boolean => !!(props.node.children && props.node.children.length > 0)
+const isActive = () => props.node.id === props.activeId
+const isCollapsed = () => props.collapsedSet.has(props.node.id)
+const hasChildren = () => !!(props.node.children && props.node.children.length > 0)
 </script>
 
 <template>

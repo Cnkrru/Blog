@@ -50,44 +50,32 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, provide, inject, watch } from 'vue'
 import chevronRightSvg from '@/assets/svg/chevron-right.svg?raw'
 
-const props = withDefaults(defineProps<{
-  data: any
-  keyName?: string
-  depth?: number
-  maxDepth?: number
-  searchQuery?: string
-  searchPath?: string
-}>(), {
-  depth: 0,
-  maxDepth: 3,
-  searchQuery: '',
-  searchPath: ''
+const props = defineProps({
+  data: null,
+  keyName: { type: String },
+  depth: { type: Number, default: 0 },
+  maxDepth: { type: Number, default: 3 },
+  searchQuery: { type: String, default: '' },
+  searchPath: { type: String, default: '' }
 })
 
-const emit = defineEmits<{
-  'expand-all': []
-  'collapse-all': []
-}>()
+const emit = defineEmits(['expand-all', 'collapse-all'])
 
 /* ========== 递归展开/折叠 状态 ========== */
 const isExpanded = ref(props.depth < props.maxDepth)
 
 // 从父组件接收展开/折叠指令
-interface ExpandState {
-  expanded: boolean
-  version: number
-}
-const expandState = inject<ExpandState>('expandState', { expanded: true, version: 0 })
+const expandState = inject('expandState', { expanded: true, version: 0 })
 watch(() => expandState.value.version, () => {
   isExpanded.value = expandState.value.expanded
 })
 
 // 从父组件接收搜索高亮
-const highlightPath = inject<string>('highlightPath', '')
+const highlightPath = inject('highlightPath', '')
 const isHighlighted = computed(() => {
   return highlightPath && props.searchPath && props.searchPath === highlightPath
 })
@@ -98,11 +86,11 @@ const expanded = computed(() => {
 })
 
 /* ========== 工具函数 ========== */
-function isObject(val: any): boolean {
+function isObject(val) {
   return val !== null && typeof val === 'object'
 }
 
-function isArray(val: any): boolean {
+function isArray(val) {
   return Array.isArray(val)
 }
 
@@ -120,7 +108,7 @@ const valueClass = computed(() => {
   return 'value-other'
 })
 
-function formatValue(val: any): string {
+function formatValue(val) {
   if (val === null) return 'null'
   if (val === undefined) return 'undefined'
   if (typeof val === 'string') {
@@ -144,14 +132,14 @@ const previewText = computed(() => {
 // 处理 entries，过滤掉非自身属性
 const processedEntries = computed(() => {
   if (Array.isArray(props.data)) {
-    return props.data.map((v: any, i: number) => v)
+    return props.data.map((v, i) => v)
   }
   // 对象按 key 排序
   const keys = Object.keys(props.data).sort()
-  return keys.reduce((acc: any[], key: string) => {
+  return keys.reduce((acc, key) => {
     acc[key] = props.data[key]
     return acc
-  }, {} as any)
+  }, {})
 })
 
 // 搜索可见性过滤

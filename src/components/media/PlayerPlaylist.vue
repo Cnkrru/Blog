@@ -1,17 +1,13 @@
-<script setup lang="ts">
+<script setup>
 import xSvg from '@/assets/svg/x.svg?raw'
 
-withDefaults(defineProps<{
-  playlist?: any[];
-   currentIndex?: number;
-   isVisible?: boolean 
-}>(), {
-  playlist: () => [],
-  currentIndex: 0,
-  isVisible: false
+defineProps({
+  playlist: { type: Array, default: () => [] },
+  currentIndex: { type: Number, default: 0 },
+  isVisible: { type: Boolean, default: false }
 })
 
-const emit = defineEmits<{ select: [index: number]; close: [] }>()
+const emit = defineEmits(['select', 'close'])
 
 const handleSelect = (index) => {
   emit('select', index)
