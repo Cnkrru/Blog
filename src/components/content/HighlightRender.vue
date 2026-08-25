@@ -1,7 +1,7 @@
 <template>
   <div class="code-container" :class="{ 'show-lines': showLineNumbers }">
     <div class="code-header" v-if="language && codeStore.showLanguageBadge">
-      <span class="language-badge" :data-lang="language.toLowerCase()">
+      <span class="language-badge" :class="`lang-${normalizedLanguage}`" :data-lang="language.toLowerCase()">
         <span class="lang-dot"></span>
         <span class="lang-text">{{ language }}</span>
       </span>
@@ -438,89 +438,69 @@ watch(() => codeStore.lineNumbersEnabled, () => {
 }
 
 /* 不同语言颜色 */
-.language-badge[data-lang="javascript"],
-.language-badge[data-lang="js"] {
+.lang-javascript {
   background-color: #f0db4f;
-   color: #1e1e2e;
-   
+  color: #1e1e2e;
 }
-.language-badge[data-lang="typescript"],
-.language-badge[data-lang="ts"] {
+.lang-typescript {
   background-color: #3178c6;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="python"] {
+.lang-python {
   background-color: #3776ab;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="html"] {
+.lang-html {
   background-color: #e34f26;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="css"] {
+.lang-css {
   background-color: #563d7c;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="bash"],
-.language-badge[data-lang="shell"],
-.language-badge[data-lang="sh"] {
+.lang-bash {
   background-color: #4eaa25;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="json"] {
+.lang-json {
   background-color: #b8b8b8;
-   color: #1e1e2e;
-   
+  color: #1e1e2e;
 }
-.language-badge[data-lang="sql"] {
+.lang-sql {
   background-color: #00618b;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="vue"] {
+.lang-vue {
   background-color: #41b883;
-   color: #1e1e2e;
-   
+  color: #1e1e2e;
 }
-.language-badge[data-lang="php"] {
+.lang-php {
   background-color: #787cb5;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="ruby"] {
+.lang-ruby {
   background-color: #cc342d;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="go"] {
+.lang-go {
   background-color: #00add8;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="rust"] {
+.lang-rust {
   background-color: #dea584;
-   color: #1e1e2e;
-   
+  color: #1e1e2e;
 }
-.language-badge[data-lang="yaml"] {
+.lang-yaml {
   background-color: #6b5b95;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="toml"] {
+.lang-toml {
   background-color: #4479a1;
-   color: #fff;
-   
+  color: #fff;
 }
-.language-badge[data-lang="cmake"] {
+.lang-cmake {
   background-color: #064f8c;
-   color: #fff;
-   
+  color: #fff;
 }
 
 .lang-dot {
