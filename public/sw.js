@@ -70,7 +70,7 @@ self.addEventListener('fetch', (event) => {
         return response
       })
       .catch(() => {
-        return caches.match(request)
+        return caches.match(request).then((cached) => cached || Response.error())
       })
   )
 })

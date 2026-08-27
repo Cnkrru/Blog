@@ -10,6 +10,9 @@ const props = defineProps({
 const emit = defineEmits(['seek'])
 
 const progressBarRef = ref(null)
+const progressFillRef = ref(null)
+const currentTimeRef = ref(null)
+const totalTimeRef = ref(null)
 let isDragging = false
 
 const handleSeek = (e) => {
@@ -35,14 +38,13 @@ const onMouseDown = () => {
 }
 
 watch(() => props.progressPercent, (val) => {
-  const fill = document.getElementById('progress-fill')
-  if (fill) {
-    fill.style.width = `${val}%`
+  if (progressFillRef.value) {
+    progressFillRef.value.style.width = `${val}%`
   }
 })
 
 watch(() => props.currentTime, (val) => {
-  const el = document.getElementById('current-time')
+  const el = currentTimeRef.value
   if (el) {
     const minutes = Math.floor(val / 60)
     const seconds = Math.floor(val % 60)
@@ -51,7 +53,7 @@ watch(() => props.currentTime, (val) => {
 })
 
 watch(() => props.duration, (val) => {
-  const el = document.getElementById('total-time')
+  const el = totalTimeRef.value
   if (el) {
     const minutes = Math.floor(val / 60)
     const seconds = Math.floor(val % 60)
@@ -82,11 +84,11 @@ onUnmounted(() => {
       @click="handleSeek"
       @mousedown="onMouseDown"
     >
-      <div id="progress-fill" class="progress-fill" :style="{ width: `${progressPercent}%` }"></div>
+      <div ref="progressFillRef" class="progress-fill" :style="{ width: `${progressPercent}%` }"></div>
     </div>
     <div class="time-display">
-      <span id="current-time">{{ Math.floor(currentTime / 60) }}:{{ String(Math.floor(currentTime % 60)).padStart(2, '0') }}</span>
-      <span id="total-time">{{ Math.floor(duration / 60) }}:{{ String(Math.floor(duration % 60)).padStart(2, '0') }}</span>
+      <span ref="currentTimeRef">{{ Math.floor(currentTime / 60) }}:{{ String(Math.floor(currentTime % 60)).padStart(2, '0') }}</span>
+      <span ref="totalTimeRef">{{ Math.floor(duration / 60) }}:{{ String(Math.floor(duration % 60)).padStart(2, '0') }}</span>
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import VIcon from '@/components/common/VIcon.vue'
 
 const props = defineProps({
   type: { type: String },
@@ -92,7 +93,7 @@ const closeDropdown = () => {
             @click="toggleDropdown"
           >
             分类列表
-            <span class="dropdown-arrow">▼</span>
+            <VIcon :src="'chevron-down.svg'" :size="14" class="dropdown-arrow" />
           </button>
 
           <div class="dropdown-card" v-if="showCategoryDropdown" @click.stop>

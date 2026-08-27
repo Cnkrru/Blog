@@ -1,5 +1,5 @@
 <script setup>
-import printerSvg from '@/assets/svg/printer.svg?raw'
+import VIcon from '@/components/common/VIcon.vue'
 
 function printPdf() {
   window.print()
@@ -12,7 +12,7 @@ function printPdf() {
     title="打印 / 保存为 PDF"
     @click="printPdf"
   >
-    <span class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="printerSvg"></span>
+    <VIcon :src="'printer.svg'" :size="18" />
     <span class="print-label">PDF</span>
   </button>
 </template>

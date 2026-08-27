@@ -1,6 +1,6 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
-import clockSvg from '@/assets/svg/clock.svg?raw'
 
 const ageText = ref('')
 let timer = null
@@ -31,7 +31,7 @@ onUnmounted(() => {
 
 <template>
   <div class="footer-element-card website-age">
-    <span class="svg-icon age-icon" :style="{ width: '15px', height: '15px' }" v-html="clockSvg"></span>
+    <VIcon :src="'clock.svg'" :size="15" class="age-icon" />
     <span>本站已运行</span>
     <span class="age-num">{{ ageText }}</span>
   </div>

@@ -6,8 +6,6 @@ import { createApp as createVueApp } from 'vue'
 import { createHead } from '@vueuse/head'
 import App from './App.vue'
 
-import './assets/css/animations.css'
-
 import { createAppRouter } from './router/index'
 import { pinia } from './stores/index'
 
@@ -48,8 +46,8 @@ if (!import.meta.env.SSR) {
   // 挂载根目录app.vue 
   app.mount('#app')
 
-  // 注册 Service Worker（PWA 离线缓存）
-  if ('serviceWorker' in navigator) {
+  // 注册 Service Worker（PWA 离线缓存），仅生产环境
+  if ('serviceWorker' in navigator && !import.meta.env.DEV) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js').catch(() => {
         // 静默失败，不影响主流程

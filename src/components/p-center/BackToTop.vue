@@ -1,7 +1,7 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { onMounted, onUnmounted, computed, ref } from 'vue'
 import { useScrollStore } from '../../stores'
-import arrowUpSvg from '@/assets/svg/arrow-up.svg?raw'
 
 const scrollStore = useScrollStore()
 const isVisible = computed(() => scrollStore.isVisible)
@@ -61,7 +61,7 @@ onUnmounted(() => {
         aria-label="返回顶部"
         @click="scrollToTop"
     >
-        <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="arrowUpSvg"></span>
+        <VIcon :src="'arrow-up.svg'" :size="24" />
     </button>
     <Teleport to="body">
         <button
@@ -71,7 +71,7 @@ onUnmounted(() => {
             aria-label="返回顶部"
             @click="scrollToTop"
         >
-            <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="arrowUpSvg"></span>
+            <VIcon :src="'arrow-up.svg'" :size="24" />
         </button>
     </Teleport>
 </template>
@@ -80,26 +80,32 @@ onUnmounted(() => {
 .back-to-top-btn {
     width: 38px;
     height: 38px;
+
     border-radius: 50%;
+    border: 1px solid var(--common-color-1);
+    
     display: flex;
     justify-content: center;
     align-items: center;
+    
     cursor: pointer;
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
     opacity: 1;
     visibility: visible;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    
     background: var(--common-color-1);
-    border: 1px solid var(--common-color-1);
+
     color: #fff;
     box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 .back-to-top-btn.immersive {
-    position: fixed;
     bottom: 24px;
     right: 34px;
+
+    position: fixed;
     z-index: 9998;
 }
 

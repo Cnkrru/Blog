@@ -2,7 +2,7 @@
 // 构建期自动同步脚本：扫描 content/ 下的 md 文件 frontmatter，自动生成
 // public/config/ 下的 search.json / projects.json / routes.json
 // 通过 package.json 的 predev / prebuild 钩子自动执行
-// 用法：node src/build/sync-content.js
+// 用法：node src/_build/sync-content.js
 
 import fs from 'fs';
 import path from 'path';

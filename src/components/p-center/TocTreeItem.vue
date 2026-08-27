@@ -1,10 +1,10 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 /**
  * TocTreeItem - 递归TOC树节点组件
  * 用于渲染无限层级的文章目录树
  */
 defineOptions({ name: 'TocTreeItem' })
-import chevronRightSvg from '@/assets/svg/chevron-right.svg?raw'
 
 const props = defineProps(['node', 'activeId', 'collapsedSet', 'depth'])
 
@@ -34,7 +34,7 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
         class="toc-arrow"
         @click.prevent.stop="emit('toggle', node.id)"
       >
-        <span class="svg-icon toc-icon" :class="{ rot: !isCollapsed() }" :style="{ width: '10px', height: '10px' }" v-html="chevronRightSvg"></span>
+        <VIcon :src="'chevron-right.svg'" :size="10" class="toc-icon" />
       </span>
       <span v-else class="toc-holder"></span>
 
@@ -203,5 +203,4 @@ const hasChildren = () => !!(props.node.children && props.node.children.length >
   list-style: none;
   padding: 0;
   margin: 0;
-}
-</style>
+}</style>

@@ -1,4 +1,4 @@
-//樱花 Quaint 修改版
+﻿//樱花 Quaint 修改版
 
 var stop, staticx;
 var img = new Image();
@@ -86,7 +86,7 @@ Sakura.prototype.update = function() {
 }
 
 
-SakuraList = function() {
+function SakuraList() {
 	this.list = [];
 }
 SakuraList.prototype.push = function(sakura) {
@@ -160,13 +160,12 @@ function startSakura() {
 		return;
 	}
 
-	requestAnimationFrame = window.requestAnimationFrame ||
-		window.mozRequestAnimationFrame ||
-		window.webkitRequestAnimationFrame ||
-		window.msRequestAnimationFrame ||
-		window.oRequestAnimationFrame;
-	var canvas = document.createElement('canvas'),
-		cxt;
+	var canvas = document.createElement('canvas');
+	var cxt;
+	if (!window.requestAnimationFrame) {
+		cxt = null;
+		return;
+	}
 	staticx = true;
 	canvas.height = window.innerHeight;
 	canvas.width = window.innerWidth;
@@ -177,7 +176,7 @@ function startSakura() {
 	var sakuraList = new SakuraList();
 	// 设置樱花个数 , 设置21 ,每一朵樱花都是爱你的形状 dwj~
 	for(var i = 0; i < sakuraNum; i++) {
-		var sakura, randomX, randomY, randomS, randomR, randomFnx, randomFny;
+		var sakura, randomX, randomY, randomS, randomR, randomFnx, randomFny, randomFnR;
 		randomX = getRandom('x');
 		randomY = getRandom('y');
 		randomR = getRandom('r');
@@ -194,25 +193,26 @@ function startSakura() {
 		sakuraList.push(sakura);
 	}
 
-	stop = requestAnimationFrame(function() {
+	var tick = function() {
 		cxt.clearRect(0, 0, canvas.width, canvas.height);
 		// 修改樱花位置逻辑
 		sakuraList.update();
 		// 画出修改后的樱花
 		sakuraList.draw(cxt);
 		// 递归 修改位置, 画出修改后的樱花
-		stop = requestAnimationFrame(arguments.callee);
-	})
+		stop = requestAnimationFrame(tick);
+	}
+	stop = requestAnimationFrame(tick);
 }
 
-window.onresize = function() {
-	var canvasSnow = document.getElementById('canvas_snow');
-	// canvasSnow 在改变浏览器大小的时候会为null
-	if (canvasSnow) {
-		canvasSnow.width = window.innerWidth;
-		canvasSnow.height = window.innerHeight;
+const onResize = () => {
+	var canvasSakura = document.getElementById('canvas_sakura');
+	if (canvasSakura) {
+		canvasSakura.width = window.innerWidth;
+		canvasSakura.height = window.innerHeight;
 	}
 }
+window.addEventListener('resize', onResize);
 
 // 移除自动执行，改为手动调用
 // img.onload = function() {
@@ -221,14 +221,22 @@ window.onresize = function() {
 
 function stopp() {
 	if(staticx) {
+		window.removeEventListener('resize', onResize);
 		var child = document.getElementById("canvas_sakura");
-		child.parentNode.removeChild(child);
-		window.cancelAnimationFrame(stop);
+		if (child) {
+			child.parentNode.removeChild(child);
+		}
+		if (stop) {
+			window.cancelAnimationFrame(stop);
+		}
 		staticx = false;
 	} else {
 		startSakura();
 	}
 }
+
+export { startSakura, stopp }
 		
 		
+
 

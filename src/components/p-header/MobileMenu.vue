@@ -1,10 +1,11 @@
 <!-- review完成 -->
 
 <script setup>
+import VButton from '@/components/common/VButton.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
-import menuSvg from '@/assets/svg/menu.svg?raw'
 
 const isMenuOpen = ref(false)
+const overlayRef = ref(null)
 
 //切换移动端侧边栏状态
 const toggleMobileMenu = () => {
@@ -12,7 +13,7 @@ const toggleMobileMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 
   const leftAsider = document.querySelector('.left-asider-s')
-  const mobileMenuOverlay = document.getElementById('menu-overlay')
+  const mobileMenuOverlay = overlayRef.value
   
   if (leftAsider && mobileMenuOverlay) {
     if (isMenuOpen.value) 
@@ -59,19 +60,23 @@ onUnmounted(() => {
 <template>
   <div class="menu-container">
     <!-- 移动端菜单按钮 -->
-    <div 
-      class="button-style menu-button" 
-      id="menu-button" 
+    <VButton
+      class="button-style menu-button"
+      id="menu-button"
       title="菜单"
+      variant="primary"
+      shape="round"
+      size="36"
+      icon-size="24"
+      icon="menu.svg"
       @click="toggleMobileMenu"
-    >
-      <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="menuSvg"></span>
-    </div>
+    />
     
     <!-- 移动端菜单遮罩层 -->
     <Teleport to="body">
       <div
         class="menu-overlay"
+        ref="overlayRef"
         id="menu-overlay"
         @click="handleOverlayClick"
       ></div>

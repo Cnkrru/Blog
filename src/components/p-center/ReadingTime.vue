@@ -1,7 +1,6 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
-import fileTextSvg from '@/assets/svg/file-text.svg?raw'
-import clockSvg from '@/assets/svg/clock.svg?raw'
 
 const props = defineProps({
   contentSelector: { type: String, default: '.text-style, .center-card-content, article' },
@@ -95,7 +94,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
       <!-- 字数 -->
       <div class="metric-block">
         <div class="metric-icon">
-          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="fileTextSvg"></span>
+          <VIcon :src="'file-text.svg'" :size="14" />
         </div>
         <div class="metric-info">
           <span class="metric-value">{{ formatNum(readingTime.totalWords) }}</span>
@@ -136,7 +135,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
       <!-- 阅读时间 -->
       <div class="metric-block is-time">
         <div class="metric-icon time-icon">
-          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="clockSvg"></span>
+          <VIcon :src="'clock.svg'" :size="14" />
         </div>
         <div class="metric-info">
           <span class="metric-value" v-html="formatTime(readingTime)"></span>

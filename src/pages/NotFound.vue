@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import VIcon from '@/components/common/VIcon.vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 
@@ -70,7 +71,7 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
 
       <div class="actions">
         <button class="back-btn" @click="goHome" aria-label="返回首页">
-          <span class="btn-icon">🏠</span>
+          <VIcon :src="'home.svg'" :size="18" class="btn-icon" />
           返回首页
         </button>
       </div>

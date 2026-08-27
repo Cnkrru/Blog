@@ -19,11 +19,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "predev": "node src/build/sync-content.js",
+    "predev": "node src/_build/sync-content.js && node src/_build/svg.js",
     "build": "vite-ssg build",
-    "prebuild": "node src/build/sync-content.js",
+    "prebuild": "node src/_build/sync-content.js && node src/_build/svg.js",
     "preview": "vite preview",
-    "sync": "node src/build/sync-content.js"
+    "sync": "node src/_build/sync-content.js"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

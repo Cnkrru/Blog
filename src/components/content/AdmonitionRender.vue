@@ -2,18 +2,12 @@
   <div class="admonition" :class="`admonition-${type}`">
     <div class="admonition-header">
       <div class="admonition-icon">
-        <!-- info -->
-        <span v-if="type === 'info'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="infoSvg"></span>
-        <!-- success / tip -->
-        <span v-else-if="type === 'success' || type === 'tip'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="checkSvg"></span>
-        <!-- warning -->
-        <span v-else-if="type === 'warning'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="alertTriangleSvg"></span>
-        <!-- error / danger -->
-        <span v-else-if="type === 'error' || type === 'danger'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="xSvg"></span>
-        <!-- note -->
-        <span v-else-if="type === 'note'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="fileTextSvg"></span>
-        <!-- 默认 -->
-        <span v-else class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="infoSvg"></span>
+        <VIcon v-if="type === 'info'" :src="'info.svg'" :size="18" />
+        <VIcon v-else-if="type === 'success' || type === 'tip'" :src="'check.svg'" :size="18" />
+        <VIcon v-else-if="type === 'warning'" :src="'alert-triangle.svg'" :size="18" />
+        <VIcon v-else-if="type === 'error' || type === 'danger'" :src="'x.svg'" :size="18" />
+        <VIcon v-else-if="type === 'note'" :src="'file-text.svg'" :size="18" />
+        <VIcon v-else :src="'info.svg'" :size="18" />
       </div>
       <span class="admonition-title">{{ title }}</span>
     </div>
@@ -22,12 +16,7 @@
 </template>
 
 <script setup>
-import infoSvg from '@/assets/svg/info.svg?raw'
-import checkSvg from '@/assets/svg/check.svg?raw'
-import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
-import xSvg from '@/assets/svg/x.svg?raw'
-import fileTextSvg from '@/assets/svg/file-text.svg?raw'
-
+import VIcon from '@/components/common/VIcon.vue'
 defineProps(['type', 'title', 'content'])
 </script>
 

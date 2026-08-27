@@ -1,8 +1,8 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/common/VButton.vue'
 import { onMounted, onUnmounted, computed } from 'vue'
 import { useAnnouncementStore } from '../stores'
-import infoSvg from '@/assets/svg/info.svg?raw'
-import xSvg from '@/assets/svg/x.svg?raw'
 import MarkdownRender from '../components/content/MarkdownRender.vue'
 import { useHead } from '@vueuse/head'
 
@@ -50,7 +50,7 @@ onUnmounted(() => {
 <template>
   <div>
     <button class="announcement-btn" @click="openAnnouncement" aria-label="查看公告">
-      <span class="svg-icon" :style="{ width: '16px', height: '16px' }" v-html="infoSvg"></span>
+      <VIcon :src="'info.svg'" :size="16" />
       <span>公告</span>
     </button>
 
@@ -61,9 +61,7 @@ onUnmounted(() => {
             <div class="modal-content" @click.stop>
               <div class="modal-header">
                 <h3>网站公告</h3>
-                <button class="modal-close" @click="closeAnnouncement" aria-label="关闭公告">
-                  <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="xSvg"></span>
-                </button>
+                <VButton icon="x.svg" size="30" shape="round" variant="ghost" class="modal-close" @click="closeAnnouncement" aria-label="关闭公告" />
               </div>
               <div class="modal-body">
                 <div v-if="loading" class="loading-message">
@@ -167,7 +165,6 @@ onUnmounted(() => {
   border: 3px solid;
   border-top-color: inherit;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
   margin-bottom: 10px;
 }
 
@@ -187,17 +184,8 @@ onUnmounted(() => {
 }
 
 .modal-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    background: var(--common-shadow);
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    color: var(--common-text);
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    --v-btn-bg: var(--common-shadow);
+    --v-btn-hover-bg: var(--common-shadow);
 }
 
 .modal-close:hover {

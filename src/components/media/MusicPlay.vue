@@ -1,10 +1,9 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 import PlayerControls from './PlayerControls.vue'
-import musicSvg from '@/assets/svg/music.svg?raw'
-import listSvg from '@/assets/svg/list.svg?raw'
-import settingsSvg from '@/assets/svg/settings.svg?raw'
 import PlayerProgress from './PlayerProgress.vue'
 import PlayerVolume from './PlayerVolume.vue'
 import PlayerPlaylist from './PlayerPlaylist.vue'
@@ -15,6 +14,8 @@ import MusicPlayerStyles from './MusicPlayerStyles.vue'
 const playerRef = ref(null)
 const toggleBtnRef = ref(null)
 const playerCoverRef = ref(null)
+const playerTitleRef = ref(null)
+const playerArtistRef = ref(null)
 const isEffectsVisible = ref(false)
 const visualizerEnabled = ref(false)
 const isBtnAnimating = ref(false)
@@ -60,7 +61,7 @@ const togglePlayer = () => {
   if (!playerRef.value) return
   playerRef.value.classList.toggle('active')
   if (toggleBtnRef.value) {
-    toggleBtnRef.value.classList.toggle('active')
+    toggleBtnRef.value.$el.classList.toggle('active')
   }
   musicStore.setPlayerVisible(playerRef.value.classList.contains('active'))
   setTimeout(() => { isBtnAnimating.value = false }, 400)
@@ -92,17 +93,13 @@ const toggleEffects = () => {
 const onClickOutside = (e) => {
   if (isPlaylistVisible.value && playerRef.value &&
       !playerRef.value.contains(e.target) &&
-      toggleBtnRef.value && !toggleBtnRef.value.contains(e.target)) {
+      toggleBtnRef.value && !toggleBtnRef.value.$el.contains(e.target)) {
     closePlaylist()
   }
 }
 
 onMounted(() => {
   nextTick(() => {
-    playerRef.value = document.getElementById('global-music-player')
-    toggleBtnRef.value = document.getElementById('music-player-btn')
-    playerCoverRef.value = document.getElementById('player-cover')
-
     if (typeof document !== 'undefined') {
       document.addEventListener('click', onClickOutside)
     }
@@ -124,12 +121,9 @@ watch(currentSong, (song) => {
   }
 
   if (song) {
-    const titleEl = document.getElementById('player-title')
-    const artistEl = document.getElementById('player-artist')
-    const coverEl = document.getElementById('player-cover')
-    if (titleEl) titleEl.textContent = song.title
-    if (artistEl) artistEl.textContent = song.artist
-    if (coverEl) coverEl.src = song.cover
+    if (playerTitleRef.value) playerTitleRef.value.textContent = song.title
+    if (playerArtistRef.value) playerArtistRef.value.textContent = song.artist
+    if (playerCoverRef.value) playerCoverRef.value.src = song.cover
   }
 }, { immediate: true })
 
@@ -154,21 +148,21 @@ onUnmounted(() => {
   <MusicPlayerStyles />
   <div>
 
-    <div
+    <VButton
       class="button-style music-player-btn"
-      id="music-player-btn"
+      ref="toggleBtnRef"
       :class="{ animating: isBtnAnimating }"
       title="音乐播放"
-      role="button"
-      tabindex="0"
       aria-label="打开音乐播放器"
-      @keydown.enter="togglePlayer"
-      @keydown.space.prevent="togglePlayer"
+      variant="primary"
+      shape="round"
+      size="36"
+      icon-size="24"
+      icon="music.svg"
       @click="togglePlayer"
     >
-      <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="musicSvg"></span>
       <span v-if="isBtnAnimating" class="emoji-burst">✨</span>
-    </div>
+    </VButton>
 
     <Teleport to="body">
       <AudioVisualizer
@@ -176,17 +170,17 @@ onUnmounted(() => {
         :get-analyser="getAnalyser"
         :enabled="visualizerEnabled"
       />
-      <div id="global-music-player" class="global-music-player" ref="playerRef">
+      <div class="global-music-player" ref="playerRef">
         <div class="player-content">
 
           <!-- 第一行：封面 + 信息 + 按钮 + 音量 -->
           <div class="player-top-row">
             <div class="player-cover">
-              <img id="player-cover" src="" alt="封面">
+              <img ref="playerCoverRef" src="" alt="封面">
             </div>
             <div class="player-meta">
-              <h4 id="player-title" class="player-title">未选择歌曲</h4>
-              <p id="player-artist" class="player-artist">未知艺术家</p>
+              <h4 ref="playerTitleRef" class="player-title">未选择歌曲</h4>
+              <p ref="playerArtistRef" class="player-artist">未知艺术家</p>
             </div>
             <PlayerControls
               :is-playing="isPlaying"
@@ -203,27 +197,10 @@ onUnmounted(() => {
                 @toggle-mute="toggleMute"
               />
               <div class="player-list">
-                <button
-                  type="button"
-                  class="control-btn list-btn"
-                  aria-label="音乐列表"
-                  title="音乐列表"
-                  @click="togglePlaylist"
-                >
-                  <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="listSvg"></span>
-                </button>
+                <VButton round variant="ghost" size="36" class="control-btn list-btn" icon="list.svg" title="音乐列表" aria-label="音乐列表" @click="togglePlaylist" />
               </div>
               <div class="player-effects">
-                <button
-                  type="button"
-                  class="control-btn effects-btn"
-                  :class="{ active: isEffectsVisible || effectsEnabled }"
-                  aria-label="音效"
-                  title="音效设置"
-                  @click="toggleEffects"
-                >
-                  <span class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="settingsSvg"></span>
-                </button>
+                <VButton round variant="ghost" size="36" class="control-btn effects-btn" :class="{ active: isEffectsVisible || effectsEnabled }" icon="settings.svg" icon-size="18" title="音效设置" aria-label="音效" @click="toggleEffects" />
               </div>
             </div>
           </div>

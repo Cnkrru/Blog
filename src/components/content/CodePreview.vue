@@ -1,5 +1,6 @@
 <script setup>
 import { ref, nextTick } from 'vue'
+import VButton from '@/components/common/VButton.vue'
 
 const props = defineProps(['code'])
 
@@ -27,13 +28,13 @@ function close() {
 </script>
 
 <template>
-  <button class="run-btn" @click="runCode" title="运行代码">&#9654;</button>
+  <VButton icon="play.svg" size="24" shape="rect" variant="ghost" class="run-btn" @click="runCode" title="运行代码" />
   <Teleport to="body">
     <div v-if="show" class="preview-overlay" @click.self="close">
       <div class="preview-window">
         <div class="preview-header">
           <span>预览</span>
-          <button class="preview-close" @click="close">&times;</button>
+          <VButton icon="x.svg" size="28" shape="round" variant="ghost" class="preview-close" @click="close" aria-label="关闭" />
         </div>
         <div class="preview-body">
           <iframe :key="iframeKey" ref="iframeRef" class="preview-iframe" sandbox="allow-scripts allow-same-origin" />
@@ -45,17 +46,7 @@ function close() {
 
 <style scoped>
 .run-btn {
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  cursor: pointer;
-  border: 1px solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
   font-weight: 700;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .preview-overlay {
@@ -97,19 +88,14 @@ function close() {
 }
 
 .preview-close {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  --v-btn-bg: rgba(255, 255, 255, 0.2);
+  --v-btn-hover-bg: rgba(255, 255, 255, 0.35);
+  color: var(--common-content);
 }
 
-.preview-close:hover { transform: scale(1.1) rotate(90deg); }
+.preview-close:hover {
+  transform: scale(1.1) rotate(90deg);
+}
 
 .preview-body {
   flex: 1;
@@ -126,13 +112,12 @@ function close() {
 
 <style scoped>
 .run-btn {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
-  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
-  color: var(--common-text);
+  --v-btn-bg: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-color-1) 20%, transparent);
+  --v-btn-border: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 .run-btn:hover {
-  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
-  border-color: var(--common-color-1);
+  --v-btn-border: var(--common-color-1);
 }
 
 .preview-window {
@@ -146,10 +131,4 @@ function close() {
   background: var(--common-color-1);
   color: var(--common-content);
 }
-
-.preview-close {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--common-content);
-}
-.preview-close:hover { background: rgba(255, 255, 255, 0.35); }
 </style>

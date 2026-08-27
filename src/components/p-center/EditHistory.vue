@@ -1,8 +1,6 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, computed } from 'vue'
-import calendarSvg from '@/assets/svg/calendar.svg?raw'
-import refreshCwSvg from '@/assets/svg/refresh-cw.svg?raw'
-import chevronDownSvg from '@/assets/svg/chevron-down.svg?raw'
 
 const props = defineProps(['date', 'updated', 'history'])
 
@@ -35,7 +33,7 @@ function toggle() {
       <div class="date-row">
         <div class="date-block">
           <div class="date-wrap">
-            <span class="svg-icon" :style="{ width: '15px', height: '15px' }" v-html="calendarSvg"></span>
+            <VIcon :src="'calendar.svg'" :size="15" />
           </div>
           <div class="date-info">
             <span class="date-label">发布</span>
@@ -45,7 +43,7 @@ function toggle() {
 
         <div v-if="hasUpdated" class="date-block">
           <div class="date-wrap is-update">
-            <span class="svg-icon" :style="{ width: '15px', height: '15px' }" v-html="refreshCwSvg"></span>
+            <VIcon :src="'refresh-cw.svg'" :size="15" />
           </div>
           <div class="date-info">
             <span class="date-label">更新</span>
@@ -58,7 +56,7 @@ function toggle() {
       <div v-if="hasHistory" class="history-section">
         <button class="history-toggle" @click="toggle">
           <div class="toggle-line"></div>
-          <span class="svg-icon" :style="{ width: '12px', height: '12px' }" :class="{ rotated: expanded }" v-html="chevronDownSvg"></span>
+          <VIcon :src="'chevron-down.svg'" :size="12" />
           <span class="toggle-text">{{ expanded ? '收起修订记录' : '展开修订记录' }}</span>
           <span class="history-count">{{ parsedHistory.length }}</span>
         </button>

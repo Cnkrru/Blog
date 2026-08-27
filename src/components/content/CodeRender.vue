@@ -15,11 +15,11 @@
   >
     <span v-if="isLoading" class="loading-spinner"></span>
     <span v-else-if="isCopied" class="status-text success">
-      <span class="check-icon">✓</span>
+      <span class="check-icon"><VIcon :src="'check.svg'" :size="14" /></span>
       <span class="text">Copied!</span>
     </span>
     <span v-else class="status-text">
-      <span class="copy-icon">⎘</span>
+      <span class="copy-icon"><VIcon :src="'copy.svg'" :size="14" /></span>
       <span class="text">Copy</span>
     </span>
   </button>
@@ -29,6 +29,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useClipboardStore, useNotificationStore } from '../../stores'
+import VIcon from '@/components/common/VIcon.vue'
 
 const props = defineProps(['code'])
 
@@ -250,7 +251,6 @@ onMounted(() => {
     border: 2px solid;
     border-top-color: inherit;
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
 }
 
 /* 动画关键帧 */

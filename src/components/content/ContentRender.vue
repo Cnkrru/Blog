@@ -1,6 +1,6 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { onMounted, computed, watch } from 'vue'
-import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
 import MarkdownRender from './MarkdownRender.vue'
 import SkeletonScreen from './SkeletonScreen.vue'
 import { useContentLoader } from '../../utils/useContentLoader'
@@ -75,7 +75,7 @@ watch(() => props.type, () => loadContentData())
     
     <!-- 错误状态 -->
     <div v-else-if="error" class="error-message">
-      <div class="error-icon"><span class="svg-icon" :style="{ width: '40px', height: '40px' }" v-html="alertTriangleSvg"></span></div>
+      <div class="error-icon"><VIcon :src="'alert-triangle.svg'" :size="40" /></div>
       <p>{{ error }}</p>
       <button class="retry-button" @click="retry" aria-label="重试">重试</button>
     </div>

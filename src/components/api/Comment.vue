@@ -1,7 +1,7 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
 import { useCommentStore, useThemeStore } from '../../stores'
-import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
 
 const commentStore = useCommentStore()
 const themeStore = useThemeStore()
@@ -54,7 +54,7 @@ onUnmounted(() => {
             
             <!-- 错误状态 -->
             <div v-else-if="error" class="error-state">
-                <div class="error-icon"><span class="svg-icon" :style="{ width: '32px', height: '32px' }" v-html="alertTriangleSvg"></span></div>
+                <div class="error-icon"><VIcon :src="'alert-triangle.svg'" :size="32" /></div>
                 <span class="error-text">{{ error }}</span>
                 <button class="retry-button" @click="commentStore.initCommentSystem">重试</button>
             </div>
@@ -121,7 +121,6 @@ onUnmounted(() => {
     border: 2px solid;
     border-top-color: inherit;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
 }
 
 .loading-text {

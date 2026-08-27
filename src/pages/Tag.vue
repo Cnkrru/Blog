@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
+import VButton from '@/components/common/VButton.vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { useArticlesStore, useTagStore } from '../stores'
@@ -132,7 +133,7 @@ onMounted(async () => {
             placeholder="搜索标签..."
             class="search-input text-input"
           >
-          <button v-if="searchQuery" @click="clearSearch" class="clear-btn" aria-label="清除搜索">x</button>
+          <VButton v-if="searchQuery" icon="x.svg" size="20" shape="round" variant="ghost" class="clear-btn" @click="clearSearch" aria-label="清除搜索" />
         </div>
         <div class="sort-options">
           <span class="sort-label">排序:</span>
@@ -275,11 +276,12 @@ onMounted(async () => {
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 50%;
+  opacity: 0.5;
+  --v-btn-hover-bg: transparent;
+}
+
+.clear-btn:hover {
+  opacity: 1;
 }
 
 .sort-options {
@@ -539,7 +541,6 @@ onMounted(async () => {
   border-color: var(--common-color-1);
 }
 .clear-btn {
-  color: var(--common-text);
   opacity: 0.5;
 }
 .clear-btn:hover {

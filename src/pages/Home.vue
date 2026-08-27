@@ -7,6 +7,7 @@ import ArticleCount from '../components/p-center/ArticleCount.vue'
 import ArticleCover from '../components/content/ArticleCover.vue'
 import PageNav from '../components/p-center/PageNav.vue'
 import { useArticlesStore } from '../stores/index'
+import VIcon from '@/components/common/VIcon.vue'
 
 const store = useArticlesStore()
 
@@ -133,7 +134,7 @@ onMounted(() => loadArticles())
           >
             <div class="card-cover">
               <ArticleCover :article="a" />
-              <span class="pin-badge">📌</span>
+              <span class="pin-badge"><VIcon :src="'pin.svg'" :size="18" /></span>
             </div>
             <div class="card-info">
               <h3 class="card-title">{{ a.title }}</h3>

@@ -201,18 +201,6 @@ body.dark-theme .markdown-content img:hover {
   background: var(--common-hover);
 }
 
-/*==============================SVG 图标（外链注入 v-html）==============================*/
-.svg-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.svg-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
 /*==============================统一的焦点指示器==============================*/
 :focus-visible {
   outline: 2px solid var(--common-color-1);

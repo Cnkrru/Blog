@@ -1,7 +1,7 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { onMounted, computed } from 'vue'
 import { useArticlesStore } from '../../stores'
-import fileTextSvg from '@/assets/svg/file-text.svg?raw'
 
 const store = useArticlesStore()
 
@@ -18,7 +18,7 @@ onMounted(async () => {
 
 <template>
   <button class="article-count-btn">
-    <span class="svg-icon count-icon" :style="{ width: '24px', height: '24px' }" v-html="fileTextSvg"></span>
+    <VIcon :src="'file-text.svg'" :size="24" class="count-icon" />
     <span>共 {{ articleCount }} 篇文章</span>
   </button>
 </template>

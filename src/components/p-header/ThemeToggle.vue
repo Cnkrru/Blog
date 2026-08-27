@@ -1,8 +1,7 @@
 <script setup>
+import VButton from '@/components/common/VButton.vue'
 import { computed, ref } from 'vue'
 import { useThemeStore } from '../../stores'
-import sunSvg from '@/assets/svg/sun.svg?raw'
-import moonSvg from '@/assets/svg/moon.svg?raw'
 
 const themeStore = useThemeStore()
 const isDarkTheme = computed(() => themeStore.isDark)
@@ -18,21 +17,20 @@ const toggleTheme = () => {
 </script>
 
 <template>
-  <div
+  <VButton
     class="button-style theme-btn"
     title="切换主题"
-    @click="toggleTheme"
-    :aria-label="isDarkTheme ? '切换到亮色主题' : '切换到暗色主题'"
-    role="button"
-    tabindex="0"
-    @keydown.enter="toggleTheme"
-    @keydown.space="toggleTheme"
     :class="{ animating: isAnimating }"
+    :aria-label="isDarkTheme ? '切换到亮色主题' : '切换到暗色主题'"
+    variant="primary"
+    shape="round"
+    size="36"
+    :icon="isDarkTheme ? 'sun.svg' : 'moon.svg'"
+    icon-size="24"
+    @click="toggleTheme"
   >
-    <span v-if="isDarkTheme" class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="sunSvg"></span>
-    <span v-else class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="moonSvg"></span>
     <span v-if="isAnimating" class="emoji-burst">✨</span>
-  </div>
+  </VButton>
 </template>
 
 <!-- 布局样式 -->

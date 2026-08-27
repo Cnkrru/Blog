@@ -126,6 +126,7 @@ const router = useRouter()
     width: 36px;
     height: 36px;
     border-radius: 50%;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;

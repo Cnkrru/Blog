@@ -1,9 +1,7 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import questionSvg from '@/assets/svg/question.svg?raw'
-import thumbsUpSvg from '@/assets/svg/thumbs-up.svg?raw'
-import thumbsDownSvg from '@/assets/svg/thumbs-down.svg?raw'
 
 const props = defineProps(['postId'])
 
@@ -99,7 +97,7 @@ async function submit(type) {
     <div class="feedback-card">
       <div class="feedback-question">
         <span class="question-icon">
-          <span class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="questionSvg"></span>
+          <VIcon :src="'question.svg'" :size="18" />
         </span>
         <span class="feedback-label">这篇文章对你有用吗？</span>
       </div>
@@ -113,7 +111,7 @@ async function submit(type) {
           @click="submit('up')"
         >
           <span class="btn-wrap">
-            <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="thumbsUpSvg"></span>
+            <VIcon :src="'thumbs-up.svg'" :size="22" />
           </span>
           <span class="btn-text">有用</span>
           <span class="btn-count" v-if="upCount > 0">{{ upCount }}</span>
@@ -127,7 +125,7 @@ async function submit(type) {
           @click="submit('down')"
         >
           <span class="btn-wrap">
-            <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="thumbsDownSvg"></span>
+            <VIcon :src="'thumbs-down.svg'" :size="22" />
           </span>
           <span class="btn-text">没用</span>
           <span class="btn-count" v-if="downCount > 0">{{ downCount }}</span>

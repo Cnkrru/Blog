@@ -1,9 +1,9 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { useHead } from '@vueuse/head'
 import PageNav from '../components/p-center/PageNav.vue'
-import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
 
 // SEO 配置
 useHead({
@@ -111,7 +111,7 @@ onMounted(() => {
                                 <span v-for="t in project.tags.slice(0, 3)" :key="t" class="card-tag">{{ t }}</span>
                             </div>
                             <span class="card-arrow">
-                                <span class="svg-icon" :style="{ width: '16px', height: '16px' }" v-html="arrowRightSvg"></span>
+                                <VIcon :src="'arrow-right.svg'" :size="16" />
                             </span>
                         </div>
                     </div>

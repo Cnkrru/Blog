@@ -12,6 +12,7 @@ keywords: 前端, 组件, 返回顶部, TypeScript
 2. 如果要实现滚动一定距离再显示，使用CSS变量，JS控制opacity来实现，关于CSS变量详见于:[Frontend-CSS变量](post-14.md)
 ---
 ## 代码:
+### 1. html版本demo
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -67,6 +68,11 @@ keywords: 前端, 组件, 返回顶部, TypeScript
 </body>
 </html>
 ```
+### 2. vue组件
+```vue
+
+```
+
 ---
 > 编辑于2026-04-19
 

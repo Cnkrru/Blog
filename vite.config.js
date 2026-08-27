@@ -4,17 +4,18 @@
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { dirname } from 'path'
 import { fileURLToPath, URL } from 'node:url'
 
-import copyImagesPlugin from './src/build/copy-images'
-import { manualChunks } from './src/build/chunks'
-import { getIncludedRoutes } from './src/build/routes'
-import { onSsgFinished } from './src/build/seo'
+import { createSsgOptions } from './src/_build/ssg'
 
-// __dirname 在 ESM 中不可用，通过 import.meta.url 推导
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const includedRoutes = getIncludedRoutes(__dirname)
+
+// 手动分包：把 Vue 框架依赖聚合成独立 vendor chunk，优化浏览器长期缓存
+function manualChunks(id) {
+  if (id.includes('node_modules')) {
+    if (id.includes('vue') || id.includes('router') || id.includes('pinia')) return 'vendor'
+  }
+  return undefined
+}
 
 
 /*
@@ -68,20 +69,10 @@ export default defineConfig(
       // 插件配置
       // 一般和该文件的头部导入一样
       plugins: [
-        vue(),
-        copyImagesPlugin()
+        vue()
       ],
 
-      // SSG选项
-      ssgOptions: {
-        script: 'async',
-        formatting: 'minify',
-        includedRoutes: () => {
-          return includedRoutes
-        },
-        onFinished() {
-          onSsgFinished(__dirname)
-        }
-      }
+      // SSG选项：统一由 src/_build/ssg.js 组装
+      ssgOptions: createSsgOptions()
     }
   )

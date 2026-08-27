@@ -5,9 +5,25 @@
     <link>https://cnkrru.top/</link>
     <description>个人技术博客，分享前端开发、技术学习和生活点滴</description>
     <atom:link href="https://cnkrru.top/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Tue, 25 Aug 2026 02:41:18 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 27 Aug 2026 09:56:42 GMT</lastBuildDate>
     <language>zh-CN</language>
 
+    
+    <item>
+      <title>Vue-2-vue组件制作</title>
+      <link>https://cnkrru.top/post/28</link>
+      <description>记录vue的组件如何制作</description>
+      <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/28</guid>
+    </item>
+    
+    <item>
+      <title>Vue-1-vue介绍以及初始化</title>
+      <link>https://cnkrru.top/post/27</link>
+      <description>记录vue初始化</description>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/27</guid>
+    </item>
     
     <item>
       <title>AL开发日志-1-electron介绍与初始化</title>
@@ -146,7 +162,7 @@
     </item>
     
     <item>
-      <title>VitePress-1</title>
+      <title>SSG-vitepress</title>
       <link>https://cnkrru.top/post/9</link>
       <description>详细介绍VitePress-1-快速开始。</description>
       <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>

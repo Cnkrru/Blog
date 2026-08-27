@@ -56,7 +56,7 @@
                 <span class="language-dot" :class="repo.language.toLowerCase()"></span>
                 {{ repo.language }}
               </span>
-              <span class="repo-forks">🍴 {{ repo.forks_count }}</span>
+              <span class="repo-forks"><VIcon :src="'fork.svg'" :size="13" /> {{ repo.forks_count }}</span>
             </div>
           </div>
         </div>
@@ -68,6 +68,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import VIcon from '@/components/common/VIcon.vue'
 
 const props = defineProps(['username'])
 

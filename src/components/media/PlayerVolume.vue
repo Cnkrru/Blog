@@ -1,8 +1,6 @@
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
-import volumeSvg from '@/assets/svg/volume.svg?raw'
-import volume1Svg from '@/assets/svg/volume-1.svg?raw'
-import volumeXSvg from '@/assets/svg/volume-x.svg?raw'
+import { computed, ref, watch } from 'vue'
+import VButton from '@/components/common/VButton.vue'
 
 const props = defineProps({
   volume: { type: Number, default: 0.7 },
@@ -12,84 +10,70 @@ const props = defineProps({
 const emit = defineEmits(['adjust-volume', 'toggle-mute'])
 
 const volumeBarRef = ref(null)
-let isDraggingVolume = false
+const volumeFillRef = ref(null)
+const isDragging = ref(false)
 
-const handleAdjustVolume = (e) => {
-  if (!volumeBarRef.value) return
-  const rect = volumeBarRef.value.getBoundingClientRect()
-  const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-  emit('adjust-volume', percent)
-}
+const volumeIcon = computed(() => {
+  if (props.isMuted) return 'volume-x.svg'
+  if (props.volume < 0.45) return 'volume-1.svg'
+  return 'volume.svg'
+})
 
 const handleToggleMute = () => {
   emit('toggle-mute')
 }
 
-const onMouseMoveVolume = (e) => {
-  if (!isDraggingVolume || !volumeBarRef.value) return
+function setVolumeFromClientX(clientX) {
+  if (!volumeBarRef.value) return
   const rect = volumeBarRef.value.getBoundingClientRect()
-  const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+  const percent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
   emit('adjust-volume', percent)
 }
 
-const onMouseUpVolume = () => {
-  isDraggingVolume = false
+const handlePointerDown = (e) => {
+  isDragging.value = true
+  volumeBarRef.value?.setPointerCapture?.(e.pointerId)
+  setVolumeFromClientX(e.clientX)
+  e.preventDefault()
 }
 
-const onMouseDownVolume = () => {
-  isDraggingVolume = true
+const handlePointerMove = (e) => {
+  if (isDragging.value) setVolumeFromClientX(e.clientX)
+}
+
+const handlePointerUp = () => {
+  isDragging.value = false
 }
 
 watch(() => props.volume, (val) => {
-  const fill = document.getElementById('volume-fill')
-  if (fill) {
-    fill.style.width = `${val * 100}%`
-  }
-})
-
-watch(() => props.isMuted, (muted) => {
-  const btn = document.getElementById('player-volume-btn')
-  if (btn) {
-    btn.classList.toggle('muted', muted)
-  }
-})
-
-onMounted(() => {
-  if (typeof document !== 'undefined') {
-    document.addEventListener('mousemove', onMouseMoveVolume)
-    document.addEventListener('mouseup', onMouseUpVolume)
-  }
-})
-
-onUnmounted(() => {
-  if (typeof document !== 'undefined') {
-    document.removeEventListener('mousemove', onMouseMoveVolume)
-    document.removeEventListener('mouseup', onMouseUpVolume)
+  if (volumeFillRef.value) {
+    volumeFillRef.value.style.width = `${val * 100}%`
   }
 })
 </script>
 
 <template>
   <div class="player-volume">
-    <button
-      type="button"
-      id="player-volume-btn"
-      class="control-btn"
-      :class="{ muted: isMuted }"
-      aria-label="音量"
-      title="音量控制"
-      @click="handleToggleMute"
-    >
-      <span class="svg-icon volume-icon" :style="{ width: '24px', height: '24px' }" v-html="volumeSvg"></span>
-      <span class="svg-icon volume-low-icon" :style="{ width: '24px', height: '24px' }" v-html="volume1Svg"></span>
-      <span class="svg-icon mute-icon" :style="{ width: '24px', height: '24px' }" v-html="volumeXSvg"></span>
-    </button>
+    <VButton round variant="ghost" size="36" class="control-btn" :icon="volumeIcon" :title="isMuted ? '已静音，点击恢复音量' : '音量'" aria-label="音量" @click="handleToggleMute" />
 
-    <div class="volume-bar" ref="volumeBarRef" @click="handleAdjustVolume">
+    <div
+      ref="volumeBarRef"
+      class="volume-bar"
+      :class="{ dragging: isDragging }"
+      @pointerdown="handlePointerDown"
+      @pointermove="handlePointerMove"
+      @pointerup="handlePointerUp"
+      @pointercancel="handlePointerUp"
+    >
       <div
-        id="volume-fill"
+        ref="volumeFillRef"
         class="volume-fill"
         :style="{ width: `${isMuted ? 0 : volume * 100}%` }"
+      ></div>
+      <div
+        class="volume-handle"
+        :class="{ dragging: isDragging }"
+        :style="{ left: `${isMuted ? 0 : volume * 100}%` }"
       ></div>
     </div>
   </div>

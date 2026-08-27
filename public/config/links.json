@@ -86,7 +86,7 @@
   {
     "id": "13",
     "name": "Vue",
-    "category": "前端官网",
+    "category": "前端",
     "description": "Vue网站文档",
     "url": "https://vuejs.org/"
   },
@@ -110,5 +110,19 @@
     "category": "官网",
     "description": "Steam官网",
     "url": "https://store.steampowered.com/"
+  },
+  {
+    "'id": "18",
+    "name": "MDN",
+    "category": "前端",
+    "description": "前端文档",
+    "url": "https://developer.mozilla.org/zh-CN/"
+  },
+  {
+    "id": "19",
+    "name": "node.js",
+    "category": "后端",
+    "description": "JavaScript后端文档",
+    "url": "https://node.org.cn/docs/latest/api/documentation.html"
   }
 ]

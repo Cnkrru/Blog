@@ -1,15 +1,15 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { onMounted, watch, ref, nextTick } from 'vue'
-import shareSvg from '@/assets/svg/share.svg?raw'
 
 const props = defineProps(['title', 'url', 'description'])
 
 const scriptLoaded = ref(false)
 
 const loadShareScript = () => {
-  if (document.getElementById('addtoany-script')) { initButtons(); return }
+  if (document.querySelector('.addtoany-script')) { initButtons(); return }
   const script = document.createElement('script')
-  script.id = 'addtoany-script'
+  script.className = 'addtoany-script'
   script.src = 'https://static.addtoany.com/menu/page.js'
   script.async = true
   script.onload = () => { scriptLoaded.value = true; initButtons() }
@@ -29,7 +29,7 @@ watch(() => props.url, () => { if (scriptLoaded.value) initButtons() })
 <template>
   <div class="share-container">
     <div class="share-header">
-      <span class="svg-icon share-icon" :style="{ width: '18px', height: '18px' }" v-html="shareSvg"></span>
+      <VIcon :src="'share.svg'" :size="18" class="share-icon" />
       <span class="share-title">分享这篇文章</span>
     </div>
     <div class="a2a_kit a2a_kit_size_32 a2a_default_style" :data-a2a-url="url" :data-a2a-title="title">

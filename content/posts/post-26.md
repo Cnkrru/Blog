@@ -21,7 +21,7 @@ keywords: AL
 - 先初始化一个JavaScript项目，作者这里用的包管理器是npm，官方文档说可以用yarn，爱用啥用啥
 - 初始化会问几个问题，如图：
 
-![npm初始化](../images/init.png)
+![npm初始化](../images/post-26/init.png)
 
 - 问完问题后，会生成配置文件`package.json`,JavaScript项目的配置文件
 - 以下是官网示例，自己初始化的没有`devdependencies`,就是依赖，自己手动添加一下
@@ -209,7 +209,7 @@ npm create @quick-start/electron
 ```
 - 会问以下几个问题
 
-![初始化](../images/electron-init.png)
+![初始化](../images/post-26/electron-init.png)
 
 - 项目名
 - 包名
@@ -231,7 +231,7 @@ src
 ---
 ### 3. 初始化效果
 
-![示例图片](../images/electron-img.png)
+![示例图片](../images/post-26/electron-img.png)
 
 ---
 > 编辑于2026-08-11

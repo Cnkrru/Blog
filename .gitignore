@@ -35,6 +35,7 @@ temp/
 desktop/
 script/
 demo/
+test/
 
 # --- TypeScript ---
 *.tsbuildinfo

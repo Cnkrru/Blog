@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useThemeStore } from './theme'
-import giscusBaseCss from '@/assets/css/comment/giscus-base.css?raw'
+import giscusBaseCss from '@/assets/css/giscus-base.css?raw'
 
 // 8 套主题颜色定义，通过 Data URL 动态注入 CSS 变量，仅需一个 base CSS 文件
 const themeColors = {

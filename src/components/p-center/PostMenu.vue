@@ -1,11 +1,9 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/common/VButton.vue'
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticlesStore } from '../../stores'
-import menuSvg from '@/assets/svg/menu.svg?raw'
-import xSvg from '@/assets/svg/x.svg?raw'
-import listSvg from '@/assets/svg/list.svg?raw'
-import searchSvg from '@/assets/svg/search.svg?raw'
 
 const props = defineProps(['show'])
 
@@ -88,20 +86,17 @@ onMounted(() => {
   <div class="menu-wrap">
     <!-- 文章菜单按钮 -->
     <div class="menu-toggle">
-      <button class="menu-btn" @click="toggleMenu" :title="show ? '关闭菜单' : '文章菜单'" aria-label="文章菜单">
-        <span
-          v-if="!show"
-          class="svg-icon btn-icon"
-          :style="{ width: '18px', height: '18px' }"
-          v-html="menuSvg"
-        ></span>
-        <span
-          v-else
-          class="svg-icon btn-icon"
-          :style="{ width: '16px', height: '16px' }"
-          v-html="xSvg"
-        ></span>
-      </button>
+      <VButton
+        class="menu-btn"
+        :icon="show ? 'x.svg' : 'menu.svg'"
+        icon-size="24"
+        variant="primary"
+        shape="round"
+        size="38"
+        :title="show ? '关闭菜单' : '文章菜单'"
+        aria-label="文章菜单"
+        @click="toggleMenu"
+      />
     </div>
 
     <!-- 文章菜单卡片 -->
@@ -110,13 +105,11 @@ onMounted(() => {
         <!-- 头部 -->
         <div class="menu-header">
           <div class="menu-title">
-            <span class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
+            <VIcon :src="'list.svg'" :size="16" class="menu-icon" />
             <h3>文章菜单</h3>
             <span class="menu-count">{{ posts.length }}</span>
           </div>
-          <button class="menu-close" @click="toggleMenu" title="关闭" aria-label="关闭菜单">
-            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
-          </button>
+          <VButton icon="x.svg" size="26" shape="rect" variant="ghost" class="menu-close" @click="toggleMenu" title="关闭" aria-label="关闭菜单" />
         </div>
 
         <div class="menu-line"></div>
@@ -125,16 +118,14 @@ onMounted(() => {
         <div class="menu-actions">
           <!-- 搜索框 -->
           <div class="search-box">
-            <span class="svg-icon search-icon" :style="{ width: '14px', height: '14px' }" v-html="searchSvg"></span>
+            <VIcon :src="'search.svg'" :size="14" class="search-icon" />
             <input
               type="text"
               v-model="searchKeyword"
               placeholder="搜索文章标题或标签..."
               class="search-input text-input"
             />
-            <button v-if="searchKeyword" @click="clearSearch" class="search-clear" title="清除" aria-label="清除搜索">
-              <span class="svg-icon" :style="{ width: '12px', height: '12px' }" v-html="xSvg"></span>
-            </button>
+            <VButton v-if="searchKeyword" icon="x.svg" size="20" shape="rect" variant="ghost" class="search-clear" @click="clearSearch" title="清除" aria-label="清除搜索" />
           </div>
 
           <!-- 排序按钮 -->
@@ -180,7 +171,7 @@ onMounted(() => {
             </li>
           </ul>
           <div v-if="!posts.length" class="post-empty">
-            <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="searchSvg"></span>
+            <VIcon :src="'search.svg'" :size="20" />
             <span>没有匹配的文章</span>
           </div>
         </div>
@@ -255,23 +246,13 @@ onMounted(() => {
 }
 
 .menu-close {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: none;
-  background: transparent;
-  color: var(--common-text);
   opacity: 0.45;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 6%, transparent);
+  transition: opacity 0.15s ease;
 }
 
 .menu-close:hover {
   opacity: 0.8;
-  background: color-mix(in srgb, var(--common-text) 6%, transparent);
   transform: rotate(90deg);
 }
 
@@ -332,23 +313,13 @@ onMounted(() => {
   right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: none;
-  background: transparent;
-  color: var(--common-text);
   opacity: 0.35;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.15s ease, background-color 0.15s ease;
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 6%, transparent);
+  transition: opacity 0.15s ease;
 }
 
 .search-clear:hover {
   opacity: 0.8;
-  background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
 /* 排序按钮 */
@@ -512,31 +483,12 @@ onMounted(() => {
 }
 
 .menu-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: var(--common-color-1);
-  border: 1px solid var(--common-color-1);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--common-color-1) 30%, transparent);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.btn-icon {
-  color: #fff;
 }
 
 .menu-btn:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
-}
-
-.menu-btn:active {
-  transform: scale(0.95);
 }
 
 /* ============================== 响应式 ============================== */
@@ -551,7 +503,6 @@ onMounted(() => {
   .menu-body { max-height: calc(60vh - 120px); }
   .list-item { padding: 7px 14px; }
   .post-title { font-size: 12px; }
-  .menu-btn { width: 32px; height: 32px; }
 }
 
 @media (max-width: 768px) {

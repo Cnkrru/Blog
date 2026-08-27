@@ -7,8 +7,8 @@ export const useGlobalStore = defineStore('global', () => {
   const siteUrl = ref('https://cnkrru.top')
   const siteKeywords = ref('')
   const socialLinks = ref([
-    { name: 'GitHub', url: 'https://github.com/cnkrru', icon: 'fa-brands fa-github' },
-    { name: 'Mail', url: 'mailto:admin@cnkrru.top', icon: 'fa-solid fa-envelope' }
+    { name: 'GitHub', url: 'https://github.com/cnkrru', icon: 'github.svg' },
+    { name: 'Mail', url: 'mailto:admin@cnkrru.top', icon: 'mail.svg' }
   ])
   const notifications = ref([])
 

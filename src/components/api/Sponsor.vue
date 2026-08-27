@@ -1,8 +1,7 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import heartSvg from '@/assets/svg/heart.svg?raw'
-import xSvg from '@/assets/svg/x.svg?raw'
 
 const showModal = ref(false)
 const activeTab = ref('wechat')
@@ -29,7 +28,7 @@ if (typeof window !== 'undefined') {
 <template>
   <div v-if="sponsor.enabled" class="sponsor-wrap">
     <button class="sponsor-btn" @click="toggleModal">
-      <span class="svg-icon sp-icon" :style="{ width: '16px', height: '16px' }" v-html="heartSvg"></span>
+      <VIcon :src="'heart.svg'" :size="16" class="sp-icon" />
       赞赏
     </button>
 
@@ -40,7 +39,7 @@ if (typeof window !== 'undefined') {
             <div class="sponsor-header">
               <h3>赞赏支持</h3>
               <button class="sponsor-close" @click="closeModal" aria-label="关闭">
-                <span class="svg-icon" :style="{ width: '16px', height: '16px' }" v-html="xSvg"></span>
+                <VIcon :src="'x.svg'" :size="16" />
               </button>
             </div>
             <p class="sponsor-msg">{{ sponsor.message }}</p>

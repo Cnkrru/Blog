@@ -8,7 +8,7 @@
       aria-label="上一篇文章"
     >
       <span class="nav-icon">
-        <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="arrowLeftSvg"></span>
+        <VIcon :src="'arrow-left.svg'" :size="20" />
       </span>
       <div class="nav-text">
         <span class="nav-label">上一篇</span>
@@ -29,7 +29,7 @@
         <span class="nav-title">{{ nextPost?.title || '暂无' }}</span>
       </div>
       <span class="nav-icon">
-        <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="arrowRightSvg"></span>
+        <VIcon :src="'arrow-right.svg'" :size="20" />
       </span>
       <div v-if="loadingNext" class="nav-loading"></div>
     </button>
@@ -37,9 +37,8 @@
 </template>
 
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
-import arrowLeftSvg from '@/assets/svg/arrow-left.svg?raw'
-import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
 
 const props = defineProps({
   prevPost: { default: null },

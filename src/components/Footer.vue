@@ -1,11 +1,10 @@
 <script setup>
-import { useGlobalStore } from '../stores/global'
+import { useGlobalStore } from '@/stores/global'
 import WebsiteAge from './p-footer/WebsiteAge.vue'
 import Copyright from './p-footer/CopyRight.vue'
+import SocialLink from './p-footer/SocialLink.vue'
+import RssLink from './p-footer/RssLink.vue'
 import PrintPdf from './p-footer/PrintPdf.vue'
-import githubSvg from '@/assets/svg/github.svg?raw'
-import mailSvg from '@/assets/svg/mail.svg?raw'
-import rssSvg from '@/assets/svg/rss.svg?raw'
 
 const globalStore = useGlobalStore()
 const socialLinks = globalStore.socialLinks
@@ -18,28 +17,8 @@ const socialLinks = globalStore.socialLinks
         <div class="footer-card">
           <!-- 社交链接 -->
           <div class="footer-social">
-            <a
-              v-for="link in socialLinks"
-              :key="link.name"
-              :href="link.url"
-              :title="link.name"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-social-link"
-            >
-              <span v-if="link.name === 'GitHub'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="githubSvg"></span>
-              <span v-else-if="link.name === 'Mail'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="mailSvg"></span>
-              <span class="social-label">{{ link.name }}</span>
-            </a>
-            <a
-              href="/rss.xml"
-              title="RSS"
-              target="_blank"
-              class="footer-social-link"
-            >
-              <span class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="rssSvg"></span>
-              <span class="social-label">RSS</span>
-            </a>
+            <SocialLink v-for="link in socialLinks" :key="link.name" :link="link" />
+            <RssLink />
             <PrintPdf />
           </div>
 
@@ -84,7 +63,6 @@ const socialLinks = globalStore.socialLinks
   border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
-/* 社交链接 */
 .footer-social {
   display: flex;
   align-items: center;

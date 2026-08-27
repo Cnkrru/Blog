@@ -1,12 +1,9 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useTocStore } from '../../stores'
 import TocTreeItem from './TocTreeItem.vue'
-import listSvg from '@/assets/svg/list.svg?raw'
-import plusSvg from '@/assets/svg/plus.svg?raw'
-import minusSvg from '@/assets/svg/minus.svg?raw'
-import xSvg from '@/assets/svg/x.svg?raw'
-import fileTextSvg from '@/assets/svg/file-text.svg?raw'
 
 const props = defineProps(['show'])
 const emit = defineEmits(['update:show'])
@@ -180,22 +177,23 @@ onUnmounted(() => {
       <!-- 头部 -->
       <div class="toc-header">
         <div class="toc-hleft">
-          <span class="svg-icon toc-hicon" :style="{ width: '16px', height: '16px' }" v-html="listSvg"></span>
+          <VIcon :src="'list.svg'" :size="16" class="toc-hicon" />
           <h3 class="toc-title">目录</h3>
           <span v-if="toc.length" class="toc-count">{{ toc.length }}</span>
         </div>
         <div class="toc-hactn">
-          <button
+          <VButton
             class="toc-tbtn"
+            :icon="expandedAll ? 'minus.svg' : 'plus.svg'"
+            icon-size="14"
+            variant="ghost"
+            shape="rect"
+            radius="6"
+            size="26"
             :title="expandedAll ? '折叠全部' : '展开全部'"
             @click="expandedAll ? collapseAll() : expandAll()"
-          >
-            <span v-if="expandedAll" class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="minusSvg"></span>
-            <span v-else class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="plusSvg"></span>
-          </button>
-          <button class="toc-close" @click="toggleToc" title="关闭">
-            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
-          </button>
+          />
+          <VButton icon="x.svg" size="26" shape="rect" variant="ghost" class="toc-close" @click="toggleToc" title="关闭" />
         </div>
       </div>
 
@@ -217,7 +215,7 @@ onUnmounted(() => {
           />
         </ul>
         <div v-if="!toc.length" class="toc-empty">
-          <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="fileTextSvg"></span>
+          <VIcon :src="'file-text.svg'" :size="20" />
           <span>暂无目录</span>
         </div>
       </div>
@@ -297,43 +295,21 @@ onUnmounted(() => {
 }
 
 .toc-tbtn {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: none;
-  background: transparent;
-  color: var(--common-text);
   opacity: 0.45;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.15s ease, background-color 0.15s ease;
 }
 
 .toc-tbtn:hover {
   opacity: 0.8;
-  background: color-mix(in srgb, var(--common-text) 6%, transparent);
 }
 
 .toc-close {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: none;
-  background: transparent;
-  color: var(--common-text);
   opacity: 0.45;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 6%, transparent);
+  transition: opacity 0.15s ease;
 }
 
 .toc-close:hover {
   opacity: 0.8;
-  background: color-mix(in srgb, var(--common-text) 6%, transparent);
   transform: rotate(90deg);
 }
 

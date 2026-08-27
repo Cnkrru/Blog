@@ -1,13 +1,17 @@
 <template>
-  <div
+  <VButton
     class="button-style"
-    @click="toggleEffect"
     :class="{ animating: isAnimating }"
     :title="isEffectEnabled ? '关闭动态效果' : '开启动态效果'"
+    variant="primary"
+    shape="round"
+    size="36"
+    icon-size="24"
+    icon="sparkles.svg"
+    @click="toggleEffect"
   >
-    <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="sparklesSvg"></span>
     <span v-if="isAnimating" class="emoji-burst">✨</span>
-  </div>
+  </VButton>
 
   <Teleport to="body">
     <div
@@ -25,16 +29,18 @@
 </template>
 
 <script setup>
+import VButton from '@/components/common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useDynamicEffectsStore } from '../../stores/index'
-import sparklesSvg from '@/assets/svg/sparkles.svg?raw'
 
 const dynamicEffectsStore = useDynamicEffectsStore()
 
 const isEffectEnabled = ref(true)
 const isDarkMode = ref(false)
 const isAnimating = ref(false)
-let scriptLoaded = false
+let scriptLoader = null
+let sokuraStart = null
+let sokuraStop = null
 let observer = null
 
 const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined'
@@ -79,34 +85,29 @@ const destroyEffects = () => {
 const initSakura = () => {
   if (!isBrowser) return
 
-  if (!scriptLoaded) {
-    const script = document.createElement('script')
-    script.src = '/js/sakuraPlus.js'
-    script.onload = () => {
-      scriptLoaded = true
-      setTimeout(() => {
-        if (typeof startSakura !== 'undefined') {
-          startSakura()
-        }
-      }, 100)
-    }
-    document.head.appendChild(script)
+  const run = () => {
+    setTimeout(() => {
+      if (sokuraStart) sokuraStart()
+    }, 100)
+  }
+
+  if (!scriptLoader) {
+    scriptLoader = import('@/utils/sakuraPlus.js').then((mod) => {
+      sokuraStart = mod.startSakura
+      sokuraStop = mod.stopp
+      run()
+    })
   } else {
-    if (typeof staticx !== 'undefined') {
-      staticx = false
-    }
-    if (typeof startSakura !== 'undefined') {
-      startSakura()
-    }
+    run()
   }
 }
 
 const destroySakura = () => {
   if (!isBrowser) return
 
-  if (typeof stopp !== 'undefined') {
+  if (sokuraStop) {
     try {
-      stopp()
+      sokuraStop()
     } catch (e) {}
   }
 

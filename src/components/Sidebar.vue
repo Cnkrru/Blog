@@ -9,19 +9,19 @@ import Weather from './api/Weather.vue'
 <template>
     <aside class="left-asider-s">
         <div class="asider-container">
-        <div class="left-asider-card">
-            <!-- 头像设计 -->
-            <Avatar />
-            <!-- 欢迎语设计 -->
-            <WelcomeSaying />
-            <!-- 天气组件 -->
-            <Weather />
-            <!-- 页面跳转链接设计 -->
-            <PageLinks />
-            <!-- 站点统计 -->
-            <BusuanziStats />
-            <!-- RSS 订阅组件 -->   
-        </div>
+            <div class="left-asider-card">
+                <!-- 头像设计 -->
+                <Avatar />
+                <!-- 欢迎语设计 -->
+                <WelcomeSaying />
+                <!-- 天气组件 -->
+                <Weather />
+                <!-- 页面跳转链接设计 -->
+                <PageLinks />
+                <!-- 站点统计 -->
+                <BusuanziStats />
+                <!-- RSS 订阅组件 -->   
+            </div>
         </div>
     </aside>
 </template>

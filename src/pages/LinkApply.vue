@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useHead } from '@vueuse/head'
+import VIcon from '@/components/common/VIcon.vue'
 
 useHead({
   title: '友链申请 - Cnkrru\'s Blog',
@@ -36,7 +37,7 @@ async function submitForm() {
   <hr>
   <div class="center-card-content">
     <div v-if="submitted" class="success-card">
-      <span class="s-icon">✅</span>
+      <span class="s-icon"><VIcon :src="'check.svg'" :size="40" /></span>
       <h3>申请已提交</h3>
       <p>我会尽快审核并添加你的友链，感谢支持！</p>
     </div>

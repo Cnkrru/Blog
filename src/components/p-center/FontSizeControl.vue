@@ -1,8 +1,7 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { computed } from 'vue'
 import { useThemeStore } from '../../stores/theme'
-import minusSvg from '@/assets/svg/minus.svg?raw'
-import plusSvg from '@/assets/svg/plus.svg?raw'
 
 const theme = useThemeStore()
 
@@ -29,7 +28,7 @@ const isAtMax = computed(() => theme.articleFontSize >= MAX)
       :disabled="isAtMin"
       aria-label="缩小字体"
     >
-      <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="minusSvg"></span>
+      <VIcon :src="'minus.svg'" :size="14" />
     </button>
 
     <div class="size-display" @click="reset" title="点击重置为 16px">
@@ -46,7 +45,7 @@ const isAtMax = computed(() => theme.articleFontSize >= MAX)
       :disabled="isAtMax"
       aria-label="放大字体"
     >
-      <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="plusSvg"></span>
+      <VIcon :src="'plus.svg'" :size="14" />
     </button>
   </div>
 </template>

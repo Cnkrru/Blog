@@ -142,7 +142,6 @@ onUnmounted(() => {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
   margin-bottom: 12px;
 }
 

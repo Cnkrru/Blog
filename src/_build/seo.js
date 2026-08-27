@@ -1,56 +1,56 @@
 import { resolve } from 'path'
 import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
-import { siteConfig } from './config'
+const SITE_DOMAIN = process.env.VITE_DOMAIN || 'https://cnkrru.top'
 
 // 生成 sitemap.xml
 export function generateSitemap(posts) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${siteConfig.domain}/</loc>
+    <loc>${SITE_DOMAIN}/</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/home</loc>
+    <loc>${SITE_DOMAIN}/home</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/about</loc>
+    <loc>${SITE_DOMAIN}/about</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/archives</loc>
+    <loc>${SITE_DOMAIN}/archives</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/links</loc>
+    <loc>${SITE_DOMAIN}/links</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/projects</loc>
+    <loc>${SITE_DOMAIN}/projects</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>${siteConfig.domain}/tag</loc>
+    <loc>${SITE_DOMAIN}/tag</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   ${posts.map(post => `
   <url>
-    <loc>${siteConfig.domain}/post/${post.id}</loc>
+    <loc>${SITE_DOMAIN}/post/${post.id}</loc>
     <lastmod>${post.date}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -65,19 +65,19 @@ export function generateRss(posts) {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cnkrru's Blog</title>
-    <link>${siteConfig.domain}/</link>
+    <link>${SITE_DOMAIN}/</link>
     <description>个人技术博客，分享前端开发、技术学习和生活点滴</description>
-    <atom:link href="${siteConfig.domain}/rss.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="${SITE_DOMAIN}/rss.xml" rel="self" type="application/rss+xml" />
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <language>zh-CN</language>
 
     ${posts.map(post => `
     <item>
       <title>${post.title}</title>
-      <link>${siteConfig.domain}/post/${post.id}</link>
+      <link>${SITE_DOMAIN}/post/${post.id}</link>
       <description>${post.description}</description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      <guid>${siteConfig.domain}/post/${post.id}</guid>
+      <guid>${SITE_DOMAIN}/post/${post.id}</guid>
     </item>
     `).join('')}
   </channel>

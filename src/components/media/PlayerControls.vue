@@ -1,8 +1,5 @@
 <script setup>
-import skipBackSvg from '@/assets/svg/skip-back.svg?raw'
-import playSvg from '@/assets/svg/play.svg?raw'
-import pauseSvg from '@/assets/svg/pause.svg?raw'
-import skipForwardSvg from '@/assets/svg/skip-forward.svg?raw'
+import VButton from '@/components/common/VButton.vue'
 
 defineProps({
   isPlaying: { type: Boolean, default: false },
@@ -26,36 +23,10 @@ const handleNext = () => {
 
 <template>
   <div class="player-controls">
-    <button
-      type="button"
-      class="control-btn"
-      aria-label="上一首"
-      title="上一首"
-      @click="handlePrev"
-    >
-      <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="skipBackSvg"></span>
-    </button>
+    <VButton round variant="ghost" size="36" class="control-btn" icon="skip-back.svg" icon-size="24" title="上一首" aria-label="上一首" @click="handlePrev" />
 
-    <button
-      type="button"
-      class="control-btn play-btn"
-      :class="{ playing: isPlaying }"
-      aria-label="播放"
-      title="播放/暂停"
-      @click="handleTogglePlay"
-    >
-      <span class="svg-icon play-icon" :style="{ width: '24px', height: '24px' }" v-html="playSvg"></span>
-      <span class="svg-icon pause-icon" :style="{ width: '24px', height: '24px' }" v-html="pauseSvg"></span>
-    </button>
+    <VButton round variant="ghost" size="40" class="control-btn play-btn" :icon="isPlaying ? 'pause.svg' : 'play.svg'" icon-size="24" title="播放/暂停" aria-label="播放" @click="handleTogglePlay" />
 
-    <button
-      type="button"
-      class="control-btn"
-      aria-label="下一首"
-      title="下一首"
-      @click="handleNext"
-    >
-      <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="skipForwardSvg"></span>
-    </button>
+    <VButton round variant="ghost" size="36" class="control-btn" icon="skip-forward.svg" icon-size="24" title="下一首" aria-label="下一首" @click="handleNext" />
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup>
+import VButton from '@/components/common/VButton.vue'
 import { ref, watch, computed } from 'vue'
 import { useMusicStore } from '../../stores'
-import xSvg from '@/assets/svg/x.svg?raw'
 
 const props = defineProps({
   audioContext: { default: null },
@@ -96,12 +96,10 @@ const closePanel = () => {
       <div class="effects-header">
         <h4>音效设置</h4>
         <div class="header-actions">
-          <button class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects" aria-label="切换音效状态">
+          <VButton auto-height variant="ghost" shape="pill" class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects" aria-label="切换音效状态">
             {{ effectsEnabled ? '已启用' : '已关闭' }}
-          </button>
-          <button class="close-btn" @click="closePanel" aria-label="关闭音效设置">
-            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
-          </button>
+          </VButton>
+          <VButton round variant="ghost" size="28" class="close-btn" icon="x.svg" title="关闭音效设置" aria-label="关闭音效设置" @click="closePanel" />
         </div>
       </div>
 
@@ -109,35 +107,41 @@ const closePanel = () => {
         <div class="effect-section">
           <div class="visualizer-toggle">
             <span class="effect-label">音频可视化</span>
-            <button class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer" aria-label="切换音频可视化">{{ isVizEnabled ? '已开启' : '已关闭' }}</button>
+            <VButton auto-height variant="ghost" shape="pill" class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer" aria-label="切换音频可视化">{{ isVizEnabled ? '已开启' : '已关闭' }}</VButton>
           </div>
         </div>
 
         <div class="effect-section">
           <span class="effect-label">环绕模式</span>
           <div class="btn-group">
-            <button
+            <VButton
               v-for="mode in surroundModes"
               :key="mode.value"
+              auto-height
+              variant="ghost"
+              shape="pill"
               class="chip-btn"
               :aria-label="'环绕模式：' + mode.label"
               :style="currentSurroundMode === mode.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeSurroundMode(mode.value)"
-            >{{ mode.label }}</button>
+            >{{ mode.label }}</VButton>
           </div>
         </div>
 
         <div class="effect-section">
           <span class="effect-label">均衡器</span>
           <div class="btn-group">
-            <button
+            <VButton
               v-for="preset in eqPresets"
               :key="preset.value"
+              auto-height
+              variant="ghost"
+              shape="pill"
               class="chip-btn"
               :aria-label="'均衡器：' + preset.label"
               :style="currentEqPreset === preset.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeEqPreset(preset.value)"
-            >{{ preset.label }}</button>
+            >{{ preset.label }}</VButton>
           </div>
         </div>
       </div>
@@ -201,25 +205,21 @@ const closePanel = () => {
   gap: 8px;
 }
 
-.enable-btn {
-  padding: 4px 14px;
-  border-radius: 14px;
-  border: 1px solid;
+.enable-btn,
+.toggle-btn,
+.chip-btn {
+  --v-btn-pad: 4px 14px;
   font-size: 12px;
-  cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.chip-btn {
+  --v-btn-pad: 5px 12px;
 }
 
 .close-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -250,30 +250,10 @@ const closePanel = () => {
   align-items: center;
 }
 
-.toggle-btn {
-  padding: 4px 14px;
-  border-radius: 14px;
-  border: 1px solid;
-  font-size: 12px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
 .btn-group {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-}
-
-.chip-btn {
-  padding: 5px 12px;
-  border-radius: 14px;
-  border: 1px solid;
-  font-size: 12px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 </style>
 
@@ -290,61 +270,37 @@ const closePanel = () => {
 
 .effects-header h4 { color: var(--common-text); }
 
-.enable-btn {
-  background: color-mix(in srgb, var(--common-text) 6%, transparent);
-  border-color: color-mix(in srgb, var(--common-text) 10%, transparent);
-  color: var(--common-text);
-}
-
-.enable-btn.active {
-  background: var(--common-color-1);
-  border-color: var(--common-color-1);
-  color: var(--common-content);
-}
-
-.close-btn {
-  background: color-mix(in srgb, var(--common-text) 8%, transparent);
-  color: var(--common-text);
-}
-.close-btn:hover { background: color-mix(in srgb, var(--common-text) 15%, transparent); }
-
 .effect-label {
   color: var(--common-text);
-   opacity: 0.6;
-   
+  opacity: 0.6;
 }
 
+.enable-btn,
 .toggle-btn {
-  background: color-mix(in srgb, var(--common-text) 6%, transparent);
-  border-color: color-mix(in srgb, var(--common-text) 10%, transparent);
-  color: var(--common-text);
+  --v-btn-bg: color-mix(in srgb, var(--common-text) 6%, transparent);
+  --v-btn-border: color-mix(in srgb, var(--common-text) 10%, transparent);
+  --v-btn-color: var(--common-text);
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 10%, transparent);
 }
 
 .toggle-btn:hover {
-  background: color-mix(in srgb, var(--common-text) 10%, transparent);
-  border-color: var(--common-color-1);
-}
-
-.toggle-btn.active {
-  background: var(--common-color-1);
-  border-color: var(--common-color-1);
-  color: var(--common-content);
+  --v-btn-border: var(--common-color-1);
 }
 
 .chip-btn {
-  background: color-mix(in srgb, var(--common-text) 5%, transparent);
-  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
-  color: var(--common-text);
+  --v-btn-bg: color-mix(in srgb, var(--common-text) 5%, transparent);
+  --v-btn-border: color-mix(in srgb, var(--common-text) 8%, transparent);
+  --v-btn-color: var(--common-text);
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .chip-btn:hover {
-  background: color-mix(in srgb, var(--common-text) 8%, transparent);
-  border-color: var(--common-color-1);
+  --v-btn-border: var(--common-color-1);
 }
 
-.chip-btn.active {
-  background: var(--common-color-1);
-  border-color: var(--common-color-1);
-  color: var(--common-content);
+.close-btn {
+  --v-btn-bg: color-mix(in srgb, var(--common-text) 8%, transparent);
+  --v-btn-color: var(--common-text);
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 15%, transparent);
 }
 </style>

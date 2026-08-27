@@ -3,6 +3,7 @@ import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { useArticlesStore } from '../stores'
+import VIcon from '@/components/common/VIcon.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 
 const store = useArticlesStore()
@@ -153,9 +154,7 @@ onMounted(() => {
         <span class="arch-name">{{ g.name }}</span>
         <span class="arch-count">{{ g.items.length }} 篇</span>
         <span class="arch-arrow" :class="{ open: isExpanded(g.name) }">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <VIcon :src="'chevron-down.svg'" :size="12" />
         </span>
       </a>
 

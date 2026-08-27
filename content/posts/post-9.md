@@ -1,5 +1,5 @@
 ---
-title: VitePress-1
+title: SSG-vitepress
 date: 2026-04-23
 updated: 2026-08-07
 category: 前端
@@ -84,6 +84,17 @@ keywords: VitePress, 快速开始
    - 选择一个服务器部署，比如GitHub Pages，vercel，netlify，这三种都支持静态站点部署，也最为常见
    - 笔者刚接触前端时用GitHub，后来用vercel，netlify用过一次，但是不太熟悉
    - 推荐vercel，CDN节点多，中国访问快，也可以买个域名去cloudflare配置CDN，再到vercel配置，两者联动，中国访问友好
+---
+### 配置
+1. 个人配置
+> 懒得教如何配置了，和其他SSG一个样子，作者基于个人的配置封装了一个SKILL
+> SKILL地址:[https://notes.cnkrru.top/docs/skills/vitepress-builder/SKILL](https://notes.cnkrru.top/docs/skills/vitepress-builder/SKILL)
+- 配置都在这个SKILL里了
+2. 官方文档
+> [https://vitepress.dev/zh/guide/getting-started](https://vitepress.dev/zh/guide/getting-started)
+- 我的配置就是照着这个一步步搭建的，应该差不了多少，不过作者之后不再用vitepress了，用自己用vue做的站点模板cvdocs了
+   - cvdocs:[https://github.com/Cnkrru/Notes](https://github.com/Cnkrru/Notes)
+   - 比不上vitepress，这个只是作者在用了几个SSG，学了vue之后自己做的一个轻量的SSG，自用
 ---
 > 编辑于2026-04-23
 

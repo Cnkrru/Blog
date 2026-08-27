@@ -1,8 +1,8 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticlesStore } from '../../stores'
-import searchSvg from '@/assets/svg/search.svg?raw'
 import { ElasticsearchLikeScorer } from '../../utils/algorithms'
 import { RedisLikeCache } from '../../utils/cache'
 import SearchResults from './SearchResults.vue'
@@ -137,7 +137,7 @@ onUnmounted(() => {
 <template>
   <div class="search-card search-container">
     <span class="search-icon">
-      <span class="svg-icon" :style="{ width: '16px', height: '16px' }" v-html="searchSvg"></span>
+      <VIcon :src="'search.svg'" :size="16" />
     </span>
     <input
       class="text-input"

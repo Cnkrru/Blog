@@ -1,7 +1,7 @@
 <script setup>
+import VButton from '@/components/common/VButton.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import bookOpenSvg from '@/assets/svg/book-open.svg?raw'
 
 const isImmersiveReading = ref(false)
 const isAnimating = ref(false)
@@ -23,10 +23,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="button-style immersive-btn" title="沉浸式阅读" @click="toggleImmersiveReading">
-    <span class="svg-icon" :style="{ width: '24px', height: '24px' }" v-html="bookOpenSvg"></span>
+  <VButton
+    class="button-style immersive-btn"
+    title="沉浸式阅读"
+    variant="primary"
+    shape="round"
+    size="36"
+    icon-size="24"
+    icon="book-open.svg"
+    @click="toggleImmersiveReading"
+  >
     <span v-if="isAnimating" class="emoji-burst">✨</span>
-  </div>
+  </VButton>
 </template>
 
 <!-- 布局样式 -->

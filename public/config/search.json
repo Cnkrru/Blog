@@ -1,5 +1,37 @@
 [
   {
+    "id": "28",
+    "title": "Vue-2-vue组件制作",
+    "date": "2026-08-26",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "记录vue的组件如何制作",
+    "keywords": "vue",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Vue-2-vue组件制作 - Tech Blog",
+    "path": "./html/posts/post-28.html"
+  },
+  {
+    "id": "27",
+    "title": "Vue-1-vue介绍以及初始化",
+    "date": "2026-08-25",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "记录vue初始化",
+    "keywords": "vue",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Vue-1-vue介绍以及初始化 - Tech Blog",
+    "path": "./html/posts/post-27.html"
+  },
+  {
     "id": "26",
     "title": "AL开发日志-1-electron介绍与初始化",
     "date": "2026-08-23",
@@ -280,7 +312,7 @@
   },
   {
     "id": "9",
-    "title": "VitePress-1",
+    "title": "SSG-vitepress",
     "date": "2026-04-23",
     "updated": "2026-08-07",
     "category": "前端",
@@ -294,7 +326,7 @@
       "2026-08-07 补充VitePress与Docsify对比分析",
       "2026-07-29 同步迁移经验到独立文章"
     ],
-    "seoTitle": "VitePress-1 - Tech Blog",
+    "seoTitle": "SSG-vitepress - Tech Blog",
     "path": "./html/posts/post-9.html"
   },
   {

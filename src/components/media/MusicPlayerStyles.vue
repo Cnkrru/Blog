@@ -158,9 +158,13 @@
     width: 64px;
     height: 3px;
     border-radius: 1.5px;
-    cursor: pointer;
+    cursor: grab;
     position: relative;
     overflow: visible;
+}
+
+.volume-bar:active {
+    cursor: grabbing;
 }
 
 .volume-fill {
@@ -172,17 +176,18 @@
 
 .volume-handle {
     position: absolute;
-    right: -5px;
     top: 50%;
-    transform: translateY(-50%) scale(var(--handle-scale, 1));
+    left: 0;
+    transform: translate(-50%, -50%) scale(var(--handle-scale, 0));
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    cursor: pointer;
+    cursor: grab;
     transition: transform 0.15s ease;
 }
 
-.volume-bar:hover {
+.volume-bar:hover,
+.volume-bar.dragging {
     --handle-scale: 1.3;
 }
 

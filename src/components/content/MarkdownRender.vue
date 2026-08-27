@@ -48,9 +48,7 @@
           ref="lightboxRef"
         >
           <!-- 关闭按钮 — 固定在右上角 -->
-          <button class="lightbox-close" @click="closeLightbox" aria-label="关闭">
-            <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="xSvg"></span>
-          </button>
+          <VButton icon="x.svg" size="40" shape="round" variant="ghost" class="lightbox-close" @click="closeLightbox" aria-label="关闭" />
 
           <!-- 图片计数器 — 顶部居中 pill -->
           <div class="lightbox-counter" v-if="lightboxImages.length > 1">
@@ -65,7 +63,7 @@
             v-if="currentImageIndex > 0"
             aria-label="上一张"
           >
-            <span class="svg-icon" :style="{ width: '28px', height: '28px' }" v-html="arrowLeftSvg"></span>
+            <VIcon :src="'arrow-left.svg'" :size="28" />
           </div>
 
           <!-- 图片主体 — 点击图片不关闭 -->
@@ -89,7 +87,7 @@
             v-if="currentImageIndex < lightboxImages.length - 1"
             aria-label="下一张"
           >
-            <span class="svg-icon" :style="{ width: '28px', height: '28px' }" v-html="arrowRightSvg"></span>
+            <VIcon :src="'arrow-right.svg'" :size="28" />
           </div>
         </div>
       </Transition>
@@ -104,21 +102,16 @@
       :style="{ left: quotePopupPos.x + 'px', top: quotePopupPos.y + 'px' }"
       @click.stop
     >
-      <button v-if="!quoteCopied" class="quote-btn" @click="copyQuote">
-        <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="copySvg"></span>
-        引用
-      </button>
+      <VButton v-if="!quoteCopied" auto-height variant="ghost" radius="6" class="quote-btn" icon="copy.svg" icon-size="14" @click="copyQuote">引用</VButton>
       <span v-else class="quote-done">已复制</span>
     </div>
   </Teleport>
 </template>
 
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
-import copySvg from '@/assets/svg/copy.svg?raw'
-import xSvg from '@/assets/svg/x.svg?raw'
-import arrowLeftSvg from '@/assets/svg/arrow-left.svg?raw'
-import arrowRightSvg from '@/assets/svg/arrow-right.svg?raw'
 import { useRoute } from 'vue-router'
 import { useNotificationStore } from '../../stores'
 import MermaidRender from './MermaidRender.vue'
@@ -647,21 +640,14 @@ watch(() => props.content, () => {
 }
 
 .quote-btn {
-  display: flex;
-  align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  background: var(--common-color-1);
-  color: var(--common-content);
   font-size: 13px;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
-}
-
-.quote-btn:hover {
-  background: var(--common-hover);
+  --v-btn-pad: 6px 12px;
+  --v-btn-bg: var(--common-color-1);
+  --v-btn-hover-bg: var(--common-hover);
+  --v-btn-color: var(--common-content);
 }
 
 .quote-done {
@@ -832,15 +818,6 @@ watch(() => props.content, () => {
   top: 20px;
   right: 20px;
   z-index: 1010;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s, transform 0.2s;
 }
 
 .lightbox-close:hover {
@@ -1016,14 +993,15 @@ watch(() => props.content, () => {
 }
 
 .lightbox-close {
-  background-color: rgba(255, 255, 255, 0.15);
   color: #fff;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  --v-btn-bg: rgba(255, 255, 255, 0.15);
+  --v-btn-hover-bg: rgba(255, 255, 255, 0.25);
 }
 
 .lightbox-close:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
 }
 
 .lightbox-counter {

@@ -1,5 +1,5 @@
 <script setup>
-import xSvg from '@/assets/svg/x.svg?raw'
+import VButton from '@/components/common/VButton.vue'
 
 defineProps({
   playlist: { type: Array, default: () => [] },
@@ -23,15 +23,7 @@ const handleClose = () => {
     <div class="playlist-container">
       <div class="playlist-header">
         <h3>音乐列表</h3>
-        <button
-          type="button"
-          class="close-btn"
-          aria-label="关闭列表"
-          title="关闭列表"
-          @click="handleClose"
-        >
-          <span class="svg-icon" :style="{ width: '20px', height: '20px' }" v-html="xSvg"></span>
-        </button>
+        <VButton round variant="ghost" size="24" class="close-btn" icon="x.svg" title="关闭列表" aria-label="关闭列表" @click="handleClose" />
       </div>
       <div class="playlist-content">
         <ul class="playlist-items">

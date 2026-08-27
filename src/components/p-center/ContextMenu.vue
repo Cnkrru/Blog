@@ -1,11 +1,8 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScrollStore } from '../../stores/scroll'
-import homeSvg from '@/assets/svg/home.svg?raw'
-import refreshCwSvg from '@/assets/svg/refresh-cw.svg?raw'
-import arrowUpSvg from '@/assets/svg/arrow-up.svg?raw'
-import copySvg from '@/assets/svg/copy.svg?raw'
 
 const router = useRouter()
 const scrollStore = useScrollStore()
@@ -19,22 +16,22 @@ const MENU_HEIGHT = 200
 
 const menuItems = [
   {
-    icon: 'home',
+    icon: 'home.svg',
     label: '回首页',
     action: () => router.push('/'),
   },
   {
-    icon: 'refresh',
+    icon: 'refresh-cw.svg',
     label: '刷新页面',
     action: () => location.reload(),
   },
   {
-    icon: 'up',
+    icon: 'arrow-up.svg',
     label: '返回顶部',
     action: () => scrollStore.scrollToTop(),
   },
   {
-    icon: 'copy',
+    icon: 'copy.svg',
     label: '复制当前链接',
     action: () => navigator.clipboard.writeText(location.href),
   },
@@ -106,10 +103,7 @@ onUnmounted(() => {
           class="menu-item"
           @click="item.action(); closeMenu()"
         >
-          <span v-if="item.icon === 'home'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="homeSvg"></span>
-          <span v-else-if="item.icon === 'refresh'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="refreshCwSvg"></span>
-          <span v-else-if="item.icon === 'up'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="arrowUpSvg"></span>
-          <span v-else-if="item.icon === 'copy'" class="svg-icon menu-icon" :style="{ width: '16px', height: '16px' }" v-html="copySvg"></span>
+          <VIcon :src="item.icon" :size="16" class="menu-icon" />
           <span class="menu-label">{{ item.label }}</span>
         </div>
       </div>

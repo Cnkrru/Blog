@@ -8,24 +8,28 @@
       </span>
       <div class="tv-actions">
         <CodeRender :code="code" />
-        <button
+        <VButton
+          auto-height
+          variant="ghost"
+          shape="rect"
           class="tv-toggle"
           :class="{ active: viewMode === 'preview' }"
-          @click="viewMode = 'preview'"
+          icon="users.svg"
+          icon-size="14"
           title="查看结构化视图"
-        >
-          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="usersSvg"></span>
-          结构化
-        </button>
-        <button
+          @click="viewMode = 'preview'"
+        >结构化</VButton>
+        <VButton
+          auto-height
+          variant="ghost"
+          shape="rect"
           class="tv-toggle"
           :class="{ active: viewMode === 'source' }"
-          @click="viewMode = 'source'"
+          icon="code.svg"
+          icon-size="14"
           title="查看源码"
-        >
-          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="codeSvg"></span>
-          源码
-        </button>
+          @click="viewMode = 'source'"
+        >源码</VButton>
         <span class="tv-stats">{{ statsText }}</span>
       </div>
     </div>
@@ -33,7 +37,7 @@
     <!-- 预览模式 -->
     <div v-if="viewMode === 'preview'" class="tv-preview">
       <div v-if="parseError" class="tv-error">
-        <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="alertTriangleSvg"></span>
+        <VIcon :src="'alert-triangle.svg'" :size="14" />
         <span>{{ parseError }}</span>
       </div>
       <div v-else class="tv-tree">
@@ -47,10 +51,9 @@
 </template>
 
 <script setup>
+import VButton from '@/components/common/VButton.vue'
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, computed, watch, provide, nextTick, onMounted } from 'vue'
-import usersSvg from '@/assets/svg/users.svg?raw'
-import codeSvg from '@/assets/svg/code.svg?raw'
-import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
 import JsonTree from './JsonTree.vue'
 import CodeRender from './CodeRender.vue'
 import { useCodeStore } from '../../stores'
@@ -309,23 +312,22 @@ watch(viewMode, () => {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 10px;
   border-radius: 6px;
   font-size: 12px;
-  cursor: pointer;
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
-  color: var(--common-text);
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  --v-btn-pad: 3px 8px;
+  --v-btn-border: color-mix(in srgb, var(--common-text) 8%, transparent);
+  --v-btn-bg: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-color-1) 20%, transparent);
+  cursor: pointer;
 }
 .tv-toggle:hover {
-  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
-  border-color: var(--common-color-1);
+  --v-btn-border: var(--common-color-1);
 }
 .tv-toggle.active {
-  background: var(--common-color-1);
-  border-color: var(--common-color-1);
-  color: var(--common-content);
+  --v-btn-bg: var(--common-color-1);
+  --v-btn-border: var(--common-color-1);
+  --v-btn-color: var(--common-content);
 }
 .tv-stats {
   font-size: 10px;
@@ -366,7 +368,7 @@ watch(viewMode, () => {
 @media (max-width: 768px) {
   .tv-header { padding: 6px 12px; }
   .tv-badge { padding: 2px 6px; font-size: 10px; }
-  .tv-toggle { padding: 2px 8px; font-size: 11px; }
+  .tv-toggle { --v-btn-pad: 2px 8px; font-size: 11px; }
   .tv-source { padding: 12px; font-size: 12px; }
   .tv-stats { font-size: 8px; padding: 1px 4px; }
   .tv-tree { padding: 6px 8px; }

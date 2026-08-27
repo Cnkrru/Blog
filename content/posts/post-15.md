@@ -13,7 +13,7 @@ keywords: frontend
         - base64转图片工具网址:[base-to-img](https://www.toolhelper.cn/Image/Base64?tab=base64#)
         - 图片
 
-            ![sakura](../images/base64-to-image.png)
+            ![sakura](../images/post-15/base64-to-image.png)
 
     - 原脚本直接调用可能问题
         - onload函数执行较早，浏览器是并行解码+执行函数，当onload执行完时，base64并未解析完

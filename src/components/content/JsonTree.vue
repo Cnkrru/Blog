@@ -12,7 +12,7 @@
         @click="toggle"
       >
         <span class="toggle-icon" :class="{ expanded }">
-          <span class="svg-icon" :style="{ width: '10px', height: '10px' }" v-html="chevronRightSvg"></span>
+          <VIcon :src="'chevron-right.svg'" :size="10" />
         </span>
         <span v-if="keyName" class="key-name">{{ keyName }}</span>
         <span class="type-info">
@@ -51,8 +51,8 @@
 </template>
 
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, computed, provide, inject, watch } from 'vue'
-import chevronRightSvg from '@/assets/svg/chevron-right.svg?raw'
 
 const props = defineProps({
   data: null,

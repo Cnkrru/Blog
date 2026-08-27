@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import VButton from '@/components/common/VButton.vue'
 
 const showPopup = ref(false)
 const loading = ref(true)
@@ -105,7 +106,7 @@ onUnmounted(() => {
         <div class="busuanzi-popup">
           <div class="popup-header">
             <h3>站点统计</h3>
-            <button class="popup-close" @click="showPopup = false">&times;</button>
+            <VButton icon="x.svg" size="28" shape="round" variant="ghost" class="popup-close" @click="showPopup = false" aria-label="关闭" />
           </div>
 
           <div v-if="loading" class="popup-loading">
@@ -224,22 +225,8 @@ onUnmounted(() => {
 }
 
 .popup-close {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  background: color-mix(in srgb, var(--common-text) 8%, transparent);
-  color: var(--common-text);
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-}
-
-.popup-close:hover {
-  background: color-mix(in srgb, var(--common-text) 18%, transparent);
+  --v-btn-bg: color-mix(in srgb, var(--common-text) 8%, transparent);
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 18%, transparent);
 }
 
 .popup-loading {
@@ -258,7 +245,6 @@ onUnmounted(() => {
   border-radius: 50%;
   border: 2px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
   border-top-color: var(--common-color-1);
-  animation: spin 0.8s linear infinite;
 }
 
 .popup-error {

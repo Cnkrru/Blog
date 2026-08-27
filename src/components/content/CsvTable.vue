@@ -8,24 +8,28 @@
       </span>
       <div class="csv-actions">
         <CodeRender :code="code" />
-        <button
+        <VButton
+          auto-height
+          variant="ghost"
+          shape="rect"
           class="csv-toggle"
           :class="{ active: viewMode === 'source' }"
-          @click="viewMode = 'source'"
+          icon="code.svg"
+          icon-size="14"
           title="查看源码"
-        >
-          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="codeSvg"></span>
-          源码
-        </button>
-        <button
+          @click="viewMode = 'source'"
+        >源码</VButton>
+        <VButton
+          auto-height
+          variant="ghost"
+          shape="rect"
           class="csv-toggle"
           :class="{ active: viewMode === 'preview' }"
-          @click="viewMode = 'preview'"
+          icon="table.svg"
+          icon-size="14"
           title="查看表格"
-        >
-          <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="tableSvg"></span>
-          预览
-        </button>
+          @click="viewMode = 'preview'"
+        >预览</VButton>
         <span class="csv-stats">{{ rows }} 行 &times; {{ cols }} 列</span>
       </div>
     </div>
@@ -52,9 +56,8 @@
 </template>
 
 <script setup>
+import VButton from '@/components/common/VButton.vue'
 import { ref, computed } from 'vue'
-import codeSvg from '@/assets/svg/code.svg?raw'
-import tableSvg from '@/assets/svg/table.svg?raw'
 import CodeRender from './CodeRender.vue'
 
 const props = defineProps(['code'])
@@ -169,28 +172,25 @@ const hasHeader = computed(() => header.value.length > 0)
 
 /* ---- 切换按钮 ---- */
 .csv-toggle {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
+  --v-btn-pad: 3px 8px;
   border-radius: 6px;
   font-size: 12px;
-  cursor: pointer;
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
-  color: var(--common-text);
+  gap: 4px;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  --v-btn-border: color-mix(in srgb, var(--common-text) 8%, transparent);
+  --v-btn-bg: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
+  --v-btn-hover-bg: color-mix(in srgb, var(--common-color-1) 20%, transparent);
+  cursor: pointer;
 }
 
 .csv-toggle:hover {
-  background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
-  border-color: var(--common-color-1);
+  --v-btn-border: var(--common-color-1);
 }
 
 .csv-toggle.active {
-  background: var(--common-color-1);
-  border-color: var(--common-color-1);
-  color: var(--common-content);
+  --v-btn-bg: var(--common-color-1);
+  --v-btn-border: var(--common-color-1);
+  --v-btn-color: var(--common-content);
 }
 
 /* ---- 统计 ---- */
@@ -282,7 +282,7 @@ const hasHeader = computed(() => header.value.length > 0)
   }
 
   .csv-toggle {
-    padding: 2px 8px;
+    --v-btn-pad: 2px 8px;
     font-size: 11px;
   }
 

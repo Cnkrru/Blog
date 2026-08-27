@@ -1,6 +1,6 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
-import downloadSvg from '@/assets/svg/download.svg?raw'
 
 const DISMISS_KEY = 'pwa-install-dismissed'
 const INSTALLED_KEY = 'pwa-installed'
@@ -120,7 +120,7 @@ onUnmounted(() => {
         <div class="prompt-body">
           <!-- 图标 -->
           <div class="install-icon">
-            <span class="svg-icon" :style="{ width: '22px', height: '22px' }" v-html="downloadSvg"></span>
+            <VIcon :src="'download.svg'" :size="22" />
           </div>
 
           <!-- 文案 -->

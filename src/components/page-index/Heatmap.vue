@@ -6,7 +6,7 @@
     </div>
 
     <div v-if="error && !isLoading" class="error-message">
-      <p>⚠️ {{ error }}</p>
+      <p><VIcon :src="'alert-triangle.svg'" :size="14" /> {{ error }}</p>
       <button @click="updateHeatmapData" class="retry-button" aria-label="重试">重试</button>
     </div>
 
@@ -111,6 +111,7 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import axios from 'axios'
 import { useThemeStore } from '../../stores'
+import VIcon from '@/components/common/VIcon.vue'
 
 const themeStore = useThemeStore()
 
@@ -333,7 +334,6 @@ const onMonthChange = () => {
   border: 3px solid var(--common-shadow);
   border-top-color: var(--common-color-1);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
   margin-bottom: 10px;
 }
 

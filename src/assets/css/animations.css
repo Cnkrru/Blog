@@ -1,6 +1,0 @@
-/* 全局复用动画（跨组件共享的 keyframes 定义） */
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}

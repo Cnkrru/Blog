@@ -1,9 +1,9 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted, reactive } from 'vue'
 import axios from 'axios'
 import { useHead } from '@vueuse/head'
 import PageNav from '../components/p-center/PageNav.vue'
-import mailSvg from '@/assets/svg/mail.svg?raw'
 
 // SEO 配置
 useHead({
@@ -164,7 +164,7 @@ onMounted(() => {
     </div>
     <hr>
     <div class="apply-wrap">
-      <RouterLink to="/links/apply" class="apply-link"><span class="svg-icon apply-icon" :style="{ width: '15px', height: '15px' }" v-html="mailSvg"></span>申请友链</RouterLink>
+      <RouterLink to="/links/apply" class="apply-link"><VIcon :src="'mail.svg'" :size="15" class="apply-icon" />申请友链</RouterLink>
     </div>
 
     <PageNav

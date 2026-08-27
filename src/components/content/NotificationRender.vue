@@ -19,14 +19,10 @@
         <div class="notif-body">
           <!-- 图标 -->
           <div class="notif-icon">
-            <!-- success -->
-            <span v-if="n.type === 'success'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="checkSvg"></span>
-            <!-- error -->
-            <span v-else-if="n.type === 'error'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="xSvg"></span>
-            <!-- warning -->
-            <span v-else-if="n.type === 'warning'" class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="alertTriangleSvg"></span>
-            <!-- info -->
-            <span v-else class="svg-icon" :style="{ width: '18px', height: '18px' }" v-html="infoSvg"></span>
+            <VIcon v-if="n.type === 'success'" :src="'check.svg'" :size="18" />
+            <VIcon v-else-if="n.type === 'error'" :src="'x.svg'" :size="18" />
+            <VIcon v-else-if="n.type === 'warning'" :src="'alert-triangle.svg'" :size="18" />
+            <VIcon v-else :src="'info.svg'" :size="18" />
           </div>
 
           <!-- 内容 -->
@@ -36,9 +32,7 @@
           </div>
 
           <!-- 关闭 -->
-          <button class="notif-close" @click="removeNotification(n.id)" title="关闭">
-            <span class="svg-icon" :style="{ width: '14px', height: '14px' }" v-html="xSvg"></span>
-          </button>
+          <VButton icon="x.svg" size="24" shape="rect" variant="ghost" class="notif-close" @click="removeNotification(n.id)" title="关闭" />
         </div>
 
         <!-- 操作按钮 -->
@@ -56,11 +50,9 @@
 </template>
 
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/common/VButton.vue'
 import { ref, computed, watch } from 'vue'
-import checkSvg from '@/assets/svg/check.svg?raw'
-import xSvg from '@/assets/svg/x.svg?raw'
-import alertTriangleSvg from '@/assets/svg/alert-triangle.svg?raw'
-import infoSvg from '@/assets/svg/info.svg?raw'
 import { useNotificationStore } from '../../stores'
 
 const notificationStore = useNotificationStore()
@@ -246,16 +238,10 @@ if (typeof window !== 'undefined') {
 
 /* ── 关闭按钮 ── */
 .notif-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  flex-shrink: 0;
-  color: var(--common-text);
   opacity: 0.3;
-  transition: opacity 0.2s, transform 0.2s;
-  border-radius: 6px;
   margin-top: 1px;
+  --v-btn-bg: transparent;
+  --v-btn-hover-bg: transparent;
 }
 
 .notif-close:hover {

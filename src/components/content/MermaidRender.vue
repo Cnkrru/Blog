@@ -163,7 +163,6 @@ watch(() => isDarkTheme.value, () => {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
   margin-bottom: 16px;
 }
 

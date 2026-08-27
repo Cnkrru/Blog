@@ -1,13 +1,7 @@
 <script setup>
+import VIcon from '@/components/common/VIcon.vue'
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
-import sunSvg from '@/assets/svg/sun.svg?raw'
-import cloudSvg from '@/assets/svg/cloud.svg?raw'
-import cloudFogSvg from '@/assets/svg/cloud-fog.svg?raw'
-import cloudDrizzleSvg from '@/assets/svg/cloud-drizzle.svg?raw'
-import cloudSnowSvg from '@/assets/svg/cloud-snow.svg?raw'
-import cloudLightningSvg from '@/assets/svg/cloud-lightning.svg?raw'
-
 const weather = ref(null)
 const loading = ref(true)
 const error = ref('')
@@ -133,18 +127,18 @@ const fetchLocationAndWeather = async () => {
   }
 }
 
-const currentWeatherSvg = computed(() => {
-  if (!weather.value) return sunSvg
+const currentWeatherIcon = computed(() => {
+  if (!weather.value) return 'sun.svg'
   const code = weather.value.weatherCode
-  if (code === 0) return sunSvg
-  if (code <= 3) return cloudSvg
-  if (code <= 49) return cloudFogSvg
-  if (code <= 59) return cloudDrizzleSvg
-  if (code <= 69) return cloudSnowSvg
-  if (code <= 82) return cloudDrizzleSvg
-  if (code <= 86) return cloudSnowSvg
-  if (code <= 99) return cloudLightningSvg
-  return sunSvg
+  if (code === 0) return 'sun.svg'
+  if (code <= 3) return 'cloud.svg'
+  if (code <= 49) return 'cloud-fog.svg'
+  if (code <= 59) return 'cloud-drizzle.svg'
+  if (code <= 69) return 'cloud-snow.svg'
+  if (code <= 82) return 'cloud-drizzle.svg'
+  if (code <= 86) return 'cloud-snow.svg'
+  if (code <= 99) return 'cloud-lightning.svg'
+  return 'sun.svg'
 })
 
 onMounted(() => {
@@ -159,7 +153,7 @@ onMounted(() => {
     </div>
 
     <div v-else-if="weather" class="weather-content">
-      <span class="svg-icon weather-icon" :style="{ width: '18px', height: '18px' }" v-html="currentWeatherSvg"></span>
+      <VIcon :src="currentWeatherIcon" :size="18" class="weather-icon" />
       <span class="weather-temp">{{ weather.temperature }}°</span>
       <span class="weather-city">{{ locationInfo.city }}</span>
     </div>
@@ -189,12 +183,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.weather-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
 }
 
 .weather-temp {
@@ -237,10 +225,6 @@ onMounted(() => {
   .weather-mini {
     padding: 4px 8px;
     min-width: 80px;
-  }
-
-  .weather-icon {
-    font-size: 16px;
   }
 
   .weather-temp {
