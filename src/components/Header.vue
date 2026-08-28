@@ -118,7 +118,55 @@ const router = useRouter()
     flex-shrink: 0;
 }
 
-/* 功能按钮共享样式（由多个子组件复用的 .button-style，非 scoped 命中） */
+/* ===== 响应式设计媒体查询 ===== */
+@media (max-width: 480px) {
+  .header-flex {
+    flex-direction: row;
+    justify-content: center;
+    padding: 4px;
+  }
+
+  .header-card {
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .button-card {
+    justify-content: center;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-card {
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .button-card {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-flex {
+    padding: 12px;
+  }
+  .header-card {
+    padding: 10px 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .header-s {
+    max-width: 1400px;
+  }
+}
 </style>
 
 <style>
@@ -206,58 +254,6 @@ const router = useRouter()
   .button-style img {
     width: 16px;
     height: 16px;
-  }
-}
-</style>
-
-<!-- 响应式设计媒体查询 -->
-<style scoped>
-@media (max-width: 480px) {
-  .header-flex {
-    flex-direction: row;
-    justify-content: center;
-    padding: 4px;
-  }
-
-  .header-card {
-    flex-direction: column;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 4px;
-    padding: 6px;
-  }
-
-  .button-card {
-    justify-content: center;
-    gap: 4px;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-card {
-    flex-direction: column;
-    justify-content: center;
-    padding: 10px;
-    gap: 10px;
-  }
-
-  .button-card {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 1024px) {
-  .header-flex {
-    padding: 12px;
-  }
-  .header-card {
-    padding: 10px 20px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .header-s {
-    max-width: 1400px;
   }
 }
 </style>

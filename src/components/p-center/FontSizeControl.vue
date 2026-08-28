@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { computed } from 'vue'
 import { useThemeStore } from '../../stores/theme'
 

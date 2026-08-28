@@ -1,13 +1,88 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import { useArticlesStore, useTagStore } from '../stores'
+import { useArticlesStore } from '../stores'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 
 const store = useArticlesStore()
-const tagStore = useTagStore()
+
+// ---- 原 tag store 逻辑内联（仅本组件消费）----
+const tags = ref([])
+const tagStats = ref([])
+const allArticles = ref([])
+const sortBy = ref('frequency')
+const tagLoading = ref(false)
+const tagError = ref(null)
+const lastLoaded = ref(null)
+const tagCache = ref(new Map())
+const hasTags = computed(() => tags.value.length > 0)
+
+const loadTags = async (articles) => {
+  tagLoading.value = true
+  tagError.value = null
+  try {
+    const tagCounts = new Map()
+    const tagLastUsed = new Map()
+    articles.forEach(article => {
+      if (article.tags && Array.isArray(article.tags)) {
+        article.tags.forEach((tag) => {
+          tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
+          const currentDate = new Date(article.date).getTime()
+          const lastDate = tagLastUsed.get(tag) || 0
+          if (currentDate > lastDate) tagLastUsed.set(tag, currentDate)
+        })
+      }
+    })
+    const stats = []
+    tagCounts.forEach((count, tag) => {
+      stats.push({ tag, count, frequency: count / articles.length, lastUsed: tagLastUsed.get(tag) || Date.now() })
+    })
+    stats.sort((a, b) => {
+      switch (sortBy.value) {
+        case 'frequency': return b.frequency - a.frequency
+        case 'count': return b.count - a.count
+        case 'recent': return b.lastUsed - a.lastUsed
+        case 'trending': {
+          const aTrend = a.count * (Date.now() - a.lastUsed) / 1000000
+          const bTrend = b.count * (Date.now() - b.lastUsed) / 1000000
+          return bTrend - aTrend
+        }
+        default: return b.count - a.count
+      }
+    })
+    tagStats.value = stats.slice(0, 50)
+    tags.value = tagStats.value.map(item => item.tag)
+    allArticles.value = articles
+    lastLoaded.value = new Date()
+  } catch (err) {
+    console.error('[tag] 加载标签失败:', err)
+    tagError.value = '加载标签失败'
+  } finally {
+    tagLoading.value = false
+  }
+}
+
+const getTagArticles = async (tag, articles) => {
+  const cacheKey = `tag_articles_${tag}`
+  const cachedArticles = tagCache.value.get(cacheKey)
+  if (cachedArticles) return cachedArticles
+  const filteredArticles = articles.filter(article =>
+    article.tags && article.tags.includes(tag)
+  )
+  if (filteredArticles.length > 0) tagCache.value.set(cacheKey, filteredArticles)
+  return filteredArticles
+}
+
+const setSortBy = (newSortBy) => {
+  sortBy.value = newSortBy
+  try {
+    localStorage.setItem('tag_sort_preference', newSortBy)
+  } catch (e) {
+    console.warn('[tag] 无法保存标签排序偏好:', e)
+  }
+}
 
 useHead({
   title: '标签 - Cnkrru\'s Blog',
@@ -35,9 +110,6 @@ const selectedTag = ref(null)
 const tagArticles = ref([])
 const searchQuery = ref('')
 const zoomLevel = ref(1) // 0=年, 1=月
-
-const tagStats = computed(() => tagStore.tagStats)
-const sortBy = computed(() => tagStore.sortBy)
 
 const filteredTags = computed(() => {
   if (!searchQuery.value) return tagStats.value
@@ -88,7 +160,7 @@ async function selectTag(tag) {
   }
   selectedTag.value = tag
   try {
-    tagArticles.value = await tagStore.getTagArticles(tag, articles.value)
+    tagArticles.value = await getTagArticles(tag, articles.value)
   } catch (err) {
     console.error('获取标签文章失败:', err)
     tagArticles.value = []
@@ -96,8 +168,8 @@ async function selectTag(tag) {
 }
 
 function changeSortBy(newSortBy) {
-  tagStore.setSortBy(newSortBy)
-  tagStore.loadTags(articles.value)
+  setSortBy(newSortBy)
+  loadTags(articles.value)
 }
 
 function clearSearch() {
@@ -108,7 +180,7 @@ onMounted(async () => {
   try {
     const data = await store.fetchArticles()
     articles.value = data.filter((a) => a.id !== 'terminal')
-    await tagStore.loadTags(articles.value)
+    await loadTags(articles.value)
   } finally {
     loading.value = false
   }
@@ -230,8 +302,8 @@ onMounted(async () => {
   </div>
 </template>
 
-<!-- 布局样式 -->
 <style scoped>
+/* ===== 头部 ===== */
 .center-head-card {
   display: flex;
   justify-content: space-between;
@@ -240,7 +312,7 @@ onMounted(async () => {
   gap: 10px;
 }
 
-/* 标签区域 */
+/* ===== 标签区域 ===== */
 .tag-section {
   padding: 12px 0;
 }
@@ -265,10 +337,13 @@ onMounted(async () => {
   border-radius: 12px;
   border: 1px solid var(--common-shadow);
   font-size: 13px;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
+  color: var(--common-text);
 }
 
 .search-input:focus {
   outline: none;
+  border-color: var(--common-color-1);
 }
 
 .clear-btn {
@@ -301,9 +376,22 @@ onMounted(async () => {
   font-size: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
+  color: var(--common-text);
 }
 
-/* 标签云 */
+.sort-btn:hover {
+  border-color: var(--common-color-1);
+  color: var(--common-color-1);
+}
+
+.sort-btn.active {
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border-color: var(--common-color-1);
+}
+
+/* ===== 标签云 ===== */
 .tag-cloud {
   display: flex;
   flex-wrap: wrap;
@@ -314,6 +402,7 @@ onMounted(async () => {
   min-height: 60px;
   align-items: flex-start;
   align-content: flex-start;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.25));
 }
 
 .tag-item {
@@ -324,19 +413,31 @@ onMounted(async () => {
   border: 1px solid color-mix(in srgb, var(--common-color-1) 20%, transparent);
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   animation: tagFadeIn 0.4s ease;
+  color: var(--common-text);
+  background: color-mix(in srgb, var(--common-color-1) 12%, transparent);
 }
 
 .tag-item:hover {
   transform: scale(1.06);
+  background: color-mix(in srgb, var(--common-color-1) 25%, transparent);
+  border-color: var(--common-color-1);
 }
 
 .tag-item.active {
   font-weight: 700;
   transform: scale(1.06);
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border-color: var(--common-color-1);
+  box-shadow: 0 2px 12px var(--common-shadow);
+  --active-num-color: var(--common-content);
+  --active-num-opacity: 0.8;
 }
 
 .tag-num {
   font-size: 0.75em;
+  color: var(--active-num-color, var(--common-color-1));
+  opacity: var(--active-num-opacity, 0.7);
 }
 
 .tag-empty {
@@ -344,6 +445,8 @@ onMounted(async () => {
   text-align: center;
   padding: 30px;
   font-style: italic;
+  color: var(--common-text);
+  opacity: 0.4;
 }
 
 @keyframes tagFadeIn {
@@ -351,8 +454,7 @@ onMounted(async () => {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* 选中标签信息 */
-/* 时间线上方 */
+/* ===== 时间线上方 ===== */
 .timeline-bar {
   display: flex;
   justify-content: flex-end;
@@ -365,6 +467,19 @@ onMounted(async () => {
   border: 1px solid var(--common-shadow);
   font-size: 12px;
   cursor: pointer;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
+  color: var(--common-text);
+}
+
+.zoom-btn:hover {
+  border-color: var(--common-color-1);
+  color: var(--common-color-1);
+}
+
+.zoom-btn.active {
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border-color: var(--common-color-1);
 }
 
 .zoom-controls {
@@ -372,7 +487,7 @@ onMounted(async () => {
   gap: 6px;
 }
 
-/* 时间线 */
+/* ===== 时间线 ===== */
 .timeline {
   position: relative;
   padding-left: 32px;
@@ -385,6 +500,8 @@ onMounted(async () => {
   bottom: 0;
   width: 3px;
   border-radius: 2px;
+  background: var(--common-color-1);
+  opacity: 0.3;
 }
 
 .tl-group {
@@ -408,15 +525,20 @@ onMounted(async () => {
   border: 3px solid var(--common-bg);
   flex-shrink: 0;
   z-index: 2;
+  background: var(--common-color-1);
+  box-shadow: 0 0 6px var(--common-color-1);
 }
 
 .label-text {
   font-size: 16px;
   font-weight: 700;
+  color: var(--common-text);
 }
 
 .tl-count {
   font-size: 12px;
+  color: var(--common-text);
+  opacity: 0.5;
 }
 
 .tl-cards {
@@ -435,6 +557,8 @@ onMounted(async () => {
 .tl-card:hover {
   transform: translateX(6px);
   --connector-width: 26px;
+  --card-body-border-color: var(--common-color-1);
+  --card-body-shadow: 0 4px 12px var(--common-shadow);
 }
 
 .tl-connector {
@@ -445,6 +569,8 @@ onMounted(async () => {
   margin-right: 8px;
   margin-left: -28px;
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
+  background: var(--common-color-1);
+  opacity: 0.3;
 }
 
 .tl-card-body {
@@ -452,6 +578,9 @@ onMounted(async () => {
   padding: 10px 14px;
   border-radius: 10px;
   border: 1px solid var(--common-shadow);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.25));
+  border-color: var(--card-body-border-color, var(--common-shadow));
+  box-shadow: var(--card-body-shadow, none);
 }
 
 .tl-header {
@@ -464,12 +593,15 @@ onMounted(async () => {
 .tl-title {
   font-size: 14px;
   font-weight: 600;
+  color: var(--common-text);
 }
 
 .tl-date {
   font-size: 11px;
   white-space: nowrap;
   margin-left: 12px;
+  color: var(--common-text);
+  opacity: 0.5;
 }
 
 .tl-meta {
@@ -482,6 +614,8 @@ onMounted(async () => {
   font-size: 11px;
   padding: 1px 8px;
   border-radius: 10px;
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
 .tl-tag {
@@ -489,13 +623,17 @@ onMounted(async () => {
   padding: 1px 8px;
   border-radius: 10px;
   border: 1px solid var(--common-color-1);
+  color: var(--common-text);
 }
 
-/* Skeleton */
+/* ===== Skeleton ===== */
 .skeleton-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  --dot-skel-bg: var(--common-shadow);
+  --card-skel-bg: linear-gradient(90deg, var(--common-shadow) 25%, color-mix(in srgb, var(--common-color-1) 15%, transparent) 50%, var(--common-shadow) 75%);
+  --card-skel-size: 200% 100%;
 }
 
 .tl-skel {
@@ -509,13 +647,15 @@ onMounted(async () => {
   height: 16px;
   border-radius: 50%;
   flex-shrink: 0;
+  background: var(--dot-skel-bg, none);
 }
 
 .card-skel {
   flex: 1;
   height: 56px;
   border-radius: 8px;
-  background-size: 200% 100%;
+  background: var(--card-skel-bg, none);
+  background-size: var(--card-skel-size, 200% 100%);
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
@@ -527,146 +667,11 @@ onMounted(async () => {
 .empty-tl {
   text-align: center;
   padding: 40px;
-}
-</style>
-
-<!-- 颜色样式 -->
-<style scoped>
-.search-input {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
-  color: var(--common-text);
-  border: 1px solid var(--common-shadow);
-}
-.search-input:focus {
-  border-color: var(--common-color-1);
-}
-.clear-btn {
-  opacity: 0.5;
-}
-.clear-btn:hover {
-  opacity: 1;
-}
-.sort-btn {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
-  color: var(--common-text);
-  border: 1px solid var(--common-shadow);
-}
-.sort-btn:hover {
-  border-color: var(--common-color-1);
-  color: var(--common-color-1);
-}
-.sort-btn.active {
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border-color: var(--common-color-1);
-}
-.tag-cloud {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.25));
-  border: 1px solid var(--common-shadow);
-}
-.tag-item {
-  color: var(--common-text);
-  background: color-mix(in srgb, var(--common-color-1) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 20%, transparent);
-}
-.tag-item:hover {
-  background: color-mix(in srgb, var(--common-color-1) 25%, transparent);
-  border-color: var(--common-color-1);
-}
-.tag-item.active {
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border-color: var(--common-color-1);
-  box-shadow: 0 2px 12px var(--common-shadow);
-  --active-num-color: var(--common-content);
-  --active-num-opacity: 0.8;
-}
-.tag-num {
-  color: var(--active-num-color, var(--common-color-1));
-  opacity: var(--active-num-opacity, 0.7);
-}
-.tag-empty {
   color: var(--common-text);
   opacity: 0.4;
 }
-.zoom-btn {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.2));
-  color: var(--common-text);
-  border: 1px solid var(--common-shadow);
-}
-.zoom-btn:hover {
-  border-color: var(--common-color-1);
-  color: var(--common-color-1);
-}
-.zoom-btn.active {
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border-color: var(--common-color-1);
-}
-.timeline-line {
-  background: var(--common-color-1);
-  opacity: 0.3;
-}
-.tl-dot {
-  background: var(--common-color-1);
-  box-shadow: 0 0 6px var(--common-color-1);
-}
-.tl-count {
-  color: var(--common-text);
-  opacity: 0.5;
-}
-.tl-connector {
-  background: var(--common-color-1);
-  opacity: 0.3;
-}
-.tl-card-body {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) - 0.25));
-  border: 1px solid var(--common-shadow);
-  border-color: var(--card-body-border-color, var(--common-shadow));
-  box-shadow: var(--card-body-shadow, none);
-}
-.tl-card:hover {
-  --card-body-border-color: var(--common-color-1);
-  --card-body-shadow: 0 4px 12px var(--common-shadow);
-}
-.tl-title {
-  color: var(--common-text);
-}
-.tl-date {
-  color: var(--common-text);
-  opacity: 0.5;
-}
-.tl-cat {
-  background: var(--common-color-1);
-  color: var(--common-content);
-}
-.tl-tag {
-  border: 1px solid var(--common-color-1);
-  color: var(--common-text);
-}
-.label-text {
-  color: var(--common-text);
-}
-.skeleton-container {
-  --dot-skel-bg: var(--common-shadow);
-  --card-skel-bg: linear-gradient(90deg, var(--common-shadow) 25%, color-mix(in srgb, var(--common-color-1) 15%, transparent) 50%, var(--common-shadow) 75%);
-  --card-skel-size: 200% 100%;
-}
-.dot-skel {
-  background: var(--dot-skel-bg, none);
-}
-.card-skel {
-  background: var(--card-skel-bg, none);
-  background-size: var(--card-skel-size, 200% 100%);
-}
-.empty-tl {
-  color: var(--common-text);
-  opacity: 0.4;
-}
-</style>
 
-<!-- 响应式 -->
-<style scoped>
+/* ===== 响应式 ===== */
 @media (max-width: 640px) {
   .timeline {
     padding-left: 20px;

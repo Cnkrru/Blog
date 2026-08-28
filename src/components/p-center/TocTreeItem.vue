@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 /**
  * TocTreeItem - 递归TOC树节点组件
  * 用于渲染无限层级的文章目录树

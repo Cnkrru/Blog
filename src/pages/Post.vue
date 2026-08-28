@@ -239,12 +239,6 @@ onMounted(() => {
 
 <style scoped>
 /* 布局样式 */
-.loading-message,
-.error-message {
-    text-align: center;
-    padding: 50px 0;
-}
-
 .head-title {
     flex: 1;
     min-width: 0;
@@ -273,13 +267,5 @@ onMounted(() => {
     .head-tools {
         gap: 6px;
     }
-}
-</style>
-
-<style scoped>
-/* 颜色样式 */
-.loading-message,
-.error-message {
-    color: var(--text-secondary);
 }
 </style>

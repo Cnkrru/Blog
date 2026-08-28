@@ -1,5 +1,5 @@
 <script setup>
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { computed } from 'vue'
 import { useTocStore, useThemeStore } from '../../stores'
 

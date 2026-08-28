@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useHead } from '@vueuse/head'
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 useHead({
   title: '友链申请 - Cnkrru\'s Blog',
@@ -138,10 +138,8 @@ async function submitForm() {
 
 .submit-btn:hover { transform: translateY(-1px); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-</style>
 
-<!-- 颜色样式 -->
-<style scoped>
+/* 颜色样式 */
 .success-card h3 { color: var(--common-text); }
 .success-card p { color: var(--common-text); opacity: 0.55; font-size: 14px; }
 

@@ -1,13 +1,14 @@
 <script setup>
-import { useGlobalStore } from '@/stores/global'
 import WebsiteAge from './p-footer/WebsiteAge.vue'
 import Copyright from './p-footer/CopyRight.vue'
 import SocialLink from './p-footer/SocialLink.vue'
 import RssLink from './p-footer/RssLink.vue'
 import PrintPdf from './p-footer/PrintPdf.vue'
 
-const globalStore = useGlobalStore()
-const socialLinks = globalStore.socialLinks
+const socialLinks = [
+  { name: 'GitHub', url: 'https://github.com/cnkrru', icon: 'github.svg' },
+  { name: 'Mail', url: 'mailto:admin@cnkrru.top', icon: 'mail.svg' }
+]
 </script>
 
 <template>
@@ -71,6 +72,7 @@ const socialLinks = globalStore.socialLinks
   justify-content: center;
 }
 
+/* 社交链接胶囊（SocialLink/RssLink 根类，scoped 命中子组件根节点） */
 .footer-social-link {
   display: flex;
   align-items: center;
@@ -95,9 +97,8 @@ const socialLinks = globalStore.socialLinks
   border-color: var(--common-color-1);
   transform: translateY(-1px);
 }
-</style>
 
-<style scoped>
+/* 站点信息卡片（CopyRight/WebsiteAge 根类，scoped 命中子组件根节点） */
 .footer-element-card {
   width: 80% !important;
   border-radius: 14px;
@@ -120,9 +121,8 @@ const socialLinks = globalStore.socialLinks
   gap: 8px;
   width: 100%;
 }
-</style>
 
-<style scoped>
+/* ===== 响应式 ===== */
 @media (max-width: 480px) {
   .footer-s {
     height: auto;
@@ -138,7 +138,7 @@ const socialLinks = globalStore.socialLinks
   }
   .footer-social-link {
     padding: 5px 10px;
-    font-size: 12px;
+    font-size: 13px;
   }
 }
 

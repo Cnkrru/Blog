@@ -404,10 +404,7 @@
 .playlist-items li.active {
     --status-opacity: 1;
 }
-</style>
 
-<!-- ============================== 颜色 ============================== -->
-<style>
 /* --- 面板 --- */
 .player-content {
     background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.78);
@@ -546,10 +543,7 @@
 .playlist-item-status {
     color: var(--common-color-1);
 }
-</style>
 
-<!-- ============================== 响应式 ============================== -->
-<style>
 @media (max-width: 768px) {
     .global-music-player {
         bottom: 12px;

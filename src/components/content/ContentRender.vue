@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { onMounted, computed, watch } from 'vue'
 import MarkdownRender from './MarkdownRender.vue'
 import SkeletonScreen from './SkeletonScreen.vue'
@@ -154,18 +154,6 @@ watch(() => props.type, () => loadContentData())
   margin: 16px 0;
 }
 
-/* 动画 */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-</style>
-
-<style scoped>
-/* 颜色样式 */
-.skeleton-wrapper {
-}
-
 /* 错误状态颜色 */
 .error-message {
   color: var(--common-color-1);
@@ -176,27 +164,23 @@ watch(() => props.type, () => loadContentData())
   border: 1px solid var(--common-color-2);
 }
 
-</style>
+/* 动画 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-<style scoped>
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .loading-message,
   .error-message {
     padding: 30px 16px;
     min-height: 200px;
-  }
-  
-  .loading-spinner {
-    width: 24px;
-    height: 24px;
   }
   
   .error-icon {
     font-size: 32px;
   }
   
-  .loading-message p,
   .error-message p {
     font-size: 14px;
   }

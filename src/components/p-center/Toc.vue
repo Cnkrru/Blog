@@ -1,6 +1,6 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
-import VButton from '@/components/common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useTocStore } from '../../stores'
 import TocTreeItem from './TocTreeItem.vue'

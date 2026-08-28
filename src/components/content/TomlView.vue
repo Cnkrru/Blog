@@ -51,8 +51,8 @@
 </template>
 
 <script setup>
-import VButton from '@/components/common/VButton.vue'
-import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, computed, watch, provide, nextTick, onMounted } from 'vue'
 import JsonTree from './JsonTree.vue'
 import CodeRender from './CodeRender.vue'

@@ -1,8 +1,7 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
-import VButton from '@/components/common/VButton.vue'
-import { onMounted, onUnmounted, computed } from 'vue'
-import { useAnnouncementStore } from '../stores'
+import VIcon from '@/components/__common/VIcon.vue'
+import VButton from '@/components/__common/VButton.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import MarkdownRender from '../components/content/MarkdownRender.vue'
 import { useHead } from '@vueuse/head'
 
@@ -13,17 +12,30 @@ useHead({
   ]
 })
 
-const announcementStore = useAnnouncementStore()
+// ---- 原 announcement store 逻辑内联（仅本组件消费）----
+const showModal = ref(false)
+const announcementContent = ref('')
+const loading = ref(true)
 
-// 从store中获取状态
-const showModal = computed(() => announcementStore.showModal)
-const announcementContent = computed(() => announcementStore.announcementContent)
-const loading = computed(() => announcementStore.loading)
+const openAnnouncement = () => {
+  showModal.value = true
+}
 
-// 从store中获取方法
-const openAnnouncement = () => announcementStore.openAnnouncement()
-const closeAnnouncement = () => announcementStore.closeAnnouncement()
-const loadAnnouncement = () => announcementStore.loadAnnouncement()
+const closeAnnouncement = () => {
+  showModal.value = false
+}
+
+const loadAnnouncement = async () => {
+  try {
+    const mdModule = await import('../../content/announcement/index.md?raw')
+    announcementContent.value = mdModule.default
+  } catch (error) {
+    console.error('[announcement] 加载公告失败:', error)
+    announcementContent.value = '## 网站公告\n\n公告加载失败，请稍后再试。'
+  } finally {
+    loading.value = false
+  }
+}
 
 // 键盘事件处理
 const handleKeydown = (event) => {
@@ -226,9 +238,7 @@ onUnmounted(() => {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px var(--common-shadow);
 }
-</style>
 
-<style scoped>
 /* 颜色样式 */
 .announcement-btn {
     background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
@@ -278,8 +288,4 @@ onUnmounted(() => {
 .modal-btn:hover {
     filter: brightness(1.1);
 }
-</style>
-
-<style scoped>
-/* 响应式设计媒体查询 */
 </style>

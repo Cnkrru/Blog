@@ -15,7 +15,6 @@
   </div>
 </template>
 
-<!-- 布局样式 -->
 <style scoped>
 .page-list-card {
     width:100%;
@@ -51,31 +50,19 @@
     padding: 8px 12px;
     margin-bottom: 6px;
     border-radius: 10px;
-    border: 1px solid transparent;
+    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
     transition:
         transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
         box-shadow 0.2s ease,
         border-color 0.2s ease,
         background-color 0.2s ease;
     cursor: pointer;
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
+    color: var(--common-text);
 }
 
 .page-card:hover {
     transform: translateY(-2px);
-    border-color: var(--common-color-1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-</style>
-
-<!-- 颜色样式 -->
-<style scoped>
-.page-card {
-    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
-    color: var(--common-text);
-    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-}
-
-.page-card:hover {
     background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
     border-color: color-mix(in srgb, var(--common-text) 15%, transparent);
     box-shadow: 0 4px 12px var(--common-shadow);

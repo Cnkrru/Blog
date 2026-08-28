@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, computed, provide, inject, watch } from 'vue'
 
 const props = defineProps({
@@ -312,9 +312,7 @@ function onCollapseAll() {
 .value-other {
   color: var(--common-text);
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .json-node {
     font-size: 12px;

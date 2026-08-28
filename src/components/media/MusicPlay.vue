@@ -1,6 +1,6 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
-import VButton from '@/components/common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 import PlayerControls from './PlayerControls.vue'
@@ -240,11 +240,6 @@ onUnmounted(() => {
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   cursor: pointer;
 }
-</style>
-
-<!-- 颜色样式 -->
-<style scoped>
-/* 按钮颜色由 Header.vue 统一管理 */
 </style>
 
 

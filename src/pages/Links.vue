@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, reactive } from 'vue'
 import axios from 'axios'
 import { useHead } from '@vueuse/head'
@@ -300,9 +300,7 @@ onMounted(() => {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px var(--common-shadow);
 }
-</style>
 
-<style scoped>
 /* 状态检测样式 */
 .status-summary {
   display: flex;
@@ -427,9 +425,7 @@ onMounted(() => {
 .pagination li.disabled a:hover {
     background: transparent;
 }
-</style>
 
-<style scoped>
 /* 响应式设计媒体查询 */
 @media (max-width: 640px) {
     .links-content {

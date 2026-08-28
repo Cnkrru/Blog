@@ -66,14 +66,6 @@ const navigateTo = (path) => {
   opacity: 1;
 }
 
-.nav-menu {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
-}
-
 .nav-link-underline {
   display: none;
 }
@@ -96,25 +88,16 @@ const navigateTo = (path) => {
 .nav-link:hover .nav-link-underline {
   width: 100%;
 }
-</style>
 
-<style scoped>
 .nav-link {
   color: var(--common-text);
   opacity: 0.7;
 }
 
-.nav-link:hover {
-  color: var(--common-color-1);
-  opacity: 1;
-}
-
 .nav-link-underline {
   background: var(--common-color-1);
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .nav-menu {
     gap: 1.5rem;

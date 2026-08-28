@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
-import { useMathStore, useThemeStore } from '../../stores'
+import { useThemeStore } from '../../stores'
 import 'katex/dist/katex.min.css'
 
 const props = defineProps(['latex'])
@@ -24,19 +24,25 @@ const emit = defineEmits(['render-success', 'render-error'])
 const mathRef = ref(null)
 const lastRenderedLatex = ref('')
 
-const mathStore = useMathStore()
 const themeStore = useThemeStore()
 
 const isDarkTheme = computed(() => themeStore.isDark)
-const loading = computed(() => mathStore.loading)
-const error = computed(() => mathStore.error)
+
+// ---- 原 math store 逻辑内联（仅本组件消费）----
+const katexLoaded = ref(false)
+const loading = ref(false)
+const error = ref(null)
+const setKaTeXLoaded = (loaded) => { katexLoaded.value = loaded }
+const setLoading = (isLoading) => { loading.value = isLoading }
+const setError = (err) => { error.value = err }
+const resetError = () => { error.value = null }
 
 // KaTeX（本地依赖，动态 import 避免进入 SSR 关键路径；CSS 已在上方静态引入）
 let katexLib = null
 const loadKaTeX = async () => {
   if (!katexLib) {
     katexLib = (await import('katex')).default
-    mathStore.setKaTeXLoaded(true)
+    katexLoaded.value = true
   }
   return katexLib
 }
@@ -45,22 +51,22 @@ const loadKaTeX = async () => {
 const renderMath = async () => {
   if (!mathRef.value) return
   
-  mathStore.setLoading(true)
-  mathStore.resetError()
+  setLoading(true)
+  resetError()
   
-  if (!mathStore.katexLoaded) {
+  if (!katexLoaded.value) {
     try {
       await loadKaTeX()
-    } catch (error) {
-      mathStore.setLoading(false)
-      emit('render-error', error)
+    } catch (e) {
+      setLoading(false)
+      emit('render-error', e)
       return
     }
   }
   
   // 避免重复渲染相同的公式
   if (lastRenderedLatex.value === props.latex) {
-    mathStore.setLoading(false)
+    setLoading(false)
     return
   }
   
@@ -79,21 +85,20 @@ const renderMath = async () => {
     })
     
     lastRenderedLatex.value = props.latex
-    mathStore.incrementRenderedCount()
     emit('render-success', props.latex)
-  } catch (error) {
-    console.error('渲染数学公式失败:', error)
-    mathStore.setError('公式渲染错误: ' + error.message)
-    mathRef.value.innerHTML = `<span style="color: var(--color-error);">公式渲染错误: ${error.message}</span>`
-    emit('render-error', error)
+  } catch (e) {
+    console.error('渲染数学公式失败:', e)
+    setError('公式渲染错误: ' + e.message)
+    mathRef.value.innerHTML = `<span style="color: var(--color-error);">公式渲染错误: ${e.message}</span>`
+    emit('render-error', e)
   } finally {
-    mathStore.setLoading(false)
+    setLoading(false)
   }
 }
 
 // 重试渲染
 const retryRender = () => {
-  mathStore.resetError()
+  resetError()
   renderMath()
 }
 
@@ -126,9 +131,6 @@ onUnmounted(() => {
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
-.math-dark {
-}
-
 .math-loading {
   display: flex;
   flex-direction: column;
@@ -159,9 +161,7 @@ onUnmounted(() => {
   min-height: 100px;
   transition: opacity 0.3s ease;
 }
-</style>
 
-<style scoped>
 /* 颜色样式 */
 .math-container {
   background-color: var(--common-bg);
@@ -186,20 +186,7 @@ onUnmounted(() => {
 .math-error {
   color: var(--color-error);
 }
-</style>
 
-<style>
-/* katex 库渲染的 DOM，需非 scoped 命中 */
-.katex {
-  color: var(--katex-color, inherit);
-}
-
-.katex-display {
-  border-color: var(--katex-display-border-color, inherit);
-}
-</style>
-
-<style scoped>
 /* 响应式设计 */
 @media (max-width: 768px) {
   .math-container {
@@ -231,6 +218,16 @@ onUnmounted(() => {
     width: 20px;
     height: 20px;
   }
-  
-  }
+}
+</style>
+
+<style>
+/* katex 库渲染的 DOM，需非 scoped 命中 */
+.katex {
+  color: var(--katex-color, inherit);
+}
+
+.katex-display {
+  border-color: var(--katex-display-border-color, inherit);
+}
 </style>

@@ -7,7 +7,7 @@ import ArticleCount from '../components/p-center/ArticleCount.vue'
 import ArticleCover from '../components/content/ArticleCover.vue'
 import PageNav from '../components/p-center/PageNav.vue'
 import { useArticlesStore } from '../stores/index'
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const store = useArticlesStore()
 
@@ -350,10 +350,8 @@ onMounted(() => loadArticles())
   text-align: center;
   padding: 50px 0;
 }
-</style>
 
-<!-- 颜色样式 -->
-<style scoped>
+/* 颜色样式 */
 .post-card {
   border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.5));
@@ -387,10 +385,8 @@ onMounted(() => loadArticles())
 .skel-img { background: var(--common-color-1); }
 .skel-line { background: var(--common-color-1); }
 .err-msg, .empty-msg { color: var(--common-text); }
-</style>
 
-<!-- 响应式 -->
-<style scoped>
+/* 响应式 */
 @media (max-width: 768px) {
   .card-grid > *,
   .skel-grid > * {

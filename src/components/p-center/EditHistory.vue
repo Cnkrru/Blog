@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, computed } from 'vue'
 
 const props = defineProps(['date', 'updated', 'history'])
@@ -265,9 +265,7 @@ function toggle() {
   line-height: 1.5;
   word-break: break-word;
 }
-</style>
 
-<style scoped>
 @media (max-width: 640px) {
   .edit-card {
     padding: 10px 12px;

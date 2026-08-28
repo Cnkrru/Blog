@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 
@@ -210,10 +210,8 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
     transform: rotateY(180deg);
   }
 }
-</style>
 
-<!-- 颜色样式 -->
-<style scoped>
+/* 颜色样式 */
 .nf-wrapper {
   background: var(--common-bg);
 }
@@ -248,10 +246,8 @@ const floatingDots = Array.from({ length: 20 }, (_, i) => ({
 .countdown-text {
   color: var(--common-text);
 }
-</style>
 
-<!-- 响应式设计媒体查询 -->
-<style scoped>
+/* 响应式设计媒体查询 */
 @media (max-width: 768px) {
   .digit {
     font-size: 80px;

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const props = defineProps({
   type: { type: String },
@@ -127,6 +127,7 @@ const closeDropdown = () => {
 </template>
 
 <style scoped>
+/* ===== 容器 ===== */
 .page-nav {
   display: flex;
   flex-direction: column;
@@ -143,7 +144,12 @@ const closeDropdown = () => {
   gap: 15px;
 }
 
+/* ===== 导航按钮 ===== */
 .nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
@@ -155,6 +161,9 @@ const closeDropdown = () => {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
 .nav-btn:disabled {
@@ -171,6 +180,7 @@ const closeDropdown = () => {
   min-width: 100px;
 }
 
+/* ===== 页码按钮 ===== */
 .page-buttons {
   display: flex;
   gap: 8px;
@@ -188,6 +198,9 @@ const closeDropdown = () => {
     background-color 0.2s ease;
   font-size: 14px;
   min-width: 80px;
+  background: color-mix(in srgb, var(--common-color-1) 25%, transparent);
+  color: var(--common-text);
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
 }
 
 .page-btn:hover {
@@ -195,6 +208,13 @@ const closeDropdown = () => {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
+.page-btn.active {
+  background: var(--common-color-1);
+  color: var(--common-content);
+  border-color: var(--common-color-1);
+}
+
+/* ===== 右侧区域 ===== */
 .right-section {
   display: flex;
   align-items: center;
@@ -211,13 +231,10 @@ const closeDropdown = () => {
   gap: 6px;
 }
 
-.showCategoryDropdown {
-  --page-nav-arrow-rotate: 180deg;
-}
 .dropdown-arrow {
   font-size: 10px;
   transition: transform 0.2s ease;
-  transform: rotate(var(--page-nav-arrow-rotate, 0deg));
+  transform: rotate(0deg);
 }
 
 .dropdown-card {
@@ -233,6 +250,8 @@ const closeDropdown = () => {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
 }
 
 @keyframes slideUp {
@@ -250,6 +269,8 @@ const closeDropdown = () => {
   padding: 12px 16px;
   font-weight: bold;
   font-size: 14px;
+  color: var(--common-color-1);
+  border-bottom: 1px solid var(--common-color-1);
 }
 
 .dropdown-list {
@@ -268,10 +289,16 @@ const closeDropdown = () => {
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.15s ease;
   font-size: 14px;
   text-align: left;
+  color: var(--common-text);
+}
+
+.dropdown-item:hover {
+  background-color: color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
 .item-number {
   min-width: 24px;
+  color: var(--common-color-1);
 }
 
 .item-name {
@@ -283,70 +310,22 @@ const closeDropdown = () => {
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 12px;
+  background: var(--common-color-1);
+  color: var(--common-content);
 }
 
+/* ===== 页脚信息 ===== */
 .page-info {
   text-align: center;
   font-size: 14px;
-}
-</style>
-
-<style scoped>
-.nav-btn {
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
-  background: var(--common-color-1);
-  color: var(--common-content);
-}
-
-.page-btn {
-  background: color-mix(in srgb, var(--common-color-1) 25%, transparent);
-  color: var(--common-text);
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 30%, transparent);
-}
-
-.page-btn.active {
-  background: var(--common-color-1);
-  color: var(--common-content);
-  border-color: var(--common-color-1);
-}
-
-.dropdown-card {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
-}
-
-.dropdown-header {
-  color: var(--common-color-1);
-  border-bottom: 1px solid var(--common-color-1);
-}
-
-.dropdown-item {
-  color: var(--common-text);
-}
-
-.dropdown-item:hover {
-  background-color: color-mix(in srgb, var(--common-color-1) 10%, transparent);
-}
-
-.item-number {
-  color: var(--common-color-1);
-}
-
-.current-badge {
-  background: var(--common-color-1);
-  color: var(--common-content);
-}
-
-.page-info {
   color: var(--common-text);
 }
 
 .current-category {
   color: var(--common-text);
 }
-</style>
 
-<style scoped>
+/* ===== 响应式 ===== */
 @media (max-width: 768px) {
   .page-nav {
     padding: 10px;
@@ -358,7 +337,7 @@ const closeDropdown = () => {
     gap: 8px;
   }
 
-  .prev-btn, .next-btn {
+  .prev-btn, .next-btn, .nav-btn {
     min-width: 0;
     padding: 6px 14px;
     font-size: 13px;
@@ -368,11 +347,6 @@ const closeDropdown = () => {
     padding: 6px 12px;
     font-size: 13px;
     min-width: auto;
-  }
-
-  .nav-btn {
-    padding: 6px 14px;
-    font-size: 13px;
   }
 
   .right-section {
@@ -396,7 +370,7 @@ const closeDropdown = () => {
     gap: 6px;
   }
 
-  .prev-btn, .next-btn {
+  .prev-btn, .next-btn, .nav-btn {
     padding: 5px 12px;
     font-size: 12px;
     border-radius: 16px;
@@ -406,12 +380,6 @@ const closeDropdown = () => {
     padding: 5px 10px;
     font-size: 12px;
     border-radius: 10px;
-  }
-
-  .nav-btn {
-    padding: 5px 12px;
-    font-size: 12px;
-    border-radius: 16px;
   }
 
   .dropdown-card {

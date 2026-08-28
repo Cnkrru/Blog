@@ -68,7 +68,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const props = defineProps(['username'])
 
@@ -302,9 +302,7 @@ onMounted(() => {
     border-radius: 50%;
     margin-right: 4px;
 }
-</style>
 
-<style scoped>
 /* 颜色样式 — 使用 CSS 变量，自动适配亮/暗主题 */
 .loading-spinner {
   border-color: color-mix(in srgb, var(--common-text) 12%, transparent);
@@ -407,9 +405,7 @@ onMounted(() => {
 .language-dot.css { background-color: #563d7c; }
 .language-dot.typescript { background-color: #2b7489; }
 .language-dot.vue { background-color: #41b883; }
-</style>
 
-<style scoped>
 /* 响应式设计 */
 @media (max-width: 768px) {
     .user-card {

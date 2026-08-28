@@ -1,7 +1,7 @@
 <!-- review完成 -->
 
 <script setup>
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const isMenuOpen = ref(false)
@@ -103,20 +103,14 @@ onUnmounted(() => {
 .menu-overlay.active {
   display: block;
 }
-</style>
 
-<!-- 颜色样式 -->
-<style scoped>
 .menu-overlay {
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 /* 按钮颜色由 Header.vue 统一管理 */
-</style>
 
-<!-- 响应式设计媒体查询 -->
-<style scoped>
 @media (max-width: 768px) {
   .menu-container {
     display: block;

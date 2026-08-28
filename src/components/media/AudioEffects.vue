@@ -1,5 +1,5 @@
 <script setup>
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, watch, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 
@@ -171,19 +171,6 @@ const closePanel = () => {
   z-index: 10000;
 }
 
-@keyframes fadeIn {
-  from {
-  opacity: 0;
-   transform: translate(-50%, -50%) scale(0.92);
-   
-}
-  to   {
-  opacity: 1;
-   transform: translate(-50%, -50%) scale(1);
-   
-}
-}
-
 .effects-header {
   display: flex;
   justify-content: space-between;
@@ -255,9 +242,7 @@ const closePanel = () => {
   flex-wrap: wrap;
   gap: 6px;
 }
-</style>
 
-<style scoped>
 .effects-panel {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
@@ -302,5 +287,18 @@ const closePanel = () => {
   --v-btn-bg: color-mix(in srgb, var(--common-text) 8%, transparent);
   --v-btn-color: var(--common-text);
   --v-btn-hover-bg: color-mix(in srgb, var(--common-text) 15%, transparent);
+}
+
+@keyframes fadeIn {
+  from {
+  opacity: 0;
+   transform: translate(-50%, -50%) scale(0.92);
+   
+}
+  to   {
+  opacity: 1;
+   transform: translate(-50%, -50%) scale(1);
+   
+}
 }
 </style>

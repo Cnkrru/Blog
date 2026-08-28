@@ -36,9 +36,12 @@ export default defineConfig(
         }
       },
       
-      // vite预处理配置，构建时排除md文件，文件md由插件vite-ssg构建
+      // vite预处理配置，构建时排除md文件，md文件由插件vite-ssg构建
+      // 另排除 Vue 生态依赖（vue/vue-router/pinia）：@vercel/analytics、@vercel/speed-insights
+      // 内部也依赖 vue-router，若让其参与预打包会在开发模式产生重复实例，导致
+      // App.vue 中 useRouter() 拿不到注入（router===undefined）。排除后强制走单一 source。
       optimizeDeps: {
-        exclude: ['*.md']
+        exclude: ['*.md', 'vue', 'vue-router', 'pinia']
       },
 
       // 构建配置

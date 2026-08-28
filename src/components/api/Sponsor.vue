@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
@@ -131,10 +131,8 @@ if (typeof window !== 'undefined') {
 }
 .modal-fade-enter-from { opacity: 0; --sp-modal-transform: scale(0.92) translateY(12px); }
 .modal-fade-leave-to { opacity: 0; --sp-modal-transform: scale(0.92) translateY(12px); }
-</style>
 
-<!-- 颜色 — 使用 CSS 变量，无 body.dark-theme 硬编码 -->
-<style scoped>
+/* 颜色 — 使用 CSS 变量，无 body.dark-theme 硬编码 */
 .sponsor-btn {
   background: var(--common-color-1);
   border-color: color-mix(in srgb, var(--common-color-1) 30%, transparent);

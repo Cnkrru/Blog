@@ -1,1 +1,0 @@
-export { useCodeStore as useClipboardStore } from './code'

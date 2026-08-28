@@ -104,9 +104,7 @@ const handleResultClick = (item) => {
   margin-right: 4px;
   display: inline-block;
 }
-</style>
 
-<style scoped>
 .search-results {
   background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
   backdrop-filter: blur(20px) saturate(180%);
@@ -147,9 +145,7 @@ const handleResultClick = (item) => {
   background-color: color-mix(in srgb, var(--common-color-1) 25%, transparent);
   color: var(--common-text);
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .search-results {
     max-height: 60vh;

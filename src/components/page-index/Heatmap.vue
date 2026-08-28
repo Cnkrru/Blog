@@ -111,7 +111,7 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import axios from 'axios'
 import { useThemeStore } from '../../stores'
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const themeStore = useThemeStore()
 

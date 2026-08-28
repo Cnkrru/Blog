@@ -23,9 +23,7 @@ onMounted(() => {
   color: var(--common-text);
   opacity: 0.7;
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .copyright {
     text-align: left;

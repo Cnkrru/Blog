@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 export const useContentStore = defineStore('content', () => {
   const contentCache = ref({
@@ -8,10 +8,6 @@ export const useContentStore = defineStore('content', () => {
   })
   const loadingState = ref({})
   const errorState = ref({})
-
-  const hasContent = computed(() => (type, id) => {
-    return !!contentCache.value[type]?.[id]
-  })
 
   const getContent = (type, id) => {
     return contentCache.value[type]?.[id] || null
@@ -42,10 +38,6 @@ export const useContentStore = defineStore('content', () => {
     errorState.value[type][id] = error
   }
 
-  const getError = (type, id) => {
-    return errorState.value[type]?.[id] || null
-  }
-
   const clearCache = (type, id) => {
     if (type && id) {
       if (contentCache.value[type]) {
@@ -72,13 +64,11 @@ export const useContentStore = defineStore('content', () => {
     contentCache,
     loadingState,
     errorState,
-    hasContent,
     getContent,
     setContent,
     setLoading,
     isLoading,
     setError,
-    getError,
     clearCache
   }
 })

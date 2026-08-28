@@ -18,11 +18,6 @@ export const useScrollStore = defineStore('scroll', () => {
     backToTopVisible.value = scrollPosition.value > showThreshold.value
   }
 
-  const setShowThreshold = (newThreshold) => {
-    showThreshold.value = newThreshold
-    updateBackToTopVisibility()
-  }
-
   const scrollToTop = () => {
     const isImmersiveReading = document.body.classList.contains('immersive-reading')
     if (isImmersiveReading) {
@@ -70,7 +65,6 @@ export const useScrollStore = defineStore('scroll', () => {
     threshold,
     updateScrollPosition,
     updateBackToTopVisibility,
-    setShowThreshold,
     scrollToTop,
     initScrollListener
   }

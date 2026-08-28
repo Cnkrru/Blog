@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
@@ -241,9 +241,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 .is-time {
   margin-left: auto;
 }
-</style>
 
-<style scoped>
 @media (max-width: 640px) {
   .reading-card {
     padding: 8px 10px;

@@ -109,8 +109,8 @@
 </template>
 
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
-import VButton from '@/components/common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNotificationStore } from '../../stores'
@@ -657,19 +657,6 @@ watch(() => props.content, () => {
   font-weight: 600;
 }
 
-@keyframes quoteFadeIn {
-  from {
-  opacity: 0;
-   transform: translate(-50%, calc(-100% + 8px));
-   
-}
-  to {
-  opacity: 1;
-   transform: translate(-50%, -100%);
-   
-}
-}
-
 /* 确保Markdown内容可见 */
 .markdown-content {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -901,9 +888,7 @@ watch(() => props.content, () => {
 .lightbox-nav:hover {
   transform: translateY(-50%) scale(1.1);
 }
-</style>
 
-<style>
 /* 颜色样式 */
 .markdown-content {
   color: var(--common-text) !important;
@@ -1051,9 +1036,20 @@ watch(() => props.content, () => {
   transition: var(--lightbox-img-transition, none);
   transform: var(--lightbox-img-transform, none);
 }
-</style>
 
-<style>
+@keyframes quoteFadeIn {
+  from {
+  opacity: 0;
+   transform: translate(-50%, calc(-100% + 8px));
+   
+}
+  to {
+  opacity: 1;
+   transform: translate(-50%, -100%);
+   
+}
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .markdown-content {

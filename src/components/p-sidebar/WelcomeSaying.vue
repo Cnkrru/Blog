@@ -20,6 +20,7 @@
     font-style: italic;
     font-family: "Microsoft YaHei", sans-serif;
     line-height: normal;
+    color: var(--common-color-1);
 }
 
 .welcome-link {
@@ -30,15 +31,7 @@
 .welcome-link:active {
     transform: none;
 }
-</style>
 
-<style scoped>
-.welcome-saying-card p {
-    color: var(--common-color-1);
-}
-</style>
-
-<style scoped>
 @media (max-width: 768px) {
   .welcome-saying-card p {
       font-size: 14px;

@@ -194,10 +194,7 @@ watch(() => isEnabled.value, (newValue) => {
   will-change: transform, opacity, font-size;
   user-select: none;
 }
-</style>
 
-<!-- 响应式设计媒体查询 -->
-<style scoped>
 @media (prefers-color-scheme: dark) {
   .trail-char {
     text-shadow: 0 0 15px currentColor;

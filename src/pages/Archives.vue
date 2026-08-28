@@ -3,7 +3,7 @@ import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { useArticlesStore } from '../stores'
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 
 const store = useArticlesStore()

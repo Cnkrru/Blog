@@ -126,6 +126,10 @@ onUnmounted(() => {
   padding: 14px;
   border-radius: 12px;
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.4));
+}
+
+.related-box,
+.related-card {
   border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
 }
 
@@ -153,6 +157,8 @@ onUnmounted(() => {
     box-shadow 0.3s ease;
   animation: fadeInUp 0.4s ease forwards;
   opacity: 0;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.5));
+  color: var(--common-text);
 }
 
 @keyframes fadeInUp {
@@ -169,6 +175,7 @@ onUnmounted(() => {
 .related-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+  border-color: var(--common-color-1);
 }
 
 .related-cover {
@@ -192,6 +199,8 @@ onUnmounted(() => {
   font-weight: bold;
   border-radius: 4px;
   width: fit-content;
+  background-color: var(--common-color-1);
+  color: #fff;
 }
 
 .related-title {
@@ -202,6 +211,7 @@ onUnmounted(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  color: var(--common-text);
 }
 
 .related-meta {
@@ -210,6 +220,8 @@ onUnmounted(() => {
   gap: 8px;
   font-size: 11px;
   margin-top: auto;
+  color: var(--common-text);
+  opacity: 0.7;
 }
 
 .related-date {
@@ -225,42 +237,11 @@ onUnmounted(() => {
   padding: 1px 6px;
   font-size: 10px;
   border-radius: 3px;
-}
-</style>
-
-<style scoped>
-/* ========== 主题适配 — 使用 CSS 变量，无 body.dark-theme 硬编码 ========== */
-.related-card {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.5));
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
-  color: var(--common-text);
-}
-
-.related-card:hover {
-  border-color: var(--common-color-1);
-}
-
-.related-cat {
-  background-color: var(--common-color-1);
-  color: #fff;
-}
-
-.related-title {
-  color: var(--common-text);
-}
-
-.related-meta {
-  color: var(--common-text);
-  opacity: 0.7;
-}
-
-.tag {
   background: color-mix(in srgb, var(--common-color-1) 15%, transparent);
   color: var(--common-text);
 }
-</style>
 
-<style scoped>
+/* ===== 响应式 ===== */
 @media (max-width: 640px) {
   .related-grid {
     grid-template-columns: 1fr;

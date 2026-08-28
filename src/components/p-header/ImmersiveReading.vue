@@ -1,5 +1,5 @@
 <script setup>
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -101,15 +101,9 @@ body.immersive-reading {
     max-height: var(--ir-cc-mh, 680px);
     height: var(--ir-cc-h, 680px);
 }
-</style>
 
-<!-- 颜色样式 -->
-<style>
 /* 按钮颜色由 Header.vue 统一管理 */
-</style>
 
-<!-- 响应式设计媒体查询 -->
-<style>
 @media (max-width: 480px) {
     body.immersive-reading {
         --ir-ccs-w: 100%;

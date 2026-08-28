@@ -83,13 +83,6 @@ export const useThemeStore = defineStore('theme', () => {
     }
   }
 
-  const setTheme = (theme) => {
-    currentTheme.value = theme
-    hasUserPreference.value = true
-    applyThemeDom()
-    savePreference()
-  }
-
   const toggleTheme = () => {
     currentTheme.value = currentTheme.value === 'light' ? 'dark' : 'light'
     hasUserPreference.value = true
@@ -143,16 +136,6 @@ export const useThemeStore = defineStore('theme', () => {
       bgVideoUrl.value = bgVideoDefault
     }
     applyBgDom()
-    savePreference()
-  }
-
-  const setBgVideoUrl = (url) => {
-    bgVideoUrl.value = url
-    if (url) {
-      document.documentElement.style.setProperty('--bg-video-url', `url(${url})`)
-    } else {
-      document.documentElement.style.removeProperty('--bg-video-url')
-    }
     savePreference()
   }
 
@@ -218,30 +201,6 @@ export const useThemeStore = defineStore('theme', () => {
     }
   }
 
-  const resetToDefault = () => {
-    stopAutoSwitch()
-    currentTheme.value = 'dark'
-    currentStyle.value = 'ink'
-    currentLayout.value = 'card'
-    glassAlpha.value = 0.78
-    isAutoSwitch.value = false
-    bgType.value = 'image'
-    bgVideoUrl.value = bgVideoDefault
-    articleFontSize.value = 16
-    hasUserPreference.value = false
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('theme-preference')
-    }
-    document.documentElement.setAttribute('data-theme', 'dark')
-    setPrefixedClass(document.documentElement, 'style-', 'ink')
-    applyThemeCss('ink')
-    setPrefixedClass(document.documentElement, 'layout-', 'card')
-    applyLayoutCss('card')
-    document.documentElement.style.setProperty('--glass-alpha', '0.78')
-    setPrefixedClass(document.documentElement, 'bg-', '')
-    document.documentElement.style.removeProperty('--bg-video-url')
-  }
-
   return {
     currentTheme,
     currentStyle,
@@ -254,7 +213,6 @@ export const useThemeStore = defineStore('theme', () => {
     articleFontSize,
     isDark,
     isLight,
-    setTheme,
     toggleTheme,
     setStyle,
     setLayout,
@@ -262,10 +220,8 @@ export const useThemeStore = defineStore('theme', () => {
     setGlassAlphaLive,
     setAutoSwitch,
     setBgType,
-    setBgVideoUrl,
     setArticleFontSize,
     initTheme,
-    savePreference,
-    resetToDefault
+    savePreference
   }
 })

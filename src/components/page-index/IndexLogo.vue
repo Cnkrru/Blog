@@ -22,9 +22,7 @@
   font-size: 2rem;
   font-weight: 800;
 }
-</style>
 
-<style scoped>
 .logo-text {
   color: var(--common-color-1);
 }
@@ -33,9 +31,7 @@
   color: var(--common-color-1);
   opacity: 0.5;
 }
-</style>
 
-<style scoped>
 @media (max-width: 640px) {
   .logo-text {
     font-size: 1.25rem;

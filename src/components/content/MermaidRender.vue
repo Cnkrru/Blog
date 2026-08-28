@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
-import { useMermaidStore, useThemeStore } from '../../stores'
+import { useThemeStore } from '../../stores'
 
 const props = defineProps(['code'])
 
@@ -24,19 +24,25 @@ const containerRef = ref(null)
 const lastRenderedCode = ref('')
 const mermaidId = ref('mermaid-' + Date.now() + '-' + Math.floor(Math.random() * 10000))
 
-const mermaidStore = useMermaidStore()
 const themeStore = useThemeStore()
 
 const isDarkTheme = computed(() => themeStore.isDark)
-const loading = computed(() => mermaidStore.loading)
-const error = computed(() => mermaidStore.error)
+
+// ---- 原 mermaid store 逻辑内联（仅本组件消费）----
+const mermaidLoaded = ref(false)
+const loading = ref(false)
+const error = ref(null)
+const setMermaidLoaded = (loaded) => { mermaidLoaded.value = loaded }
+const setLoading = (isLoading) => { loading.value = isLoading }
+const setError = (err) => { error.value = err }
+const resetError = () => { error.value = null }
 
 // 加载 Mermaid（本地依赖，动态 import 避免进入 SSR 关键路径）
 let mermaidLib = null
 const loadMermaid = async () => {
   if (!mermaidLib) {
     mermaidLib = (await import('mermaid')).default
-    mermaidStore.setMermaidLoaded(true)
+    mermaidLoaded.value = true
     initializeMermaid()
   }
   return mermaidLib
@@ -63,14 +69,14 @@ const initializeMermaid = () => {
 const renderMermaid = async () => {
   if (!containerRef.value) return
   
-  mermaidStore.setLoading(true)
-  mermaidStore.resetError()
+  setLoading(true)
+  resetError()
   
-  if (!mermaidStore.mermaidLoaded) {
+  if (!mermaidLoaded.value) {
     try {
       await loadMermaid()
     } catch (error) {
-      mermaidStore.setLoading(false)
+      setLoading(false)
       emit('render-error', error)
       return
     }
@@ -81,7 +87,7 @@ const renderMermaid = async () => {
   
   // 避免重复渲染相同的代码
   if (lastRenderedCode.value === props.code) {
-    mermaidStore.setLoading(false)
+    setLoading(false)
     return
   }
   
@@ -99,21 +105,20 @@ const renderMermaid = async () => {
     containerRef.value.innerHTML = svg
     
     lastRenderedCode.value = props.code
-    mermaidStore.incrementRenderedCount()
     emit('render-success', props.code)
   } catch (error) {
     const errorMessage = `图表渲染错误: ${error.message}`
-    mermaidStore.setError(errorMessage)
+    setError(errorMessage)
     containerRef.value.innerHTML = `<span style="color: var(--color-error);">${errorMessage}</span>`
     emit('render-error', error)
   } finally {
-    mermaidStore.setLoading(false)
+    setLoading(false)
   }
 }
 
 // 重试渲染
 const retryRender = () => {
-  mermaidStore.resetError()
+  resetError()
   renderMermaid()
 }
 
@@ -147,9 +152,6 @@ watch(() => isDarkTheme.value, () => {
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
 }
 
-.mermaid-dark {
-}
-
 .mermaid-loading {
   display: flex;
   flex-direction: column;
@@ -173,24 +175,8 @@ watch(() => isDarkTheme.value, () => {
   justify-content: center;
   padding: 40px;
   min-height: 300px;
-}</style>
-
-<style>
-/* mermaid 库渲染的 DOM，需非 scoped 命中 */
-.mermaid {
-  font-family: 'Fira Code', 'Consolas', monospace;
-  min-height: 300px;
-  width: 100%;
-  filter: var(--mermaid-filter, none);
 }
 
-.mermaid svg {
-  max-width: 100%;
-  height: auto;
-}
-</style>
-
-<style scoped>
 /* 颜色样式 */
 .mermaid-container {
   background-color: var(--common-bg);
@@ -213,9 +199,7 @@ watch(() => isDarkTheme.value, () => {
 .mermaid-error {
   color: var(--color-error);
 }
-</style>
 
-<style scoped>
 /* 响应式设计 */
 @media (max-width: 768px) {
   .mermaid-container {
@@ -238,6 +222,20 @@ watch(() => isDarkTheme.value, () => {
     width: 24px;
     height: 24px;
   }
-  
-  }
+}
+</style>
+
+<style>
+/* mermaid 库渲染的 DOM，需非 scoped 命中 */
+.mermaid {
+  font-family: 'Fira Code', 'Consolas', monospace;
+  min-height: 300px;
+  width: 100%;
+  filter: var(--mermaid-filter, none);
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
 </style>

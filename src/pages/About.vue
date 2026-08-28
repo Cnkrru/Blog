@@ -116,9 +116,7 @@ onMounted(() => {
     margin: 30px 0;
     width: 100%;
 }
-</style>
 
-<style scoped>
 /* 响应式设计媒体查询 */
 @media (max-width: 640px) {
     .about-footer {

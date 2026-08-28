@@ -1,9 +1,8 @@
 <script setup>
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 
 defineProps({
-  isPlaying: { type: Boolean, default: false },
-  currentSong: { default: null }
+  isPlaying: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['toggle-play', 'prev', 'next'])

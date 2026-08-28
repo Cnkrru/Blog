@@ -1,6 +1,6 @@
 <script setup>
 import { ref, nextTick } from 'vue'
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 
 const props = defineProps(['code'])
 
@@ -73,11 +73,6 @@ function close() {
   animation: zoomIn 0.25s ease;
 }
 
-@keyframes zoomIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
-}
-
 .preview-header {
   display: flex;
   justify-content: space-between;
@@ -108,9 +103,7 @@ function close() {
   border: none;
   background: #fff;
 }
-</style>
 
-<style scoped>
 .run-btn {
   --v-btn-bg: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
   --v-btn-hover-bg: color-mix(in srgb, var(--common-color-1) 20%, transparent);
@@ -130,5 +123,10 @@ function close() {
 .preview-header {
   background: var(--common-color-1);
   color: var(--common-content);
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
 }
 </style>

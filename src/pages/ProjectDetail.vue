@@ -188,27 +188,9 @@ const handleError = (err) => {
 
 <style scoped>
 /* 布局样式 */
-.loading-message,
-.error-message {
-    text-align: center;
-    padding: 50px 0;
-}
-
 .head-tools {
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
-</style>
-
-<style scoped>
-/* 颜色样式 */
-.loading-message,
-.error-message {
-    color: var(--text-secondary);
-}
-</style>
-
-<style scoped>
-/* 响应式设计媒体查询 */
 </style>

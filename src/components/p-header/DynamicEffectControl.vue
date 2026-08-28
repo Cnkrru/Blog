@@ -29,11 +29,8 @@
 </template>
 
 <script setup>
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { useDynamicEffectsStore } from '../../stores/index'
-
-const dynamicEffectsStore = useDynamicEffectsStore()
 
 const isEffectEnabled = ref(true)
 const isDarkMode = ref(false)
@@ -235,6 +232,11 @@ watch(isDarkMode, () => {
   animation: snowfall linear infinite;
 }
 
+.snowflake {
+  background-color: var(--common-color-1);
+}
+/* 按钮颜色由 Header.vue 统一管理 */
+
 @keyframes snowfall {
   0% {
     transform: translateY(-10px) rotate(0deg);
@@ -245,14 +247,6 @@ watch(isDarkMode, () => {
     opacity: 0;
   }
 }
-</style>
-
-<!-- 颜色样式 -->
-<style scoped>
-.snowflake {
-  background-color: var(--common-color-1);
-}
-/* 按钮颜色由 Header.vue 统一管理 */
 </style>
 
 

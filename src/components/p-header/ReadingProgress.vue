@@ -105,9 +105,7 @@ onUnmounted(() => {
   transition: width 0.15s ease;
   border-radius: 0 3px 3px 0;
 }
-</style>
 
-<style scoped>
 .progress-container {
   background-color: var(--common-color-1);
   opacity: 0.25;

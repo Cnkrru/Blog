@@ -1,32 +1,118 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
 import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
-import { useCommentStore, useThemeStore } from '../../stores'
+import { useThemeStore } from '../../stores'
+import giscusBaseCss from '@/assets/css/giscus-base.css?raw'
+import inkDarkCss from '@/assets/css/comment/ink-dark.css?raw'
+import inkLightCss from '@/assets/css/comment/ink-light.css?raw'
+import sakuraDarkCss from '@/assets/css/comment/sakura-dark.css?raw'
+import sakuraLightCss from '@/assets/css/comment/sakura-light.css?raw'
+import purpleDarkCss from '@/assets/css/comment/purple-dark.css?raw'
+import purpleLightCss from '@/assets/css/comment/purple-light.css?raw'
+import cyanDarkCss from '@/assets/css/comment/cyan-dark.css?raw'
+import cyanLightCss from '@/assets/css/comment/cyan-light.css?raw'
 
-const commentStore = useCommentStore()
 const themeStore = useThemeStore()
 
+// ---- 原 comment store 逻辑内联（仅本组件消费 + giscus 主题映射）----
+const themeCssMap = {
+  'ink-dark': inkDarkCss,
+  'ink-light': inkLightCss,
+  'sakura-dark': sakuraDarkCss,
+  'sakura-light': sakuraLightCss,
+  'purple-dark': purpleDarkCss,
+  'purple-light': purpleLightCss,
+  'cyan-dark': cyanDarkCss,
+  'cyan-light': cyanLightCss,
+}
+
+function getGiscusThemeUrl() {
+  const isDark = themeStore.isDark
+  const style = themeStore.currentStyle
+  const key = `${style}-${isDark ? 'dark' : 'light'}`
+  const vars = themeCssMap[key] || inkDarkCss
+  const fullCss = `${vars}\n\n${giscusBaseCss}`
+  return `data:text/css;charset=utf-8,${encodeURIComponent(fullCss)}`
+}
+
+const commentLoaded = ref(false)
+const commentEnabled = ref(true)
+
+const setCommentLoaded = (loaded) => { commentLoaded.value = loaded }
+
+const updateGiscusTheme = (_theme) => {
+  const themeUrl = getGiscusThemeUrl()
+  const giscusFrame = document.querySelector('iframe.giscus-frame')
+  if (giscusFrame?.contentWindow) {
+    giscusFrame.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: themeUrl } } },
+      'https://giscus.app'
+    )
+  }
+}
+
+const initCommentSystem = () => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return
+  const existing = document.querySelector('.giscus, script[src*="giscus"]')
+  if (existing) return
+
+  const script = document.createElement('script')
+  script.src = 'https://giscus.app/client.js'
+  script.setAttribute('data-repo', 'Cnkrru/Blog')
+  script.setAttribute('data-repo-id', '')
+  script.setAttribute('data-category', 'General')
+  script.setAttribute('data-category-id', '')
+  script.setAttribute('data-mapping', 'pathname')
+  script.setAttribute('data-strict', '0')
+  script.setAttribute('data-reactions-enabled', '1')
+  script.setAttribute('data-emit-metadata', '0')
+  script.setAttribute('data-input-position', 'bottom')
+  script.setAttribute('data-theme', getGiscusThemeUrl())
+  script.setAttribute('data-lang', 'zh-CN')
+  script.setAttribute('crossorigin', 'anonymous')
+  script.async = true
+
+  const container = document.querySelector('.comment-container')
+  if (container) container.appendChild(script)
+}
+
+const savePreference = () => {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.setItem('comment_enabled', commentEnabled.value.toString())
+  } catch (e) {
+    console.warn('[comment] 保存评论偏好失败:', e)
+  }
+}
+
+const loadPreference = () => {
+  if (typeof localStorage === 'undefined') return
+  try {
+    const saved = localStorage.getItem('comment_enabled')
+    if (saved !== null) commentEnabled.value = saved === 'true'
+  } catch (e) {
+    console.warn('[comment] 加载评论偏好失败:', e)
+  }
+}
+
 const isLoading = ref(false)
-const isLoaded = computed(() => commentStore.commentLoaded)
-const error = ref(null)
-const commentCount = computed(() => commentStore.commentCount)
+const isLoaded = computed(() => commentLoaded)
 
 // 监听主题和风格变化，同步更新 Giscus 评论样式
 watch([() => themeStore.isDark, () => themeStore.currentStyle], () => {
-  commentStore.updateGiscusTheme('')
+  updateGiscusTheme('')
 })
 
 onMounted(() => {
-  commentStore.loadPreference()
-  commentStore.initCommentSystem()
+  loadPreference()
+  initCommentSystem()
 
   if (typeof window !== 'undefined') {
-    window.updateGiscusTheme = commentStore.updateGiscusTheme
+    window.updateGiscusTheme = updateGiscusTheme
   }
 
   setTimeout(() => {
     isLoading.value = false
-    commentStore.setCommentLoaded(true)
+    setCommentLoaded(true)
   }, 1500)
 })
 
@@ -42,7 +128,6 @@ onUnmounted(() => {
     <div class="comment-section">
         <div class="comment-header">
             <h3>评论</h3>
-            <span v-if="commentCount > 0" class="comment-count">{{ commentCount }} 条评论</span>
         </div>
         <p class="comment-hint"> 想说点什么呢……</p>
         <div class="comment-content">
@@ -51,14 +136,7 @@ onUnmounted(() => {
                 <div class="loading-spinner"></div>
                 <span class="loading-text">加载评论中...</span>
             </div>
-            
-            <!-- 错误状态 -->
-            <div v-else-if="error" class="error-state">
-                <div class="error-icon"><VIcon :src="'alert-triangle.svg'" :size="32" /></div>
-                <span class="error-text">{{ error }}</span>
-                <button class="retry-button" @click="commentStore.initCommentSystem">重试</button>
-            </div>
-            
+
             <!-- 评论容器 -->
             <div v-else class="comment-container"></div>
         </div>
@@ -66,13 +144,13 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/*==============================评论区域样式==============================*/
-
-/* 评论区域容器 */
+/* ===== 评论区域容器 ===== */
 .comment-section {
     margin-top: 1.5rem;
     padding: 16px;
     border-radius: 12px;
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
+    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 /* 评论标题 */
@@ -82,20 +160,22 @@ onUnmounted(() => {
     align-items: center;
     margin-bottom: 10px;
     padding-bottom: 8px;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .comment-header h3 {
     margin: 0;
     font-size: 15px;
     font-weight: 600;
+    color: var(--common-text);
 }
 
-.comment-count {
-    font-size: 12px;
-    font-weight: 500;
-    padding: 2px 10px;
-    border-radius: 12px;
+.comment-hint {
+    text-align: center;
+    font-size: 14px;
+    color: var(--common-color-1);
+    margin-bottom: 12px;
+    font-style: italic;
 }
 
 /* 评论内容 */
@@ -118,38 +198,15 @@ onUnmounted(() => {
 .loading-spinner {
     width: 24px;
     height: 24px;
-    border: 2px solid;
-    border-top-color: inherit;
+    border: 2px solid var(--common-hover);
+    border-top-color: var(--common-color-1);
     border-radius: 50%;
 }
 
 .loading-text {
     font-size: 14px;
     font-weight: 500;
-}
-
-/* 错误状态 */
-.error-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 300px;
-    gap: 12px;
-    animation: fadeIn 0.3s ease;
-    text-align: center;
-    padding: 0 20px;
-}
-
-.error-icon {
-    font-size: 32px;
-    margin-bottom: 8px;
-}
-
-.error-text {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 16px;
+    color: var(--common-text);
 }
 
 /* 评论容器 */
@@ -182,104 +239,41 @@ onUnmounted(() => {
     }
 }
 
-</style>
-
-<style scoped>
-/* 评论区域颜色 */
-.comment-section {
-    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
-    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-}
-
-/* 评论标题 */
-.comment-header {
-    border-bottom-color: color-mix(in srgb, var(--common-text) 8%, transparent);
-}
-
-.comment-header h3 {
-    color: var(--common-text);
-}
-
-.comment-hint {
-    text-align: center;
-    font-size: 14px;
-    color: var(--common-color-1);
-    margin-bottom: 12px;
-    font-style: italic;
-}
-
-.comment-count {
-    color: var(--common-text);
-    background: var(--common-hover);
-}
-
-.comment-count:hover {
-    background: var(--common-color-2);
-    color: var(--common-text);
-}
-
-/* 加载状态颜色 */
-.loading-spinner {
-    border-color: var(--common-hover);
-    border-top-color: var(--common-color-1);
-}
-
-.loading-text {
-    color: var(--common-text);
-}
-
-/* 错误状态颜色 */
-.error-text {
-    color: var(--common-color-1);
-}
-</style>
-
-<style scoped>
-/*==============================响应式设计查询=============================*/
-/* 超小屏手机 */
+/* ===== 响应式 ===== */
 @media (max-width: 640px) {
     .comment-section {
         margin-top: 1rem;
         padding: 1rem;
     }
-    
+
     .comment-header h3 {
         font-size: 1.1rem;
     }
-    
+
     .comment-container iframe {
         min-height: 300px;
     }
-    
-    .loading-state,
-    .error-state {
+
+    .loading-state {
         min-height: 250px;
     }
 }
 
-/* 小屏手机横屏及以下 */
-@media (max-width: 640px) {
-    /* 保持现有样式 */
-}
-
-/* 平板及以下 */
 @media (max-width: 768px) {
-    /* 恢复桌面布局 */
     .comment-section {
         margin-top: 2rem;
         padding: 1.5rem;
     }
-    
+
     .comment-header h3 {
         font-size: 1.2rem;
     }
-    
+
     .comment-container iframe {
         min-height: 400px;
     }
-    
-    .loading-state,
-    .error-state {
+
+    .loading-state {
         min-height: 300px;
     }
 }

@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticlesStore } from '../../stores'
@@ -193,9 +193,7 @@ onUnmounted(() => {
   box-sizing: border-box;
   transition: color 0.3s ease;
 }
-</style>
 
-<style scoped>
 .search-card {
   border: 1px solid color-mix(in srgb, var(--common-color-1) 15%, transparent);
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
@@ -220,9 +218,7 @@ onUnmounted(() => {
   color: var(--common-text);
   opacity: 0.4;
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .search-card {
       width: 80%;

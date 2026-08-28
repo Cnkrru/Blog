@@ -31,15 +31,11 @@
 .logo-card h1:hover {
     opacity: 0.8;
 }
-</style>
 
-<style scoped>
 .logo-card h1 {
     color: var(--common-color-1);
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .logo-card {
       margin-left: 0;

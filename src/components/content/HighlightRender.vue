@@ -44,8 +44,8 @@
 </template>
 
 <script setup>
-import VButton from '@/components/common/VButton.vue'
-import VIcon from '@/components/common/VIcon.vue'
+import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
 import CodePreview from './CodePreview.vue'
@@ -381,31 +381,6 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   font-weight: 500;
 }
 
-/* 动画 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-</style>
-
-<style>
-/* hljs 代码高亮库渲染的 DOM，需非 scoped 命中 */
-.hljs {
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  font-family: 'Fira Code', 'Consolas', monospace;
-  font-size: 14px;
-  line-height: 1.5;
-}
-</style>
-
-<style scoped>
 /* 颜色样式 */
 .code-container {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
@@ -555,9 +530,16 @@ watch(() => codeStore.lineNumbersEnabled, () => {
   color: var(--common-text);
 }
 
-</style>
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
-<style scoped>
 /* 响应式设计 */
 @media (max-width: 768px) {
   .code-container {
@@ -594,5 +576,17 @@ watch(() => codeStore.lineNumbersEnabled, () => {
     font-size: 8px;
     padding: 1px 4px;
   }
+}
+</style>
+
+<style>
+/* hljs 代码高亮库渲染的 DOM，需非 scoped 命中 */
+.hljs {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.5;
 }
 </style>

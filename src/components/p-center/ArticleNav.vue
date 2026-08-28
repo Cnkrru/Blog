@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
@@ -88,7 +88,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ========== 布局与结构 (Layout) ========== */
+/* ===== 容器 ===== */
 .nav-wrap {
   position: relative;
   width: 100%;
@@ -100,6 +100,7 @@ onUnmounted(() => {
   border-radius: 16px;
 }
 
+/* ===== 导航按钮 ===== */
 .nav-btn {
   flex: 1;
   display: flex;
@@ -113,16 +114,32 @@ onUnmounted(() => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 72px;
   border: none;
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
+  color: var(--common-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.nav-btn.prev, .nav-btn.next {
+  gap: 12px;
 }
 
 .nav-btn.prev {
   justify-content: flex-start;
-  gap: 12px;
+  --nav-alignment: flex-start;
+  --nav-text-align: left;
 }
 
 .nav-btn.next {
   justify-content: flex-end;
-  gap: 12px;
+  --nav-alignment: flex-end;
+  --nav-text-align: right;
+}
+
+.nav-btn:hover {
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.8));
+  border-color: var(--common-color-1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .nav-icon {
@@ -134,6 +151,7 @@ onUnmounted(() => {
   height: 24px;
   transform: var(--nav-icon-scale, none);
   transition: transform 0.3s ease;
+  color: var(--common-color-1);
 }
 
 .nav-text {
@@ -147,21 +165,16 @@ onUnmounted(() => {
   text-align: var(--nav-text-align, start);
 }
 
-.nav-btn.prev {
-  --nav-alignment: flex-start;
-  --nav-text-align: left;
-}
-
-.nav-btn.next {
-  --nav-alignment: flex-end;
-  --nav-text-align: right;
-}
-
 .nav-label {
   font-size: 12px;
   font-weight: 500;
   opacity: 0.7;
   letter-spacing: 0.5px;
+}
+
+.nav-label,
+.nav-title {
+  color: var(--common-text);
 }
 
 .nav-title {
@@ -189,7 +202,7 @@ onUnmounted(() => {
   100% { transform: translateX(100%); }
 }
 
-/* 交互状态 */
+/* ===== 交互状态 ===== */
 .nav-btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -212,40 +225,8 @@ onUnmounted(() => {
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
-</style>
 
-<style scoped>
-/* ========== 样式与主题 (Theme) — 使用 CSS 变量，无 body.dark-theme 硬编码 ========== */
-.nav-wrap {
-  background: transparent;
-  border: none;
-}
-
-.nav-btn {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
-  color: var(--common-text);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.nav-btn:hover {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.8));
-  border-color: var(--common-color-1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.nav-label,
-.nav-title {
-  color: var(--common-text);
-}
-
-.nav-icon {
-  color: var(--common-color-1);
-}
-</style>
-
-<style scoped>
-/* ========== 响应式适配 (Responsive) ========== */
+/* ===== 响应式 ===== */
 @media (max-width: 640px) {
   .nav-wrap {
     flex-direction: column;

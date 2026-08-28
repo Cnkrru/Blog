@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { onMounted, computed } from 'vue'
 import { useArticlesStore } from '../../stores'
 
@@ -23,8 +23,8 @@ onMounted(async () => {
   </button>
 </template>
 
-<!-- 布局样式 -->
 <style scoped>
+/* 布局样式 */
 .article-count-btn {
   font-size: 13px;
   font-weight: 500;
@@ -43,10 +43,8 @@ onMounted(async () => {
   height: 15px;
   flex-shrink: 0;
 }
-</style>
 
-<!-- 颜色样式 -->
-<style scoped>
+/* 颜色样式 */
 .article-count-btn {
   background: color-mix(in srgb, var(--common-color-1) 20%, transparent);
   color: var(--common-text);
@@ -57,5 +55,3 @@ onMounted(async () => {
   color: var(--common-color-1);
 }
 </style>
-
-

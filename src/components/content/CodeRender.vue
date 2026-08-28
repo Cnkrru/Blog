@@ -28,15 +28,15 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useClipboardStore, useNotificationStore } from '../../stores'
-import VIcon from '@/components/common/VIcon.vue'
+import { useCodeStore, useNotificationStore } from '../../stores'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const props = defineProps(['code'])
 
 const route = useRoute()
 const postId = computed(() => route.params.id || '')
 
-const clipboardStore = useClipboardStore()
+const codeStore = useCodeStore()
 const notificationStore = useNotificationStore()
 const isCopied = ref(false)
 const isLoading = ref(false)
@@ -71,7 +71,7 @@ const copyCode = async () => {
     animationClass.value = 'copied-success'
 
     // 添加到历史记录
-    clipboardStore.addToHistory(props.code, true)
+    codeStore.addToHistory(props.code, true)
 
     notificationStore.addNotification('代码已复制到剪贴板', { type: 'success', duration: 2000 })
 
@@ -115,7 +115,7 @@ const fallbackCopyTextToClipboard = () => {
       isCopied.value = true
     animationClass.value = 'copied-success'
 
-    clipboardStore.addToHistory(props.code, true)
+    codeStore.addToHistory(props.code, true)
 
     notificationStore.addNotification('代码已复制到剪贴板', { type: 'success', duration: 2000 })
       setTimeout(() => {
@@ -124,14 +124,14 @@ const fallbackCopyTextToClipboard = () => {
       }, 3000)
     } else {
       animationClass.value = 'copied-fail'
-      clipboardStore.addToHistory(props.code, false)
+      codeStore.addToHistory(props.code, false)
       setTimeout(() => {
         animationClass.value = ''
       }, 3000)
     }
   } catch (err) {
     animationClass.value = 'copied-fail'
-    clipboardStore.addToHistory(props.code, false)
+    codeStore.addToHistory(props.code, false)
     setTimeout(() => {
       animationClass.value = ''
     }, 3000)
@@ -142,7 +142,7 @@ const fallbackCopyTextToClipboard = () => {
 }
 
 onMounted(() => {
-  clipboardStore.init()
+  codeStore.init()
 })
 </script>
 
@@ -253,59 +253,6 @@ onMounted(() => {
     border-radius: 50%;
 }
 
-/* 动画关键帧 */
-@keyframes successPulse {
-    0% {
-        transform: translateY(-2px) scale(1);
-    }
-    50% {
-        transform: translateY(-2px) scale(1.1);
-    }
-    100% {
-        transform: translateY(-2px) scale(1.05);
-    }
-}
-
-@keyframes failShake {
-    0%, 100% {
-        transform: translateY(-2px) scale(1.05) translateX(0);
-    }
-    25% {
-        transform: translateY(-2px) scale(1.05) translateX(-4px);
-    }
-    75% {
-        transform: translateY(-2px) scale(1.05) translateX(4px);
-    }
-}
-
-@keyframes checkBounce {
-    0% {
-        transform: scale(0);
-    }
-    50% {
-        transform: scale(1.3);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .copy-button {
-        padding: 3px 6px;
-        font-size: 10px;
-        min-width: 60px;
-    }
-
-    .loading-spinner {
-        width: 12px;
-        height: 12px;
-    }
-}
-</style>
-
-<style scoped>
 /* 复制按钮颜色 */
 .copy-button {
     background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
@@ -349,9 +296,45 @@ onMounted(() => {
     border-color: rgba(255, 255, 255, 0.3);
     border-top-color: white;
 }
-</style>
 
-<style scoped>
+/* 动画关键帧 */
+@keyframes successPulse {
+    0% {
+        transform: translateY(-2px) scale(1);
+    }
+    50% {
+        transform: translateY(-2px) scale(1.1);
+    }
+    100% {
+        transform: translateY(-2px) scale(1.05);
+    }
+}
+
+@keyframes failShake {
+    0%, 100% {
+        transform: translateY(-2px) scale(1.05) translateX(0);
+    }
+    25% {
+        transform: translateY(-2px) scale(1.05) translateX(-4px);
+    }
+    75% {
+        transform: translateY(-2px) scale(1.05) translateX(4px);
+    }
+}
+
+@keyframes checkBounce {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 响应式设计 */
 @media (max-width: 768px) {
     .copy-button {
         padding: 3px 6px;

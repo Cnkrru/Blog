@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import VButton from '@/components/common/VButton.vue'
+import VButton from '@/components/__common/VButton.vue'
 import { ref, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
 
@@ -267,9 +267,7 @@ const hasHeader = computed(() => header.value.length > 0)
   padding: 0;
   color: inherit;
 }
-</style>
 
-<style scoped>
 /* 响应式 */
 @media (max-width: 768px) {
   .csv-header {

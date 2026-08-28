@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { onMounted, onUnmounted, computed, ref } from 'vue'
 import { useScrollStore } from '../../stores'
 
@@ -113,9 +113,7 @@ onUnmounted(() => {
     transform: scale(1.1);
     box-shadow: 0 4px 14px color-mix(in srgb, var(--common-color-1) 40%, transparent);
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
     .back-to-top-btn.immersive {
         bottom: 16px;

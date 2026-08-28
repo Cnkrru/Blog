@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const ageText = ref('')
@@ -46,6 +46,7 @@ onUnmounted(() => {
   flex-wrap: wrap;
   font-size: 14px;
   letter-spacing: 0.3px;
+  color: var(--common-text);
 }
 
 .age-icon {
@@ -56,23 +57,11 @@ onUnmounted(() => {
 }
 
 .age-num {
-  font-weight: 700;
   font-variant-numeric: tabular-nums;
-}
-</style>
-
-<style scoped>
-.website-age {
-  color: var(--common-text);
-}
-
-.age-num {
   color: var(--common-color-1);
   font-weight: 600;
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .website-age {
     justify-content: flex-start;

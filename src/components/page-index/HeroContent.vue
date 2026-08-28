@@ -145,9 +145,7 @@ onUnmounted(() => { if (timer) clearTimeout(timer) })
   display: flex;
   justify-content: center;
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .hero-content {
     padding: 3rem 1.5rem 2rem;

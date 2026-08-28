@@ -1,5 +1,5 @@
 <script setup>
-import VIcon from '@/components/common/VIcon.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 const weather = ref(null)
@@ -198,9 +198,7 @@ onMounted(() => {
   white-space: nowrap;
   opacity: 0.7;
 }
-</style>
 
-<style scoped>
 .weather-mini {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
   color: var(--common-text);
@@ -218,9 +216,7 @@ onMounted(() => {
 .weather-city {
   color: var(--common-text);
 }
-</style>
 
-<style scoped>
 @media (max-width: 768px) {
   .weather-mini {
     padding: 4px 8px;
