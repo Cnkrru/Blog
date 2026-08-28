@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
+import VCard from '../__common/VCard.vue'
 import { useThemeStore } from '../../stores'
 import giscusBaseCss from '@/assets/css/giscus-base.css?raw'
 import inkDarkCss from '@/assets/css/comment/ink-dark.css?raw'
@@ -125,7 +126,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="comment-section">
+    <VCard class="comment-section">
         <div class="comment-header">
             <h3>评论</h3>
         </div>
@@ -140,17 +141,17 @@ onUnmounted(() => {
             <!-- 评论容器 -->
             <div v-else class="comment-container"></div>
         </div>
-    </div>
+    </VCard>
 </template>
 
 <style scoped>
 /* ===== 评论区域容器 ===== */
 .comment-section {
+    /* 玻璃表面由 VCard 提供；此处仅对齐原视觉（alpha、内边距、边框色） */
+    --v-card-alpha: 0.3;
+    --v-card-pad: 16px;
+    --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
     margin-top: 1.5rem;
-    padding: 16px;
-    border-radius: 12px;
-    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
-    border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 /* 评论标题 */
@@ -242,8 +243,8 @@ onUnmounted(() => {
 /* ===== 响应式 ===== */
 @media (max-width: 640px) {
     .comment-section {
+        --v-card-pad: 1rem;
         margin-top: 1rem;
-        padding: 1rem;
     }
 
     .comment-header h3 {
@@ -261,8 +262,8 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
     .comment-section {
+        --v-card-pad: 1.5rem;
         margin-top: 2rem;
-        padding: 1.5rem;
     }
 
     .comment-header h3 {

@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import ArticleCover from '../content/ArticleCover.vue'
+import VCard from '../__common/VCard.vue'
 import { useArticlesStore } from '../../stores'
 
 const props = defineProps(['currentArticleId', 'currentArticleCategory'])
@@ -86,7 +87,7 @@ onUnmounted(() => {
 
 <template>
   <div class="related-wrap">
-    <div class="related-box">
+    <VCard class="related-box">
       <h3 class="related-head">相关文章推荐</h3>
       <div class="related-grid">
         <RouterLink
@@ -111,7 +112,7 @@ onUnmounted(() => {
           </div>
         </RouterLink>
       </div>
-    </div>
+    </VCard>
   </div>
 </template>
 
@@ -123,14 +124,8 @@ onUnmounted(() => {
 
 .related-box {
   width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.4));
-}
-
-.related-box,
-.related-card {
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
+  /* 玻璃表面由 VCard 提供；此处仅对齐原视觉（alpha、响应式内边距） */
+  --v-card-alpha: 0.4;
 }
 
 .related-head {
@@ -148,6 +143,7 @@ onUnmounted(() => {
 
 .related-card {
   text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--common-color-1) 10%, transparent);
   border-radius: 10px;
   overflow: hidden;
   display: flex;
@@ -248,7 +244,7 @@ onUnmounted(() => {
   }
 
   .related-box {
-    padding: 12px;
+    --v-card-pad: 12px;
     margin: 15px 0;
   }
   

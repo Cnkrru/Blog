@@ -12,7 +12,7 @@
     
     <div v-else-if="userData" class="github-content">
       <!-- 用户信息卡片 -->
-      <div class="user-card">
+      <VCard class="user-card">
         <img :src="userData.avatar_url" :alt="userData.login" class="avatar" loading="lazy" />
         <div class="user-info">
           <h3>{{ userData.name || userData.login }}</h3>
@@ -34,13 +34,13 @@
           </div>
           <a :href="userData.html_url" target="_blank" class="profile-link">访问GitHub主页</a>
         </div>
-      </div>
+      </VCard>
       
       <!-- 热门仓库 -->
       <div class="repositories-section" v-if="reposData.length > 0">
         <h3 class="section-title">热门仓库</h3>
         <div class="repos-grid">
-          <div 
+          <VCard 
             v-for="repo in reposData" 
             :key="repo.id" 
             class="repo-card"
@@ -58,7 +58,7 @@
               </span>
               <span class="repo-forks"><VIcon :src="'fork.svg'" :size="13" /> {{ repo.forks_count }}</span>
             </div>
-          </div>
+          </VCard>
         </div>
       </div>
     </div>
@@ -69,6 +69,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import VIcon from '@/components/__common/VIcon.vue'
+import VCard from '../__common/VCard.vue'
 
 const props = defineProps(['username'])
 
@@ -151,10 +152,12 @@ onMounted(() => {
 
 /* 用户卡片 */
 .user-card {
+    /* 玻璃表面由 VCard 提供；此处仅对齐原视觉（alpha、内边距、边框色） */
+    --v-card-alpha: 0.95;
+    --v-card-pad: 24px;
+    --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
     display: flex;
     gap: 24px;
-    padding: 24px;
-    border-radius: 12px;
     transition: transform 0.3s ease;
 }
 
@@ -252,11 +255,13 @@ onMounted(() => {
 }
 
 .repo-card {
-    padding: 16px;
-    border-radius: 8px;
+    /* 玻璃表面由 VCard 提供；此处仅对齐原视觉（alpha、内边距、圆角、边框色） */
+    --v-card-alpha: 0.95;
+    --v-card-pad: 16px;
+    --v-card-radius: 8px;
+    --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
     cursor: pointer;
     transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
-    border: 1px solid transparent;
 }
 
 .repo-card:hover {
@@ -310,8 +315,6 @@ onMounted(() => {
 }
 
 .user-card {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.95);
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
   box-shadow: 0 2px 8px var(--common-shadow);
 }
 
@@ -364,14 +367,9 @@ onMounted(() => {
   background-color: var(--common-color-1);
 }
 
-.repo-card {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.95);
-  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
-}
-
 .repo-card:hover {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.98);
-  border-color: color-mix(in srgb, var(--common-text) 15%, transparent);
+  --v-card-alpha: 0.98;
+  --v-card-border: color-mix(in srgb, var(--common-text) 15%, transparent);
   box-shadow: 0 4px 12px var(--common-shadow);
 }
 

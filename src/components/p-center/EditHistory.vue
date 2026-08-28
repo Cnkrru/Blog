@@ -28,7 +28,7 @@ function toggle() {
 
 <template>
   <div class="edit-wrap">
-    <div class="edit-card">
+    <VCard class="edit-card">
       <!-- 发布信息行 -->
       <div class="date-row">
         <div class="date-block">
@@ -72,7 +72,7 @@ function toggle() {
           </div>
         </div>
       </div>
-    </div>
+    </VCard>
   </div>
 </template>
 
@@ -84,14 +84,14 @@ function toggle() {
 }
 
 .edit-card {
+  --v-card-alpha: 0.3;
+  --v-card-pad: 12px 16px;
+  --v-card-radius: 10px;
+  --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
   width: 100%;
-  padding: 12px 16px;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 0;
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 /* ── 日期行 ── */
@@ -268,8 +268,8 @@ function toggle() {
 
 @media (max-width: 640px) {
   .edit-card {
-    padding: 10px 12px;
-    border-radius: 8px;
+    --v-card-pad: 10px 12px;
+    --v-card-radius: 8px;
   }
   .date-row {
     gap: 16px;

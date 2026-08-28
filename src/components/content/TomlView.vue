@@ -1,5 +1,5 @@
 <template>
-  <div class="tv-container" :class="{ 'has-error': parseError }">
+  <VCard class="tv-container" :class="{ 'has-error': parseError }">
     <!-- 头部栏 -->
     <div class="tv-header">
       <span class="tv-badge">
@@ -47,7 +47,7 @@
 
     <!-- 源码模式 -->
     <pre v-else class="tv-source"><code ref="codeRef" class="language-toml">{{ code }}</code></pre>
-  </div>
+  </VCard>
 </template>
 
 <script setup>
@@ -56,6 +56,7 @@ import VIcon from '@/components/__common/VIcon.vue'
 import { ref, computed, watch, provide, nextTick, onMounted } from 'vue'
 import JsonTree from './JsonTree.vue'
 import CodeRender from './CodeRender.vue'
+import VCard from '../__common/VCard.vue'
 import { useCodeStore } from '../../stores'
 
 const props = defineProps(['code'])
@@ -265,11 +266,13 @@ watch(viewMode, () => {
 <style scoped>
 .tv-container {
   margin: 12px 0;
-  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
   box-shadow: 0 1px 3px var(--common-shadow);
+  /* 玻璃表面由 VCard 提供；此处仅对齐原视觉 */
+  --v-card-alpha: 0.4;
+  --v-card-pad: 0;
+  --v-card-radius: 10px;
+  --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 .tv-container.has-error {
   border-color: color-mix(in srgb, #ef4444 30%, transparent);

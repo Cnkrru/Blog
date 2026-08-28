@@ -90,7 +90,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 <template>
   <div class="reading-wrap">
-    <div v-if="readingTime" class="reading-card">
+    <VCard v-if="readingTime" class="reading-card">
       <!-- 字数 -->
       <div class="metric-block">
         <div class="metric-icon">
@@ -142,7 +142,7 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
           <span class="metric-label">预计阅读</span>
         </div>
       </div>
-    </div>
+    </VCard>
   </div>
 </template>
 
@@ -154,14 +154,14 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 }
 
 .reading-card {
+  --v-card-alpha: 0.3;
+  --v-card-pad: 10px 16px;
+  --v-card-radius: 10px;
+  --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
   width: 100%;
-  padding: 10px 16px;
-  border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 0;
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .metric-block {
@@ -244,8 +244,8 @@ onUnmounted(() => { if (debounceTimer) clearTimeout(debounceTimer) })
 
 @media (max-width: 640px) {
   .reading-card {
-    padding: 8px 10px;
-    border-radius: 8px;
+    --v-card-pad: 8px 10px;
+    --v-card-radius: 8px;
     gap: 0;
     flex-wrap: wrap;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="csv-container">
+  <VCard class="csv-container">
     <!-- 头部栏 -->
     <div class="csv-header">
       <span class="csv-badge">
@@ -52,13 +52,14 @@
 
     <!-- 源码模式：原始 CSV -->
     <pre v-else class="csv-source"><code>{{ code }}</code></pre>
-  </div>
+  </VCard>
 </template>
 
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
 import { ref, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
+import VCard from '../__common/VCard.vue'
 
 const props = defineProps(['code'])
 
@@ -124,11 +125,13 @@ const hasHeader = computed(() => header.value.length > 0)
 <style scoped>
 .csv-container {
   margin: 12px 0;
-  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.4);
   box-shadow: 0 1px 3px var(--common-shadow);
+  /* 玻璃表面由 VCard 提供；此处仅对齐原视觉 */
+  --v-card-alpha: 0.4;
+  --v-card-pad: 0;
+  --v-card-radius: 10px;
+  --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 /* ---- 头部栏 ---- */

@@ -1,5 +1,6 @@
 <script setup>
 import VIcon from '@/components/__common/VIcon.vue'
+import VCard from '../__common/VCard.vue'
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 const weather = ref(null)
@@ -147,7 +148,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="weather-mini">
+  <VCard class="weather-mini">
     <div v-if="loading || error" class="weather-loading">
       <span>天气之子失踪了……</span>
     </div>
@@ -157,18 +158,19 @@ onMounted(() => {
       <span class="weather-temp">{{ weather.temperature }}°</span>
       <span class="weather-city">{{ locationInfo.city }}</span>
     </div>
-  </div>
+  </VCard>
 </template>
 
 <style scoped>
 .weather-mini {
+  /* 玻璃表面由 VCard 提供；此处仅对齐原视觉（alpha、内边距、边框色） */
+  --v-card-alpha: 0.3;
+  --v-card-pad: 6px 12px;
+  --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
   min-width: 90px;
-  padding: 6px 12px;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid transparent;
 }
 
 .weather-loading {
@@ -200,9 +202,7 @@ onMounted(() => {
 }
 
 .weather-mini {
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
   color: var(--common-text);
-  border-color: color-mix(in srgb, var(--common-text) 8%, transparent);
 }
 
 .weather-icon {
@@ -219,7 +219,7 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .weather-mini {
-    padding: 4px 8px;
+    --v-card-pad: 4px 8px;
     min-width: 80px;
   }
 

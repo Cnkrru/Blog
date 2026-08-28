@@ -94,7 +94,7 @@ async function submit(type) {
 
 <template>
   <div class="feedback-wrap">
-    <div class="feedback-card">
+    <VCard class="feedback-card">
       <div class="feedback-question">
         <span class="question-icon">
           <VIcon :src="'question.svg'" :size="18" />
@@ -138,7 +138,7 @@ async function submit(type) {
           感谢反馈！
         </div>
       </Transition>
-    </div>
+    </VCard>
   </div>
 </template>
 
@@ -149,16 +149,16 @@ async function submit(type) {
   padding: 28px 0 20px;
 }
 
-/* 卡片容器 */
+/* 卡片容器：玻璃表面由 VCard 提供，此处仅对齐原视觉参数 */
 .feedback-card {
+  --v-card-alpha: 0.35;
+  --v-card-pad: 24px 32px;
+  --v-card-radius: 16px;
+  --v-card-border: color-mix(in srgb, var(--common-text) 8%, transparent);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  padding: 24px 32px;
-  border-radius: 16px;
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.35);
-  border: 1px solid color-mix(in srgb, var(--common-text) 8%, transparent);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
   transition: border-color 0.3s ease;
 }
@@ -328,7 +328,7 @@ async function submit(type) {
 /* 移动端适配 */
 @media (max-width: 480px) {
   .feedback-card {
-    padding: 20px 20px;
+    --v-card-pad: 20px 20px;
     gap: 14px;
   }
 
