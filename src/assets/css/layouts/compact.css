@@ -72,11 +72,16 @@
 /* 移动端（<=1024px）：同样无空隙，仅 Header / Center / Footer 紧贴拼接
    侧边栏保持滑出式交互不变 */
 @media (max-width: 1024px) {
-  .layout-compact .header-s,
+  .layout-compact .header-s {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
   .layout-compact .footer-s {
     width: 100%;
     max-width: none;
     margin: 0;
+    padding-top: 0;
   }
   .layout-compact .header-flex {
     padding: 0;
