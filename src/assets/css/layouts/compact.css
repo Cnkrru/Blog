@@ -72,6 +72,12 @@
 /* 移动端（<=1024px）：同样无空隙，仅 Header / Center / Footer 紧贴拼接
    侧边栏保持滑出式交互不变 */
 @media (max-width: 1024px) {
+  .layout-compact .header-s,
+  .layout-compact .footer-s {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
   .layout-compact .header-flex {
     padding: 0;
   }
@@ -143,5 +149,14 @@
   }
   .layout-compact .center-card .center-card-content {
     border-radius: 0;
+  }
+}
+/* 极窄屏（<=640px）：满幅后收紧卡片内边距，避免内容贴死左右边缘 */
+@media (max-width: 640px) {
+  .layout-compact .header-card {
+    padding: 8px 12px;
+  }
+  .layout-compact .footer-card {
+    padding: 12px;
   }
 }
