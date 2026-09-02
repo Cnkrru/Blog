@@ -61,15 +61,24 @@ function onKeyDown(e) {
   }
 }
 
+// 触屏设备：极简模式下点按背景可退出（Header 区域除外，避免与头部按钮冲突）
+function onMinimalPointerDown(e) {
+  if (themeStore.currentLayout !== 'minimal') return
+  if (e.pointerType !== 'touch') return
+  if (e.target instanceof HTMLElement && e.target.closest('.header-flex')) return
+  themeStore.setLayout('compact')
+}
+
 onMounted(() => {
   themeStore.initTheme()
   document.addEventListener('keydown', onKeyDown)
+  document.addEventListener('pointerdown', onMinimalPointerDown)
 })
 
 onUnmounted(() => {
   document.removeEventListener('keydown', onKeyDown)
-})
-</script>
+  document.removeEventListener('pointerdown', onMinimalPointerDown)
+})</script>
 
 <template>
   <div id="app">
@@ -107,6 +116,7 @@ onUnmounted(() => {
         </Transition>
       </router-view>
     </template>
+    <div v-if="themeStore.currentLayout === 'minimal'" class="minimal-exit-hint">轻点退出极简</div>
   </div>
 </template>
 
@@ -140,6 +150,29 @@ onUnmounted(() => {
     align-items: flex-start;
     flex-direction: row;
     flex: 1;
+}
+/* 极简模式触屏退出提示 */
+.minimal-exit-hint {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--common-text);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .minimal-exit-hint {
+    display: block;
+  }
 }
 </style>
 
