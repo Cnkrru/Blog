@@ -119,7 +119,7 @@ const router = useRouter()
 }
 
 /* ===== 响应式设计媒体查询 ===== */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .header-flex {
     flex-direction: row;
     justify-content: center;
@@ -235,7 +235,7 @@ const router = useRouter()
     transition: transform 0.3s ease;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .button-style {
     width: 30px;
     height: 30px;

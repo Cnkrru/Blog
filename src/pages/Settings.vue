@@ -374,7 +374,7 @@ useHead({
 }
 
 /* 移动端适配 */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .settings-content {
     padding-top: 0;
   }

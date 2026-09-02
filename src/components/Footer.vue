@@ -123,7 +123,7 @@ const socialLinks = [
 }
 
 /* ===== 响应式 ===== */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .footer-s {
     height: auto;
     padding: 6px 0;
@@ -149,7 +149,7 @@ const socialLinks = [
   }
 }
 
-@media (min-width: 1281px) {
+@media (min-width: 1280px) {
   .footer-s {
     max-width: 1400px;
   }

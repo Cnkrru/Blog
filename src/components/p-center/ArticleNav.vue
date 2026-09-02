@@ -253,7 +253,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: 640px) and (max-width: 767px) {
+@media (min-width: 640px) and (max-width: 768px) {
   .nav-wrap {
     gap: 12px;
     padding: 6px;
@@ -273,7 +273,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .nav-btn {
     padding: 15px 22px;
     min-height: 70px;
@@ -284,7 +284,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: 1280px) and (max-width: 1536px) {
+@media (min-width: 1280px) {
   .nav-btn {
     padding: 18px 24px;
     min-height: 76px;

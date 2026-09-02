@@ -20,7 +20,7 @@ const immersiveStore = useImmersiveStore()
 <!-- 布局样式 -->
 <style>
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     .immersive-btn {
         display: none !important;
     }
@@ -84,7 +84,7 @@ body.immersive-reading {
 
 /* 按钮颜色由 Header.vue 统一管理 */
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     body.immersive-reading {
         --ir-ccs-w: 100%;
         --ir-ccs-mw: 100%;

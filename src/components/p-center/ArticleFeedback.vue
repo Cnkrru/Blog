@@ -326,7 +326,7 @@ async function submit(type) {
 }
 
 /* 移动端适配 */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .feedback-card {
     --v-card-pad: 20px 20px;
     gap: 14px;

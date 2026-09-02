@@ -498,7 +498,7 @@ onMounted(() => {
     }
 }
 
-@media (max-width: 1536px) {
+@media (min-width: 1280px) {
     .links-content {
         grid-template-columns: repeat(4, 1fr);
     }

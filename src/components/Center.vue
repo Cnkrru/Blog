@@ -70,7 +70,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     .center-card {
         height: auto;
         max-height: none;
@@ -151,7 +151,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     .center-head-card {
         flex-direction: column;
         align-items: flex-start;

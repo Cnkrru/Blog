@@ -238,7 +238,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 1536px) {
+@media (min-width: 1280px) {
   .search-card {
       max-width: 600px;
   }

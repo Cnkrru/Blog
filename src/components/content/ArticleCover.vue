@@ -212,7 +212,7 @@ const coverVars = computed(() => {
 }
 
 /* 小屏适配 */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .cover-content {
     padding: 12px;
     gap: 6px;

@@ -263,7 +263,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: 640px) and (max-width: 1023px) {
+@media (min-width: 640px) and (max-width: 1024px) {
   .related-grid {
     grid-template-columns: repeat(2, 1fr);
   }
