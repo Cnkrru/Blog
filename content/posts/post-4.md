@@ -10,8 +10,8 @@ description: 详细介绍前端组件——返回顶部，介绍组件如何制�
 keywords: 前端, 组件, 返回顶部, TypeScript
 ---
 ## 制作方法
-1. 依靠`scroll`API来实现，关于scroll详见于:[Frontend-Scroll-Screen](post-13.md)
-2. 如果要实现滚动一定距离再显示，使用CSS变量，JS控制opacity来实现，关于CSS变量详见于:[Frontend-CSS变量](post-14.md)
+1. 依靠`scroll`API来实现，关于scroll详见于:[Frontend-Scroll-Screen](/post/13)
+2. 如果要实现滚动一定距离再显示，使用CSS变量，JS控制opacity来实现，关于CSS变量详见于:[Frontend-CSS变量](/post/14)
 ---
 ## 代码:
 ### 1. html版本demo

@@ -14,7 +14,7 @@ keywords: frontend
     - 绑定scroll事件
 4. 注意事项：
     - 不绑定事件不会实时更新CSS最新状态
-> scroll常见于制作返回顶部组件，关于这个API，详细请看:[Frontend-Scroll-Screen](post-13.md)
+> scroll常见于制作返回顶部组件，关于这个API，详细请看:[Frontend-Scroll-Screen](/post/13)
 ---
 ## 示例代码
 ```html
