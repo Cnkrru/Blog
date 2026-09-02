@@ -28,7 +28,7 @@ const menuItems = [
   {
     icon: 'arrow-up.svg',
     label: '返回顶部',
-    action: () => scrollStore.scrollToTop(),
+    action: () => scrollStore.scroll_to_top(),
   },
   {
     icon: 'copy.svg',

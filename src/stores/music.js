@@ -1,3 +1,4 @@
+// 用在MusicPlay和AudioEffects组件
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'

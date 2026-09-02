@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const showPopup = ref(false)
 const loading = ref(true)
@@ -106,7 +107,7 @@ onUnmounted(() => {
         <div class="busuanzi-popup">
           <div class="popup-header">
             <h3>站点统计</h3>
-            <VButton icon="x.svg" size="28" shape="round" variant="ghost" class="popup-close" @click="showPopup = false" aria-label="关闭" />
+            <VButton class="v-btn-round v-btn-ghost popup-close" style="height:28px;min-width:28px" @click="showPopup = false" aria-label="关闭"><VIcon :src="'x.svg'" :size="15" /></VButton>
           </div>
 
           <div v-if="loading" class="popup-loading">

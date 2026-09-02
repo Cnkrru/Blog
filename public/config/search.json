@@ -1,5 +1,37 @@
 [
   {
+    "id": "29",
+    "title": "AL开发日志-2-APPicon配置",
+    "date": "2026-08-28",
+    "updated": "",
+    "category": "AL",
+    "tags": [
+      "AL"
+    ],
+    "description": "记录AL开发",
+    "keywords": "AL",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "AL开发日志-2-APPicon配置 - Tech Blog",
+    "path": "./html/posts/post-29.html"
+  },
+  {
+    "id": "30",
+    "title": "Vue-3-VIcon组件设计",
+    "date": "2026-08-28",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "前端"
+    ],
+    "description": "记录Vicon如何制作",
+    "keywords": "vue",
+    "author": "Cnkrru",
+    "history": [],
+    "seoTitle": "Vue-3-VIcon组件设计 - Tech Blog",
+    "path": "./html/posts/post-30.html"
+  },
+  {
     "id": "28",
     "title": "Vue-2-vue组件制作",
     "date": "2026-08-26",
@@ -417,7 +449,7 @@
     "id": "4",
     "title": "Frontend-返回顶部组件",
     "date": "2026-04-19",
-    "updated": "2026-08-06",
+    "updated": "2026-09-02 更新vue组件的制作方法",
     "category": "前端",
     "tags": [
       "前端"
@@ -425,7 +457,9 @@
     "description": "详细介绍前端组件——返回顶部，介绍组件如何制作。",
     "keywords": "前端, 组件, 返回顶部, TypeScript",
     "author": "Cnkrru",
-    "history": [],
+    "history": [
+      "2026-08-06 更新HTML组件的制作方法"
+    ],
     "seoTitle": "Frontend-返回顶部组件 - Tech Blog",
     "path": "./html/posts/post-4.html"
   },
@@ -433,7 +467,7 @@
     "id": "2",
     "title": "功能测试汇总",
     "date": "2026-04-16",
-    "updated": "2026-08-12",
+    "updated": "2026-08-30",
     "category": "随笔",
     "tags": [
       "随笔"
@@ -442,6 +476,7 @@
     "keywords": "Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX, CSV, JSON, YAML, TOML",
     "author": "Cnkrru",
     "history": [
+      "2026-08-30 新增Vue组件在线运行测试",
       "2026-08-12 新增JSON/YAML/TOML结构化数据渲染测试",
       "2026-08-12 新增CSV表格渲染测试",
       "2026-08-07 新增灯箱和PDF打印功能测试",

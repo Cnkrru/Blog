@@ -1,5 +1,6 @@
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { computed } from 'vue'
 import { useTocStore, useThemeStore } from '../../stores'
 
@@ -22,17 +23,13 @@ const toggleToc = () => {
 <template>
   <div class="toc-wrap" :class="{ 'dark-theme': isDarkTheme }">
     <VButton
-      class="toc-btn"
+      class="v-btn-primary v-btn-round toc-btn"
+      style="height:38px;min-width:38px"
       :class="{ active: tocStore.show }"
-      :icon="tocStore.show ? 'x.svg' : 'list.svg'"
-      icon-size="24"
-      variant="primary"
-      shape="round"
-      size="38"
       :title="tocStore.show ? '关闭目录' : '打开目录'"
       aria-label="切换目录"
       @click="toggleToc"
-    />
+    ><VIcon :src="tocStore.show ? 'x.svg' : 'list.svg'" :size="24" /></VButton>
   </div>
 </template>
 

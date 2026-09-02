@@ -262,8 +262,8 @@ const processArticleData = (articles, year) => {
   for (let month = 1; month <= 12; month++) {
     const daysInMonth = new Date(year, month, 0).getDate()
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month - 1, day)
-      const dateString = date.toISOString().split('T')[0]
+      const dateString =
+        `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
       const act = activityMap.get(dateString)
       data.push({
         date: dateString,

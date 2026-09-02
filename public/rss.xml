@@ -5,9 +5,25 @@
     <link>https://cnkrru.top/</link>
     <description>个人技术博客，分享前端开发、技术学习和生活点滴</description>
     <atom:link href="https://cnkrru.top/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 28 Aug 2026 00:41:53 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 02 Sep 2026 08:46:41 GMT</lastBuildDate>
     <language>zh-CN</language>
 
+    
+    <item>
+      <title>AL开发日志-2-APPicon配置</title>
+      <link>https://cnkrru.top/post/29</link>
+      <description>记录AL开发</description>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/29</guid>
+    </item>
+    
+    <item>
+      <title>Vue-3-VIcon组件设计</title>
+      <link>https://cnkrru.top/post/30</link>
+      <description>记录Vicon如何制作</description>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://cnkrru.top/post/30</guid>
+    </item>
     
     <item>
       <title>Vue-2-vue组件制作</title>

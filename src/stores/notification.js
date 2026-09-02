@@ -1,3 +1,4 @@
+// 用在CodeRender、MarkdownRender和NotificationRender组件
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 

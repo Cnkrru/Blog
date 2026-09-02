@@ -1,3 +1,4 @@
+// 用在CodeRender、HighlightRender、JsonView、TomlView和YamlView组件
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import Prism from 'prismjs'
@@ -16,9 +17,7 @@ const LANG_ALIAS = {
   rb: 'ruby',
   md: 'markdown',
   xml: 'html',
-  svg: 'html',
-  // vue 不是 Prism 官方语言，模板本质是 HTML，映射到 markup/html 高亮
-  vue: 'html'
+  svg: 'html'
 }
 
 function normalizeLang(lang) {
@@ -57,7 +56,8 @@ const LANG_MODULES = {
   ini: () => import('prismjs/components/prism-ini'),
   diff: () => import('prismjs/components/prism-diff'),
   regex: () => import('prismjs/components/prism-regex'),
-  nginx: () => import('prismjs/components/prism-nginx')
+  nginx: () => import('prismjs/components/prism-nginx'),
+  vue: () => import('../lib/prism-vue')
 }
 
 const loadedLangs = new Set()

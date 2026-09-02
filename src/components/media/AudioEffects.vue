@@ -1,5 +1,6 @@
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, watch, computed } from 'vue'
 import { useMusicStore } from '../../stores'
 
@@ -96,10 +97,10 @@ const closePanel = () => {
       <div class="effects-header">
         <h4>音效设置</h4>
         <div class="header-actions">
-          <VButton auto-height variant="ghost" shape="pill" class="enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects" aria-label="切换音效状态">
+          <VButton class="v-btn-pill v-btn-ghost enable-btn" :style="effectsEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleEffects" aria-label="切换音效状态">
             {{ effectsEnabled ? '已启用' : '已关闭' }}
           </VButton>
-          <VButton round variant="ghost" size="28" class="close-btn" icon="x.svg" title="关闭音效设置" aria-label="关闭音效设置" @click="closePanel" />
+          <VButton class="v-btn-round v-btn-ghost close-btn" style="height:28px;min-width:28px" title="关闭音效设置" aria-label="关闭音效设置" @click="closePanel"><VIcon :src="'x.svg'" :size="15" /></VButton>
         </div>
       </div>
 
@@ -107,7 +108,7 @@ const closePanel = () => {
         <div class="effect-section">
           <div class="visualizer-toggle">
             <span class="effect-label">音频可视化</span>
-            <VButton auto-height variant="ghost" shape="pill" class="toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer" aria-label="切换音频可视化">{{ isVizEnabled ? '已开启' : '已关闭' }}</VButton>
+            <VButton class="v-btn-pill v-btn-ghost toggle-btn" :style="isVizEnabled ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}" @click="toggleVisualizer" aria-label="切换音频可视化">{{ isVizEnabled ? '已开启' : '已关闭' }}</VButton>
           </div>
         </div>
 
@@ -117,10 +118,7 @@ const closePanel = () => {
             <VButton
               v-for="mode in surroundModes"
               :key="mode.value"
-              auto-height
-              variant="ghost"
-              shape="pill"
-              class="chip-btn"
+              class="v-btn-pill v-btn-ghost chip-btn"
               :aria-label="'环绕模式：' + mode.label"
               :style="currentSurroundMode === mode.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeSurroundMode(mode.value)"
@@ -134,10 +132,7 @@ const closePanel = () => {
             <VButton
               v-for="preset in eqPresets"
               :key="preset.value"
-              auto-height
-              variant="ghost"
-              shape="pill"
-              class="chip-btn"
+              class="v-btn-pill v-btn-ghost chip-btn"
               :aria-label="'均衡器：' + preset.label"
               :style="currentEqPreset === preset.value ? { background: 'var(--common-color-1)', color: 'var(--common-content)', borderColor: 'var(--common-color-1)' } : {}"
               @click="changeEqPreset(preset.value)"

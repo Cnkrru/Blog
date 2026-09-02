@@ -1,5 +1,6 @@
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { computed, ref } from 'vue'
 import { useThemeStore } from '../../stores'
 
@@ -18,17 +19,14 @@ const toggleTheme = () => {
 
 <template>
   <VButton
-    class="button-style theme-btn"
+    class="button-style v-btn-primary theme-btn"
     title="切换主题"
     :class="{ animating: isAnimating }"
     :aria-label="isDarkTheme ? '切换到亮色主题' : '切换到暗色主题'"
-    variant="primary"
-    shape="round"
-    size="36"
-    :icon="isDarkTheme ? 'sun.svg' : 'moon.svg'"
-    icon-size="24"
+    style="height:36px;min-width:36px"
     @click="toggleTheme"
   >
+    <VIcon :src="isDarkTheme ? 'sun.svg' : 'moon.svg'" :size="24" />
     <span v-if="isAnimating" class="emoji-burst">✨</span>
   </VButton>
 </template>

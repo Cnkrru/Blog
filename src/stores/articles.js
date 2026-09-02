@@ -1,3 +1,4 @@
+// 用在ContentRender、ArticleCount、PostMenu、RelatedArticles、Search、Archives、Home、Tag和useContentLoader
 /**
  * 数据源 Store — 加载文章列表、获取 Markdown 文件、按标签/分类筛选
  */

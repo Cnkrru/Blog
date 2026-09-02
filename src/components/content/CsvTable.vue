@@ -9,27 +9,17 @@
       <div class="csv-actions">
         <CodeRender :code="code" />
         <VButton
-          auto-height
-          variant="ghost"
-          shape="rect"
-          class="csv-toggle"
+          class="v-btn-rect v-btn-ghost csv-toggle"
           :class="{ active: viewMode === 'source' }"
-          icon="code.svg"
-          icon-size="14"
           title="查看源码"
           @click="viewMode = 'source'"
-        >源码</VButton>
+        ><VIcon :src="'code.svg'" :size="14" />源码</VButton>
         <VButton
-          auto-height
-          variant="ghost"
-          shape="rect"
-          class="csv-toggle"
+          class="v-btn-rect v-btn-ghost csv-toggle"
           :class="{ active: viewMode === 'preview' }"
-          icon="table.svg"
-          icon-size="14"
           title="查看表格"
           @click="viewMode = 'preview'"
-        >预览</VButton>
+        ><VIcon :src="'table.svg'" :size="14" />预览</VButton>
         <span class="csv-stats">{{ rows }} 行 &times; {{ cols }} 列</span>
       </div>
     </div>
@@ -57,6 +47,7 @@
 
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
 import VCard from '../__common/VCard.vue'

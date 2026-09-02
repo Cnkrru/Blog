@@ -1,5 +1,6 @@
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 defineProps({
   isPlaying: { type: Boolean, default: false }
@@ -22,10 +23,10 @@ const handleNext = () => {
 
 <template>
   <div class="player-controls">
-    <VButton round variant="ghost" size="36" class="control-btn" icon="skip-back.svg" icon-size="24" title="上一首" aria-label="上一首" @click="handlePrev" />
+    <VButton class="v-btn-round v-btn-ghost control-btn" style="height:36px;min-width:36px" title="上一首" aria-label="上一首" @click="handlePrev"><VIcon :src="'skip-back.svg'" :size="24" /></VButton>
 
-    <VButton round variant="ghost" size="40" class="control-btn play-btn" :icon="isPlaying ? 'pause.svg' : 'play.svg'" icon-size="24" title="播放/暂停" aria-label="播放" @click="handleTogglePlay" />
+    <VButton class="v-btn-round v-btn-ghost control-btn play-btn" style="height:40px;min-width:40px" title="播放/暂停" aria-label="播放" @click="handleTogglePlay"><VIcon :src="isPlaying ? 'pause.svg' : 'play.svg'" :size="24" /></VButton>
 
-    <VButton round variant="ghost" size="36" class="control-btn" icon="skip-forward.svg" icon-size="24" title="下一首" aria-label="下一首" @click="handleNext" />
+    <VButton class="v-btn-round v-btn-ghost control-btn" style="height:36px;min-width:36px" title="下一首" aria-label="下一首" @click="handleNext"><VIcon :src="'skip-forward.svg'" :size="24" /></VButton>
   </div>
 </template>

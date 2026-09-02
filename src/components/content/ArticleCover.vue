@@ -50,10 +50,6 @@ const coverVars = computed(() => {
   const d2Offset = (hash % 16) - 8         // -8 ~ 7
   const d3Offset = (hash % 12) - 6         // -6 ~ 5
 
-  // 装饰线位置：左或右
-  const lineLeft = (hash % 2 === 0) ? '16px' : 'auto'
-  const lineRight = (hash % 2 === 0) ? 'auto' : '16px'
-
   // 装饰圆尺寸微调
   const d1Size = 40 + (hash % 10)          // 40-49%
   const d2Size = 26 + (hash % 8)           // 26-33%
@@ -63,8 +59,8 @@ const coverVars = computed(() => {
     '--cover-d1-offset': `${d1Offset}%`,
     '--cover-d2-offset': `${d2Offset}%`,
     '--cover-d3-offset': `${d3Offset}%`,
-    '--cover-line-left': lineLeft,
-    '--cover-line-right': lineRight,
+    '--cover-line-left': '16px',
+    '--cover-line-right': 'auto',
     '--cover-d1-size': `${d1Size}%`,
     '--cover-d2-size': `${d2Size}%`,
   }

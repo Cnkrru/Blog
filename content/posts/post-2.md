@@ -1,10 +1,11 @@
 ---
 title: 功能测试汇总
 date: 2026-04-16
-updated: 2026-08-12
+updated: 2026-08-30
 category: 随笔
 tags: [随笔]
 history:
+  - 2026-08-30 新增Vue组件在线运行测试
   - 2026-08-12 新增JSON/YAML/TOML结构化数据渲染测试
   - 2026-08-12 新增CSV表格渲染测试
   - 2026-08-07 新增灯箱和PDF打印功能测试
@@ -900,3 +901,121 @@ invalid = 没有引号的值
 - 支持**一键复制**代码内容
 - 解析失败时，自动切换到源码视图并显示错误信息
 - JSON 使用原生 `JSON.parse`，TOML 使用内建解析器，YAML 通过 CDN 加载 js-yaml（首次使用需加载，后续自动缓存）
+
+---
+
+# 第九部分：Vue组件在线运行测试
+
+---
+
+本文用于测试 **Vue 单文件组件** 的在线运行功能。使用 `vue` 语言标记的代码块，右上角会出现 ▶ 运行按钮，点击后会在弹窗内即时编译并渲染出可交互的组件。
+
+## 响应式计数器
+
+```vue
+<script setup>
+import { ref, computed } from 'vue'
+
+const count = ref(0)
+const isEven = computed(() => count.value % 2 === 0)
+
+function increment() {
+  count.value++
+}
+
+function reset() {
+  count.value = 0
+}
+</script>
+
+<template>
+  <div class="demo">
+    <h3>计数器</h3>
+    <p class="count">当前数值：{{ count }}</p>
+    <p class="hint">{{ isEven ? '偶数' : '奇数' }}</p>
+    <div class="actions">
+      <button @click="increment">+1</button>
+      <button @click="reset">重置</button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.demo h3 {
+  margin: 0 0 8px;
+}
+.count {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+.hint {
+  color: #6366f1;
+}
+.actions button {
+  margin-right: 8px;
+  padding: 6px 16px;
+  cursor: pointer;
+}
+</style>
+```
+
+## 列表渲染与交互
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const items = ref([
+  { id: 1, name: 'Vue', done: false },
+  { id: 2, name: 'Vite', done: true },
+  { id: 3, name: 'Pinia', done: false }
+])
+
+function toggle(item) {
+  item.done = !item.done
+}
+</script>
+
+<template>
+  <ul class="list">
+    <li v-for="item in items" :key="item.id" @click="toggle(item)" class="row">
+      <span class="box">{{ item.done ? '✓' : '○' }}</span>
+      <span :class="{ done: item.done }">{{ item.name }}</span>
+    </li>
+  </ul>
+</template>
+
+<style scoped>
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.box {
+  font-weight: 700;
+}
+.done {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+</style>
+```
+
+## 测试说明
+
+1. 点击上方代码块右上角的 ▶ 按钮，应该会弹出组件预览窗口
+2. 计数器示例中，点击 "+1" 数值递增，点击 "重置" 归零，奇偶提示实时变化
+3. 列表示例中，点击每一行可切换其完成状态（对勾 / 圆圈）
+4. 预览窗口支持明暗主题自适应，跟随站点主题

@@ -19,17 +19,19 @@
   },
   "scripts": {
     "dev": "vite",
-    "predev": "node src/_build/sync-content.js && node src/_build/svg.js",
+    "predev": "node src/_build/sync-content.js && node src/_build/svg.js && node src/_build/vendor.js",
     "build": "vite-ssg build",
-    "prebuild": "node src/_build/sync-content.js && node src/_build/svg.js",
+    "prebuild": "node src/_build/sync-content.js && node src/_build/svg.js && node src/_build/vendor.js",
     "preview": "vite preview",
     "sync": "node src/_build/sync-content.js"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
+    "@vue/repl": "^4.7.2",
     "@vueuse/head": "^0.9.8",
     "axios": "^1.19.0",
+    "es-module-shims": "^2.8.4",
     "js-yaml": "^4.3.1",
     "katex": "^0.16.47",
     "marked": "^14.1.4",

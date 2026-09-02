@@ -10,6 +10,7 @@ export { useCodeStore } from './code'
 export { useContentStore } from './content'
 export { useArticlesStore } from './articles'
 export { useMusicStore } from './music'
+export { useImmersiveStore } from './immersive'
 
 const pinia = createPinia()
 

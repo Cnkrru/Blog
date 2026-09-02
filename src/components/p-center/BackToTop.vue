@@ -1,75 +1,31 @@
 <script setup>
 import VIcon from '@/components/__common/VIcon.vue'
-import { onMounted, onUnmounted, computed, ref } from 'vue'
-import { useScrollStore } from '../../stores'
+import { useScrollStore, useImmersiveStore } from '../../stores'
 
 const scrollStore = useScrollStore()
-const isVisible = computed(() => scrollStore.isVisible)
+const immersiveStore = useImmersiveStore()
 
-const isImmersiveReading = ref(false)
-
-const checkImmersiveMode = () => {
-  const was = isImmersiveReading.value
-  isImmersiveReading.value = document.body.classList.contains('immersive-reading')
-
-  if (!was && isImmersiveReading.value) {
-    cleanupScrollListener = scrollStore.initScrollListener()
-  } else if (was && !isImmersiveReading.value) {
-    if (cleanupScrollListener) {
-      cleanupScrollListener()
-      cleanupScrollListener = undefined
-    }
-  }
-}
-
-const scrollToTop = () => {
-  scrollStore.scrollToTop()
-}
-
-let cleanupScrollListener = undefined
-let observer = null
-
-onMounted(() => {
-  checkImmersiveMode()
-
-  observer = new MutationObserver(() => {
-    checkImmersiveMode()
-  })
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-
-  if (isImmersiveReading.value) {
-    cleanupScrollListener = scrollStore.initScrollListener()
-  }
-})
-
-onUnmounted(() => {
-  if (cleanupScrollListener) {
-    cleanupScrollListener()
-  }
-  if (observer) {
-    observer.disconnect()
-    observer = null
-  }
-})
 </script>
 
 <template>
+    <!-- 正常状态下的返回顶部按钮 -->
     <button
-        v-if="!isImmersiveReading"
+        v-if="!immersiveStore.is_immersive"
         class="back-to-top-btn"
         title="返回顶部"
         aria-label="返回顶部"
-        @click="scrollToTop"
+        @click="scrollStore.scroll_to_top"
     >
         <VIcon :src="'arrow-up.svg'" :size="24" />
     </button>
+    <!-- 沉浸阅读状态下的返回顶部按钮 -->
     <Teleport to="body">
         <button
-            v-if="isImmersiveReading"
+            v-if="immersiveStore.is_immersive"
             class="back-to-top-btn immersive visible"
             title="返回顶部"
             aria-label="返回顶部"
-            @click="scrollToTop"
+            @click="scrollStore.scroll_to_top"
         >
             <VIcon :src="'arrow-up.svg'" :size="24" />
         </button>

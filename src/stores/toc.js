@@ -1,3 +1,4 @@
+// 用在Toc和TocButton组件
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 

@@ -1,3 +1,4 @@
+// 用在AudioVisualizer组件
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 

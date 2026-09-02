@@ -8,6 +8,7 @@
       <div class="header-actions">
         <CodeRender v-if="showCopyButton" :code="code" />
         <CodePreview v-if="language && (language.toLowerCase() === 'html' || language.toLowerCase() === 'htmlembedded')" :code="code" />
+        <VueReplPreview v-if="language && language.toLowerCase() === 'vue'" :code="code" />
         <span class="line-count" v-if="showLineNumbers">{{ displayCode.split('\n').length }} lines</span>
       </div>
     </div>
@@ -33,9 +34,9 @@
       <!-- 折叠按钮 -->
       <div v-if="isCollapsible && collapsed" class="fold-overlay" @click="toggleCollapse">
         <div class="fold-gradient"></div>
-        <VButton auto-height variant="ghost" shape="pill" class="fold-btn" icon="chevron-down.svg" icon-size="16">展开全部 ({{ lineCount }} 行)</VButton>
+        <VButton class="v-btn-pill v-btn-ghost fold-btn"><VIcon :src="'chevron-down.svg'" :size="16" />展开全部 ({{ lineCount }} 行)</VButton>
       </div>
-      <VButton v-else-if="isCollapsible && !collapsed" auto-height variant="ghost" radius="6" class="fold-toggle" @click="toggleCollapse">
+      <VButton v-else-if="isCollapsible && !collapsed" class="v-btn-ghost fold-toggle" style="border-radius:6px" @click="toggleCollapse">
         <VIcon :src="'chevron-down.svg'" :size="14" class="fold-icon" />
         收起
       </VButton>
@@ -49,6 +50,7 @@ import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import CodeRender from './CodeRender.vue'
 import CodePreview from './CodePreview.vue'
+import VueReplPreview from './VueReplPreview.vue'
 import { useCodeStore } from '../../stores'
 
 const props = defineProps({

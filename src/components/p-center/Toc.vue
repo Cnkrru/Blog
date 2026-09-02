@@ -183,17 +183,12 @@ onUnmounted(() => {
         </div>
         <div class="toc-hactn">
           <VButton
-            class="toc-tbtn"
-            :icon="expandedAll ? 'minus.svg' : 'plus.svg'"
-            icon-size="14"
-            variant="ghost"
-            shape="rect"
-            radius="6"
-            size="26"
+            class="v-btn-rect v-btn-ghost toc-tbtn"
+            style="height:26px;min-width:26px;border-radius:6px"
             :title="expandedAll ? '折叠全部' : '展开全部'"
             @click="expandedAll ? collapseAll() : expandAll()"
-          />
-          <VButton icon="x.svg" size="26" shape="rect" variant="ghost" class="toc-close" @click="toggleToc" title="关闭" />
+          ><VIcon :src="expandedAll ? 'minus.svg' : 'plus.svg'" :size="14" /></VButton>
+          <VButton class="v-btn-rect v-btn-ghost toc-close" style="height:26px;min-width:26px" @click="toggleToc" title="关闭"><VIcon :src="'x.svg'" :size="14" /></VButton>
         </div>
       </div>
 

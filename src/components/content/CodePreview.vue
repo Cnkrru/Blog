@@ -1,6 +1,7 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const props = defineProps(['code'])
 
@@ -28,13 +29,13 @@ function close() {
 </script>
 
 <template>
-  <VButton icon="play.svg" size="24" shape="rect" variant="ghost" class="run-btn" @click="runCode" title="运行代码" />
+  <VButton class="v-btn-rect v-btn-ghost run-btn" style="height:24px;min-width:24px" @click="runCode" title="运行代码"><VIcon :src="'play.svg'" :size="13" /></VButton>
   <Teleport to="body">
     <div v-if="show" class="preview-overlay" @click.self="close">
       <div class="preview-window">
         <div class="preview-header">
           <span>预览</span>
-          <VButton icon="x.svg" size="28" shape="round" variant="ghost" class="preview-close" @click="close" aria-label="关闭" />
+          <VButton class="v-btn-round v-btn-ghost preview-close" style="height:28px;min-width:28px" @click="close" aria-label="关闭"><VIcon :src="'x.svg'" :size="15" /></VButton>
         </div>
         <div class="preview-body">
           <iframe :key="iframeKey" ref="iframeRef" class="preview-iframe" sandbox="allow-scripts allow-same-origin" />

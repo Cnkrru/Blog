@@ -73,7 +73,7 @@ onUnmounted(() => {
             <div class="modal-content" @click.stop>
               <div class="modal-header">
                 <h3>网站公告</h3>
-                <VButton icon="x.svg" size="30" shape="round" variant="ghost" class="modal-close" @click="closeAnnouncement" aria-label="关闭公告" />
+                <VButton class="v-btn-round v-btn-ghost modal-close" style="height:30px;min-width:30px" @click="closeAnnouncement" aria-label="关闭公告"><VIcon :src="'x.svg'" :size="16" /></VButton>
               </div>
               <div class="modal-body">
                 <div v-if="loading" class="loading-message">

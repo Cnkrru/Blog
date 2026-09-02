@@ -1,18 +1,34 @@
+---
+title: Vue-3-VIcon组件设计
+date: 2026-08-28
+category: 前端
+tags: [前端]
+description: 记录Vicon如何制作
+keywords: vue
+---
+## 组件设计
+- 这个组件是为了让项目图标渲染走单一路线，分为js脚本和vue组件两部分
+    - js，js脚本遍历指定位置的svg文件，生成配置文件svg-icon-map.js
+    - vue，vue组件编译时，根据生成的svg-icon-map.js，和src属性进行比对，编译成对应svg图标
+---
+### js脚本
+> 路径位置根据实际项目情况变化，自己改改，留有调试程序，弄不明白的话，把调试程序的注释解除了，手动运行看看
+```js
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-const file_name = fileURLToPath(import.meta.url)                                        // 当前脚本所在位置
-const dir_name = path.dirname(file_name)                                                // 取file_name的路径的文件夹目录
-const father_dir = path.resolve(dir_name,'..')                                          // 解析为绝对路径
-const svg_dir = path.join(father_dir,'assets','svg')                                    // 拼接svg源文件目录
-const output_file = path.join(father_dir,'assets','svg-icon-map.js')                    // 拼接svg-map输出目录
+const file_name = fileURLToPath(import.meta.url)                                                    // 当前脚本所在位置
+const dir_name = path.dirname(file_name)                                                            // 取file_name的路径的文件夹目录
+const father_dir = path.resolve(dir_name,'..')                                                      // 解析为绝对路径
+const svg_dir = path.join(father_dir,'renderer','src','assets','svg')                                     // 拼接svg源文件目录
+const output_file = path.join(father_dir,'renderer','src','assets','svg-icon-map.js')                     // 拼接svg-map输出目录
 
 let count = 0;
 
 // console.log(`url地址为:${file_name}`)           // 调试代码
 // console.log(`dir_name = ${dir_name}`)           // 调试代码
-// console.log(`father_dir = ${father_dir}`)   // 调试代码
+// console.log(`project_root = ${father_dir}`)     // 调试代码
 // console.log(`svg_dir = ${svg_dir}`)             // 调试代码
 // console.log(`output_path = ${output_file}`)     // 调试代码
 
@@ -129,8 +145,8 @@ function file_to_map()
     try {
         const output = 'export default'+JSON.stringify(icons,null,2);
         fs.writeFileSync(output_file,output,'utf-8');
-        console.log(`总共解析${count}个svg`)
-        console.log(`[INFO]:已输出至目标文件,路径为:${output_file}`)
+        // console.log(`总共解析${count}个svg`)
+        // console.log(`[INFO]:已输出至目标文件,路径为:${output_file}`)
     }
     catch {
         // console.error('[ERROR]:未生成配置文件,请检查日志')
@@ -139,9 +155,101 @@ function file_to_map()
 
 function main()
 {
-    console.log('====================');
+    // console.log('====================');
     file_to_map();
-    console.log('====================');
+    // console.log('====================');
 }
 
 main();
+```
+---
+### vue部分
+> 导入map配置文件
+- 定义基础属性四个，然后先一步computed拓展属性，再把拓展属性和svg的属性绑定
+```vue
+<script setup>
+import { computed } from 'vue';
+import icons from '@renderer/assets/svg-icon-map.js';
+
+// 组件参数
+const props = defineProps({
+  src: { type: String, required: true },
+  title: { type: String },
+  size: { type: [Number, String], default: 18 },
+  color: { type: String }
+});
+
+/*
+* id: props参数解析函数
+* fn: 把尺寸给长宽，把路径解析一下，返回中间参数
+*/
+function parse_props(props) {
+  const _src = props.src.split('/').pop() || props.src;
+  const _ = String(props.size).trim();
+  const size = /^\d+(\.\d+)?$/.test(_) ? `${_}px` : _;
+  return {
+    icon: icons[_src],
+    size,               
+    color: props.color,
+    title: props.title
+  };
+}
+
+/*
+* id: 中间参数和svg的属性绑定函数
+* fn: 返回svg所需要的属性
+*/
+function parsed_bind_svg(parse_res) {
+  const style = [
+    { width: parse_res.size, height: parse_res.size },
+    parse_res.color ? { color: parse_res.color } : undefined
+  ];
+
+  if (!parse_res.icon) return { exists: false, style };
+  
+  return {
+    exists: true,
+    style,
+    css: parse_res.icon.css,
+    body: parse_res.icon.body,
+    attrs: {
+      viewBox: parse_res.icon.viewBox,
+      role: parse_res.title ? 'img' : undefined,
+      'aria-label': parse_res.title,
+      'aria-hidden': parse_res.title ? undefined : 'true'
+    }
+  };
+}
+
+function main() {
+  return parsed_bind_svg(parse_props(props));
+}
+
+const res = computed(main);   
+</script>
+
+<template>
+  <svg
+    class="VIcon"
+    v-if="res.exists"
+    v-bind="{ ...res.css, ...res.attrs }"
+    :style="res.style"
+    v-html="res.body"
+  >
+  </svg>
+</template>
+
+<style scoped>
+.VIcon {
+    display: inline-block;
+    flex: none;
+    vertical-align: middle;
+}
+</style>
+```
+---
+> 编辑于2026-08-28
+
+> 作者：Cnkrru
+
+> 联系方式：3253884026@qq.com

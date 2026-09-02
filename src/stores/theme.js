@@ -1,3 +1,4 @@
+// 用在App、Comment、MouseTrail、KatexRender、MermaidRender、SkeletonScreen、VueReplPreview、VideoBackground、FontSizeControl、TocButton、ThemeToggle、Heatmap和Settings
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { applyThemeCss, applyLayoutCss } from '../utils/cssLoader'

@@ -48,7 +48,7 @@
           ref="lightboxRef"
         >
           <!-- 关闭按钮 — 固定在右上角 -->
-          <VButton icon="x.svg" size="40" shape="round" variant="ghost" class="lightbox-close" @click="closeLightbox" aria-label="关闭" />
+          <VButton class="v-btn-round v-btn-ghost lightbox-close" style="height:40px;min-width:40px" @click="closeLightbox" aria-label="关闭"><VIcon :src="'x.svg'" :size="22" /></VButton>
 
           <!-- 图片计数器 — 顶部居中 pill -->
           <div class="lightbox-counter" v-if="lightboxImages.length > 1">
@@ -102,7 +102,7 @@
       :style="{ left: quotePopupPos.x + 'px', top: quotePopupPos.y + 'px' }"
       @click.stop
     >
-      <VButton v-if="!quoteCopied" auto-height variant="ghost" radius="6" class="quote-btn" icon="copy.svg" icon-size="14" @click="copyQuote">引用</VButton>
+      <VButton v-if="!quoteCopied" class="v-btn-ghost quote-btn" style="border-radius:6px" @click="copyQuote"><VIcon :src="'copy.svg'" :size="14" />引用</VButton>
       <span v-else class="quote-done">已复制</span>
     </div>
   </Teleport>

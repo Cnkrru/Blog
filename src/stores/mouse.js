@@ -1,3 +1,4 @@
+// 用在MouseTrail组件
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 

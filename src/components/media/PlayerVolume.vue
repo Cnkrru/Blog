@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 const props = defineProps({
   volume: { type: Number, default: 0.7 },
@@ -54,7 +55,7 @@ watch(() => props.volume, (val) => {
 
 <template>
   <div class="player-volume">
-    <VButton round variant="ghost" size="36" class="control-btn" :icon="volumeIcon" :title="isMuted ? '已静音，点击恢复音量' : '音量'" aria-label="音量" @click="handleToggleMute" />
+    <VButton class="v-btn-round v-btn-ghost control-btn" style="height:36px;min-width:36px" :title="isMuted ? '已静音，点击恢复音量' : '音量'" aria-label="音量" @click="handleToggleMute"><VIcon :src="volumeIcon" :size="20" /></VButton>
 
     <div
       ref="volumeBarRef"

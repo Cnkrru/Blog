@@ -40,7 +40,14 @@ export default defineConfig(
       // 另排除 Vue 生态依赖（vue/vue-router/pinia）：@vercel/analytics、@vercel/speed-insights
       // 内部也依赖 vue-router，若让其参与预打包会在开发模式产生重复实例，导致
       // App.vue 中 useRouter() 拿不到注入（router===undefined）。排除后强制走单一 source。
+      // __VUE_VERSION__ 是 @vue/repl 期待宿主注入的构建期常量（官方 play.vuejs.org 用 define 注入），
+      // 缺失会让其在 semver 版本比较时报 undefined.startsWith
+      define: {
+        __VUE_VERSION__: JSON.stringify('3.5.32'),
+      },
       optimizeDeps: {
+        // 显式预打包 @vue/repl，避免懒加载时才触发依赖预构建导致 504「Outdated Optimize Dep」
+        include: ['@vue/repl', '@vue/compiler-sfc'],
         exclude: ['*.md', 'vue', 'vue-router', 'pinia']
       },
 

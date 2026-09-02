@@ -32,7 +32,7 @@
           </div>
 
           <!-- 关闭 -->
-          <VButton icon="x.svg" size="24" shape="rect" variant="ghost" class="notif-close" @click="removeNotification(n.id)" title="关闭" />
+          <VButton class="v-btn-rect v-btn-ghost notif-close" style="height:24px;min-width:24px" @click="removeNotification(n.id)" title="关闭"><VIcon :src="'x.svg'" :size="13" /></VButton>
         </div>
 
         <!-- 操作按钮 -->

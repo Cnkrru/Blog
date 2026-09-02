@@ -129,6 +129,23 @@ createApp(App).mount('#app')
 > 官网说要component方法注册一下，不过不注册也行，一个vue文件就是一个组件，直接import+</>标签挂载就行
 - 官方那种是一次注册，全局不用import，随便挂载
 ---
+### 各种`:`属性
+> :语法是vue的编译期语法，有的用来增强原本html属性，有的用于vue自身特性
+- :class:
+    - 对应原本js的`classList.add/remove`        
+    - > 对应class切换
+- :style
+    - 对应原本js的`<选择器>.style.<样式>`        
+    - > 对应选择器样式修改
+- :title
+    - html原生title属性，用:将其转换为js语句，增强title的能力
+    - > 对应鼠标悬浮提示
+- :key
+    - v-for的标识符
+- :is
+    - component组件配套
+#### props属性
+- 自定义的各种props属性在使用时，也要+`:`
 > 编辑于2026-08-11
 
 > 作者：Cnkrru

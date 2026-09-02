@@ -9,27 +9,17 @@
       <div class="yv-actions">
         <CodeRender :code="code" />
         <VButton
-          auto-height
-          variant="ghost"
-          shape="rect"
-          class="yv-toggle"
+          class="v-btn-rect v-btn-ghost yv-toggle"
           :class="{ active: viewMode === 'preview' }"
-          icon="users.svg"
-          icon-size="14"
           title="查看结构化视图"
           @click="viewMode = 'preview'"
-        >结构化</VButton>
+        ><VIcon :src="'users.svg'" :size="14" />结构化</VButton>
         <VButton
-          auto-height
-          variant="ghost"
-          shape="rect"
-          class="yv-toggle"
+          class="v-btn-rect v-btn-ghost yv-toggle"
           :class="{ active: viewMode === 'source' }"
-          icon="code.svg"
-          icon-size="14"
           title="查看源码"
           @click="viewMode = 'source'"
-        >源码</VButton>
+        ><VIcon :src="'code.svg'" :size="14" />源码</VButton>
         <span class="yv-stats">{{ statsText }}</span>
       </div>
     </div>

@@ -1,39 +1,19 @@
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import VIcon from '@/components/__common/VIcon.vue'
+import { useImmersiveStore } from '../../stores'
 
-const isImmersiveReading = ref(false)
-const isAnimating = ref(false)
-const router = useRouter()
-
-const toggleImmersiveReading = () => {
-  isImmersiveReading.value = true                           //沉浸阅读标志置为true
-  isAnimating.value = true                                  //动画标志
-  document.body.classList.toggle('immersive-reading')       //切换bodyCSS样式(功能实现)
-  setTimeout(() => { isAnimating.value = false }, 400)      //超时时间设置为400ms
-}
-
-//路由切换，沉浸阅读功能的生命周期结束
-onMounted(() => {
-  router.afterEach(() => {
-    document.body.classList.remove('immersive-reading')
-  })
-})
+const immersiveStore = useImmersiveStore()
 </script>
 
 <template>
   <VButton
-    class="button-style immersive-btn"
+    class="button-style v-btn-primary immersive-btn"
     title="沉浸式阅读"
-    variant="primary"
-    shape="round"
-    size="36"
-    icon-size="24"
-    icon="book-open.svg"
-    @click="toggleImmersiveReading"
+    style="height:36px;min-width:36px"
+    @click="immersiveStore.toggle"
   >
-    <span v-if="isAnimating" class="emoji-burst">✨</span>
+    <VIcon :src="'book-open.svg'" :size="24" />
   </VButton>
 </template>
 

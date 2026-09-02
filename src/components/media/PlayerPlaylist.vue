@@ -1,5 +1,6 @@
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 
 defineProps({
   playlist: { type: Array, default: () => [] },
@@ -23,7 +24,7 @@ const handleClose = () => {
     <div class="playlist-container">
       <div class="playlist-header">
         <h3>音乐列表</h3>
-        <VButton round variant="ghost" size="24" class="close-btn" icon="x.svg" title="关闭列表" aria-label="关闭列表" @click="handleClose" />
+        <VButton class="v-btn-round v-btn-ghost close-btn" style="height:24px;min-width:24px" title="关闭列表" aria-label="关闭列表" @click="handleClose"><VIcon :src="'x.svg'" :size="13" /></VButton>
       </div>
       <div class="playlist-content">
         <ul class="playlist-items">

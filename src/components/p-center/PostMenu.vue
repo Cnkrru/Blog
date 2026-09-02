@@ -87,16 +87,12 @@ onMounted(() => {
     <!-- 文章菜单按钮 -->
     <div class="menu-toggle">
       <VButton
-        class="menu-btn"
-        :icon="show ? 'x.svg' : 'menu.svg'"
-        icon-size="24"
-        variant="primary"
-        shape="round"
-        size="38"
+        class="v-btn-primary v-btn-round menu-btn"
+        style="height:38px;min-width:38px"
         :title="show ? '关闭菜单' : '文章菜单'"
         aria-label="文章菜单"
         @click="toggleMenu"
-      />
+      ><VIcon :src="show ? 'x.svg' : 'menu.svg'" :size="24" /></VButton>
     </div>
 
     <!-- 文章菜单卡片 -->
@@ -109,7 +105,7 @@ onMounted(() => {
             <h3>文章菜单</h3>
             <span class="menu-count">{{ posts.length }}</span>
           </div>
-          <VButton icon="x.svg" size="26" shape="rect" variant="ghost" class="menu-close" @click="toggleMenu" title="关闭" aria-label="关闭菜单" />
+          <VButton class="v-btn-rect v-btn-ghost menu-close" style="height:26px;min-width:26px" @click="toggleMenu" title="关闭" aria-label="关闭菜单"><VIcon :src="'x.svg'" :size="14" /></VButton>
         </div>
 
         <div class="menu-line"></div>
@@ -125,7 +121,7 @@ onMounted(() => {
               placeholder="搜索文章标题或标签..."
               class="search-input text-input"
             />
-            <VButton v-if="searchKeyword" icon="x.svg" size="20" shape="rect" variant="ghost" class="search-clear" @click="clearSearch" title="清除" aria-label="清除搜索" />
+            <VButton v-if="searchKeyword" class="v-btn-rect v-btn-ghost search-clear" style="height:20px;min-width:20px" @click="clearSearch" title="清除" aria-label="清除搜索"><VIcon :src="'x.svg'" :size="11" /></VButton>
           </div>
 
           <!-- 排序按钮 -->

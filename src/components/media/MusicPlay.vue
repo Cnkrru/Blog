@@ -149,18 +149,15 @@ onUnmounted(() => {
   <div>
 
     <VButton
-      class="button-style music-player-btn"
+      class="button-style v-btn-primary music-player-btn"
       ref="toggleBtnRef"
       :class="{ animating: isBtnAnimating }"
       title="音乐播放"
       aria-label="打开音乐播放器"
-      variant="primary"
-      shape="round"
-      size="36"
-      icon-size="24"
-      icon="music.svg"
+      style="height:36px;min-width:36px"
       @click="togglePlayer"
     >
+      <VIcon :src="'music.svg'" :size="24" />
       <span v-if="isBtnAnimating" class="emoji-burst">✨</span>
     </VButton>
 
@@ -197,10 +194,10 @@ onUnmounted(() => {
                 @toggle-mute="toggleMute"
               />
               <div class="player-list">
-                <VButton round variant="ghost" size="36" class="control-btn list-btn" icon="list.svg" title="音乐列表" aria-label="音乐列表" @click="togglePlaylist" />
+                <VButton class="v-btn-round v-btn-ghost control-btn list-btn" style="height:36px;min-width:36px" title="音乐列表" aria-label="音乐列表" @click="togglePlaylist"><VIcon :src="'list.svg'" :size="20" /></VButton>
               </div>
               <div class="player-effects">
-                <VButton round variant="ghost" size="36" class="control-btn effects-btn" :class="{ active: isEffectsVisible || effectsEnabled }" icon="settings.svg" icon-size="18" title="音效设置" aria-label="音效" @click="toggleEffects" />
+                <VButton class="v-btn-round v-btn-ghost control-btn effects-btn" style="height:36px;min-width:36px" :class="{ active: isEffectsVisible || effectsEnabled }" title="音效设置" aria-label="音效" @click="toggleEffects"><VIcon :src="'settings.svg'" :size="18" /></VButton>
               </div>
             </div>
           </div>

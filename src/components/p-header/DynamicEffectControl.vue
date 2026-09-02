@@ -1,15 +1,12 @@
 <template>
   <VButton
-    class="button-style"
+    class="button-style v-btn-primary"
     :class="{ animating: isAnimating }"
     :title="isEffectEnabled ? '关闭动态效果' : '开启动态效果'"
-    variant="primary"
-    shape="round"
-    size="36"
-    icon-size="24"
-    icon="sparkles.svg"
+    style="height:36px;min-width:36px"
     @click="toggleEffect"
   >
+    <VIcon :src="'sparkles.svg'" :size="24" />
     <span v-if="isAnimating" class="emoji-burst">✨</span>
   </VButton>
 
@@ -30,6 +27,7 @@
 
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 
 const isEffectEnabled = ref(true)

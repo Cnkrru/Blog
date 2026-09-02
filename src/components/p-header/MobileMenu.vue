@@ -2,6 +2,7 @@
 
 <script setup>
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const isMenuOpen = ref(false)
@@ -61,16 +62,14 @@ onUnmounted(() => {
   <div class="menu-container">
     <!-- 移动端菜单按钮 -->
     <VButton
-      class="button-style menu-button"
+      class="button-style v-btn-primary menu-button"
       id="menu-button"
       title="菜单"
-      variant="primary"
-      shape="round"
-      size="36"
-      icon-size="24"
-      icon="menu.svg"
+      style="height:36px;min-width:36px"
       @click="toggleMobileMenu"
-    />
+    >
+      <VIcon :src="'menu.svg'" :size="24" />
+    </VButton>
     
     <!-- 移动端菜单遮罩层 -->
     <Teleport to="body">

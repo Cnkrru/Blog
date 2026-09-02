@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import VButton from '@/components/__common/VButton.vue'
+import VIcon from '@/components/__common/VIcon.vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { useArticlesStore } from '../stores'
@@ -205,7 +206,7 @@ onMounted(async () => {
             placeholder="搜索标签..."
             class="search-input text-input"
           >
-          <VButton v-if="searchQuery" icon="x.svg" size="20" shape="round" variant="ghost" class="clear-btn" @click="clearSearch" aria-label="清除搜索" />
+          <VButton v-if="searchQuery" class="v-btn-round v-btn-ghost clear-btn" style="height:20px;min-width:20px" @click="clearSearch" aria-label="清除搜索"><VIcon :src="'x.svg'" :size="11" /></VButton>
         </div>
         <div class="sort-options">
           <span class="sort-label">排序:</span>
