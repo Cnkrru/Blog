@@ -22,19 +22,19 @@ const handleSeek = (e) => {
   emit('seek', percent)
 }
 
-const onMouseMove = (e) => {
-  if (!isDragging || !progressBarRef.value) return
-  const rect = progressBarRef.value.getBoundingClientRect()
-  const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-  emit('seek', percent)
+const onPointerMove = (e) => {
+  if (!isDragging) return
+  handleSeek(e)
 }
 
-const onMouseUp = () => {
+const onPointerUp = () => {
   isDragging = false
 }
 
-const onMouseDown = () => {
+const onPointerDown = (e) => {
   isDragging = true
+  progressBarRef.value?.setPointerCapture?.(e.pointerId)
+  handleSeek(e)
 }
 
 watch(() => props.progressPercent, (val) => {
@@ -63,15 +63,15 @@ watch(() => props.duration, (val) => {
 
 onMounted(() => {
   if (typeof document !== 'undefined') {
-    document.addEventListener('mousemove', onMouseMove)
-    document.addEventListener('mouseup', onMouseUp)
+    document.addEventListener('pointermove', onPointerMove)
+    document.addEventListener('pointerup', onPointerUp)
   }
 })
 
 onUnmounted(() => {
   if (typeof document !== 'undefined') {
-    document.removeEventListener('mousemove', onMouseMove)
-    document.removeEventListener('mouseup', onMouseUp)
+    document.removeEventListener('pointermove', onPointerMove)
+    document.removeEventListener('pointerup', onPointerUp)
   }
 })
 </script>
@@ -81,8 +81,7 @@ onUnmounted(() => {
     <div
       class="progress-bar"
       ref="progressBarRef"
-      @click="handleSeek"
-      @mousedown="onMouseDown"
+      @pointerdown="onPointerDown"
     >
       <div ref="progressFillRef" class="progress-fill" :style="{ width: `${progressPercent}%` }"></div>
     </div>
@@ -92,3 +91,10 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.progress-bar {
+    touch-action: pan-y;
+    cursor: pointer;
+}
+</style>

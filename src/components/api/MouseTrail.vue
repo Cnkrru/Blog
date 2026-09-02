@@ -122,6 +122,7 @@ const handleMouseLeave = () => {
 mouseMoveHandler = throttle(handleMouseMove, 10)
 
 onMounted(() => {
+  if (window.matchMedia('(pointer: coarse)').matches) return
   isBrowser.value = true
   document.addEventListener('mousemove', mouseMoveHandler)
   document.addEventListener('touchmove', mouseMoveHandler)
