@@ -1,8 +1,9 @@
 <script setup>
-import { ref, onMounted, defineAsyncComponent } from 'vue'
+import { ref, onMounted, defineAsyncComponent, onServerPrefetch } from 'vue'
 import MarkdownRender from '../components/content/MarkdownRender.vue'
+import { readPublicText } from '../stores'
 const GitHub = defineAsyncComponent(() => import('../components/api/GitHub.vue'))
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 
 // SEO 配置
 useHead({
@@ -29,7 +30,7 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Person',
         name: 'Cnkrru',
@@ -51,9 +52,8 @@ const loadAboutContent = async () => {
         loading.value = true
         error.value = null
         
-        // 从content/about/about.md读取Markdown文件
-        const mdModule = await import('../../content/about/about.md?raw')
-        aboutContent.value = mdModule.default
+        // 加载构建期预渲染的静态 HTML（content/about/about.md → public/html/about.html）
+        aboutContent.value = await readPublicText('html/about.html')
     } catch (importError) {
         error.value = '加载关于页面内容失败'
         aboutContent.value = ''
@@ -61,6 +61,8 @@ const loadAboutContent = async () => {
         loading.value = false
     }
 }
+
+onServerPrefetch(() => loadAboutContent())
 
 onMounted(() => {
     loadAboutContent()
@@ -82,7 +84,7 @@ onMounted(() => {
                 <p>{{ error }}</p>
             </div>
             <div v-else class="text-style">
-                <MarkdownRender :content="aboutContent" />
+                <MarkdownRender :html="aboutContent" />
             </div>
             
             <div class="github-section">

@@ -1,16 +1,9 @@
 <script setup>
 import VIcon from '@/components/__common/VIcon.vue'
 import VButton from '@/components/__common/VButton.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, onServerPrefetch } from 'vue'
 import MarkdownRender from '../components/content/MarkdownRender.vue'
-import { useHead } from '@vueuse/head'
-
-useHead({
-  title: '公告 - Cnkrru\'s Blog',
-  meta: [
-    { name: 'robots', content: 'noindex, nofollow' }
-  ]
-})
+import { readPublicText } from '../stores'
 
 // ---- 原 announcement store 逻辑内联（仅本组件消费）----
 const showModal = ref(false)
@@ -27,11 +20,11 @@ const closeAnnouncement = () => {
 
 const loadAnnouncement = async () => {
   try {
-    const mdModule = await import('../../content/announcement/index.md?raw')
-    announcementContent.value = mdModule.default
+    // 加载构建期预渲染的静态 HTML（content/announcement/index.md → public/html/announcement.html）
+    announcementContent.value = await readPublicText('html/announcement.html')
   } catch (error) {
     console.error('[announcement] 加载公告失败:', error)
-    announcementContent.value = '## 网站公告\n\n公告加载失败，请稍后再试。'
+    announcementContent.value = '<h2>网站公告</h2><p>公告加载失败，请稍后再试。</p>'
   } finally {
     loading.value = false
   }
@@ -48,6 +41,8 @@ const handleKeydown = (event) => {
 defineExpose({
   openAnnouncement
 })
+
+onServerPrefetch(() => loadAnnouncement())
 
 onMounted(() => {
   loadAnnouncement()
@@ -80,7 +75,7 @@ onUnmounted(() => {
                   <div class="loading-spinner"></div>
                   <p>加载公告中...</p>
                 </div>
-                <MarkdownRender v-else :content="announcementContent" />
+                <MarkdownRender v-else :html="announcementContent" />
               </div>
               <div class="modal-footer">
                 <button class="modal-btn" @click="closeAnnouncement" aria-label="关闭公告">确定</button>

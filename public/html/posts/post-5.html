@@ -1,0 +1,72 @@
+<h2>制作方法</h2>
+<ol>
+<li>用<code>classList.toggle()</code>切换类名</li>
+<li>主题切换是通过CSS属性改变颜色，沉浸阅读是通过切换类来实现，需要给一个组件准备两套类<ul>
+<li>按道理来说不管是切换类还是使用CSS变量都可以，修改CSS属性来实现的组件一般是通过这两种途径</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>代码:</h3>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;immersivereading&lt;/title&gt;
+    &lt;style&gt;
+        body.immersive-reading .placeholder {
+            height: 2000px;
+            width: 50%;
+        }
+        .placeholder {
+            height: 2000px;
+            width: 100%;
+            overflow: auto;
+            background-color: pink;
+            transition: width 0.3s ease;
+        }
+        .toggle-button {
+            position: fixed;
+
+            width: 40px;
+            height: 40px;
+
+            bottom: 10px;
+            right: 10px;
+            
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="placeholder"&gt;&lt;/div&gt;
+    &lt;button class="toggle-button"&gt;&lt;/button&gt;
+    &lt;script&gt;
+        const placeholder = document.querySelector('.placeholder');
+        const toggleButton = document.querySelector('.toggle-button');
+
+        function toggleImmersiveReading() {
+            document.body.classList.toggle('immersive-reading');
+            console.log('[info]已切换');
+        }
+        toggleButton.addEventListener('click', toggleImmersiveReading);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr>
+<blockquote>
+<p>编辑于2026-04-20</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

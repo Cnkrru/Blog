@@ -1,0 +1,92 @@
+<h2>Scroll API</h2>
+<blockquote>
+<p>scrollAPI专用于窗口滚动
+MDN文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/scroll">MDN-Scroll</a></p>
+</blockquote>
+<ol>
+<li>scroll挂载对象<ul>
+<li>CSS选择器</li>
+<li>window</li>
+</ul>
+</li>
+<li>scroll()参数<ul>
+<li>（x,y）：窗口坐标</li>
+<li>option ：一组json数据<code>{top:&lt;&gt;,left:&lt;&gt;,behavior:&lt;&gt;}</code><ul>
+<li>top对应x，left对应y</li>
+<li>behavior：smooth（平滑滚动），instant（跳转），auto（计算位移差值自动决定）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Screen属性</h2>
+<blockquote>
+<p>screen属性一般配合scrollAPI使用</p>
+</blockquote>
+<ol>
+<li>screenLeft属性<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/screenLeft">MDN-screen</a></li>
+<li>浏览器窗口到屏幕左边缘CSS像素的距离</li>
+</ul>
+</li>
+<li>screenTop属性<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/screenTop">MDN-screen</a></li>
+<li>浏览器窗口到屏幕顶部CSS像素的距离</li>
+</ul>
+</li>
+<li>screenX属性<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/screenX">MDN-screen</a></li>
+<li>浏览器左边界距离操作系统左边界的距离</li>
+</ul>
+</li>
+<li>screenY属性<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/screenY">MDN-screen</a></li>
+<li>浏览器顶部距离操作系统上边界的距离</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Scroll属性</h2>
+<blockquote>
+<p>scroll属性一般会配合scrollAPI使用</p>
+</blockquote>
+<ol>
+<li>scrollX<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/scrollX">MDN-scrollX</a></li>
+<li>页面水平方向的滚动值</li>
+</ul>
+</li>
+<li>scrollY<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/scrollY">MDN-scrollY</a></li>
+<li>页面竖直方向的滚动值</li>
+</ul>
+</li>
+<li>scrollTop<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollTop">MDN-scrollTop</a></li>
+<li>返回当前滚动位置距离原点的距离(double类型)</li>
+</ul>
+</li>
+<li>scrollHeight<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/screenHeight">MDN-screen</a></li>
+<li>返回元素高度，包括内边距padding，不包括边界线border和外边距margin，包含伪类选择器的高度</li>
+<li>计算时包括元素看不见的区域</li>
+</ul>
+</li>
+<li>clientHeight<ul>
+<li>文档:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/clientHeight">MDN-screen</a></li>
+<li>返回元素高度，包含长度与scrollHeight一样</li>
+<li>与scrollHeight的关系，当元素展示不需要滚动条（overflow属性）时，两者相等</li>
+</ul>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>编辑于2026-08-10</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

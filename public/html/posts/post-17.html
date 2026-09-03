@@ -1,0 +1,233 @@
+<h2>IPAPI</h2>
+<h3>制作方法</h3>
+<ol>
+<li>公开免费的IPAPI<ul>
+<li><a href="https://ipinfo.io/">https://ipinfo.io/</a><ul>
+<li><a href="https://ipinfo.io/json">https://ipinfo.io/json</a></li>
+</ul>
+</li>
+<li><a href="https://www.ipify.org/">https://www.ipify.org/</a><ul>
+<li><a href="https://api.ipify.org?format=json">https://api.ipify.org?format=json</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>父级是官网地址,子级是API地址</p>
+<ol start="2">
+<li>调用<ul>
+<li>通过CDN调用axios:<code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js&quot;&gt;&lt;/script&gt;</code></li>
+<li>拿到数据自己写逻辑渲染到HTML上即可</li>
+</ul>
+</li>
+<li>API返回数据格式(很多情况下是json)
+示例:</li>
+</ol>
+</blockquote>
+
+<div class="special-block" data-block="json" data-code="{
+  &quot;ip&quot;: &quot;131.143.239.174&quot;,
+  &quot;city&quot;: &quot;Hoi Fu Court&quot;,
+  &quot;region&quot;: &quot;Yau Tsim Mong District&quot;,
+  &quot;country&quot;: &quot;HK&quot;,
+  &quot;loc&quot;: &quot;22.3163,114.1647&quot;,
+  &quot;org&quot;: &quot;AS12198 JSMSR Network&quot;,
+  &quot;postal&quot;: &quot;999077&quot;,
+  &quot;timezone&quot;: &quot;Asia/Hong_Kong&quot;,
+  &quot;readme&quot;: &quot;https://ipinfo.io/missingauth&quot;
+}"><pre><code>{
+  "ip": "131.143.239.174",
+  "city": "Hoi Fu Court",
+  "region": "Yau Tsim Mong District",
+  "country": "HK",
+  "loc": "22.3163,114.1647",
+  "org": "AS12198 JSMSR Network",
+  "postal": "999077",
+  "timezone": "Asia/Hong_Kong",
+  "readme": "https://ipinfo.io/missingauth"
+}</code></pre></div>
+<blockquote>
+<p>对于json的处理，JavaScript的处理方式暂时没学，不过作者学过py,py的字典本来和json就是一个样子,用点语法来接收数据  </p>
+</blockquote>
+<h3>代码</h3>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+    .IP-container {
+        width: 100px;
+        height: 50px;
+        background-color: pink;
+        border-radius: 5px;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="IP-container"&gt;&lt;/div&gt;
+
+    &lt;script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        function updateIP(city) {
+            const ipbox = document.querySelector('.IP-container');
+            ipbox.textContent = `City: ${city}`;
+            console.log(`[INFO]:已成功渲染IP信息`);
+        }
+        axios.get('https://ipinfo.io/json')
+            .then(function (response) {
+                console.log(`[INFO]:City -&gt; ${response.data.city}`);
+                const city = response.data.city;
+                updateIP(city);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr>
+<h2>天气API</h2>
+<h3>制作方法</h3>
+<ol>
+<li>axios获取到的IP数据拿出需要的，传给weatherAPI</li>
+<li>API:<code>https://api.open-meteo.com/v1/forecast?latitude=${lat}&amp;longitude=${lon}&amp;current=temperature_2m,weather_code&amp;timezone=auto</code><ul>
+<li>两个<code>${}</code>是需要填充的数据</li>
+</ul>
+</li>
+</ol>
+<h3>代码</h3>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+    .container {
+        width: 200px;
+        height: 80px;
+        background-color: pink;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 14px;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;&lt;/div&gt;
+
+    &lt;script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        function updateIP(city) {
+            const ipbox = document.querySelector('.container');
+            ipbox.textContent = `City: ${city}`;
+            console.log(`[INFO]:已成功渲染IP信息`);
+        }
+
+        function updateWeather(lat, lon) {
+            const weatherbox = document.querySelector('.container');
+            axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&amp;longitude=${lon}&amp;current=temperature_2m,weather_code&amp;timezone=auto`)
+                .then(function (response) {
+                    const temperature = response.data.current.temperature_2m;
+                    weatherbox.textContent += ` | Temp: ${temperature}°C`;
+                    console.log(`[INFO]:已成功渲染天气信息`);
+                })
+                .catch(function (error) {
+                    console.log('天气API请求失败:', error);
+                });
+        }
+
+        axios.get('https://ipinfo.io/json')
+            .then(function (response) {
+                console.log(`[INFO]:City -&gt; ${response.data.city}`);
+                console.log(`[INFO]:Location -&gt; ${response.data.loc}`);
+                
+                const city = response.data.city;
+                const [lat, lon] = response.data.loc.split(',').map(Number);
+                
+                updateIP(city);
+                
+                updateWeather(lat, lon);
+            })
+            .catch(function (error) {
+                console.log('IP API请求失败:', error);
+            });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr>
+<h2>GITHUB API</h2>
+<h3>制作方法</h3>
+<ol>
+<li>API地址<ul>
+<li><code>https://api.github.com/users/&lt;username&gt;</code></li>
+<li>示例以我的实际API作为例子:username = Cnkrru</li>
+</ul>
+</li>
+<li>数据格式<ul>
+<li>数据很多，这里只显示其中两个，数据都是公开的</li>
+</ul>
+</li>
+</ol>
+
+<div class="special-block" data-block="json" data-code="{
+  &quot;login&quot;: &quot;Cnkrru&quot;,
+  &quot;id&quot;: 233513911
+}"><pre><code>{
+  "login": "Cnkrru",
+  "id": 233513911
+}</code></pre></div>
+<h3>代码</h3>
+<blockquote>
+<p>使用时替换为自己的username，想要什么数据自己拿，自己渲染</p>
+</blockquote>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+    .container {
+        width: 100px;
+        height: 50px;
+        background-color: pink;
+        border-radius: 5px;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;&lt;/div&gt;
+
+    &lt;script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        const githubbox = document.querySelector('.container');
+        axios.get('https://api.github.com/users/&lt;username&gt;')
+            .then(function (response) {
+                console.log(`[INFO]:Name -&gt; ${response.data.name}`);
+                const name = response.data.name;
+                githubbox.textContent = `Name: ${name}`;
+                console.log(`[INFO]:已成功渲染GitHub信息`);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr>
+<blockquote>
+<p>编辑于2026-08-11</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

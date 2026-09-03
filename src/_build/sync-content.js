@@ -16,7 +16,7 @@ const CONFIG_DIR = path.join(PROJECT_ROOT, 'public', 'config');
 
 const STATIC_ROUTES = [
     "/", "/home", "/about", "/archives", "/links", "/projects",
-    "/timeline", "/post", "/search", "/settings", "/links/apply"
+    "/tag", "/settings", "/links/apply"
 ];
 
 function parseFrontmatter(content) {

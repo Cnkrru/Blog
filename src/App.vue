@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
 import { useThemeStore } from './stores/index'
 import './style.css'
 import { Analytics } from '@vercel/analytics/vue'
@@ -23,6 +24,11 @@ const isIndexPage = computed(() => route.path === '/')
 const isTerminalPage = computed(() => route.path === '/terminal')
 
 const themeStore = useThemeStore()
+
+// 覆盖 @unhead 默认的 html lang="en"，保持站点语言为 zh-CN
+useHead({
+  htmlAttrs: { lang: 'zh-CN' }
+})
 
 // 页面加载进度条
 const progressWidth = ref('0%')

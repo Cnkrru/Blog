@@ -1,0 +1,152 @@
+<h3>准备工作</h3>
+<blockquote>
+<p>安装Node.js(用于安装vitepress)
+安装git(不强求但推荐，用于提交代码到GitHub仓库)</p>
+</blockquote>
+<ol>
+<li>node.js介绍<ul>
+<li>node是JavaScript后端运行环境，本地写的markdown文章经过JavaScript在node环境依照vitepress模板进行编译。输出HTML+CSS+JavaScript</li>
+<li>JavaScript在前端的能力依赖浏览器API，在后端的能力依赖node，node可以看作JavaScript版本的python解释器</li>
+<li>JavaScript这门语言最初设计是为了前端，后来依靠node具有后端能力</li>
+<li>这一部分本人不太清楚，JavaScript属于解释性语言还是编译性语言也不是很清楚，应该需要学习编译原理</li>
+</ul>
+</li>
+<li>git介绍<ul>
+<li>git是一种终端，如果你的电脑是Windows系统，可以看作类似于CMD和powershell的东西，它支持UNIX系的shell语法</li>
+<li>UNIX和DOS是操作系统的两种分支，LUNIX是类UNIX系统，MAC是UNIX正统续作，两者类似，Windows是DOS的续作</li>
+<li>git在这里用于和GitHub仓库进行连接，由LUNIX最初开发者Lunas开发（可能拼错了）</li>
+<li>git也能执行那些挂载到环境变量的包管理器的shell子命令</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>构建步骤</h3>
+<ol>
+<li>安装VitePress</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="bash"><pre><code class="language-bash">    npm add -D vitepress@next
+   </code></pre></div>
+<blockquote>
+<p>给npm安装vitepress包</p>
+<ol start="2">
+<li>初始化VitePress</li>
+</ol>
+</blockquote>
+
+<div class="special-block" data-block="code" data-lang="bash"><pre><code class="language-bash">    npx vitepress init
+   </code></pre></div>
+<blockquote>
+<p>初始化站点</p>
+<ol start="3">
+<li>初始化选项</li>
+</ol>
+</blockquote>
+<ol>
+<li>在哪里初始化:这里默认&#39;./&#39;，可以自己手动输入一个名字，作为文件夹名，比如:&#39;./docs&#39;</li>
+<li>vitepress在哪里读取你的md文件，官方推荐和自己初始化的文件夹一个位置，比如:&#39;./docs&#39;</li>
+<li>命名站点:这里默认显示&#39;My Awesome Project&#39;,你可以根据自己的项目名称来命名。</li>
+<li>站点描述:这里默认显示&#39;A VitePress Site&#39;,你可以根据自己的项目描述来修改。</li>
+<li>选择主题:这里默认选择&#39;Default Theme&#39;（默认主题，和Vitepress官网样式一样）,你可以自己选择别的。</li>
+<li>三个配置:后面三个配置，都直接yes即可，如果没学过前端，可能不知道在说什么<blockquote>
+<p>可能不是最新版，笔者已将个人用vitepress搭建的站点迁移至本人制作的Cdocs站点生成器，后续不再使用vitepress。如遇疑问，请去官网了解</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>中文官网地址：<a href="https://vitepress.dev/zh/">vitepress</a></p>
+</blockquote>
+<ol start="4">
+<li>文件夹初始结构
+├─ docs
+│  ├─ .vitepress
+│  │  └─ config.js
+│  ├─ api-examples.md
+│  ├─ markdown-examples.md
+│  └─ index.md
+└─ package.json</li>
+</ol>
+<blockquote>
+<p>如果选择使用JavaScript，而不是typescript，config文件是js文件，反之则是ts</p>
+</blockquote>
+<blockquote>
+<p>ts与js：ts会编译为js，写js和ts并无差异，只在于开发体验不同，ts相较于js更加完善</p>
+</blockquote>
+<ol start="5">
+<li>修改配置文件来完善VitePress配置<blockquote>
+<p>在这里作者并未说明配置，个人配置已记录于本人笔记站点:<a href="https://notes.cnkrru.top">https://notes.cnkrru.top</a></p>
+</blockquote>
+</li>
+<li>本地运行VitePress</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="bash"><pre><code class="language-bash">    npm run docs:dev
+   </code></pre></div>
+<blockquote>
+<p>访问<a href="http://localhost:%5Bport%5D%E6%9F%A5%E7%9C%8B%E6%95%88%E6%9E%9C">http://localhost:[port]查看效果</a></p>
+</blockquote>
+<blockquote>
+<p>vite，vue项目端口号一般是5173，dev指令可以修改，应该在package.json，这个文件一般是JavaScript项目的配置文件</p>
+<ol start="7">
+<li>构建VitePress</li>
+</ol>
+</blockquote>
+
+<div class="special-block" data-block="code" data-lang="bash"><pre><code class="language-bash">    npm run docs:build
+   </code></pre></div>
+<blockquote>
+<p>一般不在本地构建产物，常见做法是推送到GITHUB，GITHUB Action自动构建，或者仓库连接vercel，vercel自动构建，不过要注意vercel上选择的node版本</p>
+<ol start="8">
+<li>构建预览</li>
+</ol>
+</blockquote>
+
+<div class="special-block" data-block="code" data-lang="bash"><pre><code class="language-bash">    npm run docs:preview
+   </code></pre></div>
+<blockquote>
+<p>不怎么用，<code>npm run docs:dev</code>一般就可以了，一键构建并预览
+   访问<a href="http://localhost:%5Bport%5D%E6%9F%A5%E7%9C%8B%E6%95%88%E6%9E%9C">http://localhost:[port]查看效果</a></p>
+</blockquote>
+<ol start="10">
+<li>部署VitePress</li>
+</ol>
+<ul>
+<li>选择一个服务器部署，比如GitHub Pages，vercel，netlify，这三种都支持静态站点部署，也最为常见</li>
+<li>笔者刚接触前端时用GitHub，后来用vercel，netlify用过一次，但是不太熟悉</li>
+<li>推荐vercel，CDN节点多，中国访问快，也可以买个域名去cloudflare配置CDN，再到vercel配置，两者联动，中国访问友好</li>
+</ul>
+<hr>
+<h3>配置</h3>
+<ol>
+<li>个人配置<blockquote>
+<p>懒得教如何配置了，和其他SSG一个样子，作者基于个人的配置封装了一个SKILL
+SKILL地址:<a href="https://notes.cnkrru.top/docs/skills/vitepress-builder/SKILL">https://notes.cnkrru.top/docs/skills/vitepress-builder/SKILL</a></p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>配置都在这个SKILL里了</li>
+</ul>
+<ol start="2">
+<li>官方文档<blockquote>
+<p><a href="https://vitepress.dev/zh/guide/getting-started">https://vitepress.dev/zh/guide/getting-started</a></p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>我的配置就是照着这个一步步搭建的，应该差不了多少，不过作者之后不再用vitepress了，用自己用vue做的站点模板cvdocs了<ul>
+<li>cvdocs:<a href="https://github.com/Cnkrru/Notes">https://github.com/Cnkrru/Notes</a></li>
+<li>比不上vitepress，这个只是作者在用了几个SSG，学了vue之后自己做的一个轻量的SSG，自用</li>
+</ul>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>编辑于2026-04-23</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

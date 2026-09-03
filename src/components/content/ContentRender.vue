@@ -1,6 +1,6 @@
 <script setup>
 import VIcon from '@/components/__common/VIcon.vue'
-import { onMounted, computed, watch } from 'vue'
+import { onMounted, computed, watch, onServerPrefetch } from 'vue'
 import MarkdownRender from './MarkdownRender.vue'
 import SkeletonScreen from './SkeletonScreen.vue'
 import { useContentLoader } from '../../utils/useContentLoader'
@@ -11,7 +11,7 @@ const props = defineProps(['id', 'type'])
 const emit = defineEmits(['content-loaded', 'loading', 'error', 'prev-next-posts', 'update:toc'])
 
 // 使用 content loader
-const { content, markdownContent, loading, error: hasError, isLoaded, loadContent, retry } = useContentLoader(props.type, props.id)
+const { content, html, loading, error: hasError, isLoaded, loadContent, retry } = useContentLoader(props.type, props.id)
 
 const articlesStore = useArticlesStore()
 const loadedContent = computed(() => content.value)
@@ -57,6 +57,8 @@ const loadContentData = async () => {
   emit('loading', false)
 }
 
+onServerPrefetch(() => loadContentData())
+
 onMounted(() => loadContentData())
 
 // 监听 ID 变化
@@ -93,9 +95,9 @@ watch(() => props.type, () => loadContentData())
           <hr>
         </template>
         
-        <!-- Markdown 内容 -->
+        <!-- Markdown 内容（构建期预渲染的静态 HTML） -->
         <MarkdownRender 
-          :content="markdownContent" 
+          :html="html" 
           @update:toc="(toc) => emit('update:toc', toc)" 
         />
       </div>

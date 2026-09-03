@@ -1,41 +1,7 @@
 <template>
   <div>
-    <!-- 按顺序渲染内容块 -->
-    <div v-if="renderMode === 'special-blocks'">
-      <div v-for="(block, index) in orderedBlocks" :key="`block-${index}`">
-        <!-- Mermaid 图表 -->
-        <div v-if="block.type === 'mermaid'" class="mermaid-container">
-          <MermaidRender :code="block.content" />
-        </div>
-        <!-- 数学公式 -->
-        <div v-else-if="block.type === 'math'" class="math-container">
-          <KatexRender :latex="block.content" />
-        </div>
-        <!-- 代码块 -->
-        <div v-else-if="block.type === 'code'" class="code-container">
-          <CsvTable v-if="block.language && block.language.toLowerCase() === 'csv'" :code="block.content" />
-          <JsonView v-else-if="block.language && block.language.toLowerCase() === 'json'" :code="block.content" />
-          <YamlView v-else-if="block.language && block.language.toLowerCase() === 'yaml'" :code="block.content" />
-          <TomlView v-else-if="block.language && block.language.toLowerCase() === 'toml'" :code="block.content" />
-          <HighlightRender v-else :code="block.content" :language="block.language" />
-        </div>
-        <!-- 提示块 -->
-        <div v-else-if="block.type === 'admonition'" class="admonition-container">
-          <AdmonitionRender :type="block.admonitionType" :title="block.admonitionTitle" :content="block.content" />
-        </div>
-        <!-- Toast 按钮 -->
-        <span v-else-if="block.type === 'toast-btn'" class="toast-wrap">
-          <ToastButton :type="block.toastType" :text="block.toastText" />
-        </span>
-        <!-- 彩蛋动画块 -->
-        <div v-else-if="block.type === 'easter-egg'" class="egg-container">
-          <EasterEggAnimation :text="block.text" :final-text="block.finalText" />
-        </div>
-        <!-- 普通Markdown内容 -->
-        <div v-else-if="block.type === 'markdown'" class="markdown-content" v-html="block.content"></div>
-      </div>
-    </div>
-    <div v-else class="markdown-content" v-html="markdownContent"></div>
+    <!-- 构建期预渲染的静态 HTML（SSR 直接输出全部内容，利于 SEO） -->
+    <div ref="contentRef" class="markdown-content" v-html="html"></div>
     <!-- 自定义灯箱（Teleport 到 body）-->
     <Teleport to="body">
       <Transition name="lightbox">
@@ -111,7 +77,7 @@
 <script setup>
 import VIcon from '@/components/__common/VIcon.vue'
 import VButton from '@/components/__common/VButton.vue'
-import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick, computed, getCurrentInstance, createApp, h } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNotificationStore } from '../../stores'
 import MermaidRender from './MermaidRender.vue'
@@ -125,283 +91,97 @@ import JsonView from './JsonView.vue'
 import YamlView from './YamlView.vue'
 import TomlView from './TomlView.vue'
 
-const props = defineProps(['content'])
+const props = defineProps(['html'])
 
 const route = useRoute()
 const notificationStore = useNotificationStore()
 const postId = computed(() => route.params.id || '')
 
-const markdownContent = ref('')
+const contentRef = ref(null)
 const showLightbox = ref(false)
 const currentImageIndex = ref(0)
 const lightboxImages = ref([])
-const mermaidBlocks = ref([])
-const mathBlocks = ref([])
-const codeBlocks = ref([])
-const easterEggBlocks = ref([])
-const orderedBlocks = ref([]) // 按顺序排列的内容块
-const renderMode = ref('normal') // normal 或 special-blocks
 
-// 提示块默认标题
-const defaultTitle = (type) => {
-  const titles = {
-    info: '信息',
-    success: '成功',
-    warning: '警告',
-    error: '错误',
-    tip: '提示',
-    note: '笔记',
-    danger: '危险'
+// ── 特殊块运行时激活 ──
+// 静态 HTML 已含全部内容（SEO 友好），挂载后把 .special-block 占位增强为交互组件
+const instance = getCurrentInstance()
+const mountedApps = []
+
+const getSpecialComponent = (blockType, language) => {
+  const lang = (language || '').toLowerCase()
+  // 代码类：data-block="code" 或 data-block="json/yaml/toml/csv" 都按语言路由到对应视图
+  if (blockType === 'code' || ['json', 'yaml', 'toml', 'csv'].includes(blockType)) {
+    if (lang === 'json') return JsonView
+    if (lang === 'yaml') return YamlView
+    if (lang === 'toml') return TomlView
+    if (lang === 'csv') return CsvTable
+    return HighlightRender
   }
-  return titles[type] || type
+  const map = {
+    mermaid: MermaidRender,
+    math: KatexRender,
+    admonition: AdmonitionRender,
+    toast: ToastButton,
+    'easter-egg': EasterEggAnimation
+  }
+  return map[blockType] || null
 }
 
-// 加载 marked（本地依赖，动态 import 避免进入 SSR 关键路径）
-let markedLib = null
-const getMarked = async () => {
-  if (!markedLib) {
-    markedLib = (await import('marked')).marked
-  }
-  return markedLib
-}
-
-// 提取特殊块
-const extractSpecialBlocks = (content) => {
-  // 清空之前的块数据
-  mermaidBlocks.value = []
-  mathBlocks.value = []
-  codeBlocks.value = []
-  easterEggBlocks.value = []
-  
-  // 提取 Mermaid 代码块
-  const mermaidRegex = /```mermaid[\s\S]*?```/gim
-  let match
-  while ((match = mermaidRegex.exec(content)) !== null) {
-    const code = match[0].replace(/^```mermaid\s*/i, '').replace(/```$/i, '').trim()
-    mermaidBlocks.value.push({ id: `mermaid-${mermaidBlocks.value.length}`, code })
-  }
-  
-  // 提取数学公式
-  const mathRegex = /\$\$([\s\S]*?)\$\$/gim
-  while ((match = mathRegex.exec(content)) !== null) {
-    const latex = match[1].trim()
-    mathBlocks.value.push({ id: `math-${mathBlocks.value.length}`, latex })
-  }
-  
-  // 提取代码块
-  const codeRegex = /```([\s\S]*?)```/gim
-  while ((match = codeRegex.exec(content)) !== null) {
-    const code = match[1]
-    const lines = code.split('\n')
-    const lang = lines[0].trim() || 'plaintext'
-    let codeContent = lines.slice(1).join('\n')
-    
-    // 跳过 Mermaid 代码块，因为已经单独处理
-    if (lang.toLowerCase() !== 'mermaid') {
-      codeBlocks.value.push({ language: lang, code: codeContent.replace(/\n+$/, '') })
+const parseSpecialBlock = (el) => {
+  const blockType = el.dataset.block
+  let blockProps = {}
+  switch (blockType) {
+    case 'code':
+      blockProps = { code: el.dataset.code, language: el.dataset.lang }
+      break
+    case 'json':
+    case 'yaml':
+    case 'toml':
+    case 'csv':
+      blockProps = { code: el.dataset.code, language: blockType }
+      break
+    case 'mermaid':
+      blockProps = { code: el.dataset.code }
+      break
+    case 'math':
+      blockProps = { latex: el.dataset.latex }
+      break
+    case 'admonition': {
+      const body = el.querySelector('.admonition-body')
+      blockProps = { type: el.dataset.type, title: el.dataset.title, content: body ? body.innerHTML : '' }
+      break
     }
+    case 'toast':
+      blockProps = { type: el.dataset.type, text: el.dataset.text }
+      break
+    case 'easter-egg':
+      blockProps = { text: el.dataset.text, finalText: el.dataset.final }
+      break
+    default:
+      return null
   }
-  
-  // 提取彩蛋动画块
-  const easterEggRegex = /<easter-egg([^>]*)>[\s\S]*?<\/easter-egg>/gim
-  while ((match = easterEggRegex.exec(content)) !== null) {
-    const textMatch = match[0].match(/text=["']([^"']+)["']/)
-    const finalTextMatch = match[0].match(/final-text=["']([^"']+)["']/)
-
-    easterEggBlocks.value.push({
-      id: `easter-egg-${easterEggBlocks.value.length}`,
-      text: textMatch ? textMatch[1] : '欢迎来到我的博客',
-      finalText: finalTextMatch ? finalTextMatch[1] : '欢迎来到我的博客'
-    })
-  }
+  const component = getSpecialComponent(blockType, blockProps.language)
+  return component ? { component, blockProps } : null
 }
 
-// 按顺序提取和组织内容块
-const extractOrderedBlocks = (content) => {
-  const blocks = []
-  let lastIndex = 0
-  
-  // 移除YAML front matter
-  const yamlMatch = content.match(/^---[\s\S]*?---\n?/)
-  if (yamlMatch) {
-    lastIndex = yamlMatch[0].length
-  }
-  
-  // 定义所有特殊块的正则表达式
-  const patterns = [
-    { type: 'mermaid', regex: /```mermaid[\s\S]*?```/gim },
-    { type: 'math', regex: /\$\$([\s\S]*?)\$\$/gim },
-    { type: 'code', regex: /```([\s\S]*?)```/gim },
-    { type: 'easter-egg', regex: /<easter-egg([^>]*)>[\s\S]*?<\/easter-egg>/gim },
-    { type: 'admonition', regex: /^:::\s*(info|success|warning|error|tip|note|danger)\s*(.*?)\s*\n([\s\S]*?)^:::\s*$/gm },
-    { type: 'toast-btn', regex: /<msg:(info|success|warning|error)>([\s\S]*?)<\/msg:(info|success|warning|error)>/gim }
-  ]
-  
-  // 收集所有特殊块及其位置
-  const allMatches = []
-  
-  patterns.forEach(({ type, regex }) => {
-    let match
-    while ((match = regex.exec(content)) !== null) {
-      allMatches.push({
-        type,
-        match,
-        index: match.index
-      })
-    }
+const unmountAll = () => {
+  mountedApps.forEach(app => { try { app.unmount() } catch (e) {} })
+  mountedApps.length = 0
+}
+
+const activateSpecialBlocks = () => {
+  if (typeof document === 'undefined') return
+  const container = contentRef.value
+  if (!container) return
+  container.querySelectorAll('.special-block').forEach(el => {
+    const block = parseSpecialBlock(el)
+    if (!block) return
+    const app = createApp({ render: () => h(block.component, block.blockProps) })
+    app._context = instance.appContext
+    app.mount(el)
+    mountedApps.push(app)
   })
-  
-  // 按位置排序
-  allMatches.sort((a, b) => a.index - b.index)
-  
-  // 按顺序处理所有块
-  allMatches.forEach(({ type, match, index }) => {
-    // 添加之前的普通Markdown内容
-    if (index > lastIndex) {
-      const markdownContent = content.substring(lastIndex, index)
-      if (markdownContent.trim()) {
-        blocks.push({
-          type: 'markdown',
-          content: markdownContent
-        })
-      }
-    }
-    
-    // 添加特殊块
-    if (type === 'mermaid') {
-      const code = match[0].replace(/^```mermaid\s*/i, '').replace(/```$/i, '').trim()
-      blocks.push({
-        type: 'mermaid',
-        content: code
-      })
-    } else if (type === 'math') {
-      const latex = match[1].trim()
-      blocks.push({
-        type: 'math',
-        content: latex
-      })
-    } else if (type === 'code') {
-      const code = match[1]
-      const lines = code.split('\n')
-      const lang = lines[0].trim() || 'plaintext'
-      const codeContent = lines.slice(1).join('\n').replace(/\n+$/, '')
-      
-      // 跳过 Mermaid 代码块，因为已经单独处理
-      if (lang.toLowerCase() !== 'mermaid') {
-        blocks.push({
-          type: 'code',
-          content: codeContent,
-          language: lang
-        })
-      }
-    } else if (type === 'easter-egg') {
-      const textMatch = match[0].match(/text=["']([^"']+)["']/)
-      const finalTextMatch = match[0].match(/final-text=["']([^"']+)["']/)
-      blocks.push({
-        type: 'easter-egg',
-        content: match[0],
-        text: textMatch ? textMatch[1] : '欢迎来到我的博客',
-        finalText: finalTextMatch ? finalTextMatch[1] : '欢迎来到我的博客'
-      })
-    } else if (type === 'admonition') {
-      const admonType = match[1] || 'info'
-      const admonTitle = match[2]?.trim() || defaultTitle(admonType)
-      const admonContent = match[3]?.trim() || ''
-      blocks.push({
-        type: 'admonition',
-        content: admonContent,
-        admonitionType: admonType,
-        admonitionTitle: admonTitle
-      })
-    } else if (type === 'toast-btn') {
-      const btnType = match[1] || 'info'
-      const btnText = match[2]?.trim() || ''
-      blocks.push({
-        type: 'toast-btn',
-        toastType: btnType,
-        toastText: btnText
-      })
-    }
-    
-    lastIndex = index + match[0].length
-  })
-  
-  // 添加最后一部分普通Markdown内容
-  if (lastIndex < content.length) {
-    const markdownContent = content.substring(lastIndex)
-    if (markdownContent.trim()) {
-      blocks.push({
-        type: 'markdown',
-        content: markdownContent
-      })
-    }
-  }
-  
-  return blocks
 }
-
-// 解析和渲染Markdown
-const renderMarkdown = async () => {
-  
-  try {
-    const marked = await getMarked()
-    
-    // 提取特殊块
-    extractSpecialBlocks(props.content)
-    
-    // 检查是否有特殊块
-    const hasSpecialBlocks = mermaidBlocks.value.length > 0 || mathBlocks.value.length > 0 || codeBlocks.value.length > 0 || easterEggBlocks.value.length > 0 || /:::\s*(info|success|warning|error|tip|note|danger)/gm.test(props.content) || /<msg:(info|success|warning|error)>/gim.test(props.content)
-    
-    if (hasSpecialBlocks) {
-      // 有特殊块，使用特殊块渲染模式
-      renderMode.value = 'special-blocks'
-      
-      // 按顺序提取和组织内容块
-      const blocks = extractOrderedBlocks(props.content)
-      
-      // 解析每个普通Markdown块
-      const processedBlocks = blocks.map(block => {
-        if (block.type === 'markdown') {
-          return {
-            ...block,
-            content: marked.parse(block.content)
-          }
-        }
-        if (block.type === 'admonition') {
-          // 将提示块内容也渲染为 Markdown
-          return block.content
-            ? { ...block, content: marked.parse(block.content) }
-            : block
-        }
-        return block
-      })
-      
-      orderedBlocks.value = processedBlocks
-    } else {
-      // 没有特殊块，使用普通渲染模式
-      renderMode.value = 'normal'
-      
-      // 移除YAML front matter
-      let processedContent = props.content.replace(/^---[\s\S]*?---\n?/, '')
-      
-      // 解析Markdown
-      markdownContent.value = marked.parse(processedContent)
-    }
-    
-    // 添加图片点击事件、标题锚点和锚点链接滚动拦截
-    nextTick(() => {
-      addImageClickListeners()
-      addHeadingIds()
-      addAnchorClickInterceptors()
-    })
-  } catch (error) {
-    console.error('渲染Markdown时出错:', error)
-    markdownContent.value = `<p>渲染Markdown时出错: ${error.message}</p>`
-    renderMode.value = 'normal'
-  }
-}
-
-
 
 // 存储图片点击监听器引用，用于清理
 const imageClickHandlers = new WeakMap()
@@ -608,20 +388,32 @@ const onLightboxKeydown = (e) => {
   if (e.key === 'ArrowRight') nextImage()
 }
 
+// 挂载后增强静态 HTML：激活特殊块 + 图片灯箱 + 标题锚点 + 锚点滚动
+const enhance = () => {
+  nextTick(() => {
+    activateSpecialBlocks()
+    addImageClickListeners()
+    addHeadingIds()
+    addAnchorClickInterceptors()
+  })
+}
+
 onMounted(() => {
-  renderMarkdown()
+  enhance()
   // 监听文本选择
   document.addEventListener('mouseup', handleTextSelection)
 })
 
+watch(() => props.html, () => {
+  unmountAll()
+  enhance()
+})
+
 onUnmounted(() => {
+  unmountAll()
   document.removeEventListener('mouseup', handleTextSelection)
   anchorContainers.forEach(c => c.removeEventListener('click', handleAnchorClick))
   anchorContainers.length = 0
-})
-
-watch(() => props.content, () => {
-  renderMarkdown()
 })
 </script>
 

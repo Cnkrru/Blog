@@ -1,0 +1,194 @@
+<h2>樱花效果</h2>
+<blockquote>
+<p>常见的樱花飘落js特效一般是通过引入这个js脚本:<a href="https://blog-static.cnblogs.com/files/quaint/sakuraPlus.js">sakura</a></p>
+</blockquote>
+<ol>
+<li>制作方法<ul>
+<li><p>这个脚本是将图片转为base64：</p>
+<ul>
+<li><p>base64转图片工具网址:<a href="https://www.toolhelper.cn/Image/Base64?tab=base64#">base-to-img</a></p>
+</li>
+<li><p>图片</p>
+<p>  <img src="../images/post-15/base64-to-image.png" alt="sakura"></p>
+</li>
+</ul>
+</li>
+<li><p>原脚本直接调用可能问题</p>
+<ul>
+<li>onload函数执行较早，浏览器是并行解码+执行函数，当onload执行完时，base64并未解析完</li>
+<li>等图片解析出来，不会挂载，导致无法显示</li>
+<li>解决方案：</li>
+<li>注释掉源代码里的挂载函数，在<code>&lt;script&gt;</code>部分用<code>setTimeout()</code>设置延时</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>代码</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Sakura Demo&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script&gt;
+        // 与博客 DynamicEffectControl.vue 相同的方式加载本地 sakuraPlus.js
+        const script = document.createElement('script')
+        script.src = '../public/js/sakuraPlus.js'
+        script.onload = function() {
+            // 延迟 100ms 确保图片 base64 解码完成，然后直接调用 startSakura
+            setTimeout(function() {
+                if (typeof startSakura !== 'undefined') {
+                    startSakura()
+                }
+            }, 100)
+        }
+        document.head.appendChild(script)
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr>
+<h2>雪花特效</h2>
+<blockquote>
+<p>雪花特效常见制作方法：CSS手搓，three.js脚本特效
+不管哪种方式都要注意，背景色别弄成白色的</p>
+</blockquote>
+<ol>
+<li>CSS样式制作方法：<ul>
+<li>在屏幕上创建一个<code>fragment</code>容器，在该容器内创建<code>count</code>个<code>div</code>，该<code>div</code>的样式由JS代码生成</li>
+<li>配上<code>keyframe</code>动画</li>
+</ul>
+</li>
+<li>代码</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Snow Demo - CSS 纯动画（博客当前方案）&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background: linear-gradient(180deg, #0a1628 0%, #1a2a4a 50%, #0d1b2a 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100001;
+            overflow: hidden;
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: snowfall linear infinite;
+        }
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="snow-container" id="snowContainer"&gt;&lt;/div&gt;
+    &lt;script&gt;
+        function seededRandom(seed) {
+            let x = Math.sin(seed * 127.1 + 311.7) * 43758.5453
+            return x - Math.floor(x)
+        }
+
+        const container = document.getElementById('snowContainer')
+        let count = 30
+        const fragment = document.createDocumentFragment()
+
+        for (let i = 0; i &lt; count; i++) {
+            let r1 = seededRandom(i * 7 + 1)
+            let r2 = seededRandom(i * 7 + 2)
+            let r3 = seededRandom(i * 7 + 3)
+            let r4 = seededRandom(i * 7 + 4)
+            let r5 = seededRandom(i * 7 + 5)
+            let size = 5 + r5 * 12
+
+            const flake = document.createElement('div')
+            flake.className = 'snowflake'
+            flake.style.left = (r1 * 100) + '%'
+            flake.style.animationDelay = (r2 * 5) + 's'
+            flake.style.animationDuration = (5 + r3 * 10) + 's'
+            flake.style.opacity = 0.5 + r4 * 0.5
+            flake.style.width = size + 'px'
+            flake.style.height = size + 'px'
+
+            fragment.appendChild(flake)
+        }
+
+        container.appendChild(fragment)
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<ol start="3">
+<li>three.js雪花特效的制作方法<ul>
+<li>three.js是一个3D特效库</li>
+<li>用该库制作的特效具有3D效果，但是体积大</li>
+<li>本文是直接调用别人写好的js脚本(这里下载到本地使用了)</li>
+</ul>
+</li>
+<li>代码</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Snow Demo - Three.js 3D&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background: linear-gradient(180deg, #0a1628 0%, #1a2a4a 50%, #0d1b2a 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="snow-container"&gt;&lt;/div&gt;
+    &lt;script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="../public/js/snowy.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr>
+<blockquote>
+<p>编辑于2026-08-10</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

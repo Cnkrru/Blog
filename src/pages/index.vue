@@ -3,9 +3,9 @@ import IndexLogo from '../components/page-index/IndexLogo.vue'
 import IndexNavbar from '../components/page-index/IndexNavbar.vue'
 import HeroContent from '../components/page-index/HeroContent.vue'
 import NetworkParticles from '../components/page-index/NetworkParticles.vue'
-import { useHeadRaw } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 
-useHeadRaw({
+useHead({
   title: 'Cnkrru\'s Blog',
   meta: [
     { name: 'description', content: '一个技术博客，记录学习与成长' },
@@ -29,7 +29,7 @@ useHeadRaw({
   script: [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@graph': [
           {

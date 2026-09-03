@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed, watch, onServerPrefetch } from 'vue'
 import VButton from '@/components/__common/VButton.vue'
 import VIcon from '@/components/__common/VIcon.vue'
 import { RouterLink } from 'vue-router'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 import { useArticlesStore } from '../stores'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 
@@ -177,7 +177,7 @@ function clearSearch() {
   searchQuery.value = ''
 }
 
-onMounted(async () => {
+const loadTagData = async () => {
   try {
     const data = await store.fetchArticles()
     articles.value = data.filter((a) => a.id !== 'terminal')
@@ -185,7 +185,11 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-})
+}
+
+onServerPrefetch(() => loadTagData())
+
+onMounted(() => loadTagData())
 </script>
 
 <template>

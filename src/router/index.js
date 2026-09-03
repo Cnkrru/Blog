@@ -99,6 +99,9 @@ const scrollToTop = () => {
     }
 }
 
+// vite-ssg 入口需要的路由配置：路由表 + 滚动行为
+export { routes, scrollToTop }
+
 /*
 * id:路由插件
 * fn:导出路由创建函数给main.js使用

@@ -1,8 +1,8 @@
 <script setup>
 import VIcon from '@/components/__common/VIcon.vue'
-import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
-import { useHead } from '@vueuse/head'
+import { ref, computed, onMounted, onServerPrefetch } from 'vue'
+import { readPublicJson } from '../stores'
+import { useHead } from '@unhead/vue'
 import PageNav from '../components/p-center/PageNav.vue'
 
 // SEO 配置
@@ -36,7 +36,7 @@ const totalPages = ref(1)
 
 const loadProjects = async () => {
     try {
-        const { data } = await axios.get('/config/projects.json')
+        const data = await readPublicJson('config/projects.json')
         projects.value = data
         categorizeProjects()
     } catch (error) {
@@ -79,6 +79,8 @@ const changePage = (page) => {
         currentPage.value = page
     }
 }
+
+onServerPrefetch(() => loadProjects())
 
 onMounted(() => {
     loadProjects()

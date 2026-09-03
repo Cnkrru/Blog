@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onServerPrefetch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 import Announcement from './Announcement.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
 import ArticleCover from '../components/content/ArticleCover.vue'
@@ -35,7 +35,7 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: "Cnkrru's Blog",
@@ -95,6 +95,8 @@ const getPaginatedArticles = () => {
 const changePage = (p) => {
   if (p >= 1 && p <= totalPages.value) currentPage.value = p
 }
+
+onServerPrefetch(() => loadArticles())
 
 onMounted(() => loadArticles())
 </script>

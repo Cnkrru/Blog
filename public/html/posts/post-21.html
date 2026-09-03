@@ -1,0 +1,64 @@
+<h2>制作方法</h2>
+<ol>
+<li>这个就是一个弹窗放图片就行</li>
+<li>用<code>dialog</code>标签实现弹窗</li>
+</ol>
+<hr>
+<h2>代码</h2>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .dialog {
+            border: none;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .dialog h1 {
+            margin-top: 0;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;dialog class="dialog"&gt;
+        &lt;h1&gt;赞助&lt;/h1&gt;
+        &lt;img src="sponsor-image.jpg" alt="赞助图片"&gt;
+        &lt;button class="close"&gt;关闭&lt;/button&gt;
+    &lt;/dialog&gt;
+    &lt;button class="open"&gt;赞助我&lt;/button&gt;
+
+    &lt;script&gt;
+        const openBtn = document.querySelector('.open');
+        const closeBtn = document.querySelector('.close');
+        const dialog = document.querySelector('dialog');
+
+        openBtn.addEventListener('click', () =&gt; {dialog.showModal();});
+        closeBtn.addEventListener('click', () =&gt; {dialog.close();});
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr>
+<blockquote>
+<p>编辑于2026-08-11</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

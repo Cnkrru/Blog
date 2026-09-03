@@ -8,7 +8,7 @@ export { useMouseStore } from './mouse'
 export { useAudioStore } from './audio'
 export { useCodeStore } from './code'
 export { useContentStore } from './content'
-export { useArticlesStore } from './articles'
+export { useArticlesStore, readPublicJson, readPublicText } from './articles'
 export { useMusicStore } from './music'
 export { useImmersiveStore } from './immersive'
 

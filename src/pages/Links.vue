@@ -1,9 +1,9 @@
 <script setup>
 import VIcon from '@/components/__common/VIcon.vue'
-import { ref, onMounted, reactive } from 'vue'
-import axios from 'axios'
-import { useHead } from '@vueuse/head'
+import { ref, onMounted, reactive, onServerPrefetch } from 'vue'
+import { useHead } from '@unhead/vue'
 import PageNav from '../components/p-center/PageNav.vue'
+import { readPublicJson } from '../stores'
 
 // SEO 配置
 useHead({
@@ -68,10 +68,10 @@ function checkAllLinks() {
 
 const loadLinks = async () => {
     try {
-        const { data } = await axios.get('/config/links.json')
+        const data = await readPublicJson('config/links.json')
         links.value = data
         categorizeLinks()
-        checkAllLinks()
+        if (typeof window !== 'undefined') checkAllLinks()
     } catch (error) {
         console.error('加载链接失败:', error)
         links.value = []
@@ -115,6 +115,8 @@ const changePage = (page) => {
 
 const onlineCount = () => Object.values(linkStatus).filter(s => s === 'online').length
 const offlineCount = () => Object.values(linkStatus).filter(s => s === 'offline').length
+
+onServerPrefetch(() => loadLinks())
 
 onMounted(() => {
     loadLinks()

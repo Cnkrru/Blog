@@ -3,46 +3,59 @@
 import { computed } from 'vue'
 import icons from '@/assets/svg-icon-map.js'
 
+// 组件参数
 const props = defineProps({
   src: { type: String, required: true },
   size: { type: [Number, String], default: 18 },
-  color: { type: String },
   title: { type: String }
 })
 
-function resolveKey(src) {
-  return src.split('/').pop() || src
+/*
+* id: props参数解析函数
+* fn: 解析src为图标key，尺寸转css值，返回中间参数
+*/
+function parseProps(props) {
+  const key = props.src.split('/').pop() || props.src
+  const size = /^\d+(\.\d+)?$/.test(String(props.size).trim())
+    ? `${props.size}px`
+    : props.size
+  return { icon: icons[key], size, title: props.title }
 }
 
-const icon = computed(() => icons[resolveKey(props.src)])
-
-function toDim(value) {
-  const s = String(value).trim()
-  return /^\d+(\.\d+)?$/.test(s) ? `${s}px` : s
+/*
+* id: svg属性挂载函数
+* fn: 把解析结果挂载成svg完整属性组
+*/
+function mountSvg(parsed) {
+  const style = { width: parsed.size, height: parsed.size }
+  if (!parsed.icon) return { exists: false, style }
+  return {
+    exists: true,
+    css: parsed.icon.css,
+    body: parsed.icon.body,
+    attrs: {
+      viewBox: parsed.icon.viewBox,
+      role: parsed.title ? 'img' : undefined,
+      'aria-label': parsed.title,
+      'aria-hidden': parsed.title ? undefined : 'true'
+    },
+    style
+  }
 }
 
-const sizeStyle = computed(() => {
-  const dimension = toDim(props.size)
-  return { width: dimension, height: dimension }
-})
-
-const colorStyle = computed(() => props.color ? { color: props.color } : undefined)
+const svg = computed(() => mountSvg(parseProps(props)))
 </script>
 
 <template>
   <svg
-    v-if="icon"
-    v-bind="icon.css"
-    data-icon="true"
+    v-if="svg.exists"
+    v-bind="{ ...svg.css, ...svg.attrs }"
     class="icon"
-    :viewBox="icon.viewBox"
-    :role="title ? 'img' : undefined"
-    :aria-label="title"
-    :aria-hidden="title ? undefined : 'true'"
-    :style="[sizeStyle, colorStyle]"
-    v-html="icon.body"
+    data-icon="true"
+    :style="svg.style"
+    v-html="svg.body"
   ></svg>
-  <span v-else class="icon icon-missing" :style="sizeStyle">?</span>
+  <span v-else class="icon icon-missing" :style="svg.style">?</span>
 </template>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
+import { ref, onMounted, computed, watch, nextTick, onServerPrefetch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 import { useArticlesStore } from '../stores'
 import VIcon from '@/components/__common/VIcon.vue'
 import ArticleCount from '../components/p-center/ArticleCount.vue'
@@ -103,6 +103,8 @@ function updateIndicator() {
 }
 
 watch(viewMode, updateIndicator)
+
+onServerPrefetch(() => loadArticles())
 
 onMounted(() => {
   loadArticles()

@@ -1,0 +1,138 @@
+<h2>Fetch API</h2>
+<blockquote>
+<p>fetchAPI用于与后端进行数据来往</p>
+</blockquote>
+<ul>
+<li>前端JS内置库，支持异步</li>
+<li>请求类型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>请求</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>get</td>
+<td>获取数据</td>
+</tr>
+<tr>
+<td>post</td>
+<td>发送数据</td>
+</tr>
+<tr>
+<td>put</td>
+<td>更新数据（全部）</td>
+</tr>
+<tr>
+<td>patch</td>
+<td>更新数据（局部）</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除数据</td>
+</tr>
+</tbody></table>
+<ul>
+<li>直接写fetch太麻烦了，一般用axios库，是封装好的请求库</li>
+</ul>
+<hr>
+<h2>axios</h2>
+<blockquote>
+<p>文档:<a href="https://axios.org.cn/docs/intro">axios中文文档</a>
+第三方文档:<a href="http://www.axios-js.com/zh-cn/docs/index.html">axios第三方hugo文档</a></p>
+</blockquote>
+<h3>axios API</h3>
+<ol>
+<li>axios(config)</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="javascript"><pre><code class="language-javascript">// 发送 POST 请求
+axios({
+    method: 'post',
+    url: '/user/12345',
+    data: {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+    }
+});</code></pre></div>
+<ol start="2">
+<li>各种方法对应函数
+<code>axios.&lt;类型&gt;(&lt;参数&gt;)</code></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>request</td>
+<td>config</td>
+</tr>
+<tr>
+<td>get</td>
+<td>url,[config]</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>url,[config]</td>
+</tr>
+<tr>
+<td>head</td>
+<td>url,[config]</td>
+</tr>
+<tr>
+<td>options</td>
+<td>url,[config]</td>
+</tr>
+<tr>
+<td>post</td>
+<td>url,[data,[config]]</td>
+</tr>
+<tr>
+<td>put</td>
+<td>url,[data,[config]]</td>
+</tr>
+<tr>
+<td>patch</td>
+<td>url,[data,[config]]</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>并发处理函数<ul>
+<li><code>axios.all(&lt;参数&gt;)</code></li>
+<li><code>axios.spread(&lt;参数&gt;)</code>
+示例:</li>
+</ul>
+</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="javascript"><pre><code class="language-javascript">function getUserAccount() {
+  return axios.get('/user/12345');
+}
+
+function getUserPermissions() {
+  return axios.get('/user/12345/permissions');
+}
+
+axios.all([getUserAccount(), getUserPermissions()])
+  .then(axios.spread(function (acct, perms) {
+  }));</code></pre></div>
+<h3>注意事项</h3>
+<ol>
+<li>axios默认异步</li>
+<li>axios在<code>.then()</code>中的数据默认不外用，涉及调用API获取的数据，最好在<code>then</code>工作域内完成操作</li>
+</ol>
+<hr>
+<blockquote>
+<p>编辑于2026-08-10</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

@@ -1,0 +1,162 @@
+<h2>Cmake</h2>
+<h3>Cmake介绍</h3>
+<blockquote>
+<p>对于C和Cpp项目，我们可以这样理解构建过程：</p>
+<ul>
+<li>源码 -&gt; 配置CmakeList.txt -&gt; 生成构建工具的配置文件 -&gt; 构建工具根据生成的配置文件准备原料 -&gt; 将<code>原料</code>交给编译器编译为二进制</li>
+<li>可以看作，源码是<code>做饭的原料</code>，CmakeList是<code>菜谱</code>，配置文件是<code>做饭工具+购物清单</code>，构建工具准备<code>原料</code>，编译器是<code>厨师</code>，将其做成<code>食物</code></li>
+</ul>
+</blockquote>
+<hr>
+<h3>编译器</h3>
+
+<div class="special-block" data-block="csv" data-code="Windows,MacOS,Linux
+MSVC,Clang,GCC"><pre><code>Windows,MacOS,Linux
+MSVC,Clang,GCC</code></pre></div>
+<blockquote>
+<p>并非全部，只是主流，比如Windows系统还有一种主流编译器<code>MinGW</code>,不同的编译器安装的库也会不同，编译产物可能会有些差别，但是程序结果一般相同</p>
+</blockquote>
+<hr>
+<h3>构建工具</h3>
+
+<div class="special-block" data-block="csv" data-code="平台,构建工具,配置文件
+Windows,VS(MSVC),vproject/.sln
+MacOS,Xcode,xcodeproj
+Linux,UNIX Makefile,Makefile"><pre><code>平台,构建工具,配置文件
+Windows,VS(MSVC),vproject/.sln
+MacOS,Xcode,xcodeproj
+Linux,UNIX Makefile,Makefile</code></pre></div>
+<blockquote>
+<p>也有全平台的<code>Ninja</code><br>这些依赖于CmakeList来生成对应的配置文件
+CMake本身是跨平台的，也有其他工具，但是在一些方面总会不如Cmake</p>
+</blockquote>
+<hr>
+<h3>源码与库</h3>
+<ul>
+<li>由于操作系统设计的差异，C/CPP的库并不一定都是跨平台的，不过标准库和一些第三方库(比如QT)一般跨平台</li>
+<li>这些库跨平台主要是依赖于按平台来进行条件编译，比如我用标准库写的一段代码。在Windows编译成<code>0010 1010</code>,在MacOS可能会编译成<code>1010 0101</code>（瞎写的）</li>
+<li>虽然编译的产物不同，但是效果相同</li>
+</ul>
+<hr>
+<h3>编译性语言与解释性语言</h3>
+<ul>
+<li>编译性语言根据源码，编译成对应的二进制，如果运行在不同底座上，就不行</li>
+<li>解释性语言，代码运行在解释器上，解释器本身是跨平台的，所以到处运行，至于解释器为什么跨平台，因为解释器一般是由编译性语言写的，比如python解释器<code>Cpython</code>是用C写的，在设计时便按条件编译，与标准库能跨平台的原理相同</li>
+<li>虚拟机，至于java这种运行在java虚拟机上的语言，虚拟机跨平台的原理与解释器跨平台的原理类似，但是又有区别，java源码会编译为class字节码，进一步运行在虚拟机上，这里作者不懂</li>
+<li>速度问题，解释性语言一般会比编译性语言慢很多，因为相当于又多了一层封装，而且很多解释性语言自带GC机制(内存回收),不需要手动管理内存，解释器会有一部分性能浪费在内存处理上，并不是说编译性语言就没有GC了，go语言有，速度介于C/CPP这种手动管理内存的编译性语言和解释性语言之间</li>
+<li>无论哪种语言，能解决问题的就是好语言，无高低好坏之分，有些可能会被淘汰，比如php，有些兴起，比如rust，都只是一时的，但是各个编程语言是类似的，学好一门后端语言，学其他的也容易不少，后端语言大多相通，而且随着硬件水平提升，速度不再是开发者的追求，开发速度也是一个值得关注的事</li>
+</ul>
+<hr>
+<h3>Cmake相关文件夹与配置文件</h3>
+
+<div class="special-block" data-block="csv" data-code="文件夹,文件夹作用,配置文件
+src,放源码和CmakeList,CmakeList.txt
+build,构建中间产物,CmakeCache.txt
+install,安装目录,Cmake_install.cmake"><pre><code>文件夹,文件夹作用,配置文件
+src,放源码和CmakeList,CmakeList.txt
+build,构建中间产物,CmakeCache.txt
+install,安装目录,Cmake_install.cmake</code></pre></div>
+<hr>
+<h3>Cmake语法</h3>
+<blockquote>
+<p>内容太多，具体请看:<a href="https://notes.cnkrru.top">notes</a></p>
+</blockquote>
+<ul>
+<li>语法风格和后端语言比较相似，容易上手</li>
+</ul>
+<h3>包管理与构建</h3>
+<ul>
+<li>我们不管用什么语言做项目，都需要<code>包管理器</code>和<code>构建工具</code></li>
+</ul>
+
+<div class="special-block" data-block="csv" data-code="编程语言,包管理器,构建工具,配置文件
+python,pip,setuptools,pyproject.toml
+javascript,npm,webpack/vite,package.json
+rust,cargo,cargo,cargo.toml
+Cpp,vcpkg,Cmake+make,CmakeList.txt+vcpkg.json"><pre><code>编程语言,包管理器,构建工具,配置文件
+python,pip,setuptools,pyproject.toml
+javascript,npm,webpack/vite,package.json
+rust,cargo,cargo,cargo.toml
+Cpp,vcpkg,Cmake+make,CmakeList.txt+vcpkg.json</code></pre></div>
+<ul>
+<li>python:<ul>
+<li><code>pip list</code>可以看安装的全局包，里面会有pip和setuptool，也有其他包管理器和构建工具，不过作者没用过</li>
+</ul>
+</li>
+<li>JavaScript<ul>
+<li><code>npm list -g</code>可以看全局包，不过JavaScript项目隔离做的比较好，构建工具和依赖一般在项目的package.json里配置</li>
+</ul>
+</li>
+<li>rust<ul>
+<li>用的少，语言比较新，虽然特效和工具都是最新潮的，但是生态弱<blockquote>
+<p>学习什么语言，如果是找工作，确实应该选一个容易找工作的，比如Java，go，但是如果是给自己用，想做一下自己想做的东西，用成熟的语言会好些</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3>依赖管理</h3>
+<blockquote>
+<p>东西实在太多，我挑着自己想学的学，并在这里介绍</p>
+</blockquote>
+<ul>
+<li>依赖管理 -&gt; 包管理器，我使用的是vcpkg，微软官方出的，用着还行</li>
+<li>包管理器还有Conan，我没用过</li>
+<li>vcpkg安装包时需要指定平台(标准库和跨平台包则不用)</li>
+</ul>
+
+<div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell">vcpkg install fmt spdlog nlohmann-json
+vcpkg install qt6
+
+# 指定 目标平台配置
+vcpkg install fmt:x64-windows             # MSVC 64位
+vcpkg install fmt:x64-windows-static      # 静态链接
+vcpkg install fmt:x64-mingw-dynamic       # MinGW 动态链接</code></pre></div>
+<ul>
+<li>Cmake中配置vcpkg</li>
+</ul>
+
+<div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell">cmake -B build -S . \
+    -DCMAKE_TOOLCHAIN_FILE="[vcpkg-root]/scripts/buildsystems/vcpkg.cmake"</code></pre></div>
+<ul>
+<li>包管理<code>vcpkg.json</code><blockquote>
+<p>和package.json长得一样</p>
+</blockquote>
+</li>
+</ul>
+
+<div class="special-block" data-block="json" data-code="{
+  &quot;name&quot;: &quot;my-project&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;dependencies&quot;: [
+    &quot;fmt&quot;,
+    &quot;spdlog&quot;,
+    &quot;nlohmann-json&quot;,
+    {
+      &quot;name&quot;: &quot;openssl&quot;,
+      &quot;features&quot;: [&quot;tools&quot;]
+    }
+  ]
+}"><pre><code>{
+  "name": "my-project",
+  "version": "1.0.0",
+  "dependencies": [
+    "fmt",
+    "spdlog",
+    "nlohmann-json",
+    {
+      "name": "openssl",
+      "features": ["tools"]
+    }
+  ]
+}</code></pre></div>
+<hr>
+<blockquote>
+<p>编辑于2026-08-14</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

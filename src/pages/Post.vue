@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 import BackToTop from '../components/p-center/BackToTop.vue'
 import ContentRender from '../components/content/ContentRender.vue'
 import ReadingTime from '../components/p-center/ReadingTime.vue'
@@ -119,6 +119,7 @@ useHead({
 })
 
 const scrollToTop = () => {
+    if (typeof document === 'undefined') return
     const centerCardContent = document.querySelector('.center-card-content');
     if (centerCardContent) {
         centerCardContent.scrollTo({

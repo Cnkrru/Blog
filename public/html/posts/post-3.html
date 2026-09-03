@@ -1,0 +1,105 @@
+<h2>LOGO组件</h2>
+<ol>
+<li>LOGO制作一般分为两种：<ul>
+<li>图片样式</li>
+<li>文字样式</li>
+</ul>
+</li>
+<li>代码<blockquote>
+<p>图片样式</p>
+</blockquote>
+</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">    &lt;div class="logo" 
+         style="
+          width: 100px;
+          height: 100px;
+          border: 1px solid pink;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          "&gt;
+    &lt;a href="/"&gt;
+        &lt;img src="../src/assets/imgs/avator.jpg" alt="logo" 
+        style="
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        "&gt;
+    &lt;/a&gt;
+&lt;/div&gt;</code></pre></div>
+<blockquote>
+<p>文字样式</p>
+</blockquote>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">    &lt;div class="logo-text" 
+         style="
+          width: 100px;
+          height: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          "&gt;
+        &lt;a href="/" style="text-decoration: none;color: #333;"&gt;
+            &lt;span style="font-size: 24px;font-weight: bold;"&gt;LOGO&lt;/span&gt;
+        &lt;/a&gt;
+    &lt;/div&gt;</code></pre></div>
+<blockquote>
+<p>不建议内写style，太丑了，维护起来也是灾难</p>
+</blockquote>
+<hr>
+<h2>头像组件</h2>
+<ol>
+<li>头像设计没什么特殊的，放个图片弄个圆角就行，一般还要弄一个链接</li>
+<li>代码<ul>
+<li>直接复用图形样式LOGO即可，</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>导航组件</h2>
+<ol>
+<li>导航组件一般是一个列表，每个列表项都是一个链接</li>
+<li>代码</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">    &lt;ul style="flex-direction: column; padding: 0; margin: 0;font-size: 16px; list-style: none; display: flex; gap: 20px;"&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;</code></pre></div>
+<blockquote>
+<p>想要横着的就把flex-direction改成row，改一下方向</p>
+</blockquote>
+<hr>
+<h2>版权组件</h2>
+<ol>
+<li>版权组件一般是一个简单的文字，显示在页面底部<ul>
+<li>版权符号：<code>&amp;copy</code></li>
+<li>这是HTML实体符号的写法<code>&amp;实体符号</code></li>
+</ul>
+</li>
+<li>代码</li>
+</ol>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;p style="front-size: 14px; color: #666; text-align: center"&gt;
+    &amp;copy; 2023 你的博客名称. 所有权利保留.
+&lt;/p&gt;</code></pre></div>
+<hr>
+<h2>欢迎语组件</h2>
+<ul>
+<li>欢迎语组件就是一段话内嵌一个<code>&lt;a&gt;</code>标签跳转链接，这里不赘述</li>
+</ul>
+<hr>
+<h2></h2>
+<blockquote>
+<p>编辑于2026-04-20</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

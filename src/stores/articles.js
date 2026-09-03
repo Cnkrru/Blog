@@ -6,18 +6,34 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
 
+// 读取 public/config 下的 JSON：SSR 构建期用 fs（axios 相对路径在 Node 下不可用），客户端用 axios
+export async function readPublicJson(path) {
+  if (typeof window === 'undefined') {
+    const { readFileSync } = await import('node:fs')
+    const { resolve } = await import('node:path')
+    return JSON.parse(readFileSync(resolve(process.cwd(), 'public', path), 'utf8'))
+  }
+  const { data } = await axios.get(`/${path}`)
+  return data
+}
+
+// 读取 public 下的文本文件（预渲染 HTML）：SSR 用 fs，客户端用 axios
+export async function readPublicText(path) {
+  if (typeof window === 'undefined') {
+    const { readFileSync } = await import('node:fs')
+    const { resolve } = await import('node:path')
+    return readFileSync(resolve(process.cwd(), 'public', path), 'utf8')
+  }
+  const { data } = await axios.get(`/${path}`)
+  return data
+}
+
 export const useArticlesStore = defineStore('articles', () => {
   const articles = ref([])
   const isLoading = ref(false)
   const error = ref(null)
   const lastFetchTime = ref(0)
   const cacheDuration = 5 * 60 * 1000
-
-  // 所有 md 文件，通过 import.meta.glob 自动收集，新增文章无需手动维护
-  const mdModules = {
-    ...import.meta.glob('../../content/posts/*.md', { query: '?raw', import: 'default', eager: false }),
-    ...import.meta.glob('../../content/projects/*.md', { query: '?raw', import: 'default', eager: false }),
-  }
 
   const totalArticles = computed(() => articles.value.length)
   const hasArticles = computed(() => articles.value.length > 0)
@@ -30,8 +46,7 @@ export const useArticlesStore = defineStore('articles', () => {
     isLoading.value = true
     error.value = null
     try {
-      const { data } = await axios.get('/config/search.json')
-      articles.value = data
+      articles.value = await readPublicJson('config/search.json')
       lastFetchTime.value = now
       return articles.value
     } catch (err) {
@@ -42,32 +57,6 @@ export const useArticlesStore = defineStore('articles', () => {
     }
   }
 
-  /**
-   * 根据 id 加载对应 md 文件的原始内容
-   * 文件命名规则：
-   *   数字 id (0,1,2...)  -> content/posts/post-{id}.md
-   *   字符串 id           -> content/posts/{id}.md
-   *   project-N           -> content/projects/project-{N}.md
-   */
-  const loadMarkdown = async (id) => {
-    const candidates = [
-      `../../content/posts/post-${id}.md`,
-      `../../content/posts/${id}.md`,
-      `../../content/projects/${id}.md`,
-    ]
-
-    for (const path of candidates) {
-      if (mdModules[path]) {
-        try {
-          return await (mdModules[path]())
-        } catch (err) {
-          console.error(`[articlesStore] 加载文件失败 ${path}:`, err)
-        }
-      }
-    }
-    return null
-  }
-
   return {
     articles,
     isLoading,
@@ -76,7 +65,6 @@ export const useArticlesStore = defineStore('articles', () => {
     cacheDuration,
     totalArticles,
     hasArticles,
-    fetchArticles,
-    loadMarkdown
+    fetchArticles
   }
 })

@@ -13,23 +13,19 @@ const immersiveStore = useImmersiveStore()
         v-if="!immersiveStore.is_immersive"
         class="back-to-top-btn"
         title="返回顶部"
-        aria-label="返回顶部"
         @click="scrollStore.scroll_to_top"
     >
         <VIcon :src="'arrow-up.svg'" :size="24" />
     </button>
     <!-- 沉浸阅读状态下的返回顶部按钮 -->
-    <Teleport to="body">
-        <button
-            v-if="immersiveStore.is_immersive"
-            class="back-to-top-btn immersive visible"
-            title="返回顶部"
-            aria-label="返回顶部"
-            @click="scrollStore.scroll_to_top"
-        >
-            <VIcon :src="'arrow-up.svg'" :size="24" />
-        </button>
-    </Teleport>
+    <button
+        v-else="immersiveStore.is_immersive"
+        class="back-to-top-btn immersive visible"
+        title="返回顶部"
+        @click="scrollStore.scroll_to_top"
+    >
+        <VIcon :src="'arrow-up.svg'" :size="24" />
+    </button>
 </template>
 
 <style scoped>

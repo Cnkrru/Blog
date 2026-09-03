@@ -1,0 +1,259 @@
+<blockquote>
+<p>vue官方文档:<a href="https://cn.vuejs.org/">https://cn.vuejs.org/</a></p>
+</blockquote>
+<h2>vue介绍</h2>
+<ul>
+<li>vue是一个前端JavaScript框架，组件化设计，作者是尤雨溪，挺好用的，本博客就是用vue做的</li>
+<li>vue有一些很好的特性：响应式数据，watch监听，组件生命周期，HTML+CSS+JS用三个标签在一个文件中隔离，一个vue文件就是一个组件</li>
+<li>挺好用，中文文档也比较丰富，生态也强</li>
+</ul>
+<hr>
+<h2>vue初始化</h2>
+<h3>1. 环境准备</h3>
+<ul>
+<li>需要node.js，因为vue会编译为HTML+CSS+js，编译需要在node.js运行vue框架转译来实现</li>
+</ul>
+<hr>
+<h3>2. 快速开始</h3>
+
+<div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell">npm create vue@latest</code></pre></div>
+<p><img src="../images/post-27/vue-init.png" alt="vue初始化"></p>
+<blockquote>
+<p>官网的文档可能不是最新版，官网的初始化询问过程不一定和你实操时见到的一样，不过无所谓</p>
+</blockquote>
+<hr>
+<h3>3. 预览</h3>
+<ul>
+<li>经典三步走：<ol>
+<li>cd &lt;项目&gt;    和很多项目一样，初始化在当前文件夹的子文件夹里</li>
+<li>npm install  安装依赖</li>
+<li>npm run dev  预览</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3>4. 效果</h3>
+<p><img src="../images/post-27/vue-project.png" alt="vue初始化站点"></p>
+<blockquote>
+<p>可能不一样，作者第一次用vue时和这次再初始化，看到的已经不一样了，最初的好像是vite相关的，比较炫</p>
+</blockquote>
+<ul>
+<li>现在创建新项目还会安装vue-devtools，现在3.6版本变化了一些，作者第一次使用应该是在3.5版本</li>
+</ul>
+<hr>
+<h3>5. APP.vue</h3>
+<blockquote>
+<p>初始化的<code>App.vue</code>作为组件树的根，使用id选择器<code>#app</code>，与<code>index.html</code>绑定</p>
+</blockquote>
+<ul>
+<li>main.js<ul>
+<li>导入全局css(用vue的话，看人习惯，作者本人使用vue时，全局css只有两三个文件，组件样式更喜欢写在style代码块里)</li>
+<li>导包，导入vue的createApp函数</li>
+<li>导入根组件</li>
+<li><code>调用函数createApp</code><ul>
+<li>根组件和挂载的选择器都可以修改，不过一般也懒得改，没必要</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="special-block" data-block="code" data-lang="js"><pre><code class="language-js">import './assets/main.css'
+import { createApp } from 'vue'
+import App from './App.vue'
+
+createApp(App).mount('#app')</code></pre></div>
+<hr>
+<h2>vue API</h2>
+<h3>6. 挂载子组件</h3>
+<blockquote>
+<p>官方文档的写法不一定是最新的，本篇记录的也不一定是最新的
+作者使用的版本<code>vue3.5</code></p>
+</blockquote>
+<ul>
+<li>创建子vue组件</li>
+<li>父组件导包<code>import &lt;子组件路径&gt;</code></li>
+<li>父组件<code>templete区域挂载&lt;/子组件名&gt;</code></li>
+</ul>
+<hr>
+<h3>7. 组合式API与选项式API</h3>
+<ul>
+<li>习惯用啥用啥，vue2是选项式API，vue3新出的组合式API</li>
+<li>作者用的都是组合式API</li>
+<li>选项式API数据与方法是分开的，不好看，组合式一个功能是一块儿<ul>
+<li>而且选项式API的<code>data</code>,<code>methods</code>和<code>script setup</code>有访问权限的问题</li>
+<li><code>data</code>和<code>methods</code>可以访问全局<code>script setup</code>，反过来则不行</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>8. ref与reactive响应式数据</h3>
+<blockquote>
+<p>这两个主要是剩下了数据更新实时刷新页面的步骤，让你少写点JavaScript
+本质上是把数据都弄成对象了，通过<code>.value</code>取数据</p>
+</blockquote>
+<ul>
+<li>ref -&gt; reference 引用(作者英语一般)</li>
+<li>解构：<ul>
+<li>toRef/toRefs</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>9. computed</h3>
+<blockquote>
+<p>这个是处理响应式数据的，<code>get</code>,<code>set</code>函数收发数据，支持JS的前端原生能力，天生同步，有缓存区</p>
+</blockquote>
+<ul>
+<li>给响应式数据处理数据用这个</li>
+</ul>
+<hr>
+<h3>10. watch与watchEffect</h3>
+<blockquote>
+<p>监听响应式数据的，监听钩子，根据数据变化干对应的活</p>
+</blockquote>
+<ul>
+<li>给响应式数据做回调函数用这个</li>
+</ul>
+<hr>
+<h3>11. 标签属性：ref</h3>
+<blockquote>
+<p>在原有标签属性上加了一个ref，让标签具有响应式特性</p>
+</blockquote>
+<ul>
+<li>给标签做响应式变化用的</li>
+</ul>
+<hr>
+<h3>12. hook API</h3>
+<blockquote>
+<p>给响应式数据写工具函数用的</p>
+</blockquote>
+<hr>
+<h3>13. props</h3>
+<blockquote>
+<p>父子组件传参数用的</p>
+</blockquote>
+<hr>
+<h3>14. 生命周期</h3>
+<blockquote>
+<p>生命周期在做App时可以会遇到这个概念，主要是用来管理事件顺序的</p>
+</blockquote>
+<ul>
+<li>不管做什么项目，项目结构都像树一样，开关有顺序，先有父再有子，子取消了父才能取消<ul>
+<li>这个顺序像是栈吗，也差不多</li>
+<li>不过vue这个生命周期只管vue的部分，vue以外的js活动管不了</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>钩子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>创建阶段</td>
+<td><code>setup</code></td>
+</tr>
+<tr>
+<td>挂载阶段</td>
+<td><code>onBeforeMount</code>、<code>onMounted</code></td>
+</tr>
+<tr>
+<td>更新阶段</td>
+<td><code>onBeforeUpdate</code>、<code>onUpdated</code></td>
+</tr>
+<tr>
+<td>卸载阶段</td>
+<td><code>onBeforeUnmount</code>、<code>onUnmounted</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3>15. vue-router</h3>
+<blockquote>
+<p>vue官方插件，配套vue组件和一个配置文件
+官方文档:<a href="https://router.vuejs.org/zh/">https://router.vuejs.org/zh/</a></p>
+</blockquote>
+<ul>
+<li><h2>配置文件:<code>router/index.js</code>
+  - 在里面写的内容跟后端框架写的路由挺像的，就是给不同页面类型绑定一下对应的vue文件</h2>
+</li>
+</ul>
+
+<div class="special-block" data-block="code" data-lang="js"><pre><code class="language-js">        const routes = [
+            {   path:`&lt;路径&gt;`,
+                name:`&lt;页面id&gt;`,
+                components:`&lt;组件路径&gt;`
+            }
+        ]
+      </code></pre></div>
+<ul>
+<li>vue组件<ul>
+<li>Router-Link:会被编译成一个<code>&lt;a&gt;</code><blockquote>
+<p>说了跟没说一样，肯定编译成a标签，不过好处时不用写ajax，避免白屏切换页面</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>16. 组件注册</h3>
+<blockquote>
+<p>官网说要component方法注册一下，不过不注册也行，一个vue文件就是一个组件，直接import+&lt;/&gt;标签挂载就行</p>
+</blockquote>
+<ul>
+<li>官方那种是一次注册，全局不用import，随便挂载</li>
+</ul>
+<hr>
+<h3>各种<code>:</code>属性</h3>
+<blockquote>
+<p>:语法是vue的编译期语法，有的用来增强原本html属性，有的用于vue自身特性</p>
+</blockquote>
+<ul>
+<li>:class:<ul>
+<li>对应原本js的<code>classList.add/remove</code>        </li>
+<li><blockquote>
+<p>对应class切换</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>:style<ul>
+<li>对应原本js的<code>&lt;选择器&gt;.style.&lt;样式&gt;</code>        </li>
+<li><blockquote>
+<p>对应选择器样式修改</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>:title<ul>
+<li>html原生title属性，用:将其转换为js语句，增强title的能力</li>
+<li><blockquote>
+<p>对应鼠标悬浮提示</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>:key<ul>
+<li>v-for的标识符</li>
+</ul>
+</li>
+<li>:is<ul>
+<li>component组件配套</li>
+</ul>
+</li>
+</ul>
+<h4>props属性</h4>
+<ul>
+<li>自定义的各种props属性在使用时，也要+<code>:</code><blockquote>
+<p>编辑于2026-08-11</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

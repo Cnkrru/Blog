@@ -1,14 +1,12 @@
 import { ref, computed } from 'vue'
-import axios from 'axios'
-import { useContentStore, useArticlesStore } from '../stores/index'
-import { parseFrontmatter } from '../utils/markdown'
+import { useContentStore, useArticlesStore, readPublicJson, readPublicText } from '../stores/index'
 
 export function useContentLoader(type, id) {
   const contentStore = useContentStore()
   const articlesStore = useArticlesStore()
   
   const content = ref(null)
-  const markdownContent = ref('')
+  const html = ref('')
   const loading = ref(true)
   const error = ref(null)
   const retryCount = ref(0)
@@ -27,75 +25,54 @@ export function useContentLoader(type, id) {
       const cachedContent = contentStore.getContent(type, id)
       if (cachedContent) {
         content.value = cachedContent
-        markdownContent.value = cachedContent.markdownContent || ''
+        html.value = cachedContent.html || ''
         loading.value = false
         return
       }
 
       let itemData = null
+      let htmlText = ''
 
       switch (type) {
-        case 'post':
-          // 从 articles store 获取文章数据
+        case 'post': {
+          // 从 articles store 获取文章元数据
           const searchData = await articlesStore.fetchArticles()
           itemData = searchData.find(item => item.id === id)
-          
-          // 尝试加载 markdown 内容，即使在 search.json 中找不到
-          const mdText = await articlesStore.loadMarkdown(id)
-          if (mdText) {
-            const { frontmatter, content: mdContent } = parseFrontmatter(mdText)
-            content.value = {
-              ...(itemData || {}),
-              ...frontmatter,
-              id: id,
-              tags: frontmatter.tags || (itemData ? itemData.tags : [])
-            }
-            markdownContent.value = mdContent
-            
-            // 保存到缓存
-            contentStore.setContent(type, id, {
-              ...content.value,
-              markdownContent: mdContent
-            })
-          } else {
-            throw new Error('Failed to load markdown content')
+          // 加载构建期预渲染的静态 HTML
+          htmlText = await readPublicText(`html/posts/post-${id}.html`)
+          content.value = {
+            ...(itemData || {}),
+            id: id,
+            html: htmlText
           }
           break
+        }
 
-        case 'project':
-          // 加载项目数据
-          const { data: projectData } = await axios.get('/config/projects.json')
+        case 'project': {
+          // 加载项目元数据
+          const projectData = await readPublicJson('config/projects.json')
           itemData = projectData.find(item => item.id === id)
-          
-          if (itemData) {
-            // 尝试加载 markdown 内容
-            try {
-              const mdText = await articlesStore.loadMarkdown(`project-${id}`)
-              if (mdText) {
-                const { frontmatter, content: mdContent } = parseFrontmatter(mdText)
-                content.value = { ...itemData, ...frontmatter }
-                markdownContent.value = mdContent
-              } else {
-                content.value = itemData
-              }
-            } catch (mdError) {
-              // 没有 markdown 文件也不报错
-              content.value = itemData
-            }
-            
-            // 保存到缓存
-            contentStore.setContent(type, id, {
-              ...content.value,
-              markdownContent: markdownContent.value
-            })
-          } else {
-            throw new Error('Project not found')
+          try {
+            htmlText = await readPublicText(`html/projects/project-${id}.html`)
+          } catch (mdError) {
+            // 没有预渲染 HTML 也不报错，仅展示元数据
+            htmlText = ''
           }
+          content.value = { ...(itemData || {}), id: id, html: htmlText }
           break
+        }
 
         default:
           throw new Error('Invalid content type')
       }
+
+      html.value = htmlText
+
+      // 保存到缓存
+      contentStore.setContent(type, id, {
+        ...content.value,
+        html: htmlText
+      })
     } catch (err) {
       error.value = err.message
       contentStore.setError(type, id, err.message)
@@ -118,7 +95,7 @@ export function useContentLoader(type, id) {
 
   return {
     content,
-    markdownContent,
+    html,
     loading: isLoading,
     error: hasError,
     isLoaded,

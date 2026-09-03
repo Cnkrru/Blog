@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 import { useThemeStore } from '../stores'
 import FontSizeControl from '../components/p-center/FontSizeControl.vue'
 

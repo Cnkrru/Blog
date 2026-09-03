@@ -1,0 +1,238 @@
+<blockquote>
+<p>最新状态，该站点已废弃，日后可能会补上docsify的配置
+不过docsify是SPA（单页应用），对SEO（搜索引擎排行）不友好，之前用它做导航页主要是想着导航页不太看重SPA来着</p>
+</blockquote>
+<h2>迁移背景</h2>
+<p>制作的导航站点（<code>nav</code>）原先使用 <strong>Docsify v4</strong> 搭建，托管于 GitHub Pages。Docsify 是一个SPA，通过 CDN 引入 JS 在浏览器端动态渲染 Markdown，无需构建步骤。</p>
+<p>经过一段时间使用，作者接触vue生态，逐渐熟悉vue与vitepress，决定迁移至 <strong>VitePress</strong></p>
+<h2>旧 Docsify 配置存档</h2>
+<p>以下是迁移前的完整配置，留作记录。</p>
+<h3>项目结构</h3>
+
+<div class="special-block" data-block="code" data-lang="plaintext"><pre><code class="language-plaintext">nav/
+├── index.html          # 主入口（含所有配置和自定义样式/脚本）
+├── index.md            # 首页内容
+├── _sidebar.md         # 侧边栏导航
+├── _404.md             # 404 页面
+├── .nojekyll           # GitHub Pages 禁用 Jekyll
+├── README.md
+└── pages/
+    ├── tools.md        # 工具网站
+    ├── learning.md     # 学习网站
+    ├── entertainment.md # 娱乐休闲
+    ├── dev-tools.md    # 开发工具
+    ├── game.md         # 游戏网站
+    ├── software.md     # 软件推荐
+    └── contact.md      # 联系我们</code></pre></div>
+<h3>Docsify 核心配置</h3>
+
+<div class="special-block" data-block="code" data-lang="javascript"><pre><code class="language-javascript">window.$docsify = {
+  name: '导航',
+  nameLink: true,
+  homepage: 'index.md',
+  themeColor: '#3F51B5',
+  auto2top: true,
+  loadSidebar: true,
+  autoHeader: true,
+  loadNavbar: false,
+  mergeNavbar: false,
+  notFoundPage: true,
+  relativePath: true,
+  topMargin: 90,
+
+  search: {
+    maxAge: 86400000,
+    paths: 'auto',
+    placeholder: '搜索',
+    noData: '没有结果',
+    depth: 6,
+    hideOtherSidebarContent: false,
+  },
+
+  ga: 'UA-XXXXX-Y',
+
+  pagination: {
+    previousText: '上一章',
+    nextText: '下一章',
+    crossChapter: true,
+    crossChapterText: true,
+  },
+
+  footer: {
+    copy: '&lt;span&gt;&amp;copy; 2026 &lt;/span&gt;',
+    auth: 'Cnkrru power by docsify',
+    pre: '&lt;hr/&gt;',
+    style: 'text-align: center;',
+  },
+}</code></pre></div>
+<h3>自定义样式系统</h3>
+<p>旧站点使用 CSS 变量实现亮色/深色双主题：</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>亮色</th>
+<th>深色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--primary-color</code></td>
+<td><code>#3F51B5</code></td>
+<td><code>#64b5f6</code></td>
+</tr>
+<tr>
+<td><code>--bg-color</code></td>
+<td><code>#ffffff</code></td>
+<td><code>#1a1a1a</code></td>
+</tr>
+<tr>
+<td><code>--text-color</code></td>
+<td><code>#333333</code></td>
+<td><code>#e0e0e0</code></td>
+</tr>
+<tr>
+<td><code>--card-bg</code></td>
+<td><code>#ffffff</code></td>
+<td><code>#2d2d2d</code></td>
+</tr>
+<tr>
+<td><code>--card-border</code></td>
+<td><code>#eaecef</code></td>
+<td><code>#404040</code></td>
+</tr>
+<tr>
+<td><code>--sidebar-bg</code></td>
+<td><code>#ffffff</code></td>
+<td><code>#2d2d2d</code></td>
+</tr>
+</tbody></table>
+<p>卡片使用 CSS Grid 响应式布局：<code>grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))</code>，hover 时上浮 8px + 阴影增强。</p>
+<h3>CDN 插件依赖</h3>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>CDN 地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Docsify 核心</td>
+<td><code>cdn.jsdelivr.net/npm/docsify@4</code></td>
+</tr>
+<tr>
+<td>Vue 主题</td>
+<td><code>docsify/lib/themes/vue.css</code></td>
+</tr>
+<tr>
+<td>搜索</td>
+<td><code>docsify/lib/plugins/search.min.js</code></td>
+</tr>
+<tr>
+<td>Google Analytics</td>
+<td><code>docsify/lib/plugins/ga.min.js</code></td>
+</tr>
+<tr>
+<td>分页</td>
+<td><code>docsify-pagination/dist/docsify-pagination.min.js</code></td>
+</tr>
+<tr>
+<td>页脚</td>
+<td><code>unpkg.com/docsify-footer-enh</code></td>
+</tr>
+<tr>
+<td>侧边栏折叠</td>
+<td><code>docsify-sidebar-collapse</code></td>
+</tr>
+</tbody></table>
+<h3>自定义 JavaScript</h3>
+<ul>
+<li><strong>深色模式切换</strong>：通过 <code>localStorage</code> 持久化，切换 <code>body.dark-mode</code> class</li>
+<li><strong>加载动画</strong>：旋转 spinner，<code>window.load</code> 后 500ms 隐藏</li>
+<li><strong>返回顶部</strong>：监听 scroll 事件超过 300px 显示按钮</li>
+</ul>
+<h3>侧边栏结构</h3>
+
+<div class="special-block" data-block="code" data-lang="markdown"><pre><code class="language-markdown">* [工具网站](/pages/tools.md)
+* [学习网站](/pages/learning.md)
+* [娱乐休闲](/pages/entertainment.md)
+* [开发工具](/pages/dev-tools.md)
+* [游戏网站](/pages/game.md)
+* [软件推荐](/pages/software.md)
+* [联系我们](/pages/contact.md)</code></pre></div>
+<p>共 7 个分类，涵盖 35+ 个网站链接，全部使用 HTML 卡片组件渲染。</p>
+<h3>页面列表</h3>
+<table>
+<thead>
+<tr>
+<th>页面</th>
+<th>内容</th>
+<th>链接数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>工具网站</td>
+<td>Convertio、IP查询</td>
+<td>2</td>
+</tr>
+<tr>
+<td>学习网站</td>
+<td>菜鸟教程、Z-Library</td>
+<td>2</td>
+</tr>
+<tr>
+<td>娱乐休闲</td>
+<td>落雪音乐、Kazumi、Venera</td>
+<td>3</td>
+</tr>
+<tr>
+<td>开发工具</td>
+<td>VSCode、VS、JetBrains、Trae、Cursor、Kiro、Arduino、Git</td>
+<td>8</td>
+</tr>
+<tr>
+<td>游戏网站</td>
+<td>Steam、Epic、育碧、EA、UU、雷神、Steam++、OpenSpeedy</td>
+<td>8</td>
+</tr>
+<tr>
+<td>软件推荐</td>
+<td>图吧工具箱、Everything、Geek、7-Zip、Bandizip、Wisec、WinTune、OBS、VLC、Snipaste、Obsidian</td>
+<td>11</td>
+</tr>
+<tr>
+<td>联系我们</td>
+<td>GitHub、邮箱</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>合计 <strong>35 个导航链接</strong>。</p>
+<h2>新 VitePress 配置</h2>
+<p>迁移后使用 VitePress 搭建，配置如下：</p>
+<h3>项目结构</h3>
+
+<div class="special-block" data-block="code" data-lang="plaintext"><pre><code class="language-plaintext">nav/
+├── .vitepress/
+│   ├── config.mjs          # VitePress 配置
+│   └── theme/
+│       ├── index.js        # 主题入口
+│       └── style.css       # 自定义样式
+├── index.md                # 首页
+├── tools.md                # 工具网站
+├── learning.md             # 学习网站
+├── entertainment.md        # 娱乐休闲
+├── dev-tools.md            # 开发工具
+├── game.md                 # 游戏网站
+├── software.md             # 软件推荐
+├── contact.md              # 联系我们
+├── package.json
+└── start.bat</code></pre></div>
+<hr>
+<blockquote>
+<p>编辑于2026-07-29</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>

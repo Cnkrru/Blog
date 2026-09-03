@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import VIcon from '@/components/__common/VIcon.vue'
 import { useRouter } from 'vue-router'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 
 useHead({
   title: '页面未找到 - Cnkrru\'s Blog',

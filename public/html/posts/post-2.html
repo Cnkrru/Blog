@@ -1,0 +1,1128 @@
+<h1>功能测试汇总</h1>
+<p>本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表、CSV表格渲染等测试。</p>
+<hr>
+<h1>第一部分：Markdown测试</h1>
+<hr>
+<p>本文用于全面测试 Markdown 渲染功能，包括标题、段落、列表、链接、图片、表格等各种元素。</p>
+<h2>标题测试</h2>
+<h1>一级标题 H1</h1>
+<h2>二级标题 H2</h2>
+<h3>三级标题 H3</h3>
+<h4>四级标题 H4</h4>
+<h5>五级标题 H5</h5>
+<h6>六级标题 H6</h6>
+<h2>段落和文本格式</h2>
+<p>这是一段普通的段落文本。我在描述一个故事的片段，展现了Markdown的多样性和实用性。</p>
+<p><strong>这是加粗文本</strong>，用于强调重要的内容。</p>
+<p><em>这是斜体文本</em>，用于轻微的强调。</p>
+<p><em><strong>这是加粗斜体文本</strong></em>，用于非常强烈的强调。</p>
+<p><del>这是删除线文本</del>，用于表示已删除的内容。</p>
+<p><code>这是行内代码</code>，用于代码片段。</p>
+<h2>列表测试</h2>
+<h3>无序列表</h3>
+<ul>
+<li>苹果<ul>
+<li>红富士</li>
+<li>青苹果</li>
+<li>国光</li>
+</ul>
+</li>
+<li>香蕉<ul>
+<li>黄香蕉</li>
+<li>芝麻香蕉</li>
+</ul>
+</li>
+<li>橙子<ul>
+<li>脐橙</li>
+<li>血橙</li>
+</ul>
+</li>
+</ul>
+<h3>有序列表</h3>
+<ol>
+<li>第一步：准备材料</li>
+<li>第二步：混合原料</li>
+<li>第三步：搅拌均匀</li>
+<li>第四步：烘烤成品</li>
+</ol>
+<h3>任务列表</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 完成项目计划</li>
+<li><input checked="" disabled="" type="checkbox"> 设计数据库</li>
+<li><input disabled="" type="checkbox"> 编写前端代码</li>
+<li><input disabled="" type="checkbox"> 编写后端API</li>
+<li><input disabled="" type="checkbox"> 测试和部署</li>
+</ul>
+<h2>链接测试</h2>
+<p><a href="https://www.baidu.com">百度搜索</a></p>
+<p><a href="https://www.google.com">Google搜索</a></p>
+<p><a href="/">跳转到首页</a></p>
+<h2>图片测试</h2>
+<p><img src="https://via.placeholder.com/400x200.png?text=Markdown+Image" alt="示例图片"></p>
+<h2>表格测试</h2>
+<h3>简单表格</h3>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>年龄</th>
+<th>城市</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>张三</td>
+<td>25</td>
+<td>北京</td>
+</tr>
+<tr>
+<td>李四</td>
+<td>30</td>
+<td>上海</td>
+</tr>
+<tr>
+<td>王五</td>
+<td>28</td>
+<td>广州</td>
+</tr>
+</tbody></table>
+<h3>对齐表格</h3>
+<table>
+<thead>
+<tr>
+<th align="left">左对齐</th>
+<th align="center">居中对齐</th>
+<th align="right">右对齐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">内容1</td>
+<td align="center">内容2</td>
+<td align="right">内容3</td>
+</tr>
+<tr>
+<td align="left">内容4</td>
+<td align="center">内容5</td>
+<td align="right">内容6</td>
+</tr>
+</tbody></table>
+<h2>引用测试</h2>
+<blockquote>
+<p>这是一段引用文本。
+用于引用他人的观点或重要的信息。</p>
+</blockquote>
+<blockquote>
+<p>多行引用：
+第一行的引用内容
+第二行的引用内容
+第三行的引用内容</p>
+</blockquote>
+<hr>
+<h1>第二部分：代码高亮测试</h1>
+<hr>
+<p>本文用于测试代码高亮功能，支持多种编程语言的语法高亮。</p>
+<h2>JavaScript</h2>
+
+<div class="special-block" data-block="code" data-lang="javascript"><pre><code class="language-javascript">async function fetchData(url) {
+  try {
+    const response = await fetch(url)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('获取数据失败:', error)
+    throw error
+  }
+}
+
+// 使用Promise.all处理多个请求
+const [users, posts] = await Promise.all([
+  fetch('/api/users'),
+  fetch('/api/posts')
+])
+
+console.log('用户数:', users.length)
+console.log('文章数:', posts.length)</code></pre></div>
+<h2>Python</h2>
+
+<div class="special-block" data-block="code" data-lang="python"><pre><code class="language-python">from datetime import datetime
+
+class BlogPost:
+    def __init__(self, title, content, author):
+        self.title = title
+        self.content = content
+        self.author = author
+        self.created_at = datetime.now()
+
+    def get_excerpt(self, length=100):
+        """获取文章摘要"""
+        if len(self.content) &lt;= length:
+            return self.content
+        return self.content[:length] + '...'
+
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
+# 创建实例
+post = BlogPost(
+    title="Python测试",
+    content="这是一篇关于Python的测试文章...",
+    author="博客作者"
+)
+print(post.get_excerpt())</code></pre></div>
+<h2>CSS</h2>
+
+<div class="special-block" data-block="code" data-lang="css"><pre><code class="language-css">/* 响应式卡片组件 */
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}</code></pre></div>
+<h2>HTML</h2>
+
+<div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!-- 文章卡片组件 --&gt;
+&lt;article class="article-card"&gt;
+  &lt;header class="card-header"&gt;
+    &lt;h2 class="card-title"&gt;{{ article.title }}&lt;/h2&gt;
+    &lt;div class="card-meta"&gt;
+      &lt;time datetime="{{ article.date }}"&gt;{{ article.formattedDate }}&lt;/time&gt;
+      &lt;span class="card-category"&gt;{{ article.category }}&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;div class="card-body"&gt;
+    &lt;p class="card-excerpt"&gt;{{ article.excerpt }}&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;footer class="card-footer"&gt;
+    &lt;div class="card-tags"&gt;
+      &lt;span v-for="tag in article.tags" :key="tag" class="tag"&gt;
+        {{ tag }}
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;a :href="article.url" class="read-more"&gt;阅读更多 →&lt;/a&gt;
+  &lt;/footer&gt;
+&lt;/article&gt;</code></pre></div>
+<h2>SQL</h2>
+
+<div class="special-block" data-block="code" data-lang="sql"><pre><code class="language-sql">-- 博客数据库查询示例
+SELECT
+    p.id,
+    p.title,
+    p.created_at,
+    u.username as author,
+    COUNT(c.id) as comment_count,
+    GROUP_CONCAT(t.name) as tags
+FROM posts p
+INNER JOIN users u ON p.user_id = u.id
+LEFT JOIN comments c ON p.id = c.post_id
+LEFT JOIN post_tags pt ON p.id = pt.post_id
+LEFT JOIN tags t ON pt.tag_id = t.id
+WHERE p.status = 'published'
+    AND p.created_at &gt;= '2026-01-01'
+GROUP BY p.id, p.title, p.created_at, u.username
+ORDER BY p.created_at DESC
+LIMIT 10;</code></pre></div>
+<hr>
+<h1>第三部分：KaTeX数学公式测试</h1>
+<hr>
+<p>本文用于测试 KaTeX 数学公式渲染功能，支持行内公式和行间公式。</p>
+<h2>行内公式</h2>
+<p>行内公式示例：这是一元二次方程 $ax^2 + bx + c = 0$ 的求解公式。</p>
+<p>勾股定理：$a^2 + b^2 = c^2$</p>
+<p>欧拉公式：$e^{i\pi} + 1 = 0$</p>
+<h2>行间公式</h2>
+<h3>二次方程求根公式</h3>
+
+<div class="special-block" data-block="math" data-latex="x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}"><pre><code>x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</code></pre></div>
+<h3>欧拉恒等式</h3>
+
+<div class="special-block" data-block="math" data-latex="e^{i\pi} + 1 = 0"><pre><code>e^{i\pi} + 1 = 0</code></pre></div>
+<p>这个公式被认为是数学中最美丽的公式，因为它包含了五个最重要的数学常数。</p>
+<h3>定积分</h3>
+
+<div class="special-block" data-block="math" data-latex="\int_{a}^{b} f(x) \, dx = F(b) - F(a)"><pre><code>\int_{a}^{b} f(x) \, dx = F(b) - F(a)</code></pre></div>
+<p>其中 $F(x)$ 是 $f(x)$ 的原函数。</p>
+<h3>极限定义</h3>
+
+<div class="special-block" data-block="math" data-latex="\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e"><pre><code>\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e</code></pre></div>
+<h3>矩阵运算</h3>
+
+<div class="special-block" data-block="math" data-latex="\begin{pmatrix}
+a_{11} &amp; a_{12} \\
+a_{21} &amp; a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+x \\
+y
+\end{pmatrix}
+=
+\begin{pmatrix}
+b_{1} \\
+b_{2}
+\end{pmatrix}"><pre><code>\begin{pmatrix}
+a_{11} &amp; a_{12} \\
+a_{21} &amp; a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+x \\
+y
+\end{pmatrix}
+=
+\begin{pmatrix}
+b_{1} \\
+b_{2}
+\end{pmatrix}</code></pre></div>
+<h3>求和公式</h3>
+
+<div class="special-block" data-block="math" data-latex="\sum_{i=1}^{n} i = \frac{n(n+1)}{2}"><pre><code>\sum_{i=1}^{n} i = \frac{n(n+1)}{2}</code></pre></div>
+<h3>概率论</h3>
+<p><strong>正态分布概率密度函数：</strong></p>
+
+<div class="special-block" data-block="math" data-latex="f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}"><pre><code>f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}</code></pre></div>
+<h3>物理学</h3>
+<p><strong>质能方程：</strong></p>
+
+<div class="special-block" data-block="math" data-latex="E = mc^2"><pre><code>E = mc^2</code></pre></div>
+<hr>
+<h1>第四部分：Mermaid图表测试</h1>
+<hr>
+<p>本文用于测试 Mermaid 图表渲染功能，支持流程图、时序图、甘特图等多种图表类型。</p>
+<h2>流程图</h2>
+<h3>简单流程图</h3>
+
+<div class="special-block" data-block="mermaid" data-code="graph TD
+    A[开始] --&gt; B{判断条件}
+    B --&gt;|条件1| C[处理1]
+    B --&gt;|条件2| D[处理2]
+    C --&gt; E[结束]
+    D --&gt; E"><pre><code>graph TD
+    A[开始] --&gt; B{判断条件}
+    B --&gt;|条件1| C[处理1]
+    B --&gt;|条件2| D[处理2]
+    C --&gt; E[结束]
+    D --&gt; E</code></pre></div>
+<h3>用户登录流程</h3>
+
+<div class="special-block" data-block="mermaid" data-code="graph LR
+    A[用户输入] --&gt; B{验证信息}
+    B --&gt;|成功| C[登录成功]
+    B --&gt;|失败| D[显示错误]
+    D --&gt; A
+    C --&gt; E[跳转首页]"><pre><code>graph LR
+    A[用户输入] --&gt; B{验证信息}
+    B --&gt;|成功| C[登录成功]
+    B --&gt;|失败| D[显示错误]
+    D --&gt; A
+    C --&gt; E[跳转首页]</code></pre></div>
+<h2>时序图</h2>
+<h3>用户请求时序</h3>
+
+<div class="special-block" data-block="mermaid" data-code="sequenceDiagram
+    participant User as 用户
+    participant Frontend as 前端
+    participant Backend as 后端
+    participant DB as 数据库
+
+    User-&gt;&gt;Frontend: 访问页面
+    Frontend-&gt;&gt;Backend: 发送请求
+    Backend-&gt;&gt;DB: 查询数据
+    DB--&gt;&gt;Backend: 返回结果
+    Backend--&gt;&gt;Frontend: 返回JSON
+    Frontend--&gt;&gt;User: 渲染页面"><pre><code>sequenceDiagram
+    participant User as 用户
+    participant Frontend as 前端
+    participant Backend as 后端
+    participant DB as 数据库
+
+    User-&gt;&gt;Frontend: 访问页面
+    Frontend-&gt;&gt;Backend: 发送请求
+    Backend-&gt;&gt;DB: 查询数据
+    DB--&gt;&gt;Backend: 返回结果
+    Backend--&gt;&gt;Frontend: 返回JSON
+    Frontend--&gt;&gt;User: 渲染页面</code></pre></div>
+<h2>甘特图</h2>
+<h3>项目计划</h3>
+
+<div class="special-block" data-block="mermaid" data-code="gantt
+    title 项目开发计划
+    dateFormat  YYYY-MM-DD
+    section 设计
+    需求分析       :a1, 2026-01-01, 7d
+    原型设计       :a2, after a1, 5d
+    UI设计        :a3, after a2, 7d
+    section 开发
+    前端开发       :b1, 2026-01-20, 15d
+    后端开发       :b2, 2026-01-20, 15d
+    section 测试
+    单元测试       :c1, 2026-02-05, 5d
+    集成测试       :c2, after c1, 5d"><pre><code>gantt
+    title 项目开发计划
+    dateFormat  YYYY-MM-DD
+    section 设计
+    需求分析       :a1, 2026-01-01, 7d
+    原型设计       :a2, after a1, 5d
+    UI设计        :a3, after a2, 7d
+    section 开发
+    前端开发       :b1, 2026-01-20, 15d
+    后端开发       :b2, 2026-01-20, 15d
+    section 测试
+    单元测试       :c1, 2026-02-05, 5d
+    集成测试       :c2, after c1, 5d</code></pre></div>
+<h2>类图</h2>
+<h3>博客系统类图</h3>
+
+<div class="special-block" data-block="mermaid" data-code="classDiagram
+    class User {
+        +String username
+        +String email
+        +login()
+        +logout()
+    }
+
+    class Post {
+        +String title
+        +String content
+        +Date createdAt
+        +publish()
+        +delete()
+    }
+
+    User &quot;1&quot; --&gt; &quot;*&quot; Post : creates"><pre><code>classDiagram
+    class User {
+        +String username
+        +String email
+        +login()
+        +logout()
+    }
+
+    class Post {
+        +String title
+        +String content
+        +Date createdAt
+        +publish()
+        +delete()
+    }
+
+    User "1" --&gt; "*" Post : creates</code></pre></div>
+<h2>状态图</h2>
+<h3>订单状态流转</h3>
+
+<div class="special-block" data-block="mermaid" data-code="stateDiagram-v2
+    [*] --&gt; 待支付
+    待支付 --&gt; 已支付 : 支付成功
+    已支付 --&gt; 已取消 : 用户取消
+    已支付 --&gt; 已发货 : 商家发货
+    已发货 --&gt; 已签收 : 确认收货
+    已签收 --&gt; 已完成 : 完成订单"><pre><code>stateDiagram-v2
+    [*] --&gt; 待支付
+    待支付 --&gt; 已支付 : 支付成功
+    已支付 --&gt; 已取消 : 用户取消
+    已支付 --&gt; 已发货 : 商家发货
+    已发货 --&gt; 已签收 : 确认收货
+    已签收 --&gt; 已完成 : 完成订单</code></pre></div>
+<hr>
+<h1>第五部分：灯箱功能测试</h1>
+<hr>
+<p>这是一个测试灯箱功能的文章。点击下面的图片，应该会打开灯箱。</p>
+<p><img src="https://picsum.photos/id/1/800/600" alt="测试图片 1"></p>
+<p><img src="https://picsum.photos/id/2/800/600" alt="测试图片 2"></p>
+<p><img src="https://picsum.photos/id/3/800/600" alt="测试图片 3"></p>
+<p><img src="https://picsum.photos/id/4/800/600" alt="测试图片 4"></p>
+<p><img src="https://picsum.photos/id/5/800/600" alt="测试图片 5"></p>
+<h2>测试说明</h2>
+<ol>
+<li>点击上面的任意图片，应该会打开灯箱</li>
+<li>在灯箱中，可以使用左右箭头切换图片</li>
+<li>点击右上角的关闭按钮，或者按 ESC 键，应该可以关闭灯箱</li>
+<li>点击灯箱外部的区域，应该也可以关闭灯箱</li>
+</ol>
+<hr>
+<h1>第六部分：通知系统 &amp; 提示块测试</h1>
+<hr>
+
+<div class="special-block" data-block="admonition" data-type="info" data-title="通知系统介绍"><div class="admonition-body"><p>通知系统是博客的一个重要功能，它可以在用户执行某些操作（如复制代码）时，在页面右上角弹出提示信息，提升用户体验。Toast 通知通过 <code>window.toast</code> 全局 API 调用。</p>
+</div></div>
+<h2>Toast 通知测试</h2>
+<p>点击下面的按钮来测试 Toast 通知功能：</p>
+
+<span class="special-block" data-block="toast" data-type="info" data-text="通用通知">通用通知</span>
+<span class="special-block" data-block="toast" data-type="success" data-text="成功通知">成功通知</span>
+<span class="special-block" data-block="toast" data-type="error" data-text="错误通知">错误通知</span>
+<span class="special-block" data-block="toast" data-type="warning" data-text="警告通知">警告通知</span>
+<span class="special-block" data-block="toast" data-type="info" data-text="信息通知">信息通知</span>
+<div class="special-block" data-block="admonition" data-type="tip" data-title="小提示"><div class="admonition-body"><p>Toast 通知支持 4 种类型：<code>success</code>（3秒）、<code>error</code>（5秒）、<code>warning</code>（4秒）、<code>info</code>（3秒）。鼠标悬停会暂停自动消失，支持带操作按钮的高级通知。</p>
+</div></div>
+<h2>Admonition 提示块测试</h2>
+<p>以下使用 <code>:::type</code> 语法测试各类行内提示块：</p>
+
+<div class="special-block" data-block="admonition" data-type="info" data-title="这是信息提示块"><div class="admonition-body"><p>用于展示<strong>一般性信息</strong>，支持 <code>行内代码</code>、<a href="https://cnkrru.top">链接</a>等 Markdown 语法。</p>
+</div></div>
+<div class="special-block" data-block="admonition" data-type="success" data-title="操作成功"><div class="admonition-body"><p>任务已成功完成！所有数据已保存到数据库。</p>
+</div></div>
+<div class="special-block" data-block="admonition" data-type="warning" data-title="注意"><div class="admonition-body"><p>此操作会覆盖现有配置，请确认后再执行。建议先<strong>备份</strong>原有设置。</p>
+</div></div>
+<div class="special-block" data-block="admonition" data-type="error" data-title="错误"><div class="admonition-body"><p>连接超时，无法访问远程服务器。请检查网络设置后重试。</p>
+</div></div>
+<div class="special-block" data-block="admonition" data-type="tip" data-title="小技巧"><div class="admonition-body"><p>使用 <code>Ctrl + Shift + P</code> 可以快速打开命令面板，搜索你需要的功能。</p>
+</div></div>
+<div class="special-block" data-block="admonition" data-type="note" data-title="笔记"><div class="admonition-body"><p>这是一条笔记类型的提示块，适合记录需要记住的信息。</p>
+</div></div>
+<div class="special-block" data-block="admonition" data-type="danger" data-title="危险操作"><div class="admonition-body"><p>此操作<strong>不可逆</strong>！删除后数据将无法恢复，请谨慎操作。</p>
+</div></div>
+<h2>Toast 通知的应用场景</h2>
+
+<div class="special-block" data-block="admonition" data-type="note" data-title="常见场景"><div class="admonition-body"><ul>
+<li><strong>操作成功</strong>：用户执行操作成功后显示成功通知</li>
+<li><strong>操作失败</strong>：操作失败时显示错误通知及原因</li>
+<li><strong>提醒信息</strong>：重要提醒或时效性信息</li>
+<li><strong>系统通知</strong>：系统维护、更新等通知</li>
+</ul>
+</div></div>
+<hr>
+<h1>第七部分：CSV表格渲染测试</h1>
+<hr>
+<p>本文用于测试 CSV 代码块的表格渲染功能。使用 csv 语言标记的代码块，会自动将 CSV 数据渲染为可读表格，支持主题自适应。</p>
+<h2>基本表格</h2>
+<p>以下是一个简单的用户数据 CSV：</p>
+
+<div class="special-block" data-block="csv" data-code="姓名,年龄,城市,职业
+张三,25,北京,工程师
+李四,30,上海,设计师
+王五,28,广州,产品经理
+赵六,35,深圳,架构师"><pre><code>姓名,年龄,城市,职业
+张三,25,北京,工程师
+李四,30,上海,设计师
+王五,28,广州,产品经理
+赵六,35,深圳,架构师</code></pre></div>
+<h2>带引号的字段</h2>
+<p>当字段中包含逗号时，需要用双引号包裹：</p>
+
+<div class="special-block" data-block="csv" data-code="书名,作者,价格,简介
+&quot;JavaScript高级程序设计&quot;,&quot;Matt Frisbie&quot;,89.00,&quot;JavaScript经典红宝书，前端必读&quot;
+&quot;深入浅出Vue.js&quot;,&quot;刘博文&quot;,79.00,&quot;Vue.js源码解析，深入理解响应式原理&quot;
+&quot;CSS世界&quot;,&quot;张鑫旭&quot;,69.00,&quot;CSS流、元素与基本尺寸的深入讲解&quot;
+&quot;设计模式&quot;,&quot;Erich Gamma&quot;,99.00,&quot;面向对象软件设计模式经典之作&quot;"><pre><code>书名,作者,价格,简介
+"JavaScript高级程序设计","Matt Frisbie",89.00,"JavaScript经典红宝书，前端必读"
+"深入浅出Vue.js","刘博文",79.00,"Vue.js源码解析，深入理解响应式原理"
+"CSS世界","张鑫旭",69.00,"CSS流、元素与基本尺寸的深入讲解"
+"设计模式","Erich Gamma",99.00,"面向对象软件设计模式经典之作"</code></pre></div>
+<h2>多列数据</h2>
+
+<div class="special-block" data-block="csv" data-code="月份,销售额,利润,利润率,客户数,客单价
+1月,128000,25600,20.0%,320,400
+2月,145000,30450,21.0%,380,382
+3月,132000,26400,20.0%,350,377
+4月,168000,38640,23.0%,420,400
+5月,156000,34320,22.0%,400,390
+6月,182000,43680,24.0%,460,396"><pre><code>月份,销售额,利润,利润率,客户数,客单价
+1月,128000,25600,20.0%,320,400
+2月,145000,30450,21.0%,380,382
+3月,132000,26400,20.0%,350,377
+4月,168000,38640,23.0%,420,400
+5月,156000,34320,22.0%,400,390
+6月,182000,43680,24.0%,460,396</code></pre></div>
+<h2>纯数据（无表头）</h2>
+<p>如果 CSV 只有一行数据，则不分表头/表体：</p>
+
+<div class="special-block" data-block="csv" data-code="2026-08-12,功能测试,CSV解析器,通过"><pre><code>2026-08-12,功能测试,CSV解析器,通过</code></pre></div>
+<hr>
+<h1>第八部分：JSON/YAML/TOML 结构化数据渲染测试</h1>
+<hr>
+<p>本文用于测试 JSON、YAML、TOML 三种结构化数据格式的渲染功能。三种格式都会渲染为可交互的树形结构视图，支持查看源码和复制功能。JSON 使用原生解析器，TOML 使用内建解析器，YAML 通过 CDN 加载 js-yaml 解析。</p>
+<h2>JSON 测试</h2>
+<h3>基本 JSON 对象</h3>
+
+<div class="special-block" data-block="json" data-code="{
+  &quot;name&quot;: &quot;张三&quot;,
+  &quot;age&quot;: 28,
+  &quot;city&quot;: &quot;北京&quot;,
+  &quot;isActive&quot;: true,
+  &quot;score&quot;: 95.5,
+  &quot;bio&quot;: null
+}"><pre><code>{
+  "name": "张三",
+  "age": 28,
+  "city": "北京",
+  "isActive": true,
+  "score": 95.5,
+  "bio": null
+}</code></pre></div>
+<h3>嵌套 JSON 对象</h3>
+
+<div class="special-block" data-block="json" data-code="{
+  &quot;user&quot;: {
+    &quot;profile&quot;: {
+      &quot;firstName&quot;: &quot;John&quot;,
+      &quot;lastName&quot;: &quot;Doe&quot;,
+      &quot;contact&quot;: {
+        &quot;email&quot;: &quot;john@example.com&quot;,
+        &quot;phone&quot;: &quot;+86-138-0000-0001&quot;,
+        &quot;address&quot;: {
+          &quot;street&quot;: &quot;中关村大街&quot;,
+          &quot;city&quot;: &quot;北京&quot;,
+          &quot;zip&quot;: &quot;100080&quot;
+        }
+      }
+    },
+    &quot;preferences&quot;: {
+      &quot;theme&quot;: &quot;dark&quot;,
+      &quot;notifications&quot;: true,
+      &quot;language&quot;: &quot;zh-CN&quot;
+    }
+  }
+}"><pre><code>{
+  "user": {
+    "profile": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "contact": {
+        "email": "john@example.com",
+        "phone": "+86-138-0000-0001",
+        "address": {
+          "street": "中关村大街",
+          "city": "北京",
+          "zip": "100080"
+        }
+      }
+    },
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "language": "zh-CN"
+    }
+  }
+}</code></pre></div>
+<h3>JSON 数组</h3>
+
+<div class="special-block" data-block="json" data-code="[
+  {
+    &quot;id&quot;: 1,
+    &quot;title&quot;: &quot;Vue 3 入门指南&quot;,
+    &quot;author&quot;: &quot;张三&quot;,
+    &quot;tags&quot;: [&quot;Vue&quot;, &quot;前端&quot;, &quot;JavaScript&quot;],
+    &quot;published&quot;: true,
+    &quot;views&quot;: 1520
+  },
+  {
+    &quot;id&quot;: 2,
+    &quot;title&quot;: &quot;TypeScript 高级类型&quot;,
+    &quot;author&quot;: &quot;李四&quot;,
+    &quot;tags&quot;: [&quot;TypeScript&quot;, &quot;类型系统&quot;],
+    &quot;published&quot;: true,
+    &quot;views&quot;: 980
+  },
+  {
+    &quot;id&quot;: 3,
+    &quot;title&quot;: &quot;CSS 网格布局实战&quot;,
+    &quot;author&quot;: &quot;王五&quot;,
+    &quot;tags&quot;: [&quot;CSS&quot;, &quot;布局&quot;],
+    &quot;published&quot;: false,
+    &quot;views&quot;: 450
+  }
+]"><pre><code>[
+  {
+    "id": 1,
+    "title": "Vue 3 入门指南",
+    "author": "张三",
+    "tags": ["Vue", "前端", "JavaScript"],
+    "published": true,
+    "views": 1520
+  },
+  {
+    "id": 2,
+    "title": "TypeScript 高级类型",
+    "author": "李四",
+    "tags": ["TypeScript", "类型系统"],
+    "published": true,
+    "views": 980
+  },
+  {
+    "id": 3,
+    "title": "CSS 网格布局实战",
+    "author": "王五",
+    "tags": ["CSS", "布局"],
+    "published": false,
+    "views": 450
+  }
+]</code></pre></div>
+<h3>混合类型 JSON</h3>
+
+<div class="special-block" data-block="json" data-code="{
+  &quot;metadata&quot;: {
+    &quot;version&quot;: &quot;2.0.1&quot;,
+    &quot;generatedAt&quot;: &quot;2026-08-12T10:30:00Z&quot;,
+    &quot;count&quot;: 100,
+    &quot;isValid&quot;: true,
+    &quot;checksum&quot;: null
+  },
+  &quot;data&quot;: {
+    &quot;metrics&quot;: [12.5, 45.3, 78.1, 23.9, 67.2],
+    &quot;labels&quot;: [&quot;Q1&quot;, &quot;Q2&quot;, &quot;Q3&quot;, &quot;Q4&quot;],
+    &quot;flags&quot;: [true, false, true, true],
+    &quot;mixed&quot;: [1, &quot;two&quot;, false, null, { &quot;nested&quot;: true }]
+  },
+  &quot;empty&quot;: {},
+  &quot;deeplyNested&quot;: {
+    &quot;level1&quot;: {
+      &quot;level2&quot;: {
+        &quot;level3&quot;: {
+          &quot;level4&quot;: {
+            &quot;value&quot;: &quot;太深了，默认折叠到第3层&quot;
+          }
+        }
+      }
+    }
+  }
+}"><pre><code>{
+  "metadata": {
+    "version": "2.0.1",
+    "generatedAt": "2026-08-12T10:30:00Z",
+    "count": 100,
+    "isValid": true,
+    "checksum": null
+  },
+  "data": {
+    "metrics": [12.5, 45.3, 78.1, 23.9, 67.2],
+    "labels": ["Q1", "Q2", "Q3", "Q4"],
+    "flags": [true, false, true, true],
+    "mixed": [1, "two", false, null, { "nested": true }]
+  },
+  "empty": {},
+  "deeplyNested": {
+    "level1": {
+      "level2": {
+        "level3": {
+          "level4": {
+            "value": "太深了，默认折叠到第3层"
+          }
+        }
+      }
+    }
+  }
+}</code></pre></div>
+<h3>无效 JSON（展示错误处理）</h3>
+
+<div class="special-block" data-block="json" data-code="{
+  &quot;name&quot;: &quot;测试&quot;,
+  &quot;age&quot;: 25,
+  &quot;city&quot;: &quot;深圳&quot;,
+  语法错误: 缺少引号
+}"><pre><code>{
+  "name": "测试",
+  "age": 25,
+  "city": "深圳",
+  语法错误: 缺少引号
+}</code></pre></div>
+<h2>YAML 测试</h2>
+<h3>基本 YAML</h3>
+
+<div class="special-block" data-block="yaml" data-code="name: 张三
+age: 28
+city: 北京
+isActive: true
+score: 95.5
+bio: ~"><pre><code>name: 张三
+age: 28
+city: 北京
+isActive: true
+score: 95.5
+bio: ~</code></pre></div>
+<h3>嵌套 YAML</h3>
+
+<div class="special-block" data-block="yaml" data-code="user:
+  profile:
+    firstName: John
+    lastName: Doe
+    contact:
+      email: john@example.com
+      phone: &quot;+86-138-0000-0001&quot;
+      address:
+        street: 中关村大街
+        city: 北京
+        zip: &quot;100080&quot;
+  preferences:
+    theme: dark
+    notifications: true
+    language: zh-CN"><pre><code>user:
+  profile:
+    firstName: John
+    lastName: Doe
+    contact:
+      email: john@example.com
+      phone: "+86-138-0000-0001"
+      address:
+        street: 中关村大街
+        city: 北京
+        zip: "100080"
+  preferences:
+    theme: dark
+    notifications: true
+    language: zh-CN</code></pre></div>
+<h3>YAML 列表</h3>
+
+<div class="special-block" data-block="yaml" data-code="articles:
+  - id: 1
+    title: Vue 3 入门指南
+    author: 张三
+    tags:
+      - Vue
+      - 前端
+      - JavaScript
+    published: true
+    views: 1520
+  - id: 2
+    title: TypeScript 高级类型
+    author: 李四
+    tags:
+      - TypeScript
+      - 类型系统
+    published: true
+    views: 980
+  - id: 3
+    title: CSS 网格布局实战
+    author: 王五
+    tags:
+      - CSS
+      - 布局
+    published: false
+    views: 450"><pre><code>articles:
+  - id: 1
+    title: Vue 3 入门指南
+    author: 张三
+    tags:
+      - Vue
+      - 前端
+      - JavaScript
+    published: true
+    views: 1520
+  - id: 2
+    title: TypeScript 高级类型
+    author: 李四
+    tags:
+      - TypeScript
+      - 类型系统
+    published: true
+    views: 980
+  - id: 3
+    title: CSS 网格布局实战
+    author: 王五
+    tags:
+      - CSS
+      - 布局
+    published: false
+    views: 450</code></pre></div>
+<h3>YAML 多行字符串与特殊值</h3>
+
+<div class="special-block" data-block="yaml" data-code="description: &gt;
+  这是一个多行字符串，
+  会被折叠为一行。
+notes: |
+  这是一个保留换行的
+  多行字符串。
+empty_val: ~
+null_val: null
+boolean_true: yes
+boolean_false: no
+numbers:
+  integer: 42
+  float: 3.14
+  scientific: 1.5e+10
+  hex: 0x1A
+timestamp: 2026-08-12T10:30:00Z"><pre><code>description: &gt;
+  这是一个多行字符串，
+  会被折叠为一行。
+notes: |
+  这是一个保留换行的
+  多行字符串。
+empty_val: ~
+null_val: null
+boolean_true: yes
+boolean_false: no
+numbers:
+  integer: 42
+  float: 3.14
+  scientific: 1.5e+10
+  hex: 0x1A
+timestamp: 2026-08-12T10:30:00Z</code></pre></div>
+<h3>无效 YAML（展示错误处理）</h3>
+
+<div class="special-block" data-block="yaml" data-code="name: 测试
+age: 25
+  indent: 缩进错误
+broken: ["><pre><code>name: 测试
+age: 25
+  indent: 缩进错误
+broken: [</code></pre></div>
+<h2>TOML 测试</h2>
+<h3>基本 TOML</h3>
+
+<div class="special-block" data-block="toml" data-code="title = &quot;TOML示例&quot;
+name = &quot;张三&quot;
+age = 28
+isActive = true
+score = 95.5"><pre><code>title = "TOML示例"
+name = "张三"
+age = 28
+isActive = true
+score = 95.5</code></pre></div>
+<h3>嵌套 TOML（表）</h3>
+
+<div class="special-block" data-block="toml" data-code="[user]
+name = &quot;张三&quot;
+email = &quot;zhangsan@example.com&quot;
+
+[user.profile]
+bio = &quot;全栈开发者&quot;
+website = &quot;https://example.com&quot;
+
+[user.settings]
+theme = &quot;dark&quot;
+language = &quot;zh-CN&quot;
+notifications = true"><pre><code>[user]
+name = "张三"
+email = "zhangsan@example.com"
+
+[user.profile]
+bio = "全栈开发者"
+website = "https://example.com"
+
+[user.settings]
+theme = "dark"
+language = "zh-CN"
+notifications = true</code></pre></div>
+<h3>TOML 数组</h3>
+
+<div class="special-block" data-block="toml" data-code="tags = [&quot;Vue&quot;, &quot;前端&quot;, &quot;JavaScript&quot;]
+scores = [85, 92, 78, 95]
+flags = [true, false, true]
+
+[[articles]]
+id = 1
+title = &quot;Vue 3 入门指南&quot;
+author = &quot;张三&quot;
+published = true
+views = 1520
+
+[[articles]]
+id = 2
+title = &quot;TypeScript 高级类型&quot;
+author = &quot;李四&quot;
+published = true
+views = 980
+
+[[articles]]
+id = 3
+title = &quot;CSS 网格布局实战&quot;
+author = &quot;王五&quot;
+published = false
+views = 450"><pre><code>tags = ["Vue", "前端", "JavaScript"]
+scores = [85, 92, 78, 95]
+flags = [true, false, true]
+
+[[articles]]
+id = 1
+title = "Vue 3 入门指南"
+author = "张三"
+published = true
+views = 1520
+
+[[articles]]
+id = 2
+title = "TypeScript 高级类型"
+author = "李四"
+published = true
+views = 980
+
+[[articles]]
+id = 3
+title = "CSS 网格布局实战"
+author = "王五"
+published = false
+views = 450</code></pre></div>
+<h3>TOML 多级嵌套表与日期</h3>
+
+<div class="special-block" data-block="toml" data-code="title = &quot;项目配置&quot;
+version = &quot;2.0.1&quot;
+
+[build]
+optimizer = &quot;esbuild&quot;
+sourcemap = true
+
+[build.output]
+dir = &quot;dist&quot;
+format = &quot;esm&quot;
+minify = true
+
+[build.output.banner]
+js = &quot;/* build */&quot;
+css = &quot;/* build */&quot;
+
+[deploy]
+host = &quot;example.com&quot;
+port = 443
+ssl = true
+
+[deploy.timeline]
+created = 2026-01-15T08:00:00Z
+updated = 2026-08-12T10:30:00Z"><pre><code>title = "项目配置"
+version = "2.0.1"
+
+[build]
+optimizer = "esbuild"
+sourcemap = true
+
+[build.output]
+dir = "dist"
+format = "esm"
+minify = true
+
+[build.output.banner]
+js = "/* build */"
+css = "/* build */"
+
+[deploy]
+host = "example.com"
+port = 443
+ssl = true
+
+[deploy.timeline]
+created = 2026-01-15T08:00:00Z
+updated = 2026-08-12T10:30:00Z</code></pre></div>
+<h3>无效 TOML（展示错误处理）</h3>
+
+<div class="special-block" data-block="toml" data-code="title = &quot;测试&quot;
+age = 25
+city = &quot;深圳&quot;
+invalid = 没有引号的值"><pre><code>title = "测试"
+age = 25
+city = "深圳"
+invalid = 没有引号的值</code></pre></div>
+<h2>说明</h2>
+<ul>
+<li><code>json</code>、<code>yaml</code>、<code>toml</code> 代码块会渲染为<strong>结构化树形视图</strong>，默认展示预览模式</li>
+<li>可点击&quot;源码&quot;按钮切换为原始代码（带 Prism 语法高亮）</li>
+<li>支持<strong>一键复制</strong>代码内容</li>
+<li>解析失败时，自动切换到源码视图并显示错误信息</li>
+<li>JSON 使用原生 <code>JSON.parse</code>，TOML 使用内建解析器，YAML 通过 CDN 加载 js-yaml（首次使用需加载，后续自动缓存）</li>
+</ul>
+<hr>
+<h1>第九部分：Vue组件在线运行测试</h1>
+<hr>
+<p>本文用于测试 <strong>Vue 单文件组件</strong> 的在线运行功能。使用 <code>vue</code> 语言标记的代码块，右上角会出现 ▶ 运行按钮，点击后会在弹窗内即时编译并渲染出可交互的组件。</p>
+<h2>响应式计数器</h2>
+
+<div class="special-block" data-block="code" data-lang="vue"><pre><code class="language-vue">&lt;script setup&gt;
+import { ref, computed } from 'vue'
+
+const count = ref(0)
+const isEven = computed(() =&gt; count.value % 2 === 0)
+
+function increment() {
+  count.value++
+}
+
+function reset() {
+  count.value = 0
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div class="demo"&gt;
+    &lt;h3&gt;计数器&lt;/h3&gt;
+    &lt;p class="count"&gt;当前数值：{{ count }}&lt;/p&gt;
+    &lt;p class="hint"&gt;{{ isEven ? '偶数' : '奇数' }}&lt;/p&gt;
+    &lt;div class="actions"&gt;
+      &lt;button @click="increment"&gt;+1&lt;/button&gt;
+      &lt;button @click="reset"&gt;重置&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+.demo h3 {
+  margin: 0 0 8px;
+}
+.count {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+.hint {
+  color: #6366f1;
+}
+.actions button {
+  margin-right: 8px;
+  padding: 6px 16px;
+  cursor: pointer;
+}
+&lt;/style&gt;</code></pre></div>
+<h2>列表渲染与交互</h2>
+
+<div class="special-block" data-block="code" data-lang="vue"><pre><code class="language-vue">&lt;script setup&gt;
+import { ref } from 'vue'
+
+const items = ref([
+  { id: 1, name: 'Vue', done: false },
+  { id: 2, name: 'Vite', done: true },
+  { id: 3, name: 'Pinia', done: false }
+])
+
+function toggle(item) {
+  item.done = !item.done
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;ul class="list"&gt;
+    &lt;li v-for="item in items" :key="item.id" @click="toggle(item)" class="row"&gt;
+      &lt;span class="box"&gt;{{ item.done ? '✓' : '○' }}&lt;/span&gt;
+      &lt;span :class="{ done: item.done }"&gt;{{ item.name }}&lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.box {
+  font-weight: 700;
+}
+.done {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+&lt;/style&gt;</code></pre></div>
+<h2>测试说明</h2>
+<ol>
+<li>点击上方代码块右上角的 ▶ 按钮，应该会弹出组件预览窗口</li>
+<li>计数器示例中，点击 &quot;+1&quot; 数值递增，点击 &quot;重置&quot; 归零，奇偶提示实时变化</li>
+<li>列表示例中，点击每一行可切换其完成状态（对勾 / 圆圈）</li>
+<li>预览窗口支持明暗主题自适应，跟随站点主题</li>
+</ol>

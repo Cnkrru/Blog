@@ -1,0 +1,115 @@
+<h1>Shell简介</h1>
+<blockquote>
+<p>shell是C编写的一种解释性脚本语言，专门用于终端与操作系统的交互</p>
+</blockquote>
+<blockquote>
+<p>shell天生支持其他语言os库的功能，并自带一些指令集合</p>
+</blockquote>
+<blockquote>
+<p>Windows自带终端CMD和Powershell常用于运行shell脚本（bat/ps1）</p>
+</blockquote>
+<blockquote>
+<p>git也常用于运行shell脚本。指令，不过更常用于GITHUB相关操作</p>
+</blockquote>
+<blockquote>
+<p>可以人为新的注册shell指令，如果是Windows操作系统，需要在环境变量PATH里添加注册shell指令的exe的路径</p>
+</blockquote>
+<blockquote>
+<p>python解释器，npm包管理器，hugo站点生成器均是如此</p>
+</blockquote>
+<hr>
+<h2>shell指令</h2>
+<blockquote>
+<p>shell指令基本都是对应英语的缩写，很好记忆，不过现在很少用，常用于运维</p>
+</blockquote>
+<ol>
+<li><code>cd &lt;路径&gt;</code><ul>
+<li>进入指定路径</li>
+</ul>
+</li>
+<li>ls <ul>
+<li>列出当前路径下的文件/文件夹</li>
+</ul>
+</li>
+<li><code>del &lt;文件/文件夹&gt;</code><ul>
+<li>删除指定文件/文件夹</li>
+</ul>
+</li>
+<li><code>rm &lt;文件/文件夹&gt;</code><ul>
+<li>删除指定文件/文件夹</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>python/pip</h2>
+<blockquote>
+<p>python解释器注册到PATH后可在终端运行py脚本</p>
+</blockquote>
+<blockquote>
+<p>pip是python的包管理器</p>
+</blockquote>
+<ol>
+<li>python --version / -v<ul>
+<li>PATH挂载的py解释器的版本</li>
+</ul>
+</li>
+<li>pip list<ul>
+<li>pip在全局安装的python包</li>
+</ul>
+</li>
+<li><code>pip install / uninstall &lt;包名&gt;</code><ul>
+<li>全局安装/卸载指定包</li>
+<li>如果在uv虚拟环境，则是 <code>uv install / uninstall &lt;包名&gt;</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>npm</h2>
+<blockquote>
+<p>npm是JavaScript/typescript的包管理器</p>
+</blockquote>
+<blockquote>
+<p>typescript是JavaScript的优化与封装，ts修了js的一些缺点，ts会编译成js</p>
+</blockquote>
+<ol>
+<li>npm --version / -v<ul>
+<li>PATH挂载的py解释器的版本</li>
+</ul>
+</li>
+<li>npm list<ul>
+<li>pip在全局安装的python包</li>
+</ul>
+</li>
+<li><code>npm install / uninstall &lt;包名&gt;</code><ul>
+<li>全局安装/卸载指定包</li>
+<li>如果在uv虚拟环境，则是 <code>uv install / uninstall &lt;包名&gt;</code></li>
+</ul>
+</li>
+<li>npm run dev<ul>
+<li>构建并启动服务本地预览</li>
+<li>vue项目，electron项目，vue项目默认端口是5173</li>
+</ul>
+</li>
+<li>npm run build<ul>
+<li>构建产物，输出到指定文件夹，一般是dist</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>vcpkg</h2>
+<blockquote>
+<p>vcpkg是Cpp的包管理器，需要搭配编译器MSVC.MinGW使用，一般构建项目需要编译器+vcpkg+Cmake</p>
+</blockquote>
+<blockquote>
+<p>包管理器指令大多相似，不再重复</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>编辑于2026-07-03</p>
+</blockquote>
+<blockquote>
+<p>作者：Cnkrru</p>
+</blockquote>
+<blockquote>
+<p>联系方式：<a href="mailto:3253884026@qq.com">3253884026@qq.com</a></p>
+</blockquote>
