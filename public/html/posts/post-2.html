@@ -140,7 +140,7 @@ const [users, posts] = await Promise.all([
 ])
 
 console.log('用户数:', users.length)
-console.log('文章数:', posts.length)</code></pre></div>
+console.log('文章数:', posts.length)</code></pre></div>
 <h2>Python</h2>
 
 <div class="special-block" data-block="code" data-lang="python"><pre><code class="language-python">from datetime import datetime
@@ -167,7 +167,7 @@ post = BlogPost(
     content="这是一篇关于Python的测试文章...",
     author="博客作者"
 )
-print(post.get_excerpt())</code></pre></div>
+print(post.get_excerpt())</code></pre></div>
 <h2>CSS</h2>
 
 <div class="special-block" data-block="code" data-lang="css"><pre><code class="language-css">/* 响应式卡片组件 */
@@ -189,7 +189,7 @@ print(post.get_excerpt())</code></pre></div>
   font-weight: 600;
   color: #333;
   margin-bottom: 12px;
-}</code></pre></div>
+}</code></pre></div>
 <h2>HTML</h2>
 
 <div class="special-block" data-block="code" data-lang="html"><pre><code class="language-html">&lt;!-- 文章卡片组件 --&gt;
@@ -214,7 +214,7 @@ print(post.get_excerpt())</code></pre></div>
     &lt;/div&gt;
     &lt;a :href="article.url" class="read-more"&gt;阅读更多 →&lt;/a&gt;
   &lt;/footer&gt;
-&lt;/article&gt;</code></pre></div>
+&lt;/article&gt;</code></pre></div>
 <h2>SQL</h2>
 
 <div class="special-block" data-block="code" data-lang="sql"><pre><code class="language-sql">-- 博客数据库查询示例
@@ -234,7 +234,7 @@ WHERE p.status = 'published'
     AND p.created_at &gt;= '2026-01-01'
 GROUP BY p.id, p.title, p.created_at, u.username
 ORDER BY p.created_at DESC
-LIMIT 10;</code></pre></div>
+LIMIT 10;</code></pre></div>
 <hr>
 <h1>第三部分：KaTeX数学公式测试</h1>
 <hr>
@@ -502,11 +502,11 @@ b_{2}
 张三,25,北京,工程师
 李四,30,上海,设计师
 王五,28,广州,产品经理
-赵六,35,深圳,架构师"><pre><code>姓名,年龄,城市,职业
+赵六,35,深圳,架构师"><pre><code>姓名,年龄,城市,职业
 张三,25,北京,工程师
 李四,30,上海,设计师
 王五,28,广州,产品经理
-赵六,35,深圳,架构师</code></pre></div>
+赵六,35,深圳,架构师</code></pre></div>
 <h2>带引号的字段</h2>
 <p>当字段中包含逗号时，需要用双引号包裹：</p>
 
@@ -514,11 +514,11 @@ b_{2}
 &quot;JavaScript高级程序设计&quot;,&quot;Matt Frisbie&quot;,89.00,&quot;JavaScript经典红宝书，前端必读&quot;
 &quot;深入浅出Vue.js&quot;,&quot;刘博文&quot;,79.00,&quot;Vue.js源码解析，深入理解响应式原理&quot;
 &quot;CSS世界&quot;,&quot;张鑫旭&quot;,69.00,&quot;CSS流、元素与基本尺寸的深入讲解&quot;
-&quot;设计模式&quot;,&quot;Erich Gamma&quot;,99.00,&quot;面向对象软件设计模式经典之作&quot;"><pre><code>书名,作者,价格,简介
+&quot;设计模式&quot;,&quot;Erich Gamma&quot;,99.00,&quot;面向对象软件设计模式经典之作&quot;"><pre><code>书名,作者,价格,简介
 "JavaScript高级程序设计","Matt Frisbie",89.00,"JavaScript经典红宝书，前端必读"
 "深入浅出Vue.js","刘博文",79.00,"Vue.js源码解析，深入理解响应式原理"
 "CSS世界","张鑫旭",69.00,"CSS流、元素与基本尺寸的深入讲解"
-"设计模式","Erich Gamma",99.00,"面向对象软件设计模式经典之作"</code></pre></div>
+"设计模式","Erich Gamma",99.00,"面向对象软件设计模式经典之作"</code></pre></div>
 <h2>多列数据</h2>
 
 <div class="special-block" data-block="csv" data-code="月份,销售额,利润,利润率,客户数,客单价
@@ -527,17 +527,17 @@ b_{2}
 3月,132000,26400,20.0%,350,377
 4月,168000,38640,23.0%,420,400
 5月,156000,34320,22.0%,400,390
-6月,182000,43680,24.0%,460,396"><pre><code>月份,销售额,利润,利润率,客户数,客单价
+6月,182000,43680,24.0%,460,396"><pre><code>月份,销售额,利润,利润率,客户数,客单价
 1月,128000,25600,20.0%,320,400
 2月,145000,30450,21.0%,380,382
 3月,132000,26400,20.0%,350,377
 4月,168000,38640,23.0%,420,400
 5月,156000,34320,22.0%,400,390
-6月,182000,43680,24.0%,460,396</code></pre></div>
+6月,182000,43680,24.0%,460,396</code></pre></div>
 <h2>纯数据（无表头）</h2>
 <p>如果 CSV 只有一行数据，则不分表头/表体：</p>
 
-<div class="special-block" data-block="csv" data-code="2026-08-12,功能测试,CSV解析器,通过"><pre><code>2026-08-12,功能测试,CSV解析器,通过</code></pre></div>
+<div class="special-block" data-block="csv" data-code="2026-08-12,功能测试,CSV解析器,通过"><pre><code>2026-08-12,功能测试,CSV解析器,通过</code></pre></div>
 <hr>
 <h1>第八部分：JSON/YAML/TOML 结构化数据渲染测试</h1>
 <hr>
@@ -552,14 +552,14 @@ b_{2}
   &quot;isActive&quot;: true,
   &quot;score&quot;: 95.5,
   &quot;bio&quot;: null
-}"><pre><code>{
+}"><pre><code>{
   "name": "张三",
   "age": 28,
   "city": "北京",
   "isActive": true,
   "score": 95.5,
   "bio": null
-}</code></pre></div>
+}</code></pre></div>
 <h3>嵌套 JSON 对象</h3>
 
 <div class="special-block" data-block="json" data-code="{
@@ -583,7 +583,7 @@ b_{2}
       &quot;language&quot;: &quot;zh-CN&quot;
     }
   }
-}"><pre><code>{
+}"><pre><code>{
   "user": {
     "profile": {
       "firstName": "John",
@@ -604,7 +604,7 @@ b_{2}
       "language": "zh-CN"
     }
   }
-}</code></pre></div>
+}</code></pre></div>
 <h3>JSON 数组</h3>
 
 <div class="special-block" data-block="json" data-code="[
@@ -632,7 +632,7 @@ b_{2}
     &quot;published&quot;: false,
     &quot;views&quot;: 450
   }
-]"><pre><code>[
+]"><pre><code>[
   {
     "id": 1,
     "title": "Vue 3 入门指南",
@@ -657,7 +657,7 @@ b_{2}
     "published": false,
     "views": 450
   }
-]</code></pre></div>
+]</code></pre></div>
 <h3>混合类型 JSON</h3>
 
 <div class="special-block" data-block="json" data-code="{
@@ -686,7 +686,7 @@ b_{2}
       }
     }
   }
-}"><pre><code>{
+}"><pre><code>{
   "metadata": {
     "version": "2.0.1",
     "generatedAt": "2026-08-12T10:30:00Z",
@@ -712,7 +712,7 @@ b_{2}
       }
     }
   }
-}</code></pre></div>
+}</code></pre></div>
 <h3>无效 JSON（展示错误处理）</h3>
 
 <div class="special-block" data-block="json" data-code="{
@@ -720,12 +720,12 @@ b_{2}
   &quot;age&quot;: 25,
   &quot;city&quot;: &quot;深圳&quot;,
   语法错误: 缺少引号
-}"><pre><code>{
+}"><pre><code>{
   "name": "测试",
   "age": 25,
   "city": "深圳",
   语法错误: 缺少引号
-}</code></pre></div>
+}</code></pre></div>
 <h2>YAML 测试</h2>
 <h3>基本 YAML</h3>
 
@@ -734,12 +734,12 @@ age: 28
 city: 北京
 isActive: true
 score: 95.5
-bio: ~"><pre><code>name: 张三
+bio: ~"><pre><code>name: 张三
 age: 28
 city: 北京
 isActive: true
 score: 95.5
-bio: ~</code></pre></div>
+bio: ~</code></pre></div>
 <h3>嵌套 YAML</h3>
 
 <div class="special-block" data-block="yaml" data-code="user:
@@ -756,7 +756,7 @@ bio: ~</code></pre></div>
   preferences:
     theme: dark
     notifications: true
-    language: zh-CN"><pre><code>user:
+    language: zh-CN"><pre><code>user:
   profile:
     firstName: John
     lastName: Doe
@@ -770,7 +770,7 @@ bio: ~</code></pre></div>
   preferences:
     theme: dark
     notifications: true
-    language: zh-CN</code></pre></div>
+    language: zh-CN</code></pre></div>
 <h3>YAML 列表</h3>
 
 <div class="special-block" data-block="yaml" data-code="articles:
@@ -798,7 +798,7 @@ bio: ~</code></pre></div>
       - CSS
       - 布局
     published: false
-    views: 450"><pre><code>articles:
+    views: 450"><pre><code>articles:
   - id: 1
     title: Vue 3 入门指南
     author: 张三
@@ -823,7 +823,7 @@ bio: ~</code></pre></div>
       - CSS
       - 布局
     published: false
-    views: 450</code></pre></div>
+    views: 450</code></pre></div>
 <h3>YAML 多行字符串与特殊值</h3>
 
 <div class="special-block" data-block="yaml" data-code="description: &gt;
@@ -841,7 +841,7 @@ numbers:
   float: 3.14
   scientific: 1.5e+10
   hex: 0x1A
-timestamp: 2026-08-12T10:30:00Z"><pre><code>description: &gt;
+timestamp: 2026-08-12T10:30:00Z"><pre><code>description: &gt;
   这是一个多行字符串，
   会被折叠为一行。
 notes: |
@@ -856,16 +856,16 @@ numbers:
   float: 3.14
   scientific: 1.5e+10
   hex: 0x1A
-timestamp: 2026-08-12T10:30:00Z</code></pre></div>
+timestamp: 2026-08-12T10:30:00Z</code></pre></div>
 <h3>无效 YAML（展示错误处理）</h3>
 
 <div class="special-block" data-block="yaml" data-code="name: 测试
 age: 25
   indent: 缩进错误
-broken: ["><pre><code>name: 测试
+broken: ["><pre><code>name: 测试
 age: 25
   indent: 缩进错误
-broken: [</code></pre></div>
+broken: [</code></pre></div>
 <h2>TOML 测试</h2>
 <h3>基本 TOML</h3>
 
@@ -873,11 +873,11 @@ broken: [</code></pre></div>
 name = &quot;张三&quot;
 age = 28
 isActive = true
-score = 95.5"><pre><code>title = "TOML示例"
+score = 95.5"><pre><code>title = "TOML示例"
 name = "张三"
 age = 28
 isActive = true
-score = 95.5</code></pre></div>
+score = 95.5</code></pre></div>
 <h3>嵌套 TOML（表）</h3>
 
 <div class="special-block" data-block="toml" data-code="[user]
@@ -891,7 +891,7 @@ website = &quot;https://example.com&quot;
 [user.settings]
 theme = &quot;dark&quot;
 language = &quot;zh-CN&quot;
-notifications = true"><pre><code>[user]
+notifications = true"><pre><code>[user]
 name = "张三"
 email = "zhangsan@example.com"
 
@@ -902,7 +902,7 @@ website = "https://example.com"
 [user.settings]
 theme = "dark"
 language = "zh-CN"
-notifications = true</code></pre></div>
+notifications = true</code></pre></div>
 <h3>TOML 数组</h3>
 
 <div class="special-block" data-block="toml" data-code="tags = [&quot;Vue&quot;, &quot;前端&quot;, &quot;JavaScript&quot;]
@@ -928,7 +928,7 @@ id = 3
 title = &quot;CSS 网格布局实战&quot;
 author = &quot;王五&quot;
 published = false
-views = 450"><pre><code>tags = ["Vue", "前端", "JavaScript"]
+views = 450"><pre><code>tags = ["Vue", "前端", "JavaScript"]
 scores = [85, 92, 78, 95]
 flags = [true, false, true]
 
@@ -951,7 +951,7 @@ id = 3
 title = "CSS 网格布局实战"
 author = "王五"
 published = false
-views = 450</code></pre></div>
+views = 450</code></pre></div>
 <h3>TOML 多级嵌套表与日期</h3>
 
 <div class="special-block" data-block="toml" data-code="title = &quot;项目配置&quot;
@@ -977,7 +977,7 @@ ssl = true
 
 [deploy.timeline]
 created = 2026-01-15T08:00:00Z
-updated = 2026-08-12T10:30:00Z"><pre><code>title = "项目配置"
+updated = 2026-08-12T10:30:00Z"><pre><code>title = "项目配置"
 version = "2.0.1"
 
 [build]
@@ -1000,16 +1000,16 @@ ssl = true
 
 [deploy.timeline]
 created = 2026-01-15T08:00:00Z
-updated = 2026-08-12T10:30:00Z</code></pre></div>
+updated = 2026-08-12T10:30:00Z</code></pre></div>
 <h3>无效 TOML（展示错误处理）</h3>
 
 <div class="special-block" data-block="toml" data-code="title = &quot;测试&quot;
 age = 25
 city = &quot;深圳&quot;
-invalid = 没有引号的值"><pre><code>title = "测试"
+invalid = 没有引号的值"><pre><code>title = "测试"
 age = 25
 city = "深圳"
-invalid = 没有引号的值</code></pre></div>
+invalid = 没有引号的值</code></pre></div>
 <h2>说明</h2>
 <ul>
 <li><code>json</code>、<code>yaml</code>、<code>toml</code> 代码块会渲染为<strong>结构化树形视图</strong>，默认展示预览模式</li>

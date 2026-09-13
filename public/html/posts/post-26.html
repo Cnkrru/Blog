@@ -39,7 +39,7 @@
   &quot;devDependencies&quot;: {
     &quot;electron&quot;: &quot;23.1.3&quot;
   }
-}"><pre><code>{
+}"><pre><code>{
   "name": "my-electron-app",
   "version": "1.0.0",
   "description": "Hello World!",
@@ -52,7 +52,7 @@
   "devDependencies": {
     "electron": "23.1.3"
   }
-}</code></pre></div>
+}</code></pre></div>
 <ul>
 <li>添加完依赖json段后运行<code>npm instll</code>(都是常见项目指令了，换其他包/其他语言，基本都差别不大)</li>
 <li>依赖包<code>node_modules</code>，很常见了，记得git忽视掉,JavaScript项目安装依赖，简直是灾难，一个依赖依赖于另一个依赖，一次下载一堆，下载很慢，稍微等一下</li>
@@ -70,7 +70,7 @@
 </ul>
 
 <div class="special-block" data-block="code" data-lang="plaintext"><pre><code class="language-plaintext">&lt;文件名&gt;
-&lt;文件夹名&gt;/</code></pre></div>
+&lt;文件夹名&gt;/</code></pre></div>
 <blockquote>
 <p>盘符用<code>/</code>，因为GitHub的服务器用的是liunx，不过服务器基本都是liunx吧，写好这个后，git在提交时会自动忽视这个文件里记录的文件/文件夹</p>
 </blockquote>
@@ -114,7 +114,7 @@
     &lt;h1&gt;Hello from Electron renderer!&lt;/h1&gt;
     &lt;p&gt;👋&lt;/p&gt;
   &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre></div>
 <ul>
 <li>跟普通网页没啥区别</li>
 </ul>
@@ -137,7 +137,7 @@ const createWindow = () =&gt; {
 
 app.on('ready', () =&gt; {
   createWindow()
-})</code></pre></div>
+})</code></pre></div>
 <ul>
 <li>这个其实和其他APP框架看着都差不多，初始化一个实例，然后给宽高属性，窗口加载是<code>index.html</code></li>
 <li>导入了两个electron的包<code>app</code>和<code>BrowserWindow</code><ul>
@@ -158,7 +158,7 @@ app.on('ready', () =&gt; {
 
 <div class="special-block" data-block="code" data-lang="javascript"><pre><code class="language-javascript">app.on('window-all-closed', () =&gt; {
   if (process.platform !== 'darwin') app.quit()
-})</code></pre></div>
+})</code></pre></div>
 <ul>
 <li>如果不是MACOS，<code>app.quit</code>关闭全部窗口后退出</li>
 </ul>
@@ -178,12 +178,12 @@ contextBridge.exposeInMainWorld('versions', {
   chrome: () =&gt; process.versions.chrome,
   electron: () =&gt; process.versions.electron
   // 除函数之外，我们也可以暴露变量
-})</code></pre></div>
+})</code></pre></div>
 <ul>
 <li>同时修改main.js，加入预加载脚本挂载，具体位置看官网</li>
 </ul>
 
-<div class="special-block" data-block="code" data-lang="JavaScript"><pre><code class="language-JavaScript">webPreferences: {preload: path.join(__dirname, 'preload.js')}</code></pre></div>
+<div class="special-block" data-block="code" data-lang="JavaScript"><pre><code class="language-JavaScript">webPreferences: {preload: path.join(__dirname, 'preload.js')}</code></pre></div>
 <ul>
 <li>这里的<code>__dirname</code>，接收的参数是脚本的路径，一般情况下我们不会直接放在根目录，需要修改一下</li>
 </ul>
@@ -216,7 +216,7 @@ contextBridge.exposeInMainWorld('versions', {
     const information = document.getElementById('info')
     information.innerText = `本应用正在使用 Chrome (v${versions.chrome()}), Node.js (v${versions.node()}), 和 Electron (v${versions.electron()})`
   &lt;/script&gt;
-&lt;/html&gt;</code></pre></div>
+&lt;/html&gt;</code></pre></div>
 <hr>
 <h3>9. 进程间通信</h3>
 <ul>
@@ -232,12 +232,12 @@ contextBridge.exposeInMainWorld('versions', {
 </ul>
 
 <div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell"># 安装打包工具CLI
-npm install --save-dev @electron-forge/cli</code></pre></div>
+npm install --save-dev @electron-forge/cli</code></pre></div>
 <ul>
 <li>配置打包工具</li>
 </ul>
 
-<div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell">npx electron-forge import</code></pre></div>
+<div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell">npx electron-forge import</code></pre></div>
 <ul>
 <li>运行完这一行会出现一个新的配置文件<code>forge.config.js</code>，<code>package.json</code>也会出现对应指令<ul>
 <li>forge.config.js是代码签名文件，暂时不知道是干什么的</li>
@@ -261,7 +261,7 @@ npm install --save-dev @electron-forge/cli</code></pre></div>
 <li>运行以下指令快速开始，生成的模板很标准</li>
 </ul>
 
-<div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell">npm create @quick-start/electron</code></pre></div>
+<div class="special-block" data-block="code" data-lang="shell"><pre><code class="language-shell">npm create @quick-start/electron</code></pre></div>
 <ul>
 <li>会问以下几个问题</li>
 </ul>
@@ -283,7 +283,7 @@ npm install --save-dev @electron-forge/cli</code></pre></div>
 |-preload
 |   |-preload.js  
 |-render 
-|   |-vue项目框架</code></pre></div>
+|   |-vue项目框架</code></pre></div>
 <hr>
 <h3>3. 初始化效果</h3>
 <p><img src="../images/post-26/electron-img.png" alt="示例图片"></p>

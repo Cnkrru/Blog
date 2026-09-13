@@ -11,13 +11,13 @@ event.触发行为(push,pull_request,schedule)
 job,工作流执行单元(默认并发)
 step,job的操作
 runner,运行job的虚拟机
-action,可复用的步骤单元"><pre><code>概念,说明
+action,可复用的步骤单元"><pre><code>概念,说明
 workflow,自动化配置文件(定义在`.github/workflow/*.yaml`)
 event.触发行为(push,pull_request,schedule)
 job,工作流执行单元(默认并发)
 step,job的操作
 runner,运行job的虚拟机
-action,可复用的步骤单元</code></pre></div>
+action,可复用的步骤单元</code></pre></div>
 <ul>
 <li>工作流文件夹</li>
 </ul>
@@ -25,7 +25,7 @@ action,可复用的步骤单元</code></pre></div>
 <div class="special-block" data-block="code" data-lang="plaintext"><pre><code class="language-plaintext">.github/
 |-- workflow/
     |-- build.yaml
-    |-- deplay.yaml</code></pre></div>
+    |-- deplay.yaml</code></pre></div>
 <hr>
 <h2>语法</h2>
 <blockquote>
@@ -124,7 +124,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4"><pre><code>name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4"><pre><code>name: Deploy to GitHub Pages
 
 on:
   push:
@@ -175,7 +175,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4</code></pre></div>
+        uses: actions/deploy-pages@v4</code></pre></div>
 <hr>
 <blockquote>
 <p>编辑于2026-08-11</p>
