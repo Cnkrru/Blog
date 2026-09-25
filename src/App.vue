@@ -1,203 +1,84 @@
 <script setup>
-import { onMounted, onUnmounted, computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useHead } from '@unhead/vue'
-import { useThemeStore } from './stores/index'
-import './style.css'
-import { Analytics } from '@vercel/analytics/vue'
-import { SpeedInsights } from '@vercel/speed-insights/vue'
-import Header from './components/Header.vue'
-import Sidebar from './components/Sidebar.vue'
-import Center from './components/Center.vue'
-import Footer from './components/Footer.vue'
-import WebAnalytics from './components/api/WebAnalytics.vue'
-import NotificationRender from './components/content/NotificationRender.vue'
-import MouseTrail from './components/api/MouseTrail.vue'
-import ConsoleEasterEgg from './components/media/ConsoleEasterEgg.vue'
-import ContextMenu from './components/p-center/ContextMenu.vue'
-import VideoBackground from './components/media/VideoBackground.vue'
-import InstallPrompt from './components/p-footer/InstallPrompt.vue'
+import Header from '@/components/Header.vue';
+import Sidebar from '@/components/Sidebar.vue';
+import Main from '@/components/Main.vue';
+import Footer from '@/components/Footer.vue';
+import BackToTop from './components/p-main/content/BackToTop.vue';
+
+import { theme } from './modules/theme';
+import { onBeforeMount, onMounted,computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useHead } from '@unhead/vue';
+
+// 全局 head：站点元信息 + RSS/Atom 自动发现（订阅器靠 <link rel="alternate"> 发现 feed）
+useHead({
+  title: 'Cnkrru',
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+    { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+    { rel: 'alternate', type: 'application/rss+xml', title: 'RSS', href: '/feed.xml' },
+    { rel: 'alternate', type: 'application/atom+xml', title: 'Atom', href: '/atom.xml' },
+  ],
+})
 
 const route = useRoute()
-const router = useRouter()
 const isIndexPage = computed(() => route.path === '/')
-const isTerminalPage = computed(() => route.path === '/terminal')
 
-const themeStore = useThemeStore()
-
-// 覆盖 @unhead 默认的 html lang="en"，保持站点语言为 zh-CN
-useHead({
-  htmlAttrs: { lang: 'zh-CN' }
+onBeforeMount(() => {
+  theme.init_bg();
 })
 
-// 页面加载进度条
-const progressWidth = ref('0%')
-const progressVisible = ref(false)
-let progressTimer = null
-
-router.beforeEach((_to, _from, next) => {
-  progressVisible.value = true
-  progressWidth.value = '5%'
-  next()
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      progressWidth.value = '70%'
-    })
-  })
+onMounted (()=> {
+  theme.init_theme();  
+  theme.init_light_dark();
+  theme.init_layout();
+  theme.init_opacity();
 })
-
-router.afterEach(() => {
-  progressWidth.value = '100%'
-  if (progressTimer) clearTimeout(progressTimer)
-  progressTimer = setTimeout(() => {
-    progressVisible.value = false
-    progressWidth.value = '0%'
-  }, 400)
-})
-
-router.onError(() => {
-  progressVisible.value = false
-})
-
-// Ctrl+C 快捷键：从极简模式退出至无空隙模式
-function onKeyDown(e) {
-  if (e.ctrlKey && e.key === 'c' && themeStore.currentLayout === 'minimal') {
-    e.preventDefault()
-    themeStore.setLayout('compact')
-  }
-}
-
-// 触屏设备：极简模式下点按背景可退出（Header 区域除外，避免与头部按钮冲突）
-function onMinimalPointerDown(e) {
-  if (themeStore.currentLayout !== 'minimal') return
-  if (e.pointerType !== 'touch') return
-  if (e.target instanceof HTMLElement && e.target.closest('.header-flex')) return
-  themeStore.setLayout('compact')
-}
-
-onMounted(() => {
-  themeStore.initTheme()
-  document.addEventListener('keydown', onKeyDown)
-  document.addEventListener('pointerdown', onMinimalPointerDown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', onKeyDown)
-  document.removeEventListener('pointerdown', onMinimalPointerDown)
-})</script>
+</script>
 
 <template>
-  <div id="app">
-    <VideoBackground />
-    <!-- 页面加载进度条 -->
-    <div v-if="progressVisible" class="progress-bar">
-      <div class="progress-fill" :style="{ width: progressWidth }"></div>
+  <template v-if="isIndexPage">
+    <router-view/>
+  </template>
+
+  <template v-else>
+    <Header/>
+
+    <div class="center-area">
+      <Sidebar/>
+      <Main/>
     </div>
-    <WebAnalytics />
-    <SpeedInsights />
-    <Analytics />
-    <NotificationRender />
-    <ConsoleEasterEgg />
-    <ContextMenu />
-    <MouseTrail />
-    <InstallPrompt />
-    <template v-if="!isIndexPage && !isTerminalPage">
-      <Header />
-      <main class="mid-flex">
-        <Sidebar />
-        <router-view v-slot="{ Component: RouteComponent }">
-          <Transition name="page-fade" mode="out-in">
-            <Center :key="route.fullPath">
-              <component :is="RouteComponent" />
-            </Center>
-          </Transition>
-        </router-view>
-      </main>
-      <Footer />
-    </template>
-    <template v-else>
-      <router-view v-slot="{ Component: RouteComponent }">
-        <Transition name="page-fade" mode="out-in">
-          <component :is="RouteComponent" :key="route.fullPath" />
-        </Transition>
-      </router-view>
-    </template>
-    <div v-if="themeStore.currentLayout === 'minimal'" class="minimal-exit-hint">轻点退出极简</div>
-  </div>
+    
+    <Footer/>
+    <BackToTop/>
+  </template>
 </template>
 
-<!-- 页面加载进度条 -->
 <style scoped>
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
+.center-area {
   width: 100%;
-  height: 3px;
-  z-index: 99999;
-  pointer-events: none;
+  flex: 1;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--common-color-1), var(--common-hover), #ff6b9d);
-  transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-  box-shadow: 0 0 12px var(--common-color-1), 0 0 4px var(--common-color-1);
-  border-radius: 0 2px 2px 0;
+/* ====================<响应式>==================== */
+@media (max-width: 1280px) {
+    /* [响应式-lg] 大屏 */
 }
 
-/* 布局样式：.mid-flex 基础 flex 布局兜底（card 在 769-1024px 区间无 layout 文件覆盖，需此处兜底）。
-     尺寸/间隙的最终值由 layouts/card.css（>=1025）与 layouts/compact.css（全宽度）以
-     .layout-card 前缀覆盖，其选择器权重高于此处 scoped，故不会冲突。 */
-.mid-flex {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: row;
-    flex: 1;
-}
-/* 极简模式触屏退出提示 */
-.minimal-exit-hint {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 13px;
-  color: var(--common-text);
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 9999;
-  pointer-events: none;
-  display: none;
+@media (max-width: 1024px) {
+    /* [响应式-md] 平板 */
 }
 
-@media (pointer: coarse) {
-  .minimal-exit-hint {
-    display: block;
-  }
+@media (max-width: 768px) {
+    /* [响应式-sm] 手机 */
+}
+
+@media (max-width: 480px) {
+    /* [响应式-xs] 窄屏 */
 }
 </style>
-
-<!-- 页面切换淡入淡出动画 — 非 scoped，因为 Transition 的 class 作用于页面组件根元素，不在 App.vue 的 scope 内 -->
-<style>
-.page-fade-enter-active,
-.page-fade-leave-active {
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.page-fade-enter-from {
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-.page-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-</style>
-
-

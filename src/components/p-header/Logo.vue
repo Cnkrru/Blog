@@ -1,49 +1,56 @@
-<!-- review完成 -->
-
 <script setup>
+import { ref } from 'vue';
+const logo = ref('Cnkrru')
 </script>
 
 <template>
-  <div class="logo-card">
-    <router-link to="/"><h1>Cnkrru</h1></router-link>
-  </div>
+    <div class="logo">
+        <router-link to="/"><p>{{ logo }}</p> </router-link>
+    </div>
 </template>
 
 <style scoped>
-.logo-card {
-    width: auto;
+.logo {
+    width: fit-content;
     height: 100%;
-    padding: 0 0 0 10px;
+
+    margin-left: var(--space-md);
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.logo-card h1 {
+.logo p {
     font-size: 26px;
     font-weight: 600;
     letter-spacing: -0.3px;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
     white-space: nowrap;
     transition: opacity 0.2s ease;
+    color: var(--g-color);
 }
 
-.logo-card h1:hover {
+.logo p:hover {
     opacity: 0.8;
 }
 
-.logo-card h1 {
-    color: var(--common-color-1);
+
+/* ====================<响应式>==================== */
+@media (max-width: 1280px) {
+    /* [响应式-lg] 大屏 */
+}
+
+@media (max-width: 1024px) {
+    /* [响应式-md] 平板 */
 }
 
 @media (max-width: 768px) {
-  .logo-card {
-      margin-left: 0;
-      margin-right: 0;
-  }
-
-    .logo-card h1 {
-    font-size: 20px;
-  }
+    /* [响应式-sm] 手机 */
 }
+
+@media (max-width: 480px) {
+    /* [响应式-xs] 窄屏 */
+}
+
 </style>

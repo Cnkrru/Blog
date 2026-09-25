@@ -1,0 +1,28 @@
+.bg-img {
+    background: url(../../media/background.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.bg-video {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    object-fit: cover;
+    z-index: -2;           /* [AI重构] 原-1；壳移除后内容=auto，需让视频/遮罩进负域 */
+    pointer-events: none;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);        /* 暗色遮罩，对齐 blog-map dark */
+    pointer-events: none;
+    z-index: -1;           /* [AI重构] 原1；壳移除后内容=auto(-1<0)仍在遮罩之上,sakura 同理 */
+}
+
+body.light::before {
+    background: rgba(255, 255, 255, 0.5);   /* 亮色下改用淡白遮罩，对齐 blog-map light */
+}

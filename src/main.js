@@ -1,42 +1,44 @@
-/*
-* id：vue项目插件配置
-* fn：启用vue与插件，并挂载VUE-APP
-*/
+import './assets/css/init.css'
+import './assets/css/common.css'
+
+import './assets/css/theme/color.css'
+import './assets/css/theme/_ink.css'
+import './assets/css/theme/_sakura.css'
+import './assets/css/theme/_purple.css'
+import './assets/css/theme/_cyan.css'
+import './assets/css/theme/_blue.css'
+import './assets/css/theme/bg.css'
+
+import './assets/css/layout/var.css'
+import './assets/css/layout/immersive.css'
+import './assets/css/layout/card.css'
+import './assets/css/layout/default.css'
+
+// toast 弹窗（JS 动态创建节点，样式必须全局生效，不能 scoped）
+import './assets/css/toast.css'
+
+// katex 公式的排版 CSS（md 编译产物里的 .katex 结构依赖它）
+import 'katex/dist/katex.min.css'
+
 import { ViteSSG } from 'vite-ssg'
+import { routes } from './router'
 import App from './App.vue'
+import { content } from './modules/content'
 
-import { routes, scrollToTop } from './router/index'
-import { pinia } from './stores/index'
-
-// 开发环境下注销残留的 Service Worker，避免干扰 Vite 热更新
-if (import.meta.env.DEV) {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then((r) => r.forEach((reg) => reg.unregister()))
-  }
-}
-
-// 主题与布局样式已改为按需加载，由 theme store 的 cssLoader 负责
-
-/*
-* id: VUE项目初始化函数
-* fn：启用vue与插件pinia；head 与 router 由 vite-ssg 内部创建并注入
-*/
 export const createApp = ViteSSG(
-  App,
-  {
-    routes,
-    scrollBehavior() { scrollToTop() }
-  },
-  ({ app, isClient }) => {
-    app.use(pinia)
-
-    // 注册 Service Worker（PWA 离线缓存），仅生产环境
-    if (isClient && !import.meta.env.DEV) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {
-          // 静默失败，不影响主流程
-        })
-      })
+    App,
+    {
+        routes,
+    },
+    ({ app, router }) => {
+        // 浏览器端专属逻辑：giscus 包 import 时自动 customElements.define('giscus-widget')，模板按原生元素渲染；滚动回调也依赖客户端路由
+        if (!import.meta.env.SSR) {
+            import('giscus')
+            // 粒子要限定在首页，改由 _Index.vue 内 i_ParticleEffect.vue 挂载，不再全局启动
+            router.afterEach(() => {
+                content.scroll_to_top()
+            })
+        }
     }
-  }
 )
+

@@ -1,246 +1,77 @@
 <script setup>
-import VIcon from '@/components/__common/VIcon.vue'
-import { ref, onMounted, watch, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useArticlesStore } from '../../stores'
-import { ElasticsearchLikeScorer } from '../../utils/algorithms'
-import { RedisLikeCache } from '../../utils/cache'
-import SearchResults from './SearchResults.vue'
-
-const searchText = ref('')
-const searchResults = ref([])
-const showResults = ref(false)
-const router = useRouter()
-const store = useArticlesStore()
-const searchData = ref([])
-
-let searchIndex = null
-
-const searchCache = new RedisLikeCache({
-  memoryCapacity: 50,
-  storageCapacity: 200,
-  defaultTTL: 600
-})
-
-onMounted(async () => {
-  try {
-    const data = await store.fetchArticles()
-    searchData.value = data.filter(item => item.id !== 'terminal')
-
-    searchIndex = new ElasticsearchLikeScorer()
-    searchIndex.buildInvertedIndex(searchData.value)
-  } catch (error) {
-    console.error('加载搜索数据失败:', error)
-    searchData.value = []
-  }
-
-  if (typeof document !== 'undefined') {
-    document.addEventListener('click', handleClickOutside)
-  }
-})
-
-watch(searchText, (newValue) => {
-  const query = newValue.trim()
-
-  if (query.length === 0) {
-    searchResults.value = []
-    showResults.value = false
-    return
-  }
-
-  performSearch(query)
-})
-
-const performSearch = (query) => {
-  if (!searchIndex || searchData.value.length === 0) {
-    console.warn('搜索索引未初始化')
-    return
-  }
-
-  const startTime = performance.now()
-
-  const cacheKey = `search_${query}`
-  const cachedResults = searchCache.get(cacheKey)
-
-  if (cachedResults) {
-    searchResults.value = cachedResults
-    showResults.value = cachedResults.length > 0
-  } else {
-    const results = searchIndex.search(query, searchData.value, 20)
-    searchResults.value = results
-    showResults.value = results.length > 0
-
-    if (results.length > 0) {
-      searchCache.set(cacheKey, results, {
-        ttl: 300,
-        priority: 'normal'
-      })
-    }
-  }
-
-  const endTime = performance.now()
-  const duration = endTime - startTime
-
-  if (typeof window !== 'undefined' && window.globalMonitor && typeof window.globalMonitor.recordMetric === 'function') {
-    try {
-      window.globalMonitor.recordMetric('search', duration, {
-        timestamp: Date.now(),
-        cacheHit: cachedResults ? 1 : 0,
-        resultCount: searchResults.value.length,
-        query: query
-      })
-    } catch (e) {
-    }
-  }
-
-  }
-
-const handleKeyPress = (e) => {
-  if (e.key === 'Enter') {
-    const query = searchText.value.trim()
-
-    if (searchResults.value.length > 0) {
-      router.push(`/post/${searchResults.value[0].id}`)
-      searchText.value = ''
-      showResults.value = false
-    } else if (searchData.value.length > 0) {
-      const post = searchData.value.find(item => item.id === query)
-      if (post) {
-        router.push(`/post/${post.id}`)
-        searchText.value = ''
-        showResults.value = false
-      }
-    }
-  }
-}
-
-const handleResultClick = (item) => {
-  router.push(`/post/${item.id}`)
-  searchText.value = ''
-  showResults.value = false
-}
-
-const handleClickOutside = (e) => {
-  const searchContainer = e.target.closest('.search-container')
-  if (!searchContainer) {
-    showResults.value = false
-  }
-}
-
-onUnmounted(() => {
-  if (typeof document !== 'undefined') {
-    document.removeEventListener('click', handleClickOutside)
-  }
-})
+import SearchIcon from '../icon/SearchIcon.vue';
 </script>
 
 <template>
-  <div class="search-card search-container">
-    <span class="search-icon">
-      <VIcon :src="'search.svg'" :size="16" />
-    </span>
-    <input
-      class="text-input"
-      type="text"
-      placeholder="搜索"
-      v-model="searchText"
-      @keypress="handleKeyPress"
-    >
-
-    <SearchResults
-      :search-text="searchText"
-      :results="searchResults"
-      :show="showResults"
-      @result-click="handleResultClick"
-    />
-  </div>
+    <div class="search">
+        <SearchIcon class="search-icon"/>
+        <input type="text" placeholder="搜索">
+    </div>
 </template>
 
 <style scoped>
-.search-card {
-  position: relative;
-  min-width: 120px;
-  max-width: 400px;
-  height: 40px;
-  margin: 0;
-  padding: 0 16px;
-  border-radius: 20px;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  z-index: 1000;
+.search {
+    width: 600px;
+    height: 80%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+
+    border-radius: var(--radius-full);
+    border: var(--border-width) solid color-mix(in srgb, var(--g-color) 15%, transparent); 
+    padding: 0 var(--space-md);
+
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-opacity) * 0.6));
+    backdrop-filter: blur(12px);
+
+    transition: border-color 0.2s ease;
 }
+
 
 .search-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
+    color: var(--g-text);
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
 }
 
-.search-card:focus-within .search-icon {
-  opacity: 0.8;
+.search:focus-within .search-icon {
+    opacity: 0.8;
 }
 
-.search-card input {
-  width: 100%;
-  font-size: 14px;
-  outline: none;
-  box-sizing: border-box;
-  transition: color 0.3s ease;
+.search:focus-within {
+    border-color: var(--g-color);
 }
 
-.search-card {
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 15%, transparent);
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-alpha) * 0.6));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+.search input {
+    height: 100%;
+    width: 100%;
+
+    color: var(--g-text);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), calc(var(--glass-opacity) * 0.6));
 }
 
-.search-card:focus-within {
-  border-color: var(--common-color-1);
+.search input::placeholder {
+    color: var(--g-text);
+    opacity: 0.4;
 }
 
-.search-icon {
-  color: var(--common-text);
-}
-
-.search-card input {
-  color: var(--common-text);
-  background-color: transparent;
-}
-
-.search-card input::placeholder {
-  color: var(--common-text);
-  opacity: 0.4;
-}
-
-@media (max-width: 768px) {
-  .search-card {
-      width: 80%;
-      max-width: none;
-  }
+/* ====================<响应式>==================== */
+@media (max-width: 1280px) {
+    /* [响应式-lg] 大屏 */
 }
 
 @media (max-width: 1024px) {
-  .search-card {
-      max-width: 400px;
-  }
+    /* [响应式-md] 平板 */
 }
 
-@media (max-width: 1280px) {
-  .search-card {
-      max-width: 500px;
-  }
+@media (max-width: 768px) {
+    /* [响应式-sm] 手机 */
 }
 
-@media (min-width: 1280px) {
-  .search-card {
-      max-width: 600px;
-  }
+@media (max-width: 480px) {
+    /* [响应式-xs] 窄屏 */
 }
+
 </style>

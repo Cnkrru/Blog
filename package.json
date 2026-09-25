@@ -1,50 +1,43 @@
 {
-  "name": "vue-blog",
+  "name": "blog",
+  "version": "0.0.0",
   "private": true,
-  "version": "1.0.0",
   "type": "module",
-  "description": "Cnkrru's personal tech blog — Vue 3 + Vite + vite-ssg 静态站点",
-  "author": "Cnkrru",
-  "license": "MIT",
-  "keywords": [
-    "blog",
-    "vue3",
-    "vite",
-    "ssg",
-    "markdown",
-    "tech-blog"
-  ],
-  "engines": {
-    "node": ">=20.x"
-  },
   "scripts": {
     "dev": "vite",
-    "predev": "node src/_build/sync-content.js && node src/_build/md-to-html.js && node src/_build/svg.js && node src/_build/vendor.js",
     "build": "vite-ssg build",
-    "prebuild": "node src/_build/sync-content.js && node src/_build/md-to-html.js && node src/_build/svg.js && node src/_build/vendor.js",
-    "preview": "vite preview",
-    "sync": "node src/_build/sync-content.js"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@unhead/vue": "^2.1.2",
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
-    "@vue/repl": "^4.7.2",
-    "axios": "^1.19.0",
-    "es-module-shims": "^2.8.4",
-    "js-yaml": "^4.3.1",
-    "katex": "^0.16.47",
-    "marked": "^14.1.4",
-    "mermaid": "^10.9.8",
-    "pinia": "^3.0.4",
-    "prismjs": "^1.30.0",
-    "vue": "^3.5.32",
+    "@mdit/plugin-container": "^2.0.1",
+    "axios": "^1.20.0",
+    "feed": "^6.0.0",
+    "giscus": "^1.6.0",
+    "howler": "^2.2.4",
+    "medium-zoom": "^1.1.0",
+    "mermaid": "^11.17.2",
+    "minisearch": "^7.2.0",
+    "qrcode": "^1.5.4",
+    "vite-ssg": "^28.3.0",
+    "vue": "^3.5.40",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.5",
-    "esbuild": "^0.28.1",
-    "vite": "^8.0.4",
-    "vite-ssg": "^28.3.0"
+    "@mdit-vue/plugin-component": "^3.0.2",
+    "@mdit-vue/shared": "^3.0.2",
+    "@mdit/plugin-anchor": "^2.1.0",
+    "@mdit/plugin-katex": "^1.1.0",
+    "@mdit/plugin-tasklist": "^1.1.0",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "gray-matter": "^4.0.3",
+    "katex": "^0.18.5",
+    "markdown-it": "^15.0.1",
+    "shiki": "^4.4.3",
+    "vite": "^8.1.5",
+    "vite-plugin-pwa": "^1.3.0",
+    "vite-ssg-sitemap": "^0.10.0"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
   }
 }

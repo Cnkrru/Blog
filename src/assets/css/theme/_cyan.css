@@ -1,0 +1,47 @@
+/* 风格方案 D：青空（冰蓝基调 / 深海夜色），颜色迁移自 blog-map themes/cyan.css */
+
+.cyan.light {
+    --g-color:#06b6d4;                      /* 青空主色 */
+    --g-bg:#e0f7fa;                         /* 冰蓝雾底 */
+    --glass-r:240;                          /* 玻璃底色 R（= 冰蓝亮面） */
+    --glass-g:253;                          /* 玻璃底色 G */
+    --glass-b:255;                          /* 玻璃底色 B */
+    --g-text:#164e63;                       /* 深青褐 */
+    --g-hover: #0891b2;                     /* 深海 */
+    --g-shadow: rgba(6, 182, 212, 0.14);    /* 青影 */
+    --g-gradient: linear-gradient(90deg, #06b6d4, #22d3ee, #67e8f9, #22d3ee, #06b6d4);
+}
+
+.cyan.dark {
+    --g-color:#22d3ee;                      /* 亮青（深海上更跳） */
+    --g-bg:#041a1f;                         /* 深海底 */
+    --glass-r:12;                           /* 玻璃底色 R（= 深海面） */
+    --glass-g:45;                           /* 玻璃底色 G */
+    --glass-b:55;                           /* 玻璃底色 B */
+    --g-text:#cffafe;                       /* 冰蓝白 */
+    --g-hover: #22d3ee;                     /* 亮青 */
+    --g-shadow: rgba(0, 0, 0, 0.40);        /* 暗色阴影 */
+    --g-gradient: linear-gradient(90deg, #0891b2, #06b6d4, #22d3ee, #06b6d4, #0891b2);
+}
+
+/* ====================<代码高亮CSS>==================== */
+.cyan.light {
+    --shiki-background: #e8fbfe;                 /* 冰蓝雾底 */
+    --shiki-foreground: #164e63;                 /* 深青褐正文 */
+    --shiki-token-keyword: #0e7490;              /* 深青关键字 */
+    --shiki-token-function: #7c3aed;             /* 紫函数名 */
+    --shiki-token-string-expression: #155e75;    /* 墨青字符串 */
+    --shiki-token-constant: #0369a1;             /* 青蓝常量 */
+    --shiki-token-parameter: #9a3412;            /* 褐参数 */
+    --shiki-token-comment: #5d7f8e;              /* 青灰注释 */
+}
+.cyan.dark {
+    --shiki-background: #082a31;                 /* 深海底 */
+    --shiki-foreground: #cffafe;                 /* 冰蓝白正文 */
+    --shiki-token-keyword: #22d3ee;              /* 亮青关键字 */
+    --shiki-token-function: #c4b5fd;             /* 淡紫函数名 */
+    --shiki-token-string-expression: #67e8f9;    /* 亮青字符串 */
+    --shiki-token-constant: #38bdf8;             /* 亮蓝常量 */
+    --shiki-token-parameter: #fbbf24;            /* 琥珀参数 */
+    --shiki-token-comment: #6f97a0;              /* 青灰注释 */
+}

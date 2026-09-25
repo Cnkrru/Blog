@@ -1,89 +1,50 @@
 <script setup>
-import Avatar from './p-sidebar/Avatar.vue'
-import WelcomeSaying from './p-sidebar/WelcomeSaying.vue'
-import PageLinks from './p-sidebar/PageLinks.vue'
-import BusuanziStats from './p-sidebar/BusuanziStats.vue'
-import Weather from './api/Weather.vue'
+import Avator from './p-sidebar/Avator.vue';
+import Welcome from './p-sidebar/Welcome.vue';
+import Nav from './p-sidebar/Nav.vue';
+import IP_Weather from './p-sidebar/IP_Weather.vue';
+import Busuanzi from './p-sidebar/Busuanzi.vue';
 </script>
 
 <template>
-    <aside class="left-asider-s">
-        <div class="asider-container">
-            <div class="left-asider-card">
-                <!-- 头像设计 -->
-                <Avatar />
-                <!-- 欢迎语设计 -->
-                <WelcomeSaying />
-                <!-- 天气组件 -->
-                <Weather />
-                <!-- 页面跳转链接设计 -->
-                <PageLinks />
-                <!-- 站点统计 -->
-                <BusuanziStats />
-                <!-- RSS 订阅组件 -->   
-            </div>
-        </div>
-    </aside>
+    <div class="sidebar-area">
+        <Avator/>
+        <Welcome/>
+        <IP_Weather/>
+        <Nav/>
+        <Busuanzi/>
+    </div>
 </template>
 
 <style scoped>
-/*====================侧边栏设计====================*/
-    /* 左侧边栏分布大小 - 桌面端默认 */
-.left-asider-s {
+.sidebar-area {
     width: 15%;
-    height: 100%;
-    display: flex;
-    position: static;
-}
-
-    /* 左侧边栏版心 */
-.asider-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-    /* 左侧边栏卡片样式 */
-.left-asider-card {
-    width: 200px;
     height: 680px;
-    border-radius: 14px;
-    padding: 20px 16px;
+
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    gap: 22px;
+    flex-direction: column;
+    gap: var(--space-lg);
+
+    border: var(--border-width) solid color-mix(in srgb, var(--g-color) 15%, transparent);    
 }
 
-/* 移动端：侧边栏默认隐藏，点击菜单按钮时滑出 */
+/* ====================<响应式>==================== */
+@media (max-width: 1280px) {
+    /* [响应式-lg] 大屏 */
+}
+
+@media (max-width: 1024px) {
+    /* [响应式-md] 平板 */
+}
+
 @media (max-width: 768px) {
-    .left-asider-s {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 260px;
-        z-index: 1000;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-    }
-
-    .left-asider-s.active {
-        transform: translateX(0);
-    }
-
-    .left-asider-card {
-        width: 100%;
-        height: 100%;
-        min-height: auto;
-        border-radius: 0 14px 14px 0;
-        padding: 15px;
-        gap: 16px;
-        overflow-y: auto;
-    }
+    /* [响应式-sm] 手机 */
 }
+
+@media (max-width: 480px) {
+    /* [响应式-xs] 窄屏 */
+}
+
 </style>

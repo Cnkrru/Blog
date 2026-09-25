@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "id": "1",
     "name": "GitHub",
@@ -124,5 +124,19 @@
     "category": "后端",
     "description": "JavaScript后端文档",
     "url": "https://node.org.cn/docs/latest/api/documentation.html"
+  },
+  {
+    "id": "20",
+    "name": "canvas-special",
+    "category": "前端",
+    "description": "Canvas 各种特效的聚合演示",
+    "url": "https://bxm0927.github.io/canvas-special/"
+  },
+  {
+    "id": "21",
+    "name": "BootstrapMB",
+    "category": "前端",
+    "description": "前端模板与素材网站",
+    "url": "https://www.bootstrapmb.com/"
   }
 ]

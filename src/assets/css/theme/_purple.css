@@ -1,0 +1,47 @@
+/* 风格方案 C：紫韵（淡紫基调 / 夜幕星河），颜色迁移自 blog-map themes/purple.css */
+
+.purple.light {
+    --g-color:#8b5cf6;                      /* 紫罗兰主色 */
+    --g-bg:#ede6f7;                         /* 紫雾底 */
+    --glass-r:248;                          /* 玻璃底色 R（= 淡紫亮面） */
+    --glass-g:242;                          /* 玻璃底色 G */
+    --glass-b:255;                          /* 玻璃底色 B */
+    --g-text:#2d1b4e;                       /* 深紫褐 */
+    --g-hover: #7c3aed;                     /* 深紫 */
+    --g-shadow: rgba(139, 92, 246, 0.14);   /* 紫影 */
+    --g-gradient: linear-gradient(90deg, #8b5cf6, #a78bfa, #c4b5fd, #a78bfa, #8b5cf6);
+}
+
+.purple.dark {
+    --g-color:#a78bfa;                      /* 淡紫（夜幕上更亮） */
+    --g-bg:#0f0720;                         /* 深夜幕紫 */
+    --glass-r:32;                           /* 玻璃底色 R（= 夜幕紫面） */
+    --glass-g:18;                           /* 玻璃底色 G */
+    --glass-b:55;                           /* 玻璃底色 B */
+    --g-text:#e8e0f0;                       /* 淡紫白 */
+    --g-hover: #a78bfa;                     /* 淡紫 */
+    --g-shadow: rgba(0, 0, 0, 0.40);        /* 暗色阴影 */
+    --g-gradient: linear-gradient(90deg, #7c3aed, #6d28d9, #5b21b6, #6d28d9, #7c3aed);
+}
+
+/* ====================<代码高亮CSS>==================== */
+.purple.light {
+    --shiki-background: #f1eaf9;                 /* 淡紫雾底 */
+    --shiki-foreground: #2d1b4e;                 /* 深紫褐正文 */
+    --shiki-token-keyword: #7c3aed;              /* 紫罗兰关键字 */
+    --shiki-token-function: #db2777;             /* 玫红函数名 */
+    --shiki-token-string-expression: #0a3069;    /* 深蓝字符串 */
+    --shiki-token-constant: #0550ae;             /* 蓝常量 */
+    --shiki-token-parameter: #9a3412;            /* 褐参数 */
+    --shiki-token-comment: #6b7280;              /* 灰注释 */
+}
+.purple.dark {
+    --shiki-background: #17102e;                 /* 夜幕紫底 */
+    --shiki-foreground: #e8e0f0;                 /* 淡紫白正文 */
+    --shiki-token-keyword: #a78bfa;              /* 淡紫关键字 */
+    --shiki-token-function: #f472b6;             /* 亮玫红函数名 */
+    --shiki-token-string-expression: #a5d6ff;    /* 亮蓝字符串 */
+    --shiki-token-constant: #79c0ff;             /* 亮蓝常量 */
+    --shiki-token-parameter: #ffa657;            /* 橙参数 */
+    --shiki-token-comment: #9d8fc9;              /* 淡紫灰注释 */
+}

@@ -1,0 +1,11 @@
+.immersive .main-area {
+    width: 100% !important;
+}
+
+.immersive .sidebar-area {
+    display: none !important;
+}
+
+.immersive .footer-area {
+    display: none !important;
+}

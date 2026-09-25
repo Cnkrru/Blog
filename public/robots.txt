@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /settings
-Disallow: /links/apply
-
-Sitemap: https://cnkrru.top/sitemap.xml

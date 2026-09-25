@@ -1,172 +1,176 @@
 <script setup>
-import { escapeHtml, highlightMatch } from '../../utils/helpers'
+// [AI实现] 搜索结果下拉面板（独立组件，对应 blog-map 的 SearchResults.vue）
+// 接收 searchText + results + show，命中词高亮，点击项 emit result-click
+// [AI修复] Teleport 到 body：脱离 header/内容树的 stacking context，避免被 .main-area 内容盖住
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
-const props = defineProps(['searchText', 'results', 'show'])
-
+const props = defineProps({
+    searchText: { type: String, default: '' },
+    results: { type: Array, default: () => [] },
+    show: { type: Boolean, default: false },
+})
 const emit = defineEmits(['result-click'])
 
-const handleResultClick = (item) => {
-  emit('result-click', item)
+const onPick = (item) => emit('result-click', item)
+
+// 用 fixed 把下拉对到 .search-pane 正下方，随滚动/缩放重定位
+const pos = ref({ left: 0, top: 0, width: 0 })
+const sync_pos = () => {
+    const pane = document.querySelector('.search-pane')
+    if (!pane) return
+    const r = pane.getBoundingClientRect()
+    pos.value = { left: r.left, top: r.top + r.height + 8, width: r.width }
+}
+watch(() => props.show, (v) => { if (v) sync_pos() })
+onMounted(() => {
+    document.addEventListener('scroll', sync_pos, true)
+    window.addEventListener('resize', sync_pos)
+    sync_pos()
+})
+onBeforeUnmount(() => {
+    document.removeEventListener('scroll', sync_pos, true)
+    window.removeEventListener('resize', sync_pos)
+})
+
+// 转义 + 高亮命中片段（keyword 前后内容分别转义后回填高亮标签）
+const hl = (text, kw) => {
+    const s = String(text ?? '')
+    const k = (kw || '').trim()
+    const esc = (str) => str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+    if (!k) return esc(s)
+    const i = s.toLowerCase().indexOf(k.toLowerCase())
+    if (i === -1) return esc(s)
+    return esc(s.slice(0, i)) + '<b class="search-hit">' + esc(s.slice(i, i + k.length)) + '</b>' + esc(s.slice(i + k.length))
 }
 </script>
 
 <template>
-  <Transition name="search-fade">
-    <div v-if="show" class="search-results">
-      <div v-if="results.length === 0" class="search-empty">
-        搜索: "{{ escapeHtml(searchText) }}" - 未找到结果
-      </div>
+    <Teleport to="body">
+        <Transition name="search-fade">
+            <div v-if="show" class="search-results" :style="{ left: pos.left + 'px', top: pos.top + 'px', width: pos.width + 'px' }">
+                <div v-if="results.length === 0" class="search-empty">
+                    搜索 "{{ searchText }}"：未找到结果
+                </div>
 
-      <template v-else>
-        <div class="search-counter">
-          {{ results.length }} 个结果
-        </div>
-
-        <div
-          v-for="item in results"
-          :key="item.id"
-          class="search-item"
-          @click="handleResultClick(item)"
-        >
-          <div class="result-title" v-html="highlightMatch(escapeHtml(item.title), searchText)"></div>
-          <div class="result-meta">
-            分类: <span v-html="highlightMatch(escapeHtml(item.category || ''), searchText)"></span> |
-            ID: <span v-html="highlightMatch(escapeHtml(item.id), searchText)"></span>
-          </div>
-          <div class="result-tags" v-if="item.tags && item.tags.length > 0">
-            <span v-for="tag in item.tags" :key="tag" class="tag">{{ tag }}</span>
-          </div>
-        </div>
-      </template>
-    </div>
-  </Transition>
+                <template v-else>
+                    <div class="search-counter">{{ results.length }} 个结果</div>
+                    <div class="search-list">
+                        <div
+                            v-for="r in results"
+                            :key="r.id"
+                            class="search-item"
+                            @click="onPick(r)"
+                        >
+                            <div class="search-item-title" v-html="hl(r.title, searchText)"></div>
+                            <div class="search-item-meta">
+                                分类: <span v-html="hl(r.category, searchText)"></span>
+                                <span class="search-item-date" v-html="hl(r.date, searchText)"></span>
+                            </div>
+                            <div class="search-item-tags" v-if="r.tags && r.tags.length">
+                                <span v-for="t in r.tags" :key="t" class="search-tag">{{ t }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </Transition>
+    </Teleport>
 </template>
 
 <style scoped>
 .search-results {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 8px;
-  max-height: 400px;
-  min-width: 280px;
-  overflow-y: auto;
-  z-index: 10000;
-  border-radius: 12px;
+    position: fixed;            /* [AI修复] Teleport 到 body 后 fixed 定位，脱离 header/内容层级，置于最上层 */
+    top: 0;
+    left: 0;
+    z-index: 10000;             /* [AI修复] 高于播放器/toast 等浮层，固定在最上 */
+    max-height: 400px;
+    overflow-y: auto;    /* [AI修复] 结果多了内部滚动，不撑出面板 */
+    border: var(--border-width) solid color-mix(in srgb, var(--g-color) 12%, transparent);
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-opacity));
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.10);
 }
 
 .search-empty {
-  padding: 16px;
-  text-align: center;
+    padding: 16px;
+    text-align: center;
+    color: var(--g-text);
 }
 
 .search-counter {
-  padding: 8px 16px;
-  font-size: 12px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--g-text);
+    border-bottom: var(--border-width) solid color-mix(in srgb, var(--g-color) 25%, transparent);
 }
 
 .search-item {
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin: 2px 4px;
-  transition: background-color 0.15s ease, transform 0.15s ease;
-  cursor: pointer;
+    padding: 12px 16px;
+    margin: 2px 6px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    color: var(--g-text);
+    transition: background-color 0.15s ease;
 }
 
-.search-item:first-child {
-  border-radius: 10px 10px 8px 8px;
+.search-item:hover { background-color: color-mix(in srgb, var(--g-color) 15%, transparent); }
+
+.search-item-title {
+    font-weight: 600;
+    margin-bottom: 4px;
 }
 
-.search-item:last-child {
-  border-radius: 8px 8px 10px 10px;
+.search-item-meta {
+    font-size: 13px;
+    opacity: 0.7;
 }
 
-.result-title {
-  font-weight: bold;
-  margin-bottom: 4px;
+.search-item-date { margin-left: 8px; }
+
+.search-item-tags {
+    font-size: 12px;
+    margin-top: 6px;
 }
 
-.result-meta {
-  font-size: 13px;
-  margin-bottom: 4px;
-}
+.search-hit { color: var(--g-color); }
 
-.result-tags {
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.tag {
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 11px;
-  margin-right: 4px;
-  display: inline-block;
-}
-
-.search-results {
-  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-alpha));
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid color-mix(in srgb, var(--common-color-1) 12%, transparent);
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.06),
-    0 8px 24px rgba(0, 0, 0, 0.10);
-}
-
-.search-empty {
-  color: var(--common-text);
-}
-
-.search-counter {
-  color: var(--common-text);
-  border-bottom: 1px solid var(--common-color-1);
-}
-
-.search-item {
-  background-color: transparent;
-  color: var(--common-text);
-}
-
-.search-item:hover {
-  background-color: color-mix(in srgb, var(--common-color-1) 15%, transparent);
-}
-
-.result-title {
-  color: var(--common-text);
-}
-
-.result-meta {
-  color: var(--common-text);
-}
-
-.tag {
-  background-color: color-mix(in srgb, var(--common-color-1) 25%, transparent);
-  color: var(--common-text);
+.search-tag {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in srgb, var(--g-color) 25%, transparent);
+    color: var(--g-text);
 }
 
 @media (max-width: 768px) {
-  .search-results {
-    max-height: 60vh;
-  }
+    .search-results { max-height: 60vh; }
 }
 </style>
 
-<!-- 搜索结果显示动画 — 非 scoped，因为 Transition 的 class 需作用于 .search-results 根元素 -->
+<!-- Transition 的 class 需作用于 .search-results 根元素，非 scoped -->
 <style>
-.search-fade-enter-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
+.search-fade-enter-active { transition: opacity 0.2s ease, transform 0.2s ease; }
+.search-fade-leave-active { transition: opacity 0.15s ease, transform 0.15s ease; }
+.search-fade-enter-from { opacity: 0; transform: translateY(-8px); }
+.search-fade-leave-to { opacity: 0; transform: translateY(-4px); }
+
+/* ====================<响应式>==================== */
+@media (max-width: 1280px) {
+    /* [响应式-lg] 大屏 */
 }
-.search-fade-leave-active {
-  transition: opacity 0.15s ease, transform 0.15s ease;
+
+@media (max-width: 1024px) {
+    /* [响应式-md] 平板 */
 }
-.search-fade-enter-from {
-  opacity: 0;
-  transform: translateY(-8px);
+
+@media (max-width: 768px) {
+    /* [响应式-sm] 手机 */
 }
-.search-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
+
+@media (max-width: 480px) {
+    /* [响应式-xs] 窄屏 */
 }
+
 </style>

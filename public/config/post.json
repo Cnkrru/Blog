@@ -1,0 +1,479 @@
+{
+    "post-0": {
+        "order": 0,
+        "title": "欢迎来到我的博客",
+        "date": "2026-03-29",
+        "updated": "2026-08-07",
+        "category": "随笔",
+        "tags": [
+            "随笔"
+        ],
+        "history": [
+            "2026-08-07 新增编辑历史功能",
+            "2026-07-20 优化文章排版和代码高亮",
+            "2026-04-10 首次修订"
+        ],
+        "description": "欢迎访问我的个人博客！这是一个使用 Vue 3 + Markdown 构建的现代化博客系统，包含文章系统、多媒体支持和丰富的交互体验。",
+        "keywords": "个人博客, Vue 3, Markdown, 现代化博客, 文章系统, 多媒体支持, 交互体验, 技术栈",
+        "word_count": 39,
+        "reading_time": 1
+    },
+    "post-1": {
+        "order": 1,
+        "title": "个人博客介绍",
+        "date": "2026-03-29",
+        "updated": "2026-08-08",
+        "category": "随笔",
+        "tags": [
+            "随笔"
+        ],
+        "history": [
+            "2026-08-07 更新文章内容，部分功能替换或者移除，按照现在的情况写",
+            "2026-08-06 同步最新技术栈和功能特性",
+            "2026-07-15 更新项目截图和架构说明",
+            "2026-04-10 补充SEO和性能优化说明"
+        ],
+        "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，提供快速、优雅的写作和阅读体验。",
+        "keywords": "个人博客, Vue 3, Vite, 前端项目, Markdown, 代码高亮, 数学公式, 响应式设计",
+        "word_count": 161,
+        "reading_time": 1
+    },
+    "post-10": {
+        "order": 10,
+        "title": "shell与git常用指令",
+        "date": "2026-07-03",
+        "updated": "2026-08-07",
+        "category": "shell",
+        "tags": [
+            "git，shell"
+        ],
+        "history": [
+            "2026-08-07 补充常用shell脚本和Git分支管理",
+            "2026-07-20 新增git rebase和stash使用场景"
+        ],
+        "description": "记录一些shell，git常用指令",
+        "keywords": "git，shell",
+        "word_count": 499,
+        "reading_time": 2
+    },
+    "post-11": {
+        "order": 11,
+        "title": "Docsify配置",
+        "date": "2026-07-29",
+        "updated": "2026-08-11",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "history": [
+            "2026-08-07 补充迁移后性能对比数据",
+            "2026-08-01 整理VitePress配置最佳实践"
+        ],
+        "description": "将个人导航站点从Docsify v4迁移至VitePress的完整记录，包含旧配置存档、迁移原因以及VitePress配置详情。",
+        "keywords": "Docsify, VitePress, 导航站, 站点迁移, 静态站点生成器, SSG",
+        "word_count": 469,
+        "reading_time": 2
+    },
+    "post-12": {
+        "order": 12,
+        "title": "Frontend-阅读进度条组件",
+        "date": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端组件：阅读进度条的制作方法",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 130,
+        "reading_time": 1
+    },
+    "post-13": {
+        "order": 13,
+        "title": "Frontend-Scroll-Screen",
+        "date": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端Web API：scrollAPI以及screen属性",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 366,
+        "reading_time": 2
+    },
+    "post-14": {
+        "order": 14,
+        "title": "Frontend-CSS变量",
+        "date": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端CSS属性",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 90,
+        "reading_time": 1
+    },
+    "post-15": {
+        "order": 15,
+        "title": "Frontend-动态效果-樱花-雪花",
+        "date": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端CSS属性",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 310,
+        "reading_time": 2
+    },
+    "post-16": {
+        "order": 16,
+        "title": "Frontend-WebAPI-Fetch",
+        "date": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端如何获取后端返回的数据",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 214,
+        "reading_time": 1
+    },
+    "post-17": {
+        "order": 17,
+        "title": "Frontend-获取后端API的数据",
+        "date": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端如何获取后端返回的数据",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 260,
+        "reading_time": 1
+    },
+    "post-18": {
+        "order": 18,
+        "title": "Frontend-giscus评论嵌入",
+        "date": "2026-08-11",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端组件：giscus评论的制作方法以及如何自定义CSS",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 219,
+        "reading_time": 1
+    },
+    "post-19": {
+        "order": 19,
+        "title": "Frontend-ASCII控制台输出艺术字",
+        "date": "2026-08-11",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端组件：控制台输出艺术字制作方法",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 146,
+        "reading_time": 1
+    },
+    "post-2": {
+        "order": 2,
+        "title": "功能测试汇总",
+        "date": "2026-04-16",
+        "updated": "2026-08-30",
+        "category": "随笔",
+        "tags": [
+            "随笔"
+        ],
+        "history": [
+            "2026-08-30 新增Vue组件在线运行测试",
+            "2026-08-12 新增JSON/YAML/TOML结构化数据渲染测试",
+            "2026-08-12 新增CSV表格渲染测试",
+            "2026-08-07 新增灯箱和PDF打印功能测试",
+            "2026-07-20 补充Mermaid图表和KaTeX公式测试用例",
+            "2026-05-10 新增代码高亮和通知系统测试"
+        ],
+        "description": "本文汇总测试博客的各项功能，包括Markdown渲染、代码高亮、灯箱功能、通知系统、KaTeX数学公式、Mermaid图表、CSV表格渲染、JSON/YAML/TOML结构化数据渲染等测试。",
+        "keywords": "Markdown, 测试, 代码高亮, 灯箱功能, 通知系统, Mermaid, KaTeX, CSV, JSON, YAML, TOML",
+        "word_count": 2058,
+        "reading_time": 7
+    },
+    "post-20": {
+        "order": 20,
+        "title": "Frontend-页面分享组件",
+        "date": "2026-08-11",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端组件：页面分享制作方法",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 146,
+        "reading_time": 1
+    },
+    "post-21": {
+        "order": 21,
+        "title": "Frontend-页面赞助组件",
+        "date": "2026-08-11",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端组件：页面赞助组件制作方法",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 44,
+        "reading_time": 1
+    },
+    "post-22": {
+        "order": 22,
+        "title": "Frontend-通知按钮组件",
+        "date": "2026-08-11",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端组件：通知按钮组件制作方法",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 166,
+        "reading_time": 1
+    },
+    "post-23": {
+        "order": 23,
+        "title": "Cmake介绍",
+        "date": "2026-08-13",
+        "category": "Cpp",
+        "tags": [
+            "Cpp"
+        ],
+        "description": "记录Cpp相关知识",
+        "keywords": "Cpp",
+        "updated": "",
+        "word_count": 1108,
+        "reading_time": 4
+    },
+    "post-24": {
+        "order": 24,
+        "title": "Frontend-复制代码组件",
+        "date": "2026-08-14",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "介绍前端组件：复制代码组件制作方法",
+        "keywords": "frontend",
+        "updated": "",
+        "word_count": 55,
+        "reading_time": 1
+    },
+    "post-25": {
+        "order": 25,
+        "title": "Github Action配置",
+        "date": "2026-08-16",
+        "category": "git",
+        "tags": [
+            "git"
+        ],
+        "description": "记录GitHub Action如何配置",
+        "keywords": "GITHUB",
+        "updated": "",
+        "word_count": 182,
+        "reading_time": 1
+    },
+    "post-26": {
+        "order": 26,
+        "title": "AL开发日志-1-electron介绍与初始化",
+        "date": "2026-08-23",
+        "category": "AL",
+        "tags": [
+            "AL"
+        ],
+        "description": "记录APP：AL的开发过程",
+        "keywords": "AL",
+        "updated": "",
+        "word_count": 1307,
+        "reading_time": 5
+    },
+    "post-27": {
+        "order": 27,
+        "title": "Vue-1-vue介绍以及初始化",
+        "date": "2026-08-25",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "记录vue初始化",
+        "keywords": "vue",
+        "updated": "",
+        "word_count": 1258,
+        "reading_time": 5
+    },
+    "post-28": {
+        "order": 28,
+        "title": "Vue-2-vue组件制作",
+        "date": "2026-08-26",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "记录vue的组件如何制作",
+        "keywords": "vue",
+        "updated": "",
+        "word_count": 82,
+        "reading_time": 1
+    },
+    "post-29": {
+        "order": 29,
+        "title": "AL开发日志-2-APPicon配置",
+        "date": "2026-08-28",
+        "category": "AL",
+        "tags": [
+            "AL"
+        ],
+        "description": "记录AL开发",
+        "keywords": "AL",
+        "updated": "",
+        "word_count": 0,
+        "reading_time": 1
+    },
+    "post-3": {
+        "order": 3,
+        "title": "Frontend-HTML-CSS组件",
+        "date": "2026-04-20",
+        "updated": "2026-09-03",
+        "history": [
+            "2026-08-09 更新文章内容，规范化一下"
+        ],
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "详细介绍前端组件——HTML-CSS组件，介绍这些只需要HTML和CSS的简单组件如何制作。",
+        "keywords": "HTML-CSS, 前端, 组件",
+        "word_count": 239,
+        "reading_time": 1
+    },
+    "post-30": {
+        "order": 30,
+        "title": "Vue-3-VIcon组件设计",
+        "date": "2026-08-28",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "记录Vicon如何制作",
+        "keywords": "vue",
+        "updated": "",
+        "word_count": 198,
+        "reading_time": 1
+    },
+    "post-4": {
+        "order": 4,
+        "title": "Frontend-返回顶部组件",
+        "date": "2026-04-19",
+        "updated": "2026-09-02",
+        "history": [
+            "2026-08-06 更新HTML组件的制作方法",
+            "2026-09-02 更新vue组件的制作方法"
+        ],
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "详细介绍前端组件——返回顶部，介绍组件如何制作。",
+        "keywords": "前端, 组件, 返回顶部, TypeScript",
+        "word_count": 115,
+        "reading_time": 1
+    },
+    "post-5": {
+        "order": 5,
+        "title": "Frontend-沉浸阅读组件",
+        "date": "2026-04-20",
+        "updated": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "详细介绍前端组件——沉浸阅读，介绍组件如何制作。",
+        "keywords": "前端组件, 沉浸阅读",
+        "word_count": 110,
+        "reading_time": 1
+    },
+    "post-6": {
+        "order": 6,
+        "title": "Frontend-主题切换",
+        "date": "2026-04-21",
+        "updated": "2026-08-10",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "history": [
+            "2026-08-07 适配CSS变量方案，移除硬编码颜色",
+            "2026-07-10 新增Sakura樱粉主题和Compact布局",
+            "2026-05-15 完善亮暗模式自动切换"
+        ],
+        "description": "详细介绍前端组件——主题切换，介绍组件如何制作。",
+        "keywords": "前端组件, 主题切换, TypeScript",
+        "word_count": 57,
+        "reading_time": 1
+    },
+    "post-7": {
+        "order": 7,
+        "title": "Frontend-建站时长",
+        "date": "2026-04-21",
+        "updated": "2026-08-09",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "详细介绍前端组件——网站年龄组件，介绍组件如何制作。",
+        "keywords": "frontend",
+        "word_count": 258,
+        "reading_time": 1
+    },
+    "post-8": {
+        "order": 8,
+        "title": "CSS初始化以及版心容器代码",
+        "date": "2026-04-22",
+        "updated": "2026-08-07",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "description": "详细介绍CSS初始化以及版心容器代码备份。",
+        "keywords": "CSS, 初始化",
+        "word_count": 71,
+        "reading_time": 1
+    },
+    "post-9": {
+        "order": 9,
+        "title": "SSG-vitepress",
+        "date": "2026-04-23",
+        "updated": "2026-08-07",
+        "category": "前端",
+        "tags": [
+            "前端"
+        ],
+        "history": [
+            "2026-08-07 补充VitePress与Docsify对比分析",
+            "2026-07-29 同步迁移经验到独立文章"
+        ],
+        "description": "详细介绍VitePress-1-快速开始。",
+        "keywords": "VitePress, 快速开始",
+        "word_count": 1117,
+        "reading_time": 4
+    }
+}

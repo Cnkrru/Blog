@@ -1,0 +1,6 @@
+.default .header-area,
+.default .sidebar-area,
+.default .footer-area,
+.default .main-area {
+    padding: var(--space-sm);
+}

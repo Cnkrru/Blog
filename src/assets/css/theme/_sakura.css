@@ -1,0 +1,47 @@
+/* 风格方案 B：樱粉（粉色基调 / 梦幻渐变），颜色迁移自 blog-map themes/sakura.css */
+
+.sakura.light {
+    --g-color:#e8758f;                      /* 樱粉主色 */
+    --g-bg:#fdeef3;                         /* 樱雾底 */
+    --glass-r:255;                          /* 玻璃底色 R（= 樱白亮面） */
+    --glass-g:250;                          /* 玻璃底色 G */
+    --glass-b:252;                          /* 玻璃底色 B */
+    --g-text:#4a3a40;                       /* 淡墨粉褐 */
+    --g-hover: #d65f7c;                     /* 深樱 */
+    --g-shadow: rgba(199, 115, 145, 0.16);  /* 暖粉阴影 */
+    --g-gradient: linear-gradient(90deg, #f9c5d1, #f7a8c0, #c9a0e0, #f7a8c0, #f9c5d1);
+}
+
+.sakura.dark {
+    --g-color:#e58fb0;                      /* 夜樱粉 */
+    --g-bg:#1a0f2e;                         /* 夜樱深紫 */
+    --glass-r:37;                           /* 玻璃底色 R（= 夜紫面） */
+    --glass-g:22;                           /* 玻璃底色 G */
+    --glass-b:56;                           /* 玻璃底色 B */
+    --g-text:#f3e8f0;                       /* 淡粉白 */
+    --g-hover: #e58fb0;                     /* 夜樱粉 */
+    --g-shadow: rgba(0, 0, 0, 0.32);        /* 暗色阴影 */
+    --g-gradient: linear-gradient(90deg, #d56b9a, #9a6cc9, #c77fd0, #9a6cc9, #d56b9a);
+}
+
+/* ====================<代码高亮CSS>==================== */
+.sakura.light {
+    --shiki-background: #fdf0f5;                 /* 樱白底 */
+    --shiki-foreground: #4a3a40;                 /* 淡墨粉褐正文 */
+    --shiki-token-keyword: #c2255c;              /* 玫红关键字 */
+    --shiki-token-function: #7048e8;             /* 紫函数名 */
+    --shiki-token-string-expression: #0a3069;    /* 深蓝字符串 */
+    --shiki-token-constant: #0550ae;             /* 蓝常量 */
+    --shiki-token-parameter: #9a3412;            /* 褐参数 */
+    --shiki-token-comment: #9aa0a6;              /* 暖灰注释 */
+}
+.sakura.dark {
+    --shiki-background: #231333;                 /* 夜樱底 */
+    --shiki-foreground: #f3e8f0;                 /* 淡粉白正文 */
+    --shiki-token-keyword: #ff6f9c;              /* 亮粉关键字 */
+    --shiki-token-function: #d0aef8;             /* 淡紫函数名 */
+    --shiki-token-string-expression: #a5d6ff;    /* 亮蓝字符串 */
+    --shiki-token-constant: #79c0ff;             /* 亮蓝常量 */
+    --shiki-token-parameter: #ffa657;            /* 橙参数 */
+    --shiki-token-comment: #a8a0a8;              /* 暖灰注释 */
+}

@@ -1,0 +1,23 @@
+/* 1) body（原 .root 壳）作为容器：整体内缩 + 纵向安排四块 */
+.card {
+  padding: var(--space-lg);               /* 容器内缩 */
+}
+.card .header-area {
+  margin-bottom: var(--space-lg);         /* header加下外边距 */
+}
+.card .footer-area {
+  margin-top: var(--space-lg);            /* footer加上外边距 */
+}
+.card .center-area {
+  gap: var(--space-lg);               /* sidebar 与 main 之间横间隔 */
+}
+
+/* 2) 四块区域各自变成独立卡片：圆角 + 实底玻璃 + 边框 + 投影 */
+.card .header-area,
+.card .sidebar-area,
+.card .footer-area,
+.card .main-area {
+  border-radius: var(--radius-xl);                 /* 16px, 超大圆角外套 */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);     /* 悬浮投影，让卡片"离地" */
+  border: 1px solid color-mix(in srgb, var(--g-color) 12%, transparent);
+}
