@@ -2,7 +2,7 @@
 import Avator from './p-sidebar/Avator.vue';
 import Welcome from './p-sidebar/Welcome.vue';
 import Nav from './p-sidebar/Nav.vue';
-import IP_Weather from './p-sidebar/IP_Weather.vue';
+import IpWeather from './p-sidebar/IpWeather.vue';
 import Busuanzi from './p-sidebar/Busuanzi.vue';
 </script>
 
@@ -10,7 +10,7 @@ import Busuanzi from './p-sidebar/Busuanzi.vue';
     <div class="sidebar-area">
         <Avator/>
         <Welcome/>
-        <IP_Weather/>
+        <IpWeather/>
         <Nav/>
         <Busuanzi/>
     </div>

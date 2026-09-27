@@ -45,30 +45,30 @@ const isBrowser = typeof window !== 'undefined'
     const start_poll = () => {
         if (!player) return
         stop_poll()
-        poll_timer = setInterval(() => { currentTime.value = player.seek() || 0 }, 500)
+        poll_timer = setInterval(() => { currentTime.value = player.seek() || 0 }, 500)  // howler: seek() 读秒数
     }
 
     /* ====================<工人：构建/销毁 Howl>==================== */
     const destroy_player = () => {
         stop_poll()
-        if (player) { player.unload(); player = null }
+        if (player) { player.unload(); player = null }  // howler: unload() 销毁实例
     }
     const make_player = (song, autoplay) => {
         destroy_player()
         if (!song?.audio) return
         isLoading.value = true
-        player = new Howl({
+        player = new Howl({                            // howler: new Howl() 建播放实例
             // backupAudio 一并传入，howler 自动按序回退到能播的源
             src: [song.audio, ...(song.backupAudio || [])],
             html5: true,
             autoplay: !!autoplay,
             volume: isMuted.value ? 0 : volume.value,
-            onplay: () => { isPlaying.value = true; start_poll() },
+            onplay: () => { isPlaying.value = true; start_poll() },   // howler: 事件回调
             onpause: () => { isPlaying.value = false; stop_poll() },
             onstop: () => { isPlaying.value = false; stop_poll() },
             onend: () => { isPlaying.value = false; stop_poll(); nextSong(true) },
             onload: () => {
-                duration.value = player?.duration() || 0
+                duration.value = player?.duration() || 0   // howler: duration() 读总时长
                 isLoading.value = false
             },
             onloaderror: () => { isLoading.value = false; nextSong(true) },
@@ -94,15 +94,15 @@ const isBrowser = typeof window !== 'undefined'
     }
 
     const togglePlay = () => {
-        if (player && player.playing()) { player.pause(); return }
-        if (player) { player.play(); return }
+        if (player && player.playing()) { player.pause(); return }  // howler: playing()/pause()
+        if (player) { player.play(); return }                        // howler: play()
         if (playlist.value.length) load_song(currentIndex.value, true)
     }
     const play = () => {
-        if (player) player.play()
+        if (player) player.play()   // howler: play()
         else if (playlist.value.length) load_song(currentIndex.value, true)
     }
-    const pause = () => { if (player) player.pause() }
+    const pause = () => { if (player) player.pause() }   // howler: pause()
 
     const prevSong = (autoplay = true) => {
         if (!playlist.value.length) return
@@ -120,16 +120,16 @@ const isBrowser = typeof window !== 'undefined'
         load_song(index, autoplay)
     }
 
-    const seek = (percent) => { if (player && duration.value) player.seek(percent * duration.value) }
+    const seek = (percent) => { if (player && duration.value) player.seek(percent * duration.value) }  // howler: seek(秒) 跳转
 
     const setVolume = (p) => {
         volume.value = p
-        if (player) player.volume(isMuted.value ? 0 : p)
+        if (player) player.volume(isMuted.value ? 0 : p)   // howler: volume() 设音量
         isMuted.value = (p === 0)
     }
     const toggleMute = () => {
         isMuted.value = !isMuted.value
-        if (player) player.mute(isMuted.value)
+        if (player) player.mute(isMuted.value)   // howler: mute() 设静音
     }
 
     const cleanup = destroy_player

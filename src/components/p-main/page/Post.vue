@@ -5,7 +5,6 @@ import { useRoute } from 'vue-router'
 import ContentRender from '../content/ContentRender.vue'
 import Comment from '../content/Comment.vue'
 import ShareBtn from '../content/ShareBtn.vue'
-import UsefulBtn from '../content/UsefulBtn.vue'
 import PostNav from '../content/PostNav.vue'
 import ArticleStatus from '../content/ArticleStatus.vue'
 import EditHistory from '../content/EditHistory.vue'
@@ -31,7 +30,6 @@ const content = computed(() => {
     <EditHistory/>
     <component :is="content" />
     <div class="end-components">
-        <UsefulBtn/>
         <ShareBtn/>
         <PostNav/>
         <RelatedPosts/>

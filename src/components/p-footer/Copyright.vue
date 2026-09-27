@@ -1,10 +1,10 @@
 <script setup>
-import { ref } from 'vue';
-const copyright = ref('Cnkrru·power by Vue,All rights reserved.')
 </script>
 
 <template>
-    <div class="copyright">&copy {{ copyright }}</div>
+    <div class="copyright">
+        <div>&copy Cnkrru,power by Vue,All rights reserved</div>
+    </div>
 </template>
 
 <style scoped>

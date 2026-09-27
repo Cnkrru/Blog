@@ -1,12 +1,8 @@
 <script setup>
-import { ref } from 'vue';
-const logo = ref('Cnkrru')
 </script>
 
 <template>
-    <div class="logo">
-        <router-link to="/"><p>{{ logo }}</p> </router-link>
-    </div>
+    <router-link class="logo" to="/"><p>Cnkrru</p> </router-link>
 </template>
 
 <style scoped>

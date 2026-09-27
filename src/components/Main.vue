@@ -1,13 +1,11 @@
 <script setup>
 import MainHeader from './p-main/MainHeader.vue';
 import MainBody from './p-main/MainBody.vue';
-import PostToc from './p-main/head/draft/PostToc.vue';
 </script>
 
 <template>
     <div class="main-area">
         <MainHeader>
-            <PostToc />
         </MainHeader>
         <MainBody/>
     </div>

@@ -15,7 +15,7 @@ const mathmlTags = ['math', 'semantics', 'mrow', 'mfrac', 'msqrt', 'msub', 'msup
 const customTags = [...mathmlTags, 'giscus-widget']
 
 // 站点常量：sitemap / RSS 共用，换域名只改这一处
-const SITE_URL = 'https://www.cnkrru.top'
+const SITE_URL = 'https://blog.cnkrru.top'
 const SITE_TITLE = 'Cnkrru'
 
 // https://vite.dev/config/

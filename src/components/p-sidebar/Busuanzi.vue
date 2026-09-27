@@ -1,53 +1,51 @@
 <script setup>
-import { ref } from 'vue';
 import X from '../icon/X.vue';
-/* ====================<不蒜子统计官方脚本>==================== */
-(()=>{
-    if(window.busuanziRequestSent)
-        return;
-    window.busuanziRequestSent=true;
-    const u=new URL('https://cdn.busuanzi.cc/');
-    fetch(u.protocol+'//'+u.host+'/api.php',
-        {method:'POST',
-            body:JSON.stringify({url:location.href,referrer:document.referrer})
-        }
-    )
-    .then(r=>r.json())
-    .then(r=>{for(const k in r)document.querySelectorAll('#'+k)
-        .forEach(e=>e.innerText=r[k])})
-        .catch(e=>console.error(e))})()
+import { onMounted } from 'vue';
+import { sidebar } from '@/modules/draft/sidebar';
 
-/* ====================<不蒜子UI控制>==================== */
-const bsz_open = () => {
-    document.querySelector('.bsz-box').showModal()
-}
+console.log('[INFO]:Busuanzi module loaded');
 
-const bsz_close = () => {
-    document.querySelector('.bsz-box').close()
-}
+/* 由模块注入官方不蒜子脚本，脚本自动回填模板里的 busuanzi_* span */
+const ui = sidebar().buSuanZi();
+
+onMounted(() => {
+    ui.script();
+});
 </script>
 
 <template>
-    <button class="bsz-btn" @click="bsz_open">统计</button>
+    <button class="bsz-btn" @click="ui.open">统计</button>
 
     <dialog class="bsz-box">
         <div class="bsz-header">
             <p>站点统计</p>
-            <button @click="bsz_close"><X/></button>
+            <button @click="ui.close"><X/></button>
         </div>
 
         <div class="bsz-body">
-            <div class="bsz-row">
-                <span class="bsz-ui" id="busuanzi_today_pv"></span>
-                <span class="bsz-ui"  id="busuanzi_today_uv"></span>
+            <div class="bsz-item">
+                <span class="bsz-label">今日访问</span>
+                <span class="bsz-num" id="busuanzi_today_pv">…</span>
             </div>
-            <div class="bsz-row">
-                <span  class="bsz-ui" id="busuanzi_site_pv"></span>
-                <span  class="bsz-ui" id="busuanzi_site_uv"></span>
+            <div class="bsz-item">
+                <span class="bsz-label">今日访客</span>
+                <span class="bsz-num" id="busuanzi_today_uv">…</span>
             </div>
-            <div class="bsz-row">
-                <span  class="bsz-ui" id="busuanzi_page_pv"></span>
-                <span  class="bsz-ui" id="busuanzi_page_uv"></span>
+            <div class="bsz-item">
+                <span class="bsz-label">站点访问</span>
+                <span class="bsz-num" id="busuanzi_site_pv">…</span>
+            </div>
+            <div class="bsz-item">
+                <span class="bsz-label">站点访客</span>
+                <span class="bsz-num" id="busuanzi_site_uv">…</span>
+            </div>
+            <div class="bsz-item">
+                <span class="bsz-label">本页浏览</span>
+                <span class="bsz-num" id="busuanzi_page_pv">…</span>
+            </div>
+            <div class="bsz-item">
+                <span class="bsz-label">本页访客</span>
+                <span class="bsz-num" id="busuanzi_page_uv">…</span>
             </div>
         </div>
 
@@ -149,22 +147,35 @@ const bsz_close = () => {
     width: 100%;
     height: 80%;
 
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: var(--space-sm);
+    align-items: stretch;
+}
+
+.bsz-item {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: var(--space-xs);
+
+    border: var(--border-width) solid color-mix(in srgb, var(--g-color) 20%, transparent);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm);
+    background: color-mix(in srgb, var(--g-color) 12%, transparent);
 }
 
-.bsz-row {
-    width: 100%;
-    height: 33%;
+.bsz-label {
+    font-size: 13px;
+    color: color-mix(in srgb, var(--g-text) 60%, transparent);
+}
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-
-    gap:var(--space-sm); 
+.bsz-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--g-color);
 }
 
 .bsz-footer {
@@ -193,21 +204,6 @@ const bsz_close = () => {
     font-size: 16px;
     font-weight: 600;
     color: var(--g-color);
-}
-
-.bsz-ui {
-    width: 30% ;
-    height: fit-content ;
-
-    border: var(--border-width) solid color-mix(in srgb, var(--g-color) 20%, transparent);
-    border-radius: var(--radius-md);
-
-    padding:  var(--space-sm);
-    text-align: center;
-    background: color-mix(in srgb, var(--g-color) 15%, transparent); 
-    color: var(--g-color);
-    font-size: 16px;
-    font-weight: 700;
 }
 
 /* ====================<响应式>==================== */

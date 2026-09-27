@@ -1,5 +1,6 @@
 import QRCode from 'qrcode'
 import { data } from "./data"; // [AI实现] 数据层抽离到data.js，content统一从这里拿
+// 剩下一个相关文章没迁移
 
 /* [AI改造] IIFE 立即执行，模块加载时只建一次，content 全局单例（等效原 pinia 的 useContentStore 单例） */
 export const content = (() => {
@@ -51,7 +52,20 @@ export const content = (() => {
         */        
         const copy_maker = async () => {
             try {
-                await navigator.clipboard.writeText(url)
+                // [AI修复] 非安全上下文(局域网http/部分旧浏览器)下 navigator.clipboard 不存在，用 execCommand 兜底
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(url)
+                }
+                else {
+                    const _ta = document.createElement('textarea')
+                    _ta.value = url
+                    _ta.style.position = 'fixed'
+                    _ta.style.opacity = '0'
+                    document.body.appendChild(_ta)
+                    _ta.select()
+                    document.execCommand('copy')
+                    _ta.remove()
+                }
                 console.log('[INFO]:已成功将链接复制进剪贴板')
             }
             catch(e) {
@@ -184,101 +198,6 @@ export const content = (() => {
         })
     }
 
-    /* ====================<useful>==================== */
-    // 没写完
-    const is_useful = localStorage.getItem('useful')
-
-    /*
-    * id: 有用工厂
-    * fn: 接收postId，整表存单key(key=文章id, 值=yes/no)，一次改动只动当前项
-    */
-    const useful_maker = (post_id) => {
-
-        /*
-        * id: 读投票表
-        * fn: 拿整表 Json，损坏时兜底空对象
-        */
-        const read_map = () => {
-            try { 
-                const useful_map = JSON.parse(localStorage.getItem('useful')) ?? {}
-                console.log('[INFO]:获取usefulMap成功')
-                return useful_map
-            }
-            catch {
-                console.error('[ERR]:获取usefulMap失败')
-            }
-        }
-
-        /*
-        * id: 写投票表
-        * fn: 读整表→只改当前项→写回
-        */
-        const write_map = (is_useful) => {
-            try {
-                const map = read_map()
-                map[post_id] = is_useful
-                localStorage.setItem('useful', JSON.stringify(map))
-                console.log(`[INFO]:${post_id}对应useful设置为${is_useful}`)
-            }
-            catch {
-                console.error(`[ERR]:${post_id}对应useful设置失败`)
-                return {}
-            }
-        }
-
-        /*
-        * id: 有用
-        * fn: 加自己类+清兄弟类+写表
-        */
-        const use_btn_yes = () => {
-            try {
-                document.querySelector('.use-btn-yes')?.classList.add('use-yes')
-                document.querySelector('.use-btn-no')?.classList.remove('use-no')
-                write_map('yes')
-                console.log('[INFO]:yes类添加成功')
-            }
-            catch {
-                console.error('[ERR]:yes类添加失败')
-            }
-        }
-
-        /*
-        * id: 没用
-        * fn: 对称逻辑
-        */
-        const use_btn_no = () => {
-            try {
-                document.querySelector('.use-btn-no')?.classList.add('use-no')
-                document.querySelector('.use-btn-yes')?.classList.remove('use-yes')
-                write_map('no')
-                console.log('[INFO]:no类添加成功')
-            }
-            catch {
-                console.log('[ERR]:no类添加失败')
-            }
-        }
-
-        /*
-        * id: 初始化
-        * fn: 从整表里只取当前文章的值恢复高亮
-        */
-        const use_btn_init = () => {
-            const post_useful = read_map()[post_id]
-            if(post_useful === 'yes') {
-                use_btn_yes()
-            }
-            else if(post_useful === 'no') {
-                 use_btn_no()
-            }
-        }
-
-        return { 
-            use_btn_yes,
-            use_btn_no,
-            use_btn_init 
-        }
-    }
-    
     /* ====================<mermaid>==================== */
     const mermaid_maker = async () => {
         const root = document.body      // [AI重构] 壳已移除，.root恒null会使mermaid永远跳过，改body
@@ -440,7 +359,6 @@ export const content = (() => {
     return {
         share_maker,
         toast_maker,
-        useful_maker,
         mermaid_maker,
         frontmatter_parser,
         scroll_to_top,

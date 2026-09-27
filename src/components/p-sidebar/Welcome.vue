@@ -1,12 +1,8 @@
 <script setup>
-import { ref } from 'vue';
-const welcome_saying = ref('欢迎来到我的博客')
 </script>
 
 <template>
-    <div class="welcome">
-        <p>{{ welcome_saying }}</p>
-    </div>
+    <div class="welcome">欢迎来到我的博客</div>
 </template>
 
 <style scoped>
@@ -15,9 +11,7 @@ const welcome_saying = ref('欢迎来到我的博客')
     height: fit-content;
     margin: var(--space-xs) auto;
     text-align: center;
-}
 
-.welcome p {
     font-size: 14px;
     font-style: italic;
     font-family: "Microsoft YaHei", sans-serif;
@@ -25,8 +19,9 @@ const welcome_saying = ref('欢迎来到我的博客')
     color: var(--g-color);
 
     cursor: pointer;
-    user-select: none;
+    user-select: none;    
 }
+
 
 /* ====================<响应式>==================== */
 @media (max-width: 1280px) {

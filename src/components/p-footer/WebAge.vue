@@ -1,31 +1,21 @@
 <script setup>
 import Clock from '../icon/Clock.vue';
-import { onMounted, ref } from 'vue';
-const webage = ref('')
+import { onMounted, onBeforeUnmount } from 'vue';
+import { footer } from '@/modules/draft/footer';
 
-const get_webage = () => {
-    const init_date = new Date('2023-01-01');
-    const current_date = new Date();
-    const diff_time = current_date - init_date;
-    const year = Date.prototype.getFullYear.call(new Date(diff_time))-1970;
-    const month = Date.prototype.getMonth.call(new Date(diff_time));
-    const day = Date.prototype.getDate.call(new Date(diff_time)) - 1;
-    const hours = Date.prototype.getHours.call(new Date(diff_time));
-    const minutes = Date.prototype.getMinutes.call(new Date(diff_time));
-    const seconds = Date.prototype.getSeconds.call(new Date(diff_time));
+const wg = footer().webAge();
 
-    webage.value = `${year} 年 ${month} 月 ${day} 天 ${hours} 时 ${minutes} 分 ${seconds}秒` 
-}
+onMounted(() => {
+    wg.start();
+});
 
-onMounted (() => {
-get_webage;
-setInterval(get_webage, 1000)
-}) 
-
+onBeforeUnmount(() => {
+    wg.stop();
+});
 </script>
 
 <template>
-    <div class="webage"><Clock class="icon"/>{{ webage }}</div>
+    <div class="webage"><Clock class="icon"/>{{ wg.ref_webAge.value }}</div>
 </template>
 
 <style scoped>

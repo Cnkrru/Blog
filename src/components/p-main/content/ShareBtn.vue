@@ -12,10 +12,13 @@ import Heart from '@/components/icon/Heart.vue';
 
 import {content} from '@/modules/content.js'
 import { nextTick, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
-// 链接参数：文章链接和标题
-const title = 'https://www.cnkrru.top/post/29';
-const url = 'https://www.cnkrru.top/post/29';
+const route = useRoute()
+
+// 链接参数：文章链接和标题（按当前路由动态拼，不写死 id）
+const title = `https://blog.cnkrru.top${route.path}`;
+const url = `https://blog.cnkrru.top${route.path}`;
 
 const share = content.share_maker(url,title);
 
