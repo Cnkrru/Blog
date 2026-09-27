@@ -14,6 +14,27 @@ export const page = (() => {
     // [AI编写] 分页按钮窗口：只存"当前页上下各两页"的页码，避免全量渲染按钮
     const post_page_list = ref([])  
     
+    // [AI新增] 页面顶部标题栏(代码标题)状态：Post页fetch到文章标题后写入，MainHeader读取展示
+    const head_title = ref('');
+    const set_head_title = (t) => { head_title.value = t };
+
+    // [AI新增] 移动端侧边栏抽屉开合状态：p-header 汉堡按钮开关，Sidebar 据此划出/收起
+    const sidebar_open = ref(false);
+
+    // [AI新增] 静态页面标题映射：route.js 不再配 meta.title，标题统一在本模块定义（MainHeader 按 route.name 读取）
+    const page_titles = {
+        Index: '首页',
+        Posts: '文章',
+        Post: '文章',
+        About: '关于',
+        Archives: '归档',
+        Tag: '标签',
+        Link: '友链',
+        LinkApply: '友链申请',
+        Setting: '设置',
+        NotFound: '404',
+    };  
+    
     const category_mode_groups = ref([])
     const category_expand_group = ref(null);
 
@@ -352,6 +373,10 @@ export const page = (() => {
 
     return reactive({
         posts,
+        head_title,
+        set_head_title,
+        sidebar_open,
+        page_titles,
         post_page_num,
         post_now_page,
         post_list,

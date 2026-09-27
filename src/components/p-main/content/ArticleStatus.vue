@@ -121,10 +121,34 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    /* 收窄横条内边距与间距、缩小图标，两块信息保持并排紧凑 */
+    .status-area {
+        gap: var(--space-sm);
+        padding: var(--space-sm);
+    }
+    .file-icon,
+    .clock-icon {
+        width: 28px;
+        height: 28px;
+        padding: 7px;
+    }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    /* 进一步收紧间距与数值字号，避免窄屏拥挤 */
+    .status-area {
+        gap: var(--space-xs);
+        padding: var(--space-xs) var(--space-sm);
+    }
+    .word-info span:first-child,
+    .reading-info span:first-child {
+        font-size: 13px;
+    }
+    .word-info span:last-child,
+    .reading-info span:last-child {
+        font-size: 10px;
+    }
 }
 
 </style>

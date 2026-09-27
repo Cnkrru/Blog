@@ -51,6 +51,7 @@ onBeforeUnmount(() => {
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .webage { width: 90%; font-size: 0.9em; }
 }
 
 </style>

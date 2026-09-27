@@ -73,18 +73,20 @@ onMounted(load)
                     @click="change_page(p)"
                 >{{ page_label(p) }}</button>
                 <button class="page-side" :disabled="page.link_now_page === page.link_page_num" @click="change_page(page.link_now_page + 1)">下一页</button>
-                <button class="page-side category-btn" @click.stop="toggle_dropdown">分类 ▾</button>
+                <div class="category-wrap">
+                    <button class="page-side category-btn" @click.stop="toggle_dropdown">分类 ▾</button>
+                    <div class="dropdown-card" v-if="dropdown_open" @click.stop>
+                        <button
+                            v-for="(name, i) in page.link_page_names"
+                            :key="name"
+                            class="dropdown-item"
+                            :class="{ 'dropdown-on': i + 1 === page.link_now_page }"
+                            @click="change_page(i + 1)"
+                        >{{ name }}</button>
+                    </div>
+                </div>
             </div>
             <div class="pager-info">第 {{ page.link_now_page }} / {{ page.link_page_num }} 页 · 当前分类：{{ page.link_page_names[page.link_now_page - 1] }}</div>
-            <div class="dropdown-card" v-if="dropdown_open" @click.stop>
-                <button
-                    v-for="(name, i) in page.link_page_names"
-                    :key="name"
-                    class="dropdown-item"
-                    :class="{ 'dropdown-on': i + 1 === page.link_now_page }"
-                    @click="change_page(i + 1)"
-                >{{ name }}</button>
-            </div>
         </div>
     </div>
 </template>
@@ -132,7 +134,12 @@ onMounted(load)
     opacity: 0.6;
 }
 
-/* [AI编写] 分类下拉：悬浮容器上方，出现动画淡入+上移，点外部关闭 */
+/* [AI修复] 分类按钮锚点：相对定位，让下拉面板以其(按钮)为基准悬浮，右对齐按钮 */
+.category-wrap {
+    position: relative;
+}
+
+/* [AI编写] 分类下拉：悬浮分类按钮上方(相对category-wrap)，右对齐按钮，出现动画淡入+上移，点外部关闭 */
 .dropdown-card {
     position: absolute;
     bottom: calc(100% + 8px);
@@ -280,19 +287,56 @@ onMounted(load)
 
 /* ====================<响应式>==================== */
 @media (max-width: 1280px) {
-    /* [响应式-lg] 大屏 */
+    /* [响应式-lg] 大屏：仍两列，降低卡片最小宽，避免视口略窄时提前换列 */
+    .link-grid > * {
+        min-width: 240px;
+    }
 }
 
 @media (max-width: 1024px) {
-    /* [响应式-md] 平板 */
+    /* [响应式-md] 平板：保持两列 */
 }
 
 @media (max-width: 768px) {
-    /* [响应式-sm] 手机 */
+    /* [响应式-sm] 手机：保持两列，分页条收紧间距与内边距 */
+    .pager-nav {
+        gap: var(--space-xs);
+    }
+    .page-side {
+        padding: var(--space-xs) var(--space-md);
+        font-size: 13px;
+    }
+    .page-num {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 var(--space-sm);
+        font-size: 13px;
+    }
+    .dropdown-card {
+        min-width: 160px;
+    }
 }
 
 @media (max-width: 480px) {
-    /* [响应式-xs] 窄屏 */
+    /* [响应式-xs] 窄屏：单列全宽卡片（避免两列max-width把单列卡宽锁死在半行），分页条进一步收紧 */
+    .link-grid > * {
+        flex: 1 1 100%;
+        min-width: 0;
+        max-width: 100%;
+    }
+    .pager-nav {
+        gap: 6px;
+    }
+    .page-side {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 12px;
+    }
+    .page-num {
+        min-width: 28px;
+        height: 28px;
+        padding: 0 var(--space-xs);
+        font-size: 12px;
+    }
 }
 
 </style>

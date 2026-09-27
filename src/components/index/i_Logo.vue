@@ -43,10 +43,14 @@ const logo = ref('Cnkrru')
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .logo { margin-left: var(--space-sm); }
+    .logo p { font-size: 1.75rem; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .logo { min-width: auto; margin-left: var(--space-xs); }
+    .logo p { font-size: 1.5rem; }
 }
 
 </style>

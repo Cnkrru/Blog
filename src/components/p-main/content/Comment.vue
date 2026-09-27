@@ -106,11 +106,17 @@ const giscus_theme = computed(() => {
 }
 
 @media (max-width: 768px) {
-    /* [响应式-sm] 手机 */
+    /* [响应式-sm] 手机：卡片外边距收紧，主体评论由 giscus 内部自适应 */
+    .comment {
+        margin: var(--space-xs);
+    }
 }
 
 @media (max-width: 480px) {
-    /* [响应式-xs] 窄屏 */
+    /* [响应式-xs] 窄屏：内边距进一步收紧 */
+    .comment-box {
+        padding: var(--space-sm);
+    }
 }
 
 </style>

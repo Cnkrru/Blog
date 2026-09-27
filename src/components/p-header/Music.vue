@@ -234,10 +234,12 @@ onUnmounted(() => { music.cleanup() })
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .music-player { right: 12px; width: calc(100vw - 24px); }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .music-player { left: 12px; right: 12px; width: auto; padding: 12px; }
 }
 
 </style>

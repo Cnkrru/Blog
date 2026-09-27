@@ -39,6 +39,7 @@
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .copyright { width: 100%; font-size: 0.9em; }
 }
 
 </style>

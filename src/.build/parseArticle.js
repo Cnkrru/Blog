@@ -300,39 +300,6 @@ const article_parser = (post_dirname) => {
             config_fence(md)
             config_container(md)
 
-            /*
-            * id: 更新记录生成器
-            * fn: 构建期把 frontmatter.history 渲染成"更新记录"列表，追加到正文末尾
-            * 条目格式："2026-08-07 新增xxx" → 按第一个空格拆日期与说明；拆不出日期整串当说明
-            * 正文已含"更新记录"标题时跳过，避免重复
-            * —— AI 编写 2026-09 ——
-            */
-            const history_html = (frontmatter, rendered) => {
-                const list = frontmatter.history
-                if (!Array.isArray(list) || list.length === 0) return ''
-                if (rendered.includes('id="更新记录"')) return ''
-
-                const items = list
-                    .map((item) => {
-                        const text = String(item).trim()
-                        if (!text) return ''
-                        const match = text.match(/^(\S+)\s+(.*)$/)
-                        const safe = md.utils.escapeHtml
-                        return match
-                            ? `<li><time>${safe(match[1])}</time> ${safe(match[2])}</li>`
-                            : `<li>${safe(text)}</li>`
-                    })
-                    .filter(Boolean)
-                    .join('\n')
-
-                return `
-<!-- == 更新记录(AI生成) == -->
-<h2 id="更新记录">更新记录</h2>
-<ul class="history-list">
-${items}
-</ul>`
-            }
-            
             const articles = {}
 
             for(const file of files) {
@@ -347,9 +314,9 @@ ${items}
                     && fs.statSync(sfc_path).mtimeMs >= fs.statSync(path.join(article_path, file)).mtimeMs
 
                 if(!sfc_fresh) {
+                    // [AI改造] 更新记录改运行期渲染（EditHistory组件读post.json的history），编译期不再追加到正文
                     const rendered = md.render(content)                                 // 先把文章内容转义为HTML
-                    const html = rendered + history_html(frontmatter, rendered)          // 有history时在正文末尾追加"更新记录"列表
-                    const vue = `<template>${html}</template>`                          // 把文章内容拼接成vue的HTML块
+                    const vue = `<template>${rendered}</template>`                      // 把文章内容拼接成vue的HTML块
                     fs.writeFileSync(sfc_path, vue, 'utf8')                             // 把拼接好的块写入对应文件
                 }
 

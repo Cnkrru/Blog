@@ -6,6 +6,7 @@
     font-size: 16px;
     line-height: 1.75;
     overflow-wrap: break-word;
+    min-width: 0; /* [AI修复] 兜底：flex 容器下禁止被内部 min-content（如超长代码行）撑宽 */
 }
 
 /* ============ 标题层级（锚点深链接的 scroll-margin-top 防头部遮挡） ============ */
@@ -47,8 +48,9 @@
 .content a:hover { border-bottom-color: transparent; }
 .content img {
     display: block;
+    width: 100%;
     max-width: 100%;
-    width: 800px;
+    box-sizing: border-box; /* [AI修复] 由固定 width:800px 改为满容器宽：避免固定宽把 .content 撑出横向滚动，窄屏图自动缩小 */
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
@@ -103,6 +105,7 @@
     border-radius: 8px;
     border: 1px solid color-mix(in srgb, var(--g-color) 15%, transparent);
     overflow: hidden;
+    max-width: 100%; /* [AI修复] 兜底：自身宽度锁死于正文列，不随内部代码行变宽 */
 }
 .content pre {
     margin: 0;
@@ -110,6 +113,9 @@
     overflow-x: auto;
     font-size: 14px;
     line-height: 1.6;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box; /* [AI修复] 兜底：pre 恒等于父宽，内容超宽只在 pre 内部横向滚动，绝不撑大外层/正文 */
 }
 .content pre code {
     padding: 0;
@@ -272,3 +278,77 @@
     background: color-mix(in srgb, var(--color-warning) 10%, transparent);
 }
 .content .directive-warning .directive-title { color: var(--color-warning); }
+
+/* ====================<响应式>==================== */
+@media (max-width: 1280px) {
+    /* [响应式-lg] 大屏 */
+}
+
+@media (max-width: 1024px) {
+    /* [响应式-md] 平板：正文整体微收，代码块/表格内边距略减 */
+    .content {
+        font-size: 15px;
+    }
+    .content pre {
+        padding: 14px;
+    }
+    .content th,
+    .content td {
+        padding: 7px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* [响应式-sm] 手机：字号/标题层级逐级下调，块元素内边距收紧 */
+    .content {
+        font-size: 15px;
+    }
+    .content h1 { font-size: 1.7em; }
+    .content h2 { font-size: 1.35em; }
+    .content h3 { font-size: 1.15em; }
+    .content h4 { font-size: 1.05em; }
+    .content pre {
+        padding: 12px;
+        font-size: 13px;
+    }
+    .content blockquote {
+        padding: 0.5em 0.9em;
+    }
+    .content th,
+    .content td {
+        padding: 6px 8px;
+    }
+    .content div[class*="language-"] .code-toolbar {
+        padding: 5px 10px;
+        overflow-x: auto;
+    }
+    /* 数学公式/宽表在窄屏允许自身横向滚动，不裁切、不撑破正文 */
+    .content .katex-display,
+    .content .katex-block,
+    .content .katex,
+    .content .admonition,
+    .content .directive {
+        overflow-x: auto;
+        overflow-y: hidden;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    /* [响应式-xs] 窄屏：进一步收紧字号与内边距 */
+    .content {
+        font-size: 14px;
+    }
+    .content h1 { font-size: 1.55em; }
+    .content h2 { font-size: 1.25em; }
+    .content h3 { font-size: 1.05em; }
+    .content pre {
+        padding: 10px;
+        font-size: 12px;
+    }
+    .content .admonition-body,
+    .content .directive {
+        padding: 8px 12px;
+    }
+    
+}

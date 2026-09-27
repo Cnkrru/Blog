@@ -109,10 +109,12 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .search-pane { width: 60%; max-width: 480px; height: 44px; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .search-pane { width: 60%; max-width: 480px; height: 44px; }
 }
 
 </style>

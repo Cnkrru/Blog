@@ -79,14 +79,19 @@ const nav = ref([
 
 @media (max-width: 1024px) {
     /* [响应式-md] 平板 */
+    .index-nav { gap: var(--space-md); }
 }
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .index-nav { gap: var(--space-sm); padding: var(--space-xs) var(--space-sm); }
+    .nav-element { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .index-nav { gap: var(--space-xs); }
+    .nav-element { padding: 4px 2px; font-size: 13px; }
 }
 
 </style>

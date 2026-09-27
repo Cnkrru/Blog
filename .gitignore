@@ -45,3 +45,4 @@ _test/
 _backup_pinia/
 doc/
 _crawl/
+_crawl_check/

@@ -55,6 +55,10 @@ const route = useRoute()
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    /* 移动端取消 main-body 内部滚动，内容连同 footer 一起随 body 整页滚动；
+       !important：scoped 下必须压过基础 .main-body{overflow-y:auto}，否则 .main-body 仍是
+       不真正滚动的滚动容器，会把 sticky 目录按钮的吸顶参考系吞掉导致按钮随页滚走 */
+    .main-body { overflow: visible !important; }
 }
 
 @media (max-width: 480px) {

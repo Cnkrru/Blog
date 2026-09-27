@@ -37,6 +37,8 @@ import MainBody from './p-main/MainBody.vue';
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    /* 移动端侧边栏为抽屉(脱离文档流)，内容区占满宽度 */
+    .main-area { width: 100%; height: auto; }
 }
 
 @media (max-width: 480px) {

@@ -123,11 +123,24 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
-    /* [响应式-sm] 手机 */
+    /* [响应式-sm] 手机：两按钮保持并排，收紧边距与内边距 */
+    .postnav-area {
+        gap: var(--space-sm);
+    }
+    .post-btn {
+        padding: var(--space-sm) var(--space-md);
+    }
 }
 
 @media (max-width: 480px) {
-    /* [响应式-xs] 窄屏 */
+    /* [响应式-xs] 窄屏：并排太挤，改纵向堆叠为全宽按钮 */
+    .postnav-area {
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+    .post-btn {
+        width: 100%;
+    }
 }
 
 </style>

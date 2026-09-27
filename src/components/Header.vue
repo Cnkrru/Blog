@@ -40,10 +40,22 @@ import Music from '@/components/p-header/Music.vue';
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .header-area {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        gap: var(--space-md);
+        padding: var(--space-md) var(--space-sm);
+    }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .header-area {
+        gap: var(--space-sm);
+        padding: var(--space-sm);
+    }
 }
 
 </style>

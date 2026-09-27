@@ -43,10 +43,14 @@
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .logo { margin-left: var(--space-sm); }
+    .logo p { font-size: 22px; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .logo { margin-left: var(--space-xs); }
+    .logo p { font-size: 20px; }
 }
 
 </style>

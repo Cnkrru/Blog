@@ -81,10 +81,17 @@ const ft = footer();
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .btn-list { gap: var(--space-sm); }
+    .btn-element { min-width: 64px; min-height: 36px; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .btn-list { flex-wrap: wrap; }
+    .btn-element {
+        width: calc(50% - var(--space-sm) / 2);
+        min-width: 0;
+    }
 }
 
 </style>

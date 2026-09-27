@@ -219,19 +219,62 @@ onMounted(load)
 
 /* ====================<响应式>==================== */
 @media (max-width: 1280px) {
-    /* [响应式-lg] 大屏 */
+    /* [响应式-lg] 大屏：仍三列，仅降低卡片最小宽，避免视口略窄时提前换列 */
+    .card-grid > * {
+        min-width: 240px;
+    }
 }
 
 @media (max-width: 1024px) {
-    /* [响应式-md] 平板 */
+    /* [响应式-md] 平板：降为两列，gap=16px×1÷2=8px */
+    .card-grid > * {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 0;
+        max-width: calc((100% - 16px) / 2);
+    }
 }
 
 @media (max-width: 768px) {
-    /* [响应式-sm] 手机 */
+    /* [响应式-sm] 手机：保持两列，分页条收紧间距（横向可滚动不换行） */
+    .btn-area {
+        width: 100%;
+        margin-top: var(--space-md);
+    }
+    .pager-nav {
+        gap: var(--space-xs);
+        padding: var(--space-xs);
+    }
+    .page-side {
+        padding: var(--space-xs) var(--space-md);
+        font-size: 13px;
+    }
+    .page-num {
+        min-width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
 }
 
 @media (max-width: 480px) {
-    /* [响应式-xs] 窄屏 */
+    /* [响应式-xs] 窄屏：单列全宽卡片，分页条进一步收紧 */
+    .card-grid > * {
+        flex: 1 1 100%;
+        min-width: 0;
+        max-width: 100%;
+    }
+    .pager-nav {
+        gap: 6px;
+    }
+    .page-side {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 12px;
+    }
+    .page-num {
+        min-width: 28px;
+        height: 28px;
+        padding: 0 var(--space-xs);
+        font-size: 12px;
+    }
 }
 
 </style>

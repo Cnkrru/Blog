@@ -46,14 +46,17 @@ onUnmounted(() =>
 
 @media (max-width: 1024px) {
     /* [响应式-md] 平板 */
+    .welcome { height: 44vh; }
 }
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .welcome { height: 38vh; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .welcome { height: 32vh; font-size: clamp(1.5rem, 6vw, 2.4rem); }
 }
 
 </style>

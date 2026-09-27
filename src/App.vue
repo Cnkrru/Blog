@@ -76,6 +76,8 @@ onMounted (()=> {
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    /* 移动端主内容高度随内容撑开(而非吃满视口)，开启 body 整页滚动，footer 落到内容底部 */
+    .center-area { flex: none; }
 }
 
 @media (max-width: 480px) {

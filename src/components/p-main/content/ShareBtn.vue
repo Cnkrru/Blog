@@ -300,11 +300,36 @@ const toast = content.toast_maker()
 }
 
 @media (max-width: 768px) {
-    /* [响应式-sm] 手机 */
+    /* [响应式-sm] 手机：分享盒改列向堆叠，按钮列表允许换行，避免七个按钮横向溢出 */
+    .share-box {
+        width: 100%;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    .btn-list {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-xs);
+    }
+    .btn {
+        width: 36px;
+        height: 36px;
+    }
+    /* 分隔线小屏隐藏，避免换行后挤占布局 */
+    .divider {
+        display: none;
+    }
 }
 
 @media (max-width: 480px) {
-    /* [响应式-xs] 窄屏 */
+    /* [响应式-xs] 窄屏：进一步收紧按钮与文字 */
+    .btn {
+        width: 32px;
+        height: 32px;
+    }
+    .share-text {
+        font-size: 13px;
+    }
 }
 
 </style>

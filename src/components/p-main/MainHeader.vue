@@ -1,8 +1,10 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { page } from '@/modules/page';
 const route = useRoute()
-const title = computed(()=> route.meta.title || '未知')
+// 优先读 page.head_title（Post页fetch后写入文章标题），否则按 route.name 读 page.page_titles，再兜底'未知'
+const title = computed(()=> page.head_title || page.page_titles[route.name] || '未知')
 </script>
 
 <template>

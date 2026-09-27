@@ -1,4 +1,5 @@
 export const data = () => {
+    /* ====================<ip_data>==================== */
     const ip = async () => {
         try{
             const _ip = await axios.get('https://ipinfo.io/json')
@@ -10,7 +11,8 @@ export const data = () => {
             console.error('[ERR]:IP数据获取失败')
         }
     }
-    
+
+    /* ====================<weather_data>==================== */    
     const weather = async () => {
         const _ip = await ip();
         const ip_data = _ip
@@ -29,6 +31,7 @@ export const data = () => {
         }
     }
 
+    /* ====================<post_data>==================== */    
     const post = () => {
         let cache = null   // post.json缓存
     
@@ -85,6 +88,7 @@ export const data = () => {
         }
     }
 
+    /* ====================<link_data>==================== */    
     const link = () => {
         let cache = null
 
@@ -105,5 +109,10 @@ export const data = () => {
         return {cache,raw}
     }   
     
-    return {ip,weather,buSuanZi,post,link}
+    return {
+        ip,
+        weather,
+        post,
+        link
+    }
 }

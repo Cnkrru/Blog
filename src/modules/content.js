@@ -282,8 +282,9 @@ export const content = (() => {
             
             const _date = meta.post_date;
             const _update = meta.post_update;
+            const _history = meta.post_history;   // [AI改造] 更新记录(原始字符串数组)改运行期拿，编译期已不再生成
 
-            return {_date,_update}            
+            return {_date,_update,_history}            
         }
 
         /* ====================<related_post_maker>==================== */

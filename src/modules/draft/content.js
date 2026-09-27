@@ -1,7 +1,8 @@
 import QRCode from 'qrcode'
 export const content = () => {
+    /* ====================<sharebtn>==================== */    
     const share = () => {
-
+        // link类
         const linkMaker = (platform,url,title) => {
             const platform_map = {
                 weibo: `https://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,
@@ -13,7 +14,7 @@ export const content = () => {
 
             return platform_map[platform] || ''            
         }
-
+        // 二维码生成类
         const qrcodeMaker = async (el,url) => {
             if(!el) {
                 console.error('[ERR]:目标元素不存在')
@@ -27,9 +28,11 @@ export const content = () => {
                 console.error('[ERR]:二维码生成失败',e)
             }
         }
-
-        const copyMaker = () => {
-
+        // 复制类
+        const copyMaker = async (url) => {
+            if(navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(url);
+            }
         }
     
         return {
@@ -38,20 +41,20 @@ export const content = () => {
             copyMaker
         }
     }
-
+    /* ====================<toast>==================== */
     const toast = () => {
-
+        // toast图标map
         const icon_level_map = {
             success:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="成功"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>',
             info:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="信息"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>',
             warning:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="警告"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>',
             error:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="错误"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>'
         }
-
+        // 关闭图标
         const x_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
 
         let timer = null
-
+        // 打开toast
         const toastOpen = (level, mes) => {
             try {
                 const toast_on = document.querySelector('.toast-box') ?? undefined
@@ -97,7 +100,7 @@ export const content = () => {
                 console.error('[ERR]:toast挂载失败')
             }
         }
-
+        // 关闭toast
         const toastClose = () => {
             const toast_on = document.querySelector('.toast-box')
             if(toast_on) {
@@ -116,14 +119,16 @@ export const content = () => {
         }
     }
 
+    /* ====================<backToTop>==================== */
     const backToTop = () => {
+        // 返回顶部
         const scrollToTop = () => {
             const scroll_area = document.querySelector('.main-body')
             if (scroll_area) {
             scroll_area.scrollTo({ top: 0, 'behavior': 'smooth' })
             }
         }
-
+        // 阅读进度
         const readingProgress = () => {
             const area = document.querySelector('.main-body')
             const progress_span = document.querySelector('.progress')
@@ -140,14 +145,16 @@ export const content = () => {
         }        
     }
 
+    /* ====================<mermaid>==================== */
     const mermaid = async () => {
         const body = document.body
         const mermaid_code = document.querySelectorAll('pre[data-lang="mermaid"] code')
 
         if(!body) return
         if(!mermaid_code) return
-
+        // 导入mermaid库
         const {default:mermaid} = await import ('mermaid')
+        // 配置mermaid.js
         mermaid.initialize({ startOnLoad: false })
         try {
             await mermaid.run({ nodes: Array.from(mermaid_code) })
@@ -157,6 +164,7 @@ export const content = () => {
         }
     }
 
+    /* ====================<postNav>==================== */
     const postNav = async (post_key) => {
         // 1. 取该篇解析字段
         const meta = await data.post_data_getter(post_key)
@@ -183,6 +191,7 @@ export const content = () => {
         }
     }
 
+    /* ====================<postStatus>==================== */
     const postStatus = async (post_key) => {
         const meta = await data.post_data_getter(post_key)
         if(!meta) return
@@ -204,7 +213,58 @@ export const content = () => {
     }
 
     const relatedPost = () => {
+        let related_index = null;
+        const related_cache = new Map();
 
+        const slicer = (text) => {
+            const bigrams = [];
+            const wrods = String(text)
+                .replace(/[a-zA-Z0-9]+/g,'$&')
+                .replace(/[\u4e00-\u9fff]/g,'$&')
+                .toLowerCase()
+                .split(/\s+/)
+                .filter(Boolean);
+
+            for(let i=0 ; i<wrods.length ; ++i) {
+                const p = wrods[i] + wrods[i+1];
+                if(/^[\u4e00-\u9fff]{2}$/.test(p)) {
+                    bigrams.push(p)
+                }
+            }
+            return {wrods,bigrams}
+        }
+
+        const related = async (post_key,title) => {
+            const _title = String(title).toLowerCase();
+            if(!related_index) {
+                const MiniSearch = (await import('minisearch')).default;
+                // const raw = await ;
+                const index = new MiniSearch({
+                    fields: ['title','category','tags'],
+                    storeFields: ['title','date'],
+                    tokenize: slicer,
+                })
+                index.addAll(Object.entries(raw).map(([id,meta]) => ({
+                    id,
+                    title: meta.title,
+                    category: meta.category,
+                    tags: meta.tags.join(''),
+                    date: meta.date,
+                })))
+
+                related_index = index;
+            }
+            return related_index
+                .search(_title,{boost:{title:3}})
+                .filter((r) => r.id !==post_key)
+                .slice(0,3)
+                .map((r) => r.id)
+        }
+
+        const data = async (post_key) => {
+            // const meta = await
+            if(!meta) return;
+        }
     }
 
     return {
@@ -215,6 +275,6 @@ export const content = () => {
         postNav,
         postStatus,
         editHistory,
-
+        relatedPost,
     }
 }

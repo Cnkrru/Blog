@@ -122,11 +122,26 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
-    /* [响应式-sm] 手机 */
+    /* [响应式-sm] 手机：卡片内边距收紧 */
+    .related {
+        padding: var(--space-sm);
+    }
+    .related-item {
+        gap: var(--space-xs);
+        padding: var(--space-xs) var(--space-sm);
+    }
 }
 
 @media (max-width: 480px) {
-    /* [响应式-xs] 窄屏 */
+    /* [响应式-xs] 窄屏：条目改纵向堆叠，标题换行、日期放下方 */
+    .related-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    .related-date {
+        font-size: 11px;
+    }
 }
 
 </style>

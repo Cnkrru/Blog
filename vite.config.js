@@ -55,6 +55,16 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,jpg,svg,webp,woff2}'],
         cleanupOutdatedCaches: true,
+        // [AI修复] SW navigateFallback 默认把地址栏导航请求全劫持回 index.html，
+        // 导致 /feed.xml /atom.xml /sitemap.xml /robots.txt 等真实静态文件被 SW 路由成 404 页。
+        // 这里把它们与 SW 自身加入内核拒绝名单，导航时直接走网络取真实文件，不被 fallback
+        navigateFallbackDenylist: [
+          /\/feed\.xml/,
+          /\/atom\.xml/,
+          /\/sitemap\.xml/,
+          /\/robots\.txt/,
+          /\/sw\.js/,
+        ],
       },
       integration: {
         // vite-ssg 的 jsdom mock 会把全局 document 注入到 Regenerate 阶段，

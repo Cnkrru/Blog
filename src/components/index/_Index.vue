@@ -19,18 +19,20 @@ onUnmounted(() => {
 
 <template>
     <canvas ref="canvas_el" class="particle-canvas"></canvas>
-    <div class="index-head">
-        <i_Logo/>
-        <i_Nav/>
-    </div>
-    <div class="index-body">
-        <i_Welcome/>
-        <div class="btn-list">
-            <router-link to="/posts" class="btn btn-read">开始阅读</router-link>
-            <router-link to="/about" class="btn btn-about">关于我</router-link>
+    <div class="index-page">
+        <div class="index-head">
+            <i_Logo/>
+            <i_Nav/>
         </div>
-        <div class="glass-card">
-            <i_HeatMap/>
+        <div class="index-body">
+            <i_Welcome/>
+            <div class="btn-list">
+                <router-link to="/posts" class="btn btn-read">开始阅读</router-link>
+                <router-link to="/about" class="btn btn-about">关于我</router-link>
+            </div>
+            <div class="glass-card">
+                <i_HeatMap/>
+            </div>
         </div>
     </div>
 </template>
@@ -43,6 +45,14 @@ onUnmounted(() => {
     height: 100vh;
     z-index: 0;
     pointer-events: none;
+}
+
+/* index 内容整体容器（相对粒子画布浮于其上；移动端作为独立纵向滚动视口） */
+.index-page {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
 }
 
 .index-head {
@@ -126,27 +136,39 @@ onUnmounted(() => {
     justify-content: center;
 }
 
-@media (max-width: 768px) {
-    .glass-card {
-        padding: 16px;
-    }
-}
-
 /* ====================<响应式>==================== */
 @media (max-width: 1280px) {
     /* [响应式-lg] 大屏 */
+    .index-body { gap: var(--space-md); }
 }
 
 @media (max-width: 1024px) {
     /* [响应式-md] 平板 */
+    .btn-list { gap: var(--space-md); }
 }
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .index-page {
+        height: 100dvh;
+        overflow-y: auto;
+    }
+    .glass-card { padding: 16px; }
+    .btn { padding: 10px 24px; font-size: 14px; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .index-body { gap: var(--space-md); }
+    .btn-list {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-md);
+        padding: 0 var(--space-lg);
+        box-sizing: border-box;
+    }
+    .btn { width: fit-content; }
+    .glass-card { padding: 14px; }
 }
 
 </style>

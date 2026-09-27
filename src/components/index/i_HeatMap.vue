@@ -335,23 +335,6 @@ onMounted(load)
     border-radius: 4px;
 }
 
-@media (max-width: 640px) {
-    .heatmap-header {
-        flex-wrap: wrap;
-    }
-    .heatmap-grid {
-        gap: 4px;
-        max-width: 100%;
-    }
-    .select-trigger {
-        padding: 4px 10px;
-        font-size: 12px;
-    }
-    .dropdown-menu {
-        font-size: 12px;
-    }
-}
-
 /* ====================<响应式>==================== */
 @media (max-width: 1280px) {
     /* [响应式-lg] 大屏 */
@@ -359,14 +342,20 @@ onMounted(load)
 
 @media (max-width: 1024px) {
     /* [响应式-md] 平板 */
+    .heatmap-header { flex-wrap: wrap; }
 }
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .heatmap-wrapper { gap: 12px; width: 90%; }
+    .heatmap-grid { gap: 4px; max-width: 100%; }
 }
 
 @media (max-width: 480px) {
     /* [响应式-xs] 窄屏 */
+    .select-trigger { padding: 4px 10px; font-size: 12px; }
+    .dropdown-menu { font-size: 12px; }
+    .heatmap-grid { gap: 3px; }
 }
 
 </style>

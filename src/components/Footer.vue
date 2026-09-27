@@ -36,6 +36,7 @@ import Copyright from './p-footer/Copyright.vue';
 
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
+    .footer-area { gap: var(--space-sm); padding: var(--space-sm); }
 }
 
 @media (max-width: 480px) {
