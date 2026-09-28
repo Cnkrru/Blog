@@ -1,29 +1,25 @@
-<script setup>
-// [AI实现] 友链页：前端从data store取link.json原始数组 → cleaner分桶 → computer计算(写store) → 页码=分类名，直接渲染store响应式ref
-import { onMounted } from 'vue'
-import { ref, computed } from 'vue'
-import { data } from '@/modules/data.js'
-import { page } from '@/modules/page.js'
-
-const link = page.link_factory()   // [接入手写工厂] 友链工厂
+﻿<script setup>
+// [AI迁移] 去壳：原 page().link() 工厂（computer/render 双层）已提升为模块顶层导出
+// 数据层 data/clean 平铺导出：data 拉取/缓存 links.json，clean 分桶写 link_page_* 响应式ref
+// UI层 render(page)：切页，同步当前桶 link_page_items → 组件直接读模块级 ref
+import { onMounted, ref, computed } from 'vue'
+import { data, clean, render, link_page_names, link_now_page, link_page_items, link_page_num } from '@/composables/pmain/link.js'
 
 const load = async () => {
-    const raw_list = await data.link_data_get()   // 前端转运：先取原始数组
-    link.cleaner(raw_list)                        // [新接口] 分桶 → 存store.links
-    link.computer()                               // [新接口] 算首页桶/分类名/总桶 → store响应式ref
+    const raw = await data()
+    clean(raw)         // 分桶 → 写模块级 link_page_* 响应式ref
 }
 
 const change_page = (p) => {
-    link.updater(p)                               // [新接口] 设当前页 → store.link_now_page
-    link.computer()                               // 按新页重算当前桶 → store.link_page_items
-    close_dropdown()                              // [AI编写] 切页后收起分类下拉
+    render(p)             // 切页 → 更新 link_now_page 并同步 link_page_items
+    close_dropdown()      // [AI编写] 切页后收起分类下拉
 }
 
 // [AI编写] 窗口页码（跟随blog-map PageNav）：当前分类上下各2，凑满最多5个，分类多时不铺满一长串
 const display_pages = computed(() => {
     const pages = []
-    let start = Math.max(1, page.link_now_page - 2)
-    let end = Math.min(page.link_page_num, start + 4)
+    let start = Math.max(1, link_now_page.value - 2)
+    let end = Math.min(link_page_num.value, start + 4)
     if (end - start < 4) {
         start = Math.max(1, end - 4)
     }
@@ -32,7 +28,7 @@ const display_pages = computed(() => {
 })
 
 // [AI编写] 页码label：分类存在显示分类名，兜底"第N页"
-const page_label = (p) => page.link_page_names[p - 1] || '第 ' + p + ' 页'
+const page_label = (p) => link_page_names.value[p - 1] || '第 ' + p + ' 页'
 
 // [AI编写] 分类快速跳转下拉（跟随blog-map：分类多时用下拉补全）
 const dropdown_open = ref(false)
@@ -49,7 +45,7 @@ onMounted(load)
             <!-- 当前分类的链接 [AI实现] -->
             <div class="link-grid">
                 <a
-                    v-for="link in page.link_page_items.links"
+                    v-for="link in link_page_items.links"
                     :key="link.id"
                     class="link-card"
                     :href="link.url"
@@ -64,29 +60,29 @@ onMounted(load)
         <!-- 分页div [AI编写] 嵌套：上=切页组件(窗口页码+分类下拉)，下=第N/total页·当前分类 -->
         <div class="btn-area" @click="close_dropdown">
             <div class="pager-nav">
-                <button class="page-side" :disabled="page.link_now_page === 1" @click="change_page(page.link_now_page - 1)">上一页</button>
+                <button class="page-side" :disabled="link_now_page === 1" @click="change_page(link_now_page - 1)">上一页</button>
                 <button
                     v-for="p in display_pages"
                     :key="p"
                     class="page-num"
-                    :class="{ 'page-on': p === page.link_now_page }"
+                    :class="{ 'page-on': p === link_now_page }"
                     @click="change_page(p)"
                 >{{ page_label(p) }}</button>
-                <button class="page-side" :disabled="page.link_now_page === page.link_page_num" @click="change_page(page.link_now_page + 1)">下一页</button>
+                <button class="page-side" :disabled="link_now_page === link_page_num" @click="change_page(link_now_page + 1)">下一页</button>
                 <div class="category-wrap">
                     <button class="page-side category-btn" @click.stop="toggle_dropdown">分类 ▾</button>
                     <div class="dropdown-card" v-if="dropdown_open" @click.stop>
                         <button
-                            v-for="(name, i) in page.link_page_names"
+                            v-for="(name, i) in link_page_names"
                             :key="name"
                             class="dropdown-item"
-                            :class="{ 'dropdown-on': i + 1 === page.link_now_page }"
+                            :class="{ 'dropdown-on': i + 1 === link_now_page }"
                             @click="change_page(i + 1)"
                         >{{ name }}</button>
                     </div>
                 </div>
             </div>
-            <div class="pager-info">第 {{ page.link_now_page }} / {{ page.link_page_num }} 页 · 当前分类：{{ page.link_page_names[page.link_now_page - 1] }}</div>
+            <div class="pager-info">第 {{ link_now_page }} / {{ link_page_num }} 页 · 当前分类：{{ link_page_names[link_now_page - 1] }}</div>
         </div>
     </div>
 </template>

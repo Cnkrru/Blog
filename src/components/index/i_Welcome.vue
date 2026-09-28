@@ -1,18 +1,15 @@
-<script setup>
-import { onMounted,onUnmounted, ref } from 'vue';
-import { effect } from '@/modules/effect';
-const tw = effect.effect_typewriter_marker()
+﻿<script setup>
+import { onMounted } from 'vue';
+import { typeWrite } from '@/composables/index.js';
+// [AI迁移] 打字机已成全局单例：直接引用实例，不再经 index() 工厂
+const tw = typeWrite
 
 onMounted(() =>
-    tw.start(['欢迎来到我的博客', 'Welcome to my blog'],{
-        typeSpeed: 100,    // 打字速度
-        deleteSpeed: 40,   // 删除速度
-        pauseMs: 3000      // 换句停顿
-        }
+    tw.init(['欢迎来到我的博客', 'Welcome to my blog'],
+        100,    // typeSpeed 打字速度
+        40,     // deleteSpeed 删除速度
+        3000    // pauseMs 换句停顿
     )
-)
-onUnmounted(() =>
-    tw.stop()
 )
 </script>
 

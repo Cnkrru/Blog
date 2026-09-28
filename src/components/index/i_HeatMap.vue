@@ -1,21 +1,25 @@
-<script setup>
-// [AI实现] 热力图：前端从data store取全表 → 交date工厂updater（cleaner记账→years→定位最近活动月） → 用store响应式渲染单月日历热力图
-import { ref, onMounted } from 'vue'
-import { data } from '@/modules/data.js'
-import { page } from '@/modules/page.js'
+﻿<script setup>
+// draft 工厂：hitmap() 内部持有热力图状态 ref，render() 提供交互方法
+import { onMounted } from 'vue'
+import { post } from '@/composables/pmain/post.js'
+import { hitmap } from '@/composables/index.js'
 
-const heat = page.date_factory()   // [接入手写工厂] 日期热力工厂
-const ui = heat.updater()                // [新接口] { toggle_year, toggle_month, set_year, set_month, init }
+// [AI迁移] hitmap 已成全局单例，且已去掉 render 壳：ui 直接指向单例，方法（init/toggleYear等）在单例上
+const heat = hitmap
+const ui = heat
+
+// 解构到顶层：嵌套对象里的 ref 模板不会自动解包
+const { years, months_data, selected_month, selected_year, open_year, open_month, days_data } = heat
 
 const months = ['一月', '二月', '三月', '四月', '五月', '六月',
     '七月', '八月', '九月', '十月', '十一月', '十二月']
 
-// 选中月份的天数数组（set_year/set_month 已写进 store.days_data，前端直接读，无需查询函数）
+// 选中月份的天数数组（setYear/setMonth 已写进 days_data，前端直接读）
 const level_of = (day) => (day.activity >= 4 ? 4 : day.activity)
 
 const load = async () => {
-    const table = await data.post_raw_getter()
-    ui.init(table)                       // [新接口] 记账→years→set_year(最新一年)→定位最近活动月，全写store
+    const table = await post().data()   // 数据源统一走 draft/pmain/post.js 数据层
+    ui.init(table)                               // 记账→years→setYear(最新一年)→定位最近活动月
 }
 
 onMounted(load)
@@ -26,17 +30,17 @@ onMounted(load)
 
         <div class="heatmap-header">
             <div class="custom-select">
-                <button class="select-trigger" :class="{ active: page.open_year }"  @click="ui.toggle_year">
-                    <span class="select-value">{{ page.selected_year }}年</span>
-                    <span class="select-arrow" :class="{ rotated: page.open_year }"></span>
+                <button class="select-trigger" :class="{ active: open_year }"  @click="ui.toggleYear">
+                    <span class="select-value">{{ selected_year }}年</span>
+                    <span class="select-arrow" :class="{ rotated: open_year }"></span>
                 </button>
                 <transition name="dropdown">
-                    <ul v-if="page.open_year" class="dropdown-menu" @click.stop>
+                    <ul v-if="open_year" class="dropdown-menu" @click.stop>
                         <li
-                            v-for="y in page.years" :key="y"
+                            v-for="y in years" :key="y"
                             class="dropdown-item"
-                            :class="{ active: y === page.selected_year }"
-                            @click="ui.set_year(y)"
+                            :class="{ active: y === selected_year }"
+                            @click="ui.setYear(y)"
                         >{{ y }}年</li>
                     </ul>
                 </transition>
@@ -45,17 +49,17 @@ onMounted(load)
             <h3 class="heatmap-title">创作活动热力图</h3>
 
             <div class="custom-select">
-                <button class="select-trigger" :class="{ active: page.open_month }" :disabled="isLoading" @click="ui.toggle_month">
-                    <span class="select-value">{{ months[page.selected_month - 1] }}</span>
-                    <span class="select-arrow" :class="{ rotated: page.open_month }"></span>
+                <button class="select-trigger" :class="{ active: open_month }" :disabled="isLoading" @click="ui.toggleMonth">
+                    <span class="select-value">{{ months[selected_month - 1] }}</span>
+                    <span class="select-arrow" :class="{ rotated: open_month }"></span>
                 </button>
                 <transition name="dropdown">
-                    <ul v-if="page.open_month" class="dropdown-menu" @click.stop>
+                    <ul v-if="open_month" class="dropdown-menu" @click.stop>
                         <li
                             v-for="(m, i) in months" :key="i"
                             class="dropdown-item"
-                            :class="{ active: i + 1 === page.selected_month }"
-                            @click="ui.set_month(i + 1)"
+                            :class="{ active: i + 1 === selected_month }"
+                            @click="ui.setMonth(i + 1)"
                         >{{ m }}</li>
                     </ul>
                 </transition>
@@ -63,9 +67,9 @@ onMounted(load)
         </div>
 
         <div class="heatmap-content">
-            <div v-if="page.days_data?.days?.length" class="heatmap-grid">
+            <div v-if="days_data?.days?.length" class="heatmap-grid">
                 <span
-                    v-for="day in page.days_data.days" :key="day.date"
+                    v-for="day in days_data.days" :key="day.date"
                     class="heatmap-cell"
                     :class="[ 'heatmap-lv' + level_of(day) ]"
                     :title="day.date + '：' + (day.activity > 0 ? day.activity + ' 次活动' : '无活动')"

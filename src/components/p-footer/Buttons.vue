@@ -1,18 +1,16 @@
-<script setup>
+﻿<script setup>
 import Github from '../icon/Github.vue';
 import Bilibili from '../icon/Bilibili.vue';
 import Printer from '../icon/Printer.vue';
 import Rss from '../icon/Rss.vue';
-import { footer } from '@/modules/draft/footer';
-
-const ft = footer();
+import { printPdf } from '@/composables/pfooter';
 </script>
 
 <template>
     <div class="btn-list">
         <button class="btn-element"><a href="https://github.com/Cnkrru"><Github class="icon"/>github</a></button>
         <button class="btn-element"><a href="https://space.bilibili.com/452778044?spm_id_from=333.1007.0.0"><Bilibili class="icon"/>B站</a></button>
-        <button class="btn-element" @click="ft.printPdf"><Printer class="icon"/>PDF</button>
+        <button class="btn-element" @click="printPdf"><Printer class="icon"/>PDF</button>
         <button class="btn-element"><a href="/feed.xml"><Rss class="icon"/>RSS</a></button>
     </div>
 </template>

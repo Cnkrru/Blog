@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Avator from './p-sidebar/Avator.vue';
@@ -6,17 +6,17 @@ import Welcome from './p-sidebar/Welcome.vue';
 import Nav from './p-sidebar/Nav.vue';
 import IpWeather from './p-sidebar/IpWeather.vue';
 import Busuanzi from './p-sidebar/Busuanzi.vue';
-import { page } from '@/modules/page.js';
+import { sidebar_open } from '@/composables/psidebar.js';
 
 const route = useRoute()
 // 兜底：路由变化（点侧边栏导航跳转后）自动收起移动端抽屉
-watch(() => route.fullPath, () => { page.sidebar_open = false })
+watch(() => route.fullPath, () => { sidebar_open.value = false })
 </script>
 
 <template>
     <div
         class="sidebar-area"
-        :class="{ 'sidebar-open': page.sidebar_open }"
+        :class="{ 'sidebar-open': sidebar_open }"
     >
         <Avator/>
         <Welcome/>
@@ -24,7 +24,7 @@ watch(() => route.fullPath, () => { page.sidebar_open = false })
         <Nav/>
         <Busuanzi/>
     </div>
-    <div class="sidebar-overlay" v-show="page.sidebar_open" @click="page.sidebar_open = false"></div>
+    <div class="sidebar-overlay" v-show="sidebar_open" @click="sidebar_open.value = false"></div>
 </template>
 
 <style scoped>

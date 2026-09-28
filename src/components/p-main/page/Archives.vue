@@ -1,15 +1,15 @@
-<script setup>
-// [AI实现] 归档页：前端取全表 → 交category管线updater(写store响应式) → 三视图切换 + 组展开收起
+﻿<script setup>
+// [AI实现] 归档页：前端取全表 → post().clean 清洗 → 交 category 管线 render(写响应式) → 三视图切换 + 组展开收起
 import { ref, onMounted, watch, nextTick } from 'vue'
 import { RouterLink } from 'vue-router'
-import { data } from '@/modules/data.js'
-import { page } from '@/modules/page.js'
+import { post } from '@/composables/pmain/post.js'
+import { category } from '@/composables/pmain/category.js'
 
-const maker = page.post_factory()    // [接入手写工厂] 文章大工厂
-const cat = maker.category_line()          // 分类管线
-const ui = cat.updater()                   // [新接口] updater返回 {view_turner, group_turner}
+// [AI迁移] 去内层 computer/render 壳：保留 category(posts) 工厂（每页专属实例），方法平铺解构
+const posts = []   // 共用清洗数组：管线闭包持有同一引用，load里就地填充
+const { viewTurner, groupTurner, category_mode_groups, category_expand_group } = category(posts)
 
-// [新接口] 局部镜像当前视图，仅用于tab高亮（后端view_turner已不返回view_mode，改由本地维护）
+// [AI实现] 局部镜像当前视图，仅用于tab高亮（viewTurner已不返回view_mode，改由本地维护）
 const view_mode = ref(0)                   // 0分类 | 1年份 | 2月份
 
 // [AI编写] 滑块指示器：blog-map 方案，JS按active tab的left/width定位，贴合tab全宽
@@ -28,21 +28,21 @@ const update_indicator = () => {
 watch(view_mode, update_indicator)
 
 const load = async () => {
-    const table = await data.post_raw_getter()
-    maker.cleaner(table)                     // 清洗入缓存
-    ui.view_turner(0)                       // [新接口] 默认分类视图 → 写store.category_mode_groups
+    const cleaned = post().clean(await post().data())    // 清洗返回文章数组
+    posts.splice(0, posts.length, ...cleaned)   // 就地填充，保持管线引用
+    viewTurner(0)                            // 默认分类视图 → 写 category_mode_groups
 }
 
 const change_view = (mode) => {
     view_mode.value = mode
-    ui.view_turner(mode)                    // [新接口] 0/1/2 切视图
+    viewTurner(mode)                         // 0/1/2 切视图
 }
 
 const toggle_group = (name) => {
-    ui.group_turner(name)                   // [新接口] 组展开/收起 → 写store.category_expand_group
+    groupTurner(name)                        // 组展开/收起 → 写 category_expand_group
 }
 
-const is_expanded = (name) => page.category_expand_group === name   // [新接口] store响应式判断
+const is_expanded = (name) => category_expand_group.value === name
 
 onMounted(() => {
     load()
@@ -65,7 +65,7 @@ onMounted(() => {
 
         <!-- 列表div [AI实现]：高度固定，超出滚动 -->
         <div class="list-area">
-            <div v-for="g in page.category_mode_groups" :key="g.name" class="arch-group">
+            <div v-for="g in category_mode_groups" :key="g.name" class="arch-group">
                 <a href="#" class="group-header" :class="{ 'header-on': is_expanded(g.name) }" @click.prevent="toggle_group(g.name)">
                     <span class="group-name">{{ g.name }}</span>
                     <span class="group-count">{{ g.items.length }} 篇</span>
@@ -91,7 +91,7 @@ onMounted(() => {
                 </div>
             </div>
 
-            <div v-if="!page.category_mode_groups.length" class="arch-empty">暂无文章</div>
+            <div v-if="!category_mode_groups.length" class="arch-empty">暂无文章</div>
         </div>
     </div>
 </template>

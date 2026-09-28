@@ -1,17 +1,21 @@
-<script setup>
+﻿<script setup>
 import { computed } from 'vue';
-import { theme } from '@/modules/theme';
+import { theme } from '@/composables/pmain/setting.js';
+import { ref_light_dark } from '@/composables/pheader.js';
 
-const themeStore = theme
+// [AI迁移] 去壳：setting 已提升为模块顶层导出，theme() 直接调用；ref_theme 与 pheader 的 ref_light_dark 是模块级单例，
+// 设置页/头部切换主题亮暗时，这里实时联动
+const theme_ref = theme()
 
 /*
 * id: giscus主题
 * fn: 主题/亮暗一变，属性跟着变，giscus-widget 内部自动 postMessage 换主题
-* 注意: 大对象 store 已被 reactive 包裹，ref 自动解包，直接取主题名，不要再 .value
+* 注意: theme 是 reactive 包裹的，ref_theme 自动解包直接取主题名；
+*       ref_light_dark 是模块级 ref，脚本里要 .value
 */
 const giscus_theme = computed(() => {
-    const ld = themeStore.ref_light_dark ? 'light' : 'dark'
-    return `${window.location.origin}/css/comment/${themeStore.ref_theme}-${ld}.css`
+    const ld = ref_light_dark.value ? 'light' : 'dark'
+    return `${window.location.origin}/css/comment/${theme_ref.ref_theme}-${ld}.css`
 })
 </script>
 

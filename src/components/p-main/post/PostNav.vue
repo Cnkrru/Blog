@@ -1,5 +1,5 @@
-<script setup> 
-import { content } from '@/modules/content';
+﻿<script setup> 
+import { post } from '@/composables/pmain/post.js';   // [AI迁移] 原 @/composables/content
 import { useRoute } from 'vue-router';
 import { computed, onMounted, ref } from 'vue';
 // 用vue-router拿文章key
@@ -13,7 +13,7 @@ const next_title = ref('')
 
 onMounted(async () => {
     // 用 nav 接返回值再挂载，避免解构出的 pre_post 等与外层 ref 同名遮蔽
-    const nav = await content.frontmatter_parser().post_nav_maker(post_key.value)
+    const nav = await post().postNav(post_key.value)   // [AI迁移] 改接 post.js（原 content.js maker）
     pre_post.value = nav?.pre_post ?? null
     pre_title.value = nav?.pre_title ?? ''
     next_post.value = nav?.next_post ?? null

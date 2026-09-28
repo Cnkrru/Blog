@@ -1,19 +1,20 @@
-<script setup>
+﻿<script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
 import i_Logo from './i_Logo.vue';
 import i_Nav from './i_Nav.vue';
 import i_Welcome from './i_Welcome.vue';
 import i_HeatMap from './i_HeatMap.vue';
-import { effect } from '@/modules/effect';
+import { particles } from '@/composables/index.js';
 
-const particle = effect.effect_particle_maker()
+// draft 工厂：particles() 提供 { start, stop }，与正式 effect 的 start/cleaner 对齐
+const particle = particles()
 const canvas_el = ref(null)
 
 onMounted(() => {
-    particle.effect_start(canvas_el.value)
+    particle.start(canvas_el.value)
 })
 onUnmounted(() => {
-    particle.particle_cleaner()
+    particle.stop()
 })
 </script>
 

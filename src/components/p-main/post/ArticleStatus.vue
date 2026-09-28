@@ -1,8 +1,8 @@
-<script setup>
+﻿<script setup>
 import FileText from '@/components/icon/FileText.vue';
 import Clock from '@/components/icon/Clock.vue';
 import { useRoute } from 'vue-router';
-import { content } from '@/modules/content';
+import { post } from '@/composables/pmain/post.js';   // [AI迁移] 原 @/composables/content
 import { ref,computed, onMounted } from 'vue';
 const route = useRoute()
 const post_key = computed(() => String(route.params.id) )
@@ -11,7 +11,7 @@ const word = ref('')
 const time = ref('')
 
 onMounted(async () => {
-    const {_word,_time} = await content.frontmatter_parser().article_status_maker(post_key.value)
+    const {_word,_time} = await post().postStatus(post_key.value)   // [AI迁移] 改接 post.js（原 content.js maker）
     word.value = _word;
     time.value = _time;
 })

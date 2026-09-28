@@ -1,15 +1,18 @@
-<script setup>
+﻿<script setup>
 import BackToTop from '@/components/icon/BackToTop.vue';
-import { content } from '@/modules/content.js';
+import { post } from '@/composables/pmain/post.js';
 import { onMounted } from 'vue';
 
+// [AI改] backToTop 壳已去：scrollToTop/readingProgress 直接挂在 post() 上
+const { scrollToTop, readingProgress } = post()
+
 onMounted(() => {
-    content.reading_progress()
+    readingProgress()
 })
 </script>
 
 <template>
-    <button class="back-top-btn" @click="[content.scroll_to_top()]">
+    <button class="back-top-btn" @click="scrollToTop()">
         <span class="progress"></span>
         <BackToTop class="back-icon"/>
     </button>

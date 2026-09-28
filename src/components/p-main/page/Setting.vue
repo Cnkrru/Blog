@@ -1,5 +1,20 @@
-<script setup>
-import { theme } from '@/modules/theme.js';
+﻿<script setup>
+import { theme as theme_factory, layout as layout_factory, opacity as opacity_factory, bg as bg_factory } from '@/composables/pmain/setting.js';
+import { onMounted } from 'vue';
+
+// [AI迁移] 去壳：setting 的四组方法已直接提升为模块顶层导出（theme/layout/opacity/bg），逐个实例化
+const theme = theme_factory()
+const layout = layout_factory()
+const opacity = opacity_factory()
+const bg = bg_factory()
+
+// 回填按钮高亮 + 同步 CSS 变量（主题/布局/背景会同时作用到 body，透明度走 CSS 变量）
+onMounted(() => {
+    theme.init()
+    layout.init()
+    opacity.init()
+    bg.init()
+})
 </script>
 
 <template>
@@ -7,32 +22,32 @@ import { theme } from '@/modules/theme.js';
         <div class="btn-area">
             <span>主题风格</span>
             <div class="btn-list">
-                <button class="btn btn-theme" :class="theme.ref_theme === 'blue' ? 'btn-on' : null"   @click="theme.set_theme('blue')">天蓝色</button>
-                <button class="btn btn-theme" :class="theme.ref_theme === 'ink' ? 'btn-on' : null"    @click="theme.set_theme('ink')">水墨风</button>
-                <button class="btn btn-theme" :class="theme.ref_theme === 'sakura' ? 'btn-on' : null" @click="theme.set_theme('sakura')">樱花粉</button>
-                <button class="btn btn-theme" :class="theme.ref_theme === 'purple' ? 'btn-on' : null" @click="theme.set_theme('purple')">紫罗兰</button>
-                <button class="btn btn-theme" :class="theme.ref_theme === 'cyan' ? 'btn-on' : null"   @click="theme.set_theme('cyan')">天青色</button>
+                <button class="btn btn-theme" :class="theme.ref_theme === 'blue' ? 'btn-on' : null"   @click="theme.set('blue')">天蓝色</button>
+                <button class="btn btn-theme" :class="theme.ref_theme === 'ink' ? 'btn-on' : null"    @click="theme.set('ink')">水墨风</button>
+                <button class="btn btn-theme" :class="theme.ref_theme === 'sakura' ? 'btn-on' : null" @click="theme.set('sakura')">樱花粉</button>
+                <button class="btn btn-theme" :class="theme.ref_theme === 'purple' ? 'btn-on' : null" @click="theme.set('purple')">紫罗兰</button>
+                <button class="btn btn-theme" :class="theme.ref_theme === 'cyan' ? 'btn-on' : null"   @click="theme.set('cyan')">天青色</button>
             </div>
         </div>
 
         <div class="btn-area">
             <span>布局风格</span>
             <div class="btn-list">
-                <button class="btn btn-layout" :class="theme.ref_layout === 'default' ? 'btn-on' : null"    @click="theme.set_layout('default')">默认</button>
-                <button class="btn btn-layout" :class="theme.ref_layout === 'card' ? 'btn-on' : null"       @click="theme.set_layout('card')">卡片式</button>
+                <button class="btn btn-layout" :class="layout.ref_layout === 'default' ? 'btn-on' : null"    @click="layout.set('default')">默认</button>
+                <button class="btn btn-layout" :class="layout.ref_layout === 'card' ? 'btn-on' : null"       @click="layout.set('card')">卡片式</button>
             </div>
         </div>
         
         <div class="opacity">
             <span>透明度调节</span>
-            <input type="range" min="0" max="1" step="0.01" class="opacity-input" v-model.number="theme.ref_opacity" @input="theme.set_opacity()">
+            <input type="range" min="0" max="1" step="0.01" class="opacity-input" v-model.number="opacity.ref_opacity" @input="opacity.set()">
         </div>
         
         <div class="btn-area">
             <span>背景</span>
             <div class="btn-list">
-                <button class="btn btn-bg" :class="theme.ref_bg === 'video' ? 'btn-on' : null"  @click="theme.set_bg('video')">视频</button>
-                <button class="btn btn-bg" :class="theme.ref_bg === 'photo' ? 'btn-on' : null"  @click="theme.set_bg('photo')">图片</button>
+                <button class="btn btn-bg" :class="bg.ref_bg === 'video' ? 'btn-on' : null"  @click="bg.set('video')">视频</button>
+                <button class="btn btn-bg" :class="bg.ref_bg === 'photo' ? 'btn-on' : null"  @click="bg.set('photo')">图片</button>
             </div>
         </div>
     </div>

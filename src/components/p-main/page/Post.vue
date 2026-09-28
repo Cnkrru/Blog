@@ -1,18 +1,17 @@
-<script setup>
+﻿<script setup>
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 
-import ContentRender from '../content/ContentRender.vue'
-import Comment from '../content/Comment.vue'
-import ShareBtn from '../content/ShareBtn.vue'
-import PostNav from '../content/PostNav.vue'
-import ArticleStatus from '../content/ArticleStatus.vue'
-import EditHistory from '../content/EditHistory.vue'
-import RelatedPosts from '../content/RelatedPosts.vue'
-import PostToc from '../content/PostToc.vue'
-import MobileToc from '../content/MobileToc.vue'
-import { page } from '@/modules/page'
+import ContentRender from '../post/ContentRender.vue'
+import Comment from '../post/Comment.vue'
+import ShareBtn from '../post/ShareBtn.vue'
+import PostNav from '../post/PostNav.vue'
+import ArticleStatus from '../post/ArticleStatus.vue'
+import EditHistory from '../post/EditHistory.vue'
+import PostToc from '../post/PostToc.vue'
+import MobileToc from '../post/MobileToc.vue'
+import { page_titles, set_head_title } from '@/composables/pmain/_head.js'
 
 // 组件绑定：不再依赖预生成的映射模块，编译期用 import.meta.glob 扫出所有文章中间件，
 // 运行时按当前路由 id 直接取对应 loader（数据源与 SSG 的 /config/post.json 都是 docs/*.md）
@@ -23,17 +22,17 @@ const route = useRoute()
 const id = computed(() => String(route.params.id))
 
 // head 标题：直接读 public/config/post.json（构建期由 parseArticle 生成），
-// 标题同时填到 page.head_title（页面顶部标题栏 MainHeader 读它）和 document.title；
+// 标题同时填到 head_title（页面顶部标题栏 MainHeader 读它）和 document.title；
 // SSR 阶段无网络，预渲染 HTML 里是 page_titles 兜底'文章'，客户端挂载后覆盖为文章标题
 function set_post_title(t) {
-    page.set_head_title(t)                                   // 页面顶部标题栏（MainHeader 读 page.head_title）
-    post_title.value = t                                     // document.title（useHead）
+    set_head_title(t)                                          // 页面顶部标题栏（MainHeader 读 head_title）
+    post_title.value = t                                       // document.title（useHead）
 }
 
 const post_title = ref('')
 onMounted(async () => {
     // 兜底：切到文章页先清掉上个页面的标题，避免显示残留; 直接读 public/config/post.json
-    set_post_title(page.page_titles[route.name] || '')
+    set_post_title(page_titles[route.name] || '')
     try {
         const table = await (await fetch('/config/post.json')).json()
         set_post_title(table[id.value]?.title || '')
@@ -64,7 +63,6 @@ const content = computed(() => {
             <div class="end-components">
                 <ShareBtn/>
                 <PostNav/>
-                <RelatedPosts/>
                 <Comment/>
             </div>
         </div>

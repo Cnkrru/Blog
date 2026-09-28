@@ -1,8 +1,8 @@
-<script setup>
+﻿<script setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import '@/assets/css/content.css' // 文章排版样式集中在此文件（shiki 色板在 css/theme/*.css）
-import { content } from '@/modules/content'
-const mermaid = content
+import { post } from '@/composables/pmain/post.js'
+const mermaid = post().mermaid
 
 const root = ref(null)
 let observer // MutationObserver 存根，卸载时清理
@@ -42,11 +42,11 @@ onMounted(() => {
     // 文章组件是 defineAsyncComponent 异步注入，onMounted 时块可能尚不存在，
     // 用 MutationObserver 监听子树变化，slot 落定后补跑 mermaid 渲染与图片重绑
     observer = new MutationObserver(() => {
-        mermaid.mermaid_maker()
+        mermaid()
         bindZoom()
     })
     observer.observe(root.value, { childList: true, subtree: true })
-    mermaid.mermaid_maker()
+    mermaid()
     bindZoom()
 })
 onBeforeUnmount(() => {

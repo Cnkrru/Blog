@@ -1,9 +1,9 @@
-<script setup>
+﻿<script setup>
 import Calendar from '@/components/icon/Calendar.vue';
 import RefreshCw from '@/components/icon/RefreshCw.vue';
 import Clock from '@/components/icon/Clock.vue';
 
-import { content } from '@/modules/content';
+import { post } from '@/composables/pmain/post.js';   // [AI迁移] 原 @/composables/content
 import { useRoute } from 'vue-router';
 import { computed, onMounted, ref } from 'vue';
 // 用vue-router拿文章key
@@ -31,7 +31,7 @@ const history_items = computed(() => {
 
 onMounted(async () => {
     // 用 nav 接返回值再挂载，避免解构出的 pre_post 等与外层 ref 同名遮蔽
-    const edit = await content.frontmatter_parser().edit_history_maker(post_key.value)
+    const edit = await post().editHistory(post_key.value)   // [AI迁移] 改接 post.js（原 content.js maker）
     date.value = edit?._date ?? null
     update.value = edit?._update ?? ''
     history.value = edit?._history ?? []   // [AI改造] 更新记录运行期注入

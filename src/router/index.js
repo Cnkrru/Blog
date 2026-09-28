@@ -11,7 +11,7 @@ export const routes = [
         name: 'Posts',
         component: () => import('../components/p-main/page/PostList.vue')
     },
-    // 文章详情（标题由 page 单例的 page_titles / head_title 提供，不再配 meta.title）
+    // 文章详情
     {
         path: '/post/:id',
         name: 'Post',
@@ -40,12 +40,6 @@ export const routes = [
         path: '/links',
         name: 'Link',
         component: () => import('../components/p-main/page/Link.vue')
-    },
-    // 友链申请
-    {
-        path: '/links/apply',
-        name: 'LinkApply',
-        component: () => import('../components/p-main/page/LinkApply.vue')
     },
     // 设置
     {

@@ -1,21 +1,22 @@
-<script setup>
-// [AI实现] 标签页：前端取全表 → 交tag管线（computer收集标签集合 + updater筛选） → 标签云 + 选中标签文章列表
+﻿<script setup>
+// [AI实现] 标签页：前端取全表 → post().clean 清洗 → 交 tag 管线（computer收集标签集合 + render筛选） → 标签云 + 选中标签文章列表
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { data } from '@/modules/data.js'
-import { page } from '@/modules/page.js'
+import { post } from '@/composables/pmain/post.js'
+import { tag } from '@/composables/pmain/tag.js'
 
-const maker = page.post_factory()   // [接入手写工厂] 文章大工厂
-const tag = maker.tag_line()              // 标签管线
+// [AI迁移] 去内层 computer/render 壳：保留 tag(posts) 工厂（每页专属实例），方法平铺解构
+const posts = []   // 共用清洗数组：管线闭包持有同一引用，load里就地填充
+const { computer, render, tag_now_item, tag_set, tag_posts_list } = tag(posts)
 
 const load = async () => {
-    const table = await data.post_raw_getter()
-    maker.cleaner(table)                  // 清洗入缓存
-    tag.computer()                         // [新接口] 收集所有标签 → store.tag_set
+    const cleaned = post().clean(await post().data())    // 清洗返回文章数组
+    posts.splice(0, posts.length, ...cleaned)   // 就地填充，保持管线引用
+    computer()                                  // 收集所有标签 → tag_set
 }
 
 const select_tag = (t) => {
-    tag.updater(t)                         // [新接口] 选中/取消 → 写store.tag_now_item + tag_posts_list
+    render(t)                                   // 选中/取消 → 写 tag_now_item + tag_posts_list
 }
 
 onMounted(load)
@@ -26,23 +27,23 @@ onMounted(load)
         <!-- 标签云 [AI实现]：等级平等，统一字号，不做数量差异化 -->
         <div class="cloud-area">
             <button
-                v-for="t in page.tag_set"
+                v-for="t in tag_set"
                 :key="t"
                 class="cloud-tag"
-                :class="{ 'tag-on': t === page.tag_now_item }"
+                :class="{ 'tag-on': t === tag_now_item }"
                 @click="select_tag(t)"
             >{{ t }}</button>
         </div>
 
         <!-- 选中标签的文章列表 [AI实现] -->
-        <div class="timeline-area" v-if="page.tag_now_item">
+        <div class="timeline-area" v-if="tag_now_item">
             <div class="tl-bar">
-                <span class="tl-title">「{{ page.tag_now_item }}」下的文章</span>
+                <span class="tl-title">「{{ tag_now_item }}」下的文章</span>
             </div>
 
             <div class="tl-body">
                 <RouterLink
-                    v-for="a in page.tag_posts_list"
+                    v-for="a in tag_posts_list"
                     :key="a.key"
                     class="tl-item"
                     :to="`/post/${a.key}`"

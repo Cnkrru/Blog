@@ -1,31 +1,32 @@
-<script setup>
-// [AI实现] 列表页：前端取全表 → 交post管线（computer算总页数 + updater切片渲染），列表/页码/总页数直接用store响应式ref
+﻿<script setup>
+// [AI实现] 列表页：前端取全表 → post().clean 清洗 → 交 postList 管线（computer算总页数 + render切片渲染）
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import ArticleCover from '@/components/p-main/content/ArticleCover.vue'
-import { data } from '@/modules/data.js'
-import { page } from '@/modules/page.js'
+import ArticleCover from '@/components/p-main/post/ArticleCover.vue'
+import { post as pmain_post } from '@/composables/pmain/post.js'
+import { postList } from '@/composables/pmain/postlist.js'
 
-const maker = page.post_factory()   // [接入手写工厂] 文章大工厂
-const post = maker.post_line()            // post管线
+// [AI迁移] 去内层 computer/render 壳：保留 postList(posts) 工厂（每页专属实例），方法平铺解构
+const posts = []   // 共用清洗数组：管线闭包持有同一引用，load里就地填充
+const { computer, render, post_page_num, post_now_page, post_list, post_page_list } = postList(posts)
 
 const load = async () => {
-    const table = await data.post_raw_getter()   // 前端转运：先取全表
-    maker.cleaner(table)                        // 清洗入缓存
-    post.computer()                              // [新接口] 算总页数 → store.post_page_num(ref)
-    post.updater(init_page())                    // [AI实现] 从 URL ?page= 读初始页渲染，无/非法回退第 1 页
+    const cleaned = pmain_post().clean(await pmain_post().data())    // 清洗返回文章数组
+    posts.splice(0, posts.length, ...cleaned)   // 就地填充，保持管线引用
+    computer()                                  // 算总页数
+    render(init_page())                         // 从 URL ?page= 读初始页渲染，无/非法回退第 1 页
 }
 
 // [AI实现] 从 URL 读页码：?page= 缺失或越界一律回退 1（首页即默认页）
 const init_page = () => {
     const p = Number(new URLSearchParams(location.search).get('page'))
-    if (p >= 1 && p <= page.post_page_num) return p
+    if (p >= 1 && p <= post_page_num.value) return p
     return 1
 }
 
 const change_page = (p) => {
-    post.updater(p)                              // [新接口] 切片+设置页码，一步到位
-    sync_url(p)                                  // [AI实现] 页码写回 URL，刷新/分享可直达
+    render(p)                               // 切片+设置页码，一步到位
+    sync_url(p)                             // 页码写回 URL，刷新/分享可直达
 }
 
 // [AI实现] URL 同步：replaceState 只改地址不触发刷新；第 1 页不挂 ?page=（首页即第 1 页）
@@ -50,7 +51,7 @@ onMounted(load)
             <!-- 卡片网格 [AI实现] -->
             <div class="card-grid">
                 <RouterLink
-                    v-for="item in page.post_list"
+                    v-for="item in post_list"
                     :key="item.key"
                     class="post-card"
                     :to="`/post/${item.key}`"
@@ -62,18 +63,18 @@ onMounted(load)
         <!-- 分页div [AI编写] 嵌套：上=切页组件(上一页/页码/下一页)，下=共N页 -->
         <div class="btn-area">
             <div class="pager-nav">
-                <button class="page-side" :disabled="page.post_now_page === 1" @click="change_page(page.post_now_page - 1)">上一页</button>
+                <button class="page-side" :disabled="post_now_page === 1" @click="change_page(post_now_page - 1)">上一页</button>
                 <button
-                    v-for="p in page.post_page_list"
+                    v-for="p in post_page_list"
                     :key="p"
                     class="page-num"
-                    :class="{ 'page-on': p === page.post_now_page }"
+                    :class="{ 'page-on': p === post_now_page }"
                     :disabled="typeof p === 'string'"      
                     @click="change_page(p)"
                 >{{ p }}</button>
-                <button class="page-side" :disabled="page.post_now_page === page.post_page_num" @click="change_page(page.post_now_page + 1)">下一页</button>
+                <button class="page-side" :disabled="post_now_page === post_page_num" @click="change_page(post_now_page + 1)">下一页</button>
             </div>
-            <div class="pager-info">共 {{ page.post_page_num }} 页</div>
+            <div class="pager-info">共 {{ post_page_num }} 页</div>
         </div>
     </div>
 </template>

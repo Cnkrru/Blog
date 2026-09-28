@@ -1,25 +1,20 @@
-<script setup>
+﻿<script setup>
 import X from '../icon/X.vue';
 import { onMounted } from 'vue';
-import { sidebar } from '@/modules/draft/sidebar';
-
-console.log('[INFO]:Busuanzi module loaded');
-
-/* 由模块注入官方不蒜子脚本，脚本自动回填模板里的 busuanzi_* span */
-const ui = sidebar().buSuanZi();
+import { script, open, close } from '@/composables/psidebar';
 
 onMounted(() => {
-    ui.script();
+    script();
 });
 </script>
 
 <template>
-    <button class="bsz-btn" @click="ui.open">统计</button>
+    <button class="bsz-btn" @click="open">统计</button>
 
     <dialog class="bsz-box">
         <div class="bsz-header">
             <p>站点统计</p>
-            <button @click="ui.close"><X/></button>
+            <button @click="close"><X/></button>
         </div>
 
         <div class="bsz-body">

@@ -1,11 +1,12 @@
-<script setup>
+﻿<script setup>
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import Main from '@/components/Main.vue';
 import Footer from '@/components/Footer.vue';
-import BackToTop from './components/p-main/content/BackToTop.vue';
+import BackToTop from './components/p-main/post/BackToTop.vue';
 
-import { theme } from './modules/theme';
+import { bg, theme as theme_factory, layout, opacity } from '@/composables/pmain/setting.js';
+import { lightDark } from '@/composables/pheader.js';
 import { onBeforeMount, onMounted,computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useHead } from '@unhead/vue';
@@ -24,15 +25,16 @@ useHead({
 const route = useRoute()
 const isIndexPage = computed(() => route.path === '/')
 
+// [AI迁移] 全局主题系初始化改走 pmain/setting 模块顶层导出（去壳，替代已删的 theme.js/setting())
 onBeforeMount(() => {
-  theme.init_bg();
+  bg().init();
 })
 
 onMounted (()=> {
-  theme.init_theme();  
-  theme.init_light_dark();
-  theme.init_layout();
-  theme.init_opacity();
+  theme_factory().init();
+  lightDark().init();
+  layout().init();
+  opacity().init();
 })
 </script>
 

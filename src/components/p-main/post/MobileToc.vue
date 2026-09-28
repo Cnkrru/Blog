@@ -1,13 +1,13 @@
-<script setup>
+﻿<script setup>
 /*
 * ====================<文章目录·移动端工具条>====================
 * —— 桌面躺在 PostToc 常驻侧栏，移动端(≤768)用本组件：正文顶部"目录"胶囊按钮 + 下拉浮层
 * —— 直接用组件挂在 .post-main 顶部，不走 Teleport（规避 Vue3.5 Teleport 在 async 正文下不注入的坑）
-* 数据：与桌面栏共用 toc 单例（@/modules/toc.js），一份扫描/高亮/跳转
+* 数据：与桌面栏共用 toc 单例（pmain/post.js），一份扫描/高亮/跳转
 * 挂载：Post.vue .post-main 顶部；桌面默认 display:none，仅 ≤768 显示
 */
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { toc } from '@/modules/toc'
+import { toc } from '@/composables/pmain/post.js'
 
 // 顶层解包：模板只对顶层 ref 自动解包，嵌套在对象里的 ref(toc.headings) 不会，需先提到顶层
 const headings = toc.headings
@@ -38,7 +38,6 @@ onBeforeUnmount(() => { toc.unmount() })
             <div class="toc-panel">
                 <div class="toc-panel-head">
                     <span>目录</span>
-                    <span class="toc-panel-count">{{ headings.length }}</span>
                 </div>
                 <div class="toc-panel-list">
                     <p
@@ -140,15 +139,6 @@ onBeforeUnmount(() => { toc.unmount() })
         font-size: 14px;
         font-weight: 600;
         color: var(--g-text);
-    }
-    .toc-panel-count {
-        font-size: 11px;
-        font-weight: 500;
-        padding: 0 6px;
-        border-radius: var(--radius-full);
-        background: color-mix(in srgb, var(--g-color) 12%, transparent);
-        color: var(--g-text);
-        opacity: 0.7;
     }
     .toc-panel-list {
         display: flex;

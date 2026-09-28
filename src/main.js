@@ -23,7 +23,7 @@ import 'katex/dist/katex.min.css'
 import { ViteSSG } from 'vite-ssg'
 import { routes } from './router'
 import App from './App.vue'
-import { content } from './modules/content'
+import { post } from './composables/pmain/post'
 
 export const createApp = ViteSSG(
     App,
@@ -36,7 +36,7 @@ export const createApp = ViteSSG(
             import('giscus')
             // 粒子要限定在首页，改由 _Index.vue 内 i_ParticleEffect.vue 挂载，不再全局启动
             router.afterEach(() => {
-                content.scroll_to_top()
+                post().scrollToTop()   // [AI迁移] 由已删 content.js 的 scroll_to_top 迁入 post.js
             })
         }
     }

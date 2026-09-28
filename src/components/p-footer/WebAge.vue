@@ -1,21 +1,18 @@
-<script setup>
+﻿<script setup>
 import Clock from '../icon/Clock.vue';
-import { onMounted, onBeforeUnmount } from 'vue';
-import { footer } from '@/modules/draft/footer';
+import { onMounted } from 'vue';
+import { webAge } from '@/composables/pfooter';
 
-const wg = footer().webAge();
+// [AI迁移] webAge 已成全局单例，去掉了 footer 壳层，直接取单例上的 ref 与 start
+const { ref_webAge, start } = webAge;
 
 onMounted(() => {
-    wg.start();
-});
-
-onBeforeUnmount(() => {
-    wg.stop();
+    start();
 });
 </script>
 
 <template>
-    <div class="webage"><Clock class="icon"/>{{ wg.ref_webAge.value }}</div>
+    <div class="webage"><Clock class="icon"/>{{ ref_webAge }}</div>
 </template>
 
 <style scoped>

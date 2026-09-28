@@ -1,12 +1,12 @@
-<script setup>
+﻿<script setup>
 /*
 * ====================<文章目录·桌面右侧栏>====================
-* 数据/高亮/跳转全部交给 toc 单例（@/modules/toc.js），桌面栏与移动端工具条共用一份
+* 数据/高亮/跳转全部交给 toc 单例（pmain/post.js），桌面栏与移动端工具条共用一份
 * 挂载：Post.vue .post-layout 右侧，与正文横向 flex 并排；position: sticky 常驻
 * 时机：toc.mount() 首扫 + MutationObserver 观察 .main-area，async 正文注入后自动重扫
 */
 import { onMounted, onBeforeUnmount } from 'vue'
-import { toc } from '@/modules/toc'
+import { toc } from '@/composables/pmain/post.js'
 
 // 顶层解包：模板只对顶层 ref 自动解包，嵌套在对象里的 ref(toc.headings) 不会，需先提到顶层
 const headings = toc.headings
@@ -22,7 +22,6 @@ onBeforeUnmount(() => { toc.unmount() })
         <div v-if="headings.length" class="toc-box">
             <div class="toc-head">
                 <span>目录</span>
-                <span class="toc-count">{{ headings.length }}</span>
             </div>
             <div class="toc-list">
                 <p
@@ -64,16 +63,6 @@ onBeforeUnmount(() => { toc.unmount() })
     font-size: 13px;
     font-weight: 600;
     color: var(--g-text);
-}
-
-.toc-count {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 0 6px;
-    border-radius: var(--radius-full);
-    background: color-mix(in srgb, var(--g-color) 12%, transparent);
-    color: var(--g-text);
-    opacity: 0.7;
 }
 
 .toc-list {

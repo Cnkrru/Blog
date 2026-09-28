@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import Wechat from '@/components/icon/share/Wechat.vue';
 import QQIcon from '@/components/icon/share/QQIcon.vue';
 import Weibo from '@/components/icon/share/Weibo.vue';
@@ -10,7 +10,7 @@ import X from '@/components/icon/X.vue';
 import Share from '@/components/icon/share/Share.vue';
 import Heart from '@/components/icon/Heart.vue';
 
-import {content} from '@/modules/content.js'
+import {post} from '@/composables/pmain/post.js'
 import { nextTick, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -20,7 +20,8 @@ const route = useRoute()
 const title = `https://blog.cnkrru.top${route.path}`;
 const url = `https://blog.cnkrru.top${route.path}`;
 
-const share = content.share_maker(url,title);
+// draft 工厂：share() 返回 linkMaker/qrcodeMaker/copyMaker 一组方法
+const share = post().share();
 
 // 二维码参数，HTML标签
 const qrcode_canvas = ref(null)
@@ -31,7 +32,7 @@ const qrcode_canvas = ref(null)
 */
 const link_btn = (platform) => {
     try {
-        window.open(share.link_maker(platform), '_blank', 'noopener');
+        window.open(share.linkMaker(platform, url, title), '_blank', 'noopener');
         console.log(`[INFO]:${platform}链接打开成功`)
     }
     catch {
@@ -45,7 +46,7 @@ const link_btn = (platform) => {
 */
 const qrcode_open = async () => {
     await nextTick();
-    share.qrcode_maker(qrcode_canvas.value);
+    share.qrcodeMaker(qrcode_canvas.value, url);
     document.querySelector('.qrcode-dialog').showModal()
 }
 
@@ -58,11 +59,11 @@ const qrcode_close = () => {
 * fn: 封装换个名，统一一下API而已
 */
 const copy_btn = () => {
-    share.copy_maker()
+    share.copyMaker(url)
 }
 
 
-const toast = content.toast_maker()
+const toast = post().toast()
 </script>
 
 <template>
@@ -81,7 +82,7 @@ const toast = content.toast_maker()
                 <button class="btn tg" @click="link_btn('tg')"><Telegram/></button>
                 <button class="btn facebook" @click="link_btn('facebook')"><Facebook/></button>
                 <button class="btn x" @click="link_btn('x')"><XIcon/></button>
-                <button class="btn copy-btn" @click="[copy_btn,toast.toast_open('success','已成功复制链接')]"><Copy/></button>
+                <button class="btn copy-btn" @click="[copy_btn,toast.toastOpen('success','已成功复制链接')]"><Copy/></button>
             </div>
 
             <div class="divider"></div>

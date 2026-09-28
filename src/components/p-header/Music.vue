@@ -1,7 +1,8 @@
-<script setup>
-// [AI实现] 音乐播放器面板：封面/控制/进度/音量/列表，逻辑走 music store（howler）；开合由 header 按钮驱动 store.isOpen
+﻿<script setup>
+// [AI实现] 音乐播放器面板：封面/控制/进度/音量/列表，逻辑走 music store（howler）；开合由 header 按钮驱动 store.open_control
+// [AI迁移] 从独立 @/composables/music.js 切到 pheader.js 的 music 单例（snake_case 命名）
 import { computed, onMounted, onUnmounted } from 'vue'
-import { music } from '@/modules/music.js'
+import { music } from '@/composables/pheader.js'
 import Music from '../icon/Music.vue'
 import SkipBack from '../icon/SkipBack.vue'
 import Play from '../icon/Play.vue'
@@ -12,20 +13,20 @@ import Volume from '../icon/Volume.vue'
 import VolumeX from '../icon/VolumeX.vue'
 import X from '../icon/X.vue'
 
-const currentSong = computed(() => music.currentSong)
-const progress = computed(() => music.progressPercent)
+const currentSong = computed(() => music.current_music)   // [AI迁移] 原 music.currentSong → music.current_music
+const progress = computed(() => music.progress)           // [AI迁移] 原 music.progressPercent → music.progress
 
 const onSeek = (e) => { music.seek(Number(e.target.value) / 100) }
 const onVolume = (e) => { music.setVolume(Number(e.target.value)) }
 
-onMounted(() => { music.loadMusicConfig() })
-onUnmounted(() => { music.cleanup() })
+onMounted(() => { music.loadConfig() })                   // [AI迁移] 原 loadMusicConfig → loadConfig
+onUnmounted(() => { music.unmount() })                    // [AI迁移] 原 cleanup → unmount
 </script>
 
 <template>
     <Teleport to="body">
         <Transition name="drop">
-            <div v-if="music.isOpen" class="music-player">
+            <div v-if="music.open_control" class="music-player">
                 <div class="mp-head">
                     <div class="mp-cover">
                         <img v-if="currentSong?.cover" :src="currentSong.cover" alt="封面" />
@@ -35,20 +36,20 @@ onUnmounted(() => { music.cleanup() })
                         <h4 class="mp-title">{{ currentSong?.title || '未选择歌曲' }}</h4>
                         <p class="mp-artist">{{ currentSong?.artist || '未知艺术家' }}</p>
                     </div>
-                    <button class="mp-close" title="关闭" @click="music.isOpen = false"><X class="mp-close-icon" /></button>
+                    <button class="mp-close" title="关闭" @click="music.open_control = false"><X class="mp-close-icon" /></button>
                 </div>
 
                 <div class="mp-controls">
-                    <button class="mp-btn" title="上一首" @click="music.prevSong(true)"><SkipBack class="mp-ctrl-icon" /></button>
-                    <button class="mp-play" title="播放/暂停" @click="music.togglePlay()">
-                        <Pause v-if="music.isPlaying" class="mp-play-icon" />
+                    <button class="mp-btn" title="上一首" @click="music.preMusic(true)"><SkipBack class="mp-ctrl-icon" /></button>
+                    <button class="mp-play" title="播放/暂停" @click="music.toggleMusic()">
+                        <Pause v-if="music.is_playing" class="mp-play-icon" />
                         <Play v-else class="mp-play-icon" />
                     </button>
-                    <button class="mp-btn" title="下一首" @click="music.nextSong(true)"><SkipForward class="mp-ctrl-icon" /></button>
+                    <button class="mp-btn" title="下一首" @click="music.nextMusic(true)"><SkipForward class="mp-ctrl-icon" /></button>
                 </div>
 
                 <div class="mp-progress">
-                    <span class="mp-time">{{ music.formatTime(music.currentTime) }}</span>
+                    <span class="mp-time">{{ music.formatTime(music.music_time) }}</span>
                     <input
                         class="mp-range"
                         type="range"
@@ -63,8 +64,8 @@ onUnmounted(() => { music.cleanup() })
                 </div>
 
                 <div class="mp-volume">
-                    <button class="mp-btn" title="静音" @click="music.toggleMute()">
-                        <VolumeX v-if="music.isMuted || music.volume === 0" class="mp-ctrl-icon" />
+                    <button class="mp-btn" title="静音" @click="music.toggleMuted()">
+                        <VolumeX v-if="music.is_muted || music.volume === 0" class="mp-ctrl-icon" />
                         <Volume v-else class="mp-ctrl-icon" />
                     </button>
                     <input
@@ -79,20 +80,20 @@ onUnmounted(() => { music.cleanup() })
                 </div>
 
                 <div class="mp-listhead">
-                    <button class="mp-listtoggle" @click="music.isListOpen = !music.isListOpen">
+                    <button class="mp-listtoggle" @click="music.open_list = !music.open_list">
                         <List class="mp-ctrl-icon" />
-                        <span>播放列表 ({{ music.playlist.length }})</span>
+                        <span>播放列表 ({{ music.music_list.length }})</span>
                     </button>
                 </div>
 
                 <Transition name="drop">
-                    <ul v-if="music.isListOpen" class="mp-list">
+                    <ul v-if="music.open_list" class="mp-list">
                         <li
-                            v-for="(s, i) in music.playlist"
+                            v-for="(s, i) in music.music_list"
                             :key="s.id ?? i"
                             class="mp-item"
-                            :class="{ on: i === music.currentIndex }"
-                            @click="music.selectSong(i)"
+                            :class="{ on: i === music.music_index }"
+                            @click="music.selectMusic(i)"
                         >
                             <span class="mp-item-title">{{ s.title }}</span>
                             <span class="mp-item-artist">{{ s.artist }}</span>
