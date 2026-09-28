@@ -22,7 +22,7 @@ onMounted(() => {
             <Light class="icon" v-if="ref_light_dark" @click="lightDark().set('dark')"/>
             <Dark  class="icon" v-else                @click="lightDark().set('light')"/>
         </button>
-        <button class="h-button" @click="immersive()"><Immersive class="icon"/></button>
+        <button class="h-button immersive-btn" @click="immersive()"><Immersive class="icon"/></button>
         <button class="h-button" @click="music.toggleUi()"><Music class="icon"/></button>
     </div>
 </template>
@@ -84,6 +84,7 @@ onMounted(() => {
 @media (max-width: 768px) {
     /* [响应式-sm] 手机 */
     .menu-btn { display: flex; }
+    .immersive-btn { display: none; }
     .button-list { gap: var(--space-sm); }
     .h-button { width: 38px; height: 38px; }
 }

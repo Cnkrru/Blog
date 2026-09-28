@@ -167,22 +167,36 @@ export const post = () => {
 
     /* ====================<backToTop>==================== */
     // 返回顶部
+    // [AI修复] 移动端 .main-body 已放开为整页滚动（overflow:visible!important），容器内滚不可用，
+    //   需判能否内滚：能滚走容器，否则回退 window（同 toc.jump 的分叉逻辑）
     const scrollToTop = () => {
-        const scroll_area = document.querySelector('.main-body')
-        if (scroll_area) {
-        scroll_area.scrollTo({ top: 0, 'behavior': 'smooth' })
+        const area = document.querySelector('.main-body')
+        const can_inner = area && area.scrollHeight > area.clientHeight
+        if (can_inner) {
+            area.scrollTo({ top: 0, 'behavior': 'smooth' })
+        }
+        else {
+            window.scrollTo({ top: 0, 'behavior': 'smooth' })
         }
     }
     // 阅读进度
+    // [AI修复] 同 scrollToTop：移动端整页滚动时容器 scroll 不触发，改监听实际滚动源，进度按页面级算
     const readingProgress = () => {
         const area = document.querySelector('.main-body')
         const progress_span = document.querySelector('.progress')
+        if(!area || !progress_span) return
 
-        area.addEventListener('scroll', () => {
-        const undisplay_px = area.scrollHeight - area.clientHeight                            // 区域总px - div显示px = 未显示区域px，常数
-        const _progress = undisplay_px > 0 ? Math.min(1, area.scrollTop / undisplay_px) : 0   // 用未显示px进行一层保护
-        progress_span.style.setProperty('--progress', (_progress * 360) + 'deg')              // 设置样式
-        })
+        const can_inner = area.scrollHeight > area.clientHeight
+        const scroller = can_inner ? area : window
+        const scrolled  = can_inner ? () => area.scrollTop : () => window.scrollY
+        const total     = can_inner ? area.scrollHeight - area.clientHeight : document.documentElement.scrollHeight - window.innerHeight
+
+        const update = () => {
+            const _progress = total > 0 ? Math.min(1, scrolled() / total) : 0   // 用总可滚px做保护
+            progress_span.style.setProperty('--progress', (_progress * 360) + 'deg')  // 设置样式
+        }
+        scroller.addEventListener('scroll', update, { passive: true })
+        update()
     }
 
     /* ====================<mermaid>==================== */

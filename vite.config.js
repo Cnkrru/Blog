@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { VitePWA } from 'vite-plugin-pwa'
 import compileArticles from './src/.build/parseArticle.js'
 import { generateSsgRoutes } from './src/.build/ssg.js'
 import { generateRss } from './src/.build/rss.js'
@@ -34,49 +33,6 @@ export default defineConfig({
         await compileArticles()
       },
     },
-    VitePWA({
-      registerType: 'autoUpdate', // 新版本静默接管，无需手动刷新提示
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
-      manifest: {
-        name: 'Cnkrru - 博客',
-        short_name: 'Cnkrru',
-        description: '个人技术博客：Vue 3 / Markdown 现代前端与技术记录',
-        lang: 'zh-CN',
-        theme_color: '#FAF3E3',
-        background_color: '#FAF3E3',
-        display: 'standalone',
-        start_url: '/',
-        icons: [
-          { src: '/pwa-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/pwa-512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/pwa-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-        ],
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,jpg,svg,webp,woff2}'],
-        cleanupOutdatedCaches: true,
-        // [AI修复] SW navigateFallback 默认把地址栏导航请求全劫持回 index.html，
-        // 导致 /feed.xml /atom.xml /sitemap.xml /robots.txt 等真实静态文件被 SW 路由成 404 页。
-        // 这里把它们与 SW 自身加入内核拒绝名单，导航时直接走网络取真实文件，不被 fallback
-        navigateFallbackDenylist: [
-          /\/feed\.xml/,
-          /\/atom\.xml/,
-          /\/sitemap\.xml/,
-          /\/robots\.txt/,
-          /\/sw\.js/,
-        ],
-      },
-      integration: {
-        // vite-ssg 的 jsdom mock 会把全局 document 注入到 Regenerate 阶段，
-        // 导致 workbox 打包 SW 时 plugin-terser 走浏览器分支，用 document.baseURI
-        // 拼出 http scheme 的 URL 使 fileURLToPath 崩溃；渲染已完成，清掉该全局即可
-        async beforeBuildServiceWorker() {
-          if (typeof document !== 'undefined') {
-            delete globalThis.document
-          }
-        },
-      },
-    }),
   ],
   resolve: {
     alias: {

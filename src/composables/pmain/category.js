@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 
-// [AI迁移] 去内层 computer/render 壳：工厂保留（posts 为每页专属实例，避免路由残留），函数平铺在工厂返回里
 export const category = (posts) => {
 
     const category_mode_groups = ref([])

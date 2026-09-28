@@ -27,9 +27,8 @@ onBeforeUnmount(() => { toc.unmount() })
 
 <template>
     <div v-if="headings.length" class="mobile-toc">
-        <button class="mobile-toc-btn" @click="isOpen = !isOpen">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="5" cy="6" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="5" cy="18" r="1"/></svg>
-            <span>目录</span>
+        <button class="mobile-toc-btn" @click="isOpen = !isOpen" aria-label="目录">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="5" cy="6" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="5" cy="18" r="1"/></svg>
         </button>
     </div>
 
@@ -81,40 +80,45 @@ onBeforeUnmount(() => { toc.unmount() })
 }
 
 @media (max-width: 768px) {
-    /* [响应式-sm] 手机：正文顶部"目录"胶囊，右对齐 */
-    /* sticky 吸顶：正文在窗口滚动时，目录按钮始终停留在可视区顶部（VitePress 大纲吸顶思路） */
+    /* [响应式-sm] 手机：右下角悬浮圆钮（与返回顶部按钮同款，错开叠在其上方），点开居中弹窗 */
     .mobile-toc {
-        position: sticky;
-        top: var(--space-sm);
-        z-index: 40;
+        position: fixed;
+        right: 40px;
+        bottom: 96px;               /* 叠在返回顶部按钮(40+40+16)正上方，成列不重叠 */
+        z-index: 999;
+
         display: flex;
-        justify-content: flex-end;
-        margin-bottom: var(--space-sm);
     }
     .mobile-toc-btn {
-        display: inline-flex;
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+        justify-content: center;
         align-items: center;
-        gap: var(--space-xs);
-        padding: 6px var(--space-md);
-        font-size: 13px;
-        color: var(--g-text);
+
+        color: white;
 
         border-radius: var(--radius-full);
-        border: var(--border-width) solid color-mix(in srgb, var(--g-color) 30%, transparent);
-        background: color-mix(in srgb, var(--g-color) 8%, transparent);
+        border: var(--border-width) solid var(--g-color);
+        background-color: var(--g-color);
         cursor: pointer;
+        box-shadow: 0 2px 8px color-mix(in srgb, var(--g-color) 30%, transparent);
+        transition:
+            transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 0.2s ease;
     }
     .mobile-toc-btn:hover {
-        color: var(--g-color);
-        border-color: var(--g-color);
+        transform: scale(1.1);
+        box-shadow: 0 4px 14px color-mix(in srgb, var(--g-color) 40%, transparent);
     }
 
-    /* 浮层：全屏遮罩 + 顶部面板 */
+    /* 弹窗：全屏遮罩 + 居中面板 */
     .toc-mask {
         display: flex;
         justify-content: center;
-        align-items: flex-start;
-        padding: var(--space-lg) var(--space-md);
+        align-items: center;
+        padding: var(--space-md);
 
         position: fixed;
         inset: 0;

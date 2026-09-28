@@ -1,9 +1,6 @@
 import { ref } from 'vue'
 import axios from 'axios'          // 补 axios import，fix: link 工厂 data() 里 new axios 直接 ReferenceError
 
-// [AI迁移] 去壳：原 link() 工厂 + computer/render 双层，全部提升为模块顶层导出
-//   data/clean/render 平铺导出，状态 ref 与 cache/links 提升为模块级变量
-
 let cache = null   // links.json缓存
 let links = [];
 export const link_page_names = ref([])
