@@ -1,0 +1,6 @@
+.default .header,
+.default .sidebar,
+.default .footer,
+.default .main {
+    padding: var(--space-sm);
+}

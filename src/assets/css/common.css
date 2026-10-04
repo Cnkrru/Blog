@@ -1,0 +1,179 @@
+/* ==========<页面初始化css>========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+button,
+textarea,
+select {
+  border: none;
+  outline: none;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+dialog:not([open]) {
+  display: none;
+}
+
+dialog,
+dialog[open] {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+}
+
+/* body关系到页面布局,不是复制过来的模板代码 */
+body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========<commoncss========== */
+
+/* 四大区域玻璃化 */
+.header,
+.sidebar,
+.footer,
+.main {
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-opacity));
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  position: relative;
+}
+h1::after,
+h2::after {
+  width: 64%;
+  height: 4px;
+
+  left: 0;
+  bottom: -8px;
+
+  content: '';
+  position: absolute;
+
+  background: linear-gradient(
+    90deg,
+    var(--g-color) 0%,
+    color-mix(in srgb, var(--g-color) 45%, transparent) 70%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  filter: blur(0.6px);
+  opacity: 0.6;
+}
+
+/*=========== 链接悬停（主色 + 可选光晕，光晕用 color-mix 派生） ===========*/
+a:hover {
+  color: var(--g-color);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--g-color) 25%, transparent);
+}
+
+/*=========== 分隔线（用 --common-shadow，随主题明暗） ===========*/
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--shadow-sm), transparent);
+  margin: 16px 0;
+}
+
+/*=========== icon颜色 ===========*/
+.icon {
+  color: var(--g-text);
+}
+
+/*=========== 全局滚动条 ===========*/
+/* WebKit 系（Chrome/Edge/Safari）：用伪元素逐层定制 */
+::-webkit-scrollbar {
+  /* 滚动条整体：定宽高 */
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  /* 轨道：透明，只看得到滑块 */
+  background: transparent;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  /* 滑块：渐变主题色 + 内缩 */
+  background: linear-gradient(180deg, var(--g-color), var(--common-hover));
+  border-radius: 10px;
+  border: 2px solid transparent; /* 用透明边框做"内缩" */
+  background-clip: content-box; /* 关键：背景只画在内容区，留出 2px 空隙 */
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3); /* 高光描边 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  /* 悬停：换整条渐变 */
+  background: var(--g-gradient);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  /* 横竖滚动条交汇角 */
+  background: transparent;
+}
+
+/* Firefox：没有伪元素，用标准属性（两行搞定） */
+* {
+  scrollbar-width: thin; /* 细条 */
+  scrollbar-color: var(--g-color) transparent; /* thumb 轨道 */
+}
+
+/*=========== 小屏隐藏下划线，避免拥挤 ===========*/
+@media (max-width: 768px) {
+  h1::after,
+  h2::after {
+    display: none;
+  }
+}

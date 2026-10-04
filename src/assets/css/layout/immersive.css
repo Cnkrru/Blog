@@ -1,0 +1,9 @@
+/* [AI修复] 沉浸模式：只去掉侧栏、正文占满宽度，顶栏与页脚保留
+   （原先还隐藏了页脚，导致页脚位置留白；顶栏也不该动） */
+.immersive .main {
+    width: 100% !important;
+}
+
+.immersive .sidebar {
+    display: none !important;
+}

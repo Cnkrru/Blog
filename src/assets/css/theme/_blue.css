@@ -1,0 +1,47 @@
+/* 默认主题：行业标准亮暗（中性 · 高可读），颜色迁移自 blog-map themes/default.css */
+
+.blue.light {
+    --g-color:#2563eb;                      /* 标准蓝 */
+    --g-bg:#f5f6f8;                         /* 浅灰底 */
+    --glass-r:255;                          /* 玻璃底色 R（= 白面） */
+    --glass-g:255;                          /* 玻璃底色 G */
+    --glass-b:255;                          /* 玻璃底色 B */
+    --g-text:#1f2328;                       /* 近黑正文 */
+    --g-hover: #1d4ed8;                     /* 深蓝 hover */
+    --g-shadow: rgba(15, 20, 30, 0.12);     /* 中性阴影 */
+    --g-gradient: linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa, #3b82f6, #2563eb);
+}
+
+.blue.dark {
+    --g-color:#3b82f6;                      /* 亮蓝 */
+    --g-bg:#0d1117;                         /* 深灰底 */
+    --glass-r:23;                           /* 玻璃底色 R（= 深面，调亮） */
+    --glass-g:27;                           /* 玻璃底色 G */
+    --glass-b:33;                           /* 玻璃底色 B */
+    --g-text:#e6edf3;                       /* 浅灰文字 */
+    --g-hover: #60a5fa;                     /* 亮蓝 hover */
+    --g-shadow: rgba(0, 0, 0, 0.42);        /* 暗色阴影 */
+    --g-gradient: linear-gradient(90deg, #1d4ed8, #2563eb, #3b82f6, #2563eb, #1d4ed8);
+}
+
+/* ====================<代码高亮CSS>==================== */
+.blue.light {
+    --shiki-background: #f6f8fa;                 /* 浅灰底 */
+    --shiki-foreground: #1f2328;                 /* 近黑正文 */
+    --shiki-token-keyword: #1d4ed8;              /* 标准蓝关键字 */
+    --shiki-token-function: #7c3aed;             /* 紫函数名 */
+    --shiki-token-string-expression: #0a3069;    /* 深蓝字符串 */
+    --shiki-token-constant: #0550ae;             /* 蓝常量 */
+    --shiki-token-parameter: #9a3412;            /* 褐参数 */
+    --shiki-token-comment: #6b7280;              /* 灰注释 */
+}
+.blue.dark {
+    --shiki-background: #161b22;                 /* 深灰底 */
+    --shiki-foreground: #e6edf3;                 /* 浅灰正文 */
+    --shiki-token-keyword: #60a5fa;              /* 亮蓝关键字 */
+    --shiki-token-function: #a78bfa;             /* 淡紫函数名 */
+    --shiki-token-string-expression: #a5d6ff;    /* 亮蓝字符串 */
+    --shiki-token-constant: #79c0ff;             /* 亮蓝常量 */
+    --shiki-token-parameter: #ffa657;            /* 橙参数 */
+    --shiki-token-comment: #8b949e;              /* 灰注释 */
+}
