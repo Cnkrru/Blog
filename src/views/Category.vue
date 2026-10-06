@@ -255,16 +255,56 @@ onMounted(() => turnView(0))
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 768px) {
+@media (max-width: 1280px) {
+  /* [响应式-lg] 大屏：分组头与条目内边距略收 */
+  .group-header {
+    padding: var(--space-md);
+  }
+  .group-item {
+    padding-right: var(--space-md);
+  }
+}
+
+@media (max-width: 1024px) {
+  /* [响应式-md] 平板：工具栏下边距收窄 */
   .tool-area {
     margin-bottom: var(--space-md);
   }
 }
 
+@media (max-width: 768px) {
+  /* [响应式-sm] 手机：工具栏下边距进一步收窄，条目间距收紧 */
+  .tool-area {
+    margin-bottom: var(--space-sm);
+  }
+  .group-header {
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+  }
+  .group-item {
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
+  }
+  /* 手机隐藏标签，避免与标题、日期挤压 */
+  .item-tags {
+    display: none;
+  }
+}
+
 @media (max-width: 480px) {
+  /* [响应式-xs] 窄屏：视图按钮与条目文字进一步缩小 */
   .view-tab {
     padding: 4px 12px;
     font-size: 12px;
+  }
+  .group-name {
+    font-size: 14px;
+  }
+  .item-title {
+    font-size: 13px;
+  }
+  .item-date {
+    font-size: 11px;
   }
 }
 </style>

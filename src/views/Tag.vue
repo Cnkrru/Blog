@@ -160,4 +160,47 @@ onMounted(tagClean)
   opacity: 0.6;
   color: var(--g-text);
 }
+
+/* ====================<响应式>==================== */
+@media (max-width: 1024px) {
+  /* [响应式-md] 平板：标签云间距收窄 */
+  .cloud-area {
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 768px) {
+  /* [响应式-sm] 手机：标签云更紧凑，时间线条目收紧内边距与间距 */
+  .cloud-area {
+    gap: var(--space-sm);
+    padding-bottom: var(--space-md);
+  }
+  .timeline-area {
+    padding-top: var(--space-md);
+  }
+  .tl-item {
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+  }
+  .tl-title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* [响应式-xs] 窄屏：标签按钮更小，条目日期缩小避免与标题挤压 */
+  .cloud-tag {
+    padding: 3px 10px;
+    font-size: 13px;
+  }
+  .tl-item {
+    gap: var(--space-xs);
+  }
+  .tl-item-title {
+    font-size: 13px;
+  }
+  .tl-item-date {
+    font-size: 11px;
+  }
+}
 </style>

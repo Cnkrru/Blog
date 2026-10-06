@@ -163,8 +163,13 @@ export const particles = () => {
   type Particle = { x: number; y: number; vX: number; vY: number; radius: number }
   type MousePoint = { x: number; y: number }
 
-  const LINK_DISTANCE = 180 // 连接长度阈值
-  const PARTICLE_COUNT = 80
+  // 粒子配置：移动端与桌面端两套预设，小屏减量减速，保证观感与性能
+  type ParticleConfig = { count: number; link: number; speed: number }
+  const getConfig = (): ParticleConfig =>
+    document.documentElement.clientWidth < 768
+      ? { count: 40, link: 100, speed: 1.0 } // 移动端：少粒子、短连线、慢速度
+      : { count: 80, link: 180, speed: 1.5 } // 桌面端：保持原有观感
+  let config = getConfig()
   const DPR_CAP = 2
 
   // 画布上下文与尺寸
@@ -193,8 +198,8 @@ export const particles = () => {
   const createParticle = (canvasWidth: number, canvasHeight: number): Particle => ({
     x: Math.random() * canvasWidth,
     y: Math.random() * canvasHeight,
-    vX: (Math.random() - 0.5) * 1.5,
-    vY: (Math.random() - 0.5) * 1.5,
+    vX: (Math.random() - 0.5) * config.speed,
+    vY: (Math.random() - 0.5) * config.speed,
     radius: Math.random() * 2 + 1,
   })
 
@@ -218,9 +223,9 @@ export const particles = () => {
       for (let j = i + 1; j < particleList.length; j++) {
         const p2 = particleList[j]!
         const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y)
-        if (distance < LINK_DISTANCE) {
+        if (distance < config.link) {
           ctx!.beginPath()
-          ctx!.strokeStyle = toRgba(currentColor, 1 - distance / LINK_DISTANCE)
+          ctx!.strokeStyle = toRgba(currentColor, 1 - distance / config.link)
           ctx!.lineWidth = 1
           ctx!.moveTo(p1.x, p1.y)
           ctx!.lineTo(p2.x, p2.y)
@@ -238,14 +243,14 @@ export const particles = () => {
         index,
         distance: Math.hypot(particle.x - mouse!.x, particle.y - mouse!.y),
       }))
-      .filter((item) => item.distance < LINK_DISTANCE)
+      .filter((item) => item.distance < config.link)
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 8)
 
     ctx!.lineWidth = 1.5
     for (const item of nearParticles) {
       const particle = particleList[item.index]!
-      ctx!.strokeStyle = toRgba(currentColor, 1 - item.distance / LINK_DISTANCE)
+      ctx!.strokeStyle = toRgba(currentColor, 1 - item.distance / config.link)
       ctx!.beginPath()
       ctx!.moveTo(particle.x, particle.y)
       ctx!.lineTo(mouse!.x, mouse!.y)
@@ -265,7 +270,9 @@ export const particles = () => {
     width = vw
     height = vh
 
-    particleList = Array.from({ length: PARTICLE_COUNT }, () => createParticle(width, height))
+    // 每次重设尺寸按最新宽度选配置：横竖屏切换、窗口拖动也能换套
+    config = getConfig()
+    particleList = Array.from({ length: config.count }, () => createParticle(width, height))
   }
 
   /* ====================<鼠标/触摸事件>==================== */

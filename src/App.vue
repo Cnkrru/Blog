@@ -114,7 +114,7 @@ onMounted(() => {
 
 .sidebar {
   width: 15%;
-  /* [AI修复] 固定高度改为最大高度：短内容不再被撑满，超高时自身滚动，避免溢出压到页脚 */
+  /* 固定高度改为最大高度：短内容不再被撑满，超高时自身滚动，避免溢出压到页脚 */
   max-height: 600px;
   overflow-y: auto;
 
@@ -129,7 +129,7 @@ onMounted(() => {
 
 .main {
   width: 85%;
-  /* [AI修复] 固定高度改为最大高度：正文最高 600px，超出部分在容器内滚动 */
+  /* 固定高度改为最大高度：正文最高 600px，超出部分在容器内滚动 */
   max-height: 600px;
   overflow-y: auto;
 
@@ -193,8 +193,15 @@ onMounted(() => {
     z-index: 9998;
     background: rgba(0, 0, 0, 0.45);
   }
+  /* 中间区弹性撑满页头与页脚之间的剩余高度：内容少时页脚仍贴视口底部，不露背景 */
+  .center {
+    flex: 1;
+    min-height: 0;
+  }
   .main {
     width: 100%;
+    /* 解除桌面端 600px 限高，让正文区撑满可用高度 */
+    max-height: none;
   }
 }
 

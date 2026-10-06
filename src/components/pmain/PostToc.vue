@@ -36,7 +36,7 @@ onUnmounted(() => unmount())
   align-self: flex-start;
   flex-shrink: 0;
   width: 220px;
-  /* [AI修复] 原 100vh-40px 超出 .main 的 600px 上限，目录底部被裁且滚不到；
+  /* 原 100vh-40px 超出 .main 的 600px 上限，目录底部被裁且滚不到；
      改按 .main 上限高度（600px - 内边距/间距）留 48px 余量，card 布局下也够用 */
   max-height: calc(600px - 48px);
   overflow-y: auto;

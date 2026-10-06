@@ -301,9 +301,22 @@ onMounted(linkClean)
 
 /* ====================<响应式>==================== */
 @media (max-width: 1280px) {
-  /* 大屏：仍两列，降低卡片最小宽，避免视口略窄时提前换列 */
+  /* [响应式-lg] 大屏：仍两列，降低卡片最小宽，避免视口略窄时提前换列 */
   .link-grid > * {
     min-width: 240px;
+  }
+}
+
+@media (max-width: 1024px) {
+  /* [响应式-md] 平板：仍两列，分页区顶边距与卡片间距略收 */
+  .btn-area {
+    margin-top: var(--space-md);
+  }
+  .link-grid {
+    gap: var(--space-sm);
+  }
+  .link-grid > * {
+    min-width: 220px;
   }
 }
 

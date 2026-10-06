@@ -8,10 +8,17 @@
 .bg-video {
     position: fixed;
     top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    width: 100vw; height: 100dvh;  /* dvh 替代 vh：随移动端地址栏动态调整，不再露白边 */
     object-fit: cover;
     z-index: -2;           /* 原-1；壳移除后内容=auto，需让视频/遮罩进负域 */
     pointer-events: none;
+}
+
+/* 移动端降级：隐藏视频背景，用图片替代（省流量、不发热） */
+@media (max-width: 768px) {
+    .bg-video {
+        display: none;
+    }
 }
 
 body::before {

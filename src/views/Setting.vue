@@ -292,19 +292,30 @@ useSeo({
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
-
 @media (max-width: 768px) {
-  /* [响应式-sm] 手机 */
+  /* [响应式-sm] 手机：主题按钮一行放不下 5 个，改为允许换行 + 精确等分宽度；整体间距收窄 */
+  .set {
+    gap: var(--space-md);
+  }
+  .btn-list {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  .btn-theme {
+    width: calc((100% - var(--space-sm) * 4) / 5);
+    min-width: 0;
+  }
 }
 
 @media (max-width: 480px) {
-  /* [响应式-xs] 窄屏 */
+  /* [响应式-xs] 窄屏：主题按钮改三列排布（自动换行成两行），按钮降低高度、文字缩小 */
+  .btn {
+    min-width: 0;
+    min-height: 56px;
+    font-size: 13px;
+  }
+  .btn-theme {
+    width: calc((100% - var(--space-sm) * 2) / 3);
+  }
 }
 </style>
