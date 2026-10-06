@@ -1,0 +1,67 @@
+baseURL = 'http://localhost:1313/'
+languageCode = 'zh-CN'
+title = 'Cnkrru'
+theme = 'hugo-theme-hello'
+enableRobotsTXT = true
+hasCJKLanguage = true
+
+# 摘要长度（中文建议按字数）
+summaryLength = 110
+
+[params]
+  author = 'Cnkrru'
+  description = 'Cnkrru 的个人博客，分享前端、后端与硬件相关的学习笔记、项目实践与技术思考。'
+  keywords = ['Cnkrru', '个人博客', '前端', 'Hugo']
+  motto = '记录一些学到的东西，免得忘记。'
+  welcomeTitle = 'Cnkrru'
+  themeColor = 'blue'      # blue / cyan / ink / purple / sakura
+  defaultTheme = 'auto'    # light / dark / auto
+  layout = 'card'          # card（卡片式，内容区内部滚动）
+  since = '2024-01-01'
+  enableSearch = true
+
+[taxonomies]
+  tag = 'tags'
+  category = 'categories'
+
+[menu]
+  [[menu.main]]
+    name = '文章'
+    url = '/posts/'
+    weight = 1
+  [[menu.main]]
+    name = '归档'
+    url = '/categories/'
+    weight = 2
+  [[menu.main]]
+    name = '标签'
+    url = '/tags/'
+    weight = 3
+  [[menu.main]]
+    name = '关于'
+    url = '/about/'
+    weight = 4
+
+[outputs]
+  home = ['html', 'json', 'rss']
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = 'github'
+    lineNos = false
+    noClasses = false
+    tabWidth = 2
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
+
+[pagination]
+  pagerSize = 8
+
+[related]
+  threshold = 60
+  includeNewer = true
