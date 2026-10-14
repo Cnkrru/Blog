@@ -47,3 +47,15 @@ __screenshots__/
 # 编译中间产物（md → SFC/JSON）
 /.cache/
 doc/
+
+# --------------------------------------------------
+# Hugo（hugo-theme-hello）
+#   注意：限定在主题目录内，别用全局 public/
+#   —— 仓库根目录的 public/ 是 Vue 站点的静态资源，是需要入库的
+# --------------------------------------------------
+hugo-theme-hello/**/public/
+hugo-theme-hello/**/resources/
+.hugo_build.lock
+
+# WorkBuddy 本地工作数据（记忆、临时产物）
+.workbuddy/
