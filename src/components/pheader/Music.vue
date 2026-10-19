@@ -8,6 +8,8 @@ import {
   duration,
   isPlaying,
   isMuted,
+  isLoading,
+  isLoadFailed,
   openControl,
   openList,
   currentMusic,
@@ -21,7 +23,7 @@ import {
   onSeek,
   onVolume,
   loadConfig,
-  unmount,
+  musicUnmount,
 } from '@/composables/pheader.ts'
 import MusicIcon from '../icon/Music.vue'
 import SkipBack from '../icon/SkipBack.vue'
@@ -37,7 +39,7 @@ onMounted(() => {
   loadConfig()
 })
 onUnmounted(() => {
-  unmount()
+  musicUnmount()
 })
 </script>
 
@@ -53,6 +55,8 @@ onUnmounted(() => {
           <div class="mp-meta">
             <h4 class="mp-title">{{ currentMusic?.title || '未选择歌曲' }}</h4>
             <p class="mp-artist">{{ currentMusic?.artist || '未知艺术家' }}</p>
+            <p v-if="isLoading" class="mp-status">加载中…</p>
+            <p v-else-if="isLoadFailed" class="mp-status mp-status-error">音乐源加载失败</p>
           </div>
           <button class="mp-close" title="关闭" @click="openControl = false">
             <X class="mp-close-icon" />
@@ -207,6 +211,17 @@ onUnmounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* AI修复：加载/失败提示（原来 isLoading 只写不读，加载慢与加载失败在界面上都看不出来） */
+.mp-status {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--g-color);
+}
+
+.mp-status-error {
+  color: var(--color-error);
 }
 
 .mp-close {
@@ -412,13 +427,6 @@ onUnmounted(() => {
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
 
 @media (max-width: 768px) {
   /* [响应式-sm] 手机 */

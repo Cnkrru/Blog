@@ -4,9 +4,7 @@ import Dark from '../icon/Dark.vue'
 import Immersive from '../icon/Immersive.vue'
 import Music from '../icon/Music.vue'
 import Menu from '../icon/Menu.vue'
-import { RefLd, setLd } from '@/composables/pheader.ts'
-import { setImmersive } from '@/composables/pheader.ts'
-import { toggleUi } from '@/composables/pheader.ts'
+import { refLd, setImmersive, toggleLd, toggleUi } from '@/composables/pheader.ts'
 import { toggleSidebar } from '@/composables/psidebar.ts'
 </script>
 
@@ -15,9 +13,10 @@ import { toggleSidebar } from '@/composables/psidebar.ts'
     <button class="h-button menu-btn" title="菜单" @click="toggleSidebar">
       <Menu class="icon" />
     </button>
-    <button class="h-button">
-      <Light class="icon" v-if="RefLd === 'light'" @click="setLd('dark')" />
-      <Dark class="icon" v-if="RefLd === 'dark'" @click="setLd('light')" />
+    <!-- AI修复：明暗切换 @click 移到 button 上，原先绑在图标子组件导致仅点到 svg 才生效 -->
+    <button class="h-button" @click="toggleLd()">
+      <Light class="icon" v-if="refLd === 'light'" />
+      <Dark class="icon" v-if="refLd === 'dark'" />
     </button>
     <button class="h-button immersive-btn" @click="setImmersive()">
       <Immersive class="icon" />
@@ -71,13 +70,6 @@ import { toggleSidebar } from '@/composables/psidebar.ts'
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
 
 @media (max-width: 768px) {
   /* [响应式-sm] 手机 */

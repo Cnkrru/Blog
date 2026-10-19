@@ -2,7 +2,15 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/seo'
-import { tagClean, tagToggle, tagItem, tagSet, tagList, tags } from '../composables/pamin/tags.ts'
+import {
+  tagClean,
+  tagCleanSync,
+  tagToggle,
+  tagItem,
+  tagSet,
+  tagList,
+  tags,
+} from '../composables/pamin/tags.ts'
 
 useSeo({
   title: '标签',
@@ -10,7 +18,12 @@ useSeo({
   path: '/tag',
 })
 
-onMounted(tagClean)
+// AI修复：setup 期同步加载，让 SSG 产物就带标签云；数据未就绪再走异步兜底
+const tagLoaded = tagCleanSync()
+
+onMounted(() => {
+  if (!tagLoaded) tagClean()
+})
 </script>
 
 <template>
@@ -159,5 +172,41 @@ onMounted(tagClean)
   font-size: 12px;
   opacity: 0.6;
   color: var(--g-text);
+  /* AI修复：窄屏下日期会被折成 2026- / 10-19 两行（归档页的 .item-date 一直有这两条） */
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ====================<响应式>==================== */
+@media (max-width: 768px) {
+  /* [响应式-sm] 手机：标签云与时间线各区留白收紧 */
+  .cloud-area {
+    gap: var(--space-sm);
+    padding-bottom: var(--space-md);
+  }
+  .timeline-area {
+    padding-top: var(--space-md);
+  }
+  .tl-bar {
+    margin-bottom: var(--space-sm);
+  }
+  .tl-item {
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  /* [响应式-xs] 窄屏：标签按钮与条目文字逐级缩小 */
+  .cloud-tag {
+    padding: 3px 10px;
+    font-size: 12px;
+  }
+  .tl-item-title {
+    font-size: 13px;
+  }
+  .tl-item-date {
+    font-size: 11px;
+  }
 }
 </style>

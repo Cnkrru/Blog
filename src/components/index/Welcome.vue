@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { RefTw, twWorker } from '@/composables'
-import { onMounted } from 'vue'
+import { refTw, twStop, twWorker } from '@/composables'
+import { onMounted, onUnmounted } from 'vue'
 onMounted(() => {
   twWorker()
+})
+onUnmounted(() => {
+  // AI修复：卸载时停掉打字定时链，避免残留定时器在别的页面继续跑
+  twStop()
 })
 </script>
 
 <template>
   <div class="welcome">
-    {{ RefTw }}
+    {{ refTw }}
   </div>
 </template>
 
@@ -30,9 +34,6 @@ onMounted(() => {
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
 
 @media (max-width: 1024px) {
   /* [响应式-md] 平板 */

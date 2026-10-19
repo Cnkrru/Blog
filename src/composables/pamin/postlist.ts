@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue'
-import { postCleanCache, postClean, type CleanData } from './post'
+import { postCleanCache, postClean, postCleanSync, type CleanData } from './post'
+import { windowPages } from './pager'
 
 const POST_NUM = 6 // 每页文章条数
 
@@ -9,38 +10,46 @@ export const listItems = ref<CleanData[]>([])
 export const list: CleanData[] = []
 
 // 分页窗口：当前页±2、最多 5 个页码（不足 5 项时向末尾补齐，无省略号）
-export const listDisplayPages = computed(() => {
-  const pages: number[] = []
-  let start = Math.max(1, listNowPage.value - 2)
-  const end = Math.min(listPageNum.value, start + 4)
-  if (end - start < 4) {
-    start = Math.max(1, end - 4)
-  }
-  for (let p = start; p <= end; p++) pages.push(p)
-  return pages
-})
+export const listDisplayPages = computed(() => windowPages(listNowPage.value, listPageNum.value))
 
-export const ListClean = async () => {
-  await postClean() // postClean 内部确保 postData 已拉取，填充 postCleanCache
+// 填充列表与总页数
+const listFill = () => {
   list.splice(0, list.length, ...postCleanCache) // 就地填充，保持管线引用
   listPageNum.value = Math.max(1, Math.ceil(list.length / POST_NUM))
 }
 
+// AI修复：setup 期同步加载，让 SSG 产物就有文章内容；数据未就绪返回 false 交异步兜底
+export const listCleanSync = (): boolean => {
+  if (!postCleanSync()) return false
+  listFill()
+  return true
+}
+
+export const listClean = async () => {
+  if (listCleanSync()) return
+  await postClean()
+  listFill()
+}
+
 // 从 URL 读页码：?page= 缺失或越界一律回退 1（首页即默认页）
 export const listInitPage = () => {
-  const p = Number(new URLSearchParams(location.search).get('page'))
+  // AI修复：SSG 期无 location，构建产物固定渲染第 1 页
+  if (typeof window === 'undefined') return 1
+  const p = Number(new URLSearchParams(window.location.search).get('page'))
   if (p >= 1 && p <= listPageNum.value) return p
   return 1
 }
 
 // 切页（URL 同步内联）：切片写入当前页文章，边界内设置当前页；
 // 页码写回 URL 供刷新/分享直达，第 1 页不挂 ?page=
-export const ListChangePage = (n: number) => {
+export const listChangePage = (n: number) => {
   listItems.value = list.slice(POST_NUM * (n - 1), POST_NUM * n)
   if (n >= 1 && n <= listPageNum.value) {
     listNowPage.value = n
+    // AI修复：SSG 期无 location/history，URL 同步仅客户端执行
+    if (typeof window === 'undefined') return
     // URL 同步：replaceState 只改地址不触发刷新
-    const url = new URL(location.href)
+    const url = new URL(window.location.href)
     if (n === 1) {
       url.searchParams.delete('page')
     } else {

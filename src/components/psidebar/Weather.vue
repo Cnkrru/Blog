@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { RefIp, RefWeather, ip, weather } from '@/composables/psidebar'
+import { refIp, refWeather, weather } from '@/composables/psidebar'
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  ip()
+  // AI修复：weather() 内部已 await ip() 并复用缓存，这里不再单独调 ip()，避免重复请求
   weather()
 })
 </script>
 
 <template>
   <div class="weather-ip">
-    <span class="weather-number">{{ RefWeather }}</span>
-    <span class="ip">{{ RefIp }}</span>
+    <span class="weather-number">{{ refWeather }}</span>
+    <span class="ip">{{ refIp }}</span>
   </div>
 </template>
 

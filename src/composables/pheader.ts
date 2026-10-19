@@ -4,18 +4,19 @@ import MiniSearch from 'minisearch'
 import { Howl } from 'howler'
 import { getRouter } from '../router'
 import { postClean, postCleanCache } from './pamin/post'
-import { RefLayout, setLayout } from './pamin/setting'
+import { refLayout, setLayout } from './pamin/setting'
 
 /* ====================<ld>==================== */
 type LD = 'light' | 'dark'
 const lds: LD[] = ['light', 'dark']
 
-export const RefLd = ref<LD>('dark')
+// AI修复：模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefLd）
+export const refLd = ref<LD>('dark')
 export const setLd = (ld: LD) => {
   const body = document.body
   lds.forEach((name) => body.classList.remove(name)) // 清理旧类，避免硬编码
   body.classList.add(ld)
-  RefLd.value = ld
+  refLd.value = ld
 
   localStorage.setItem('ld', ld)
   console.info(`亮暗设置成功,当前布局为${ld}`)
@@ -23,9 +24,14 @@ export const setLd = (ld: LD) => {
 
 export const initLD = () => {
   const store = localStorage.getItem('ld')
-  const l = lds.includes(store as LD) ? (store as LD) : 'dark'
+  const l: LD = lds.includes(store as LD) ? (store as LD) : 'dark'
   setLd(l)
   console.info('亮暗初始化成功')
+}
+
+// AI修复：明暗切换动作收敛到 .ts，组件模板只做事件转发
+export const toggleLd = () => {
+  setLd(refLd.value === 'light' ? 'dark' : 'light')
 }
 
 /* ====================<immersive>==================== */
@@ -39,7 +45,7 @@ export const setImmersive = () => {
     setLayout(layoutBeforeImmersive)
   } else {
     // 进入沉浸：先记住当前布局，再切到 immersive
-    layoutBeforeImmersive = RefLayout.value
+    layoutBeforeImmersive = refLayout.value
     body.classList.remove('default', 'card')
     body.classList.add('immersive')
   }
@@ -63,6 +69,8 @@ const isBrowser = typeof window !== 'undefined'
 
 let howler: Howl | null = null
 let timer: ReturnType<typeof setInterval> | null = null
+// AI修复：连续加载失败计数。所有歌曲源都不通时用它止损，避免 onloaderror 无限切歌
+let loadFailCount = 0
 
 export const musicList = ref<Song[]>([])
 export const musicIndex = ref(0)
@@ -74,6 +82,8 @@ export const isMuted = ref(false)
 export const openControl = ref(false)
 export const openList = ref(false)
 export const isLoading = ref(false)
+// AI修复：音乐源全部加载失败时置位，供 UI 提示（原先加载态与失败态都无处可见）
+export const isLoadFailed = ref(false)
 
 /* ====================<派生数据>==================== */
 export const currentMusic = computed(() => musicList.value[musicIndex.value])
@@ -86,34 +96,39 @@ export const formatTime = (time: number) => {
 }
 
 /* ====================<工人：进度轮询>==================== */
-export const stop = () => {
+// AI修复：导出名按域加 music 前缀，避免与 post.ts 的 mount/unmount 等同名导出撞车
+export const musicStop = () => {
   if (timer) {
     clearInterval(timer)
     timer = null
   }
 }
 
-export const start = () => {
+export const musicStart = () => {
   if (!howler) return
-  stop()
+  musicStop()
   timer = setInterval(() => {
     musicTime.value = howler?.seek() ?? 0
   }, 500)
 }
 
 /* ====================<工人：构建/销毁 Howl>==================== */
-export const unmount = () => {
-  stop()
+export const musicUnmount = () => {
+  musicStop()
   if (howler) {
     howler.unload()
     howler = null
   }
 }
 
-export const mount = (song: Song, autoplay: boolean) => {
-  unmount()
+export const musicMount = (song: Song, autoplay: boolean) => {
+  musicUnmount()
   if (!song.audio) return
+  // AI修复：换歌时重置播放进度与时长，避免进度条停留在上一首的位置
+  musicTime.value = 0
+  duration.value = 0
   isLoading.value = true
+  isLoadFailed.value = false
 
   howler = new Howl({
     src: [song.audio, ...(song.backupAudio || [])],
@@ -122,37 +137,59 @@ export const mount = (song: Song, autoplay: boolean) => {
     volume: isMuted.value ? 0 : volume.value,
     onplay: () => {
       isPlaying.value = true
-      start()
+      musicStart()
     },
     onpause: () => {
       isPlaying.value = false
-      stop()
+      musicStop()
     },
     onstop: () => {
       isPlaying.value = false
-      stop()
+      musicStop()
     },
     onend: () => {
       isPlaying.value = false
-      stop()
+      musicStop()
       nextMusic()
     },
     onload: () => {
       duration.value = howler?.duration() ?? 0
       isLoading.value = false
+      loadFailCount = 0 // AI修复：加载成功即清零失败计数
     },
     onloaderror: () => {
       isLoading.value = false
+      // AI修复：每首歌都试过一轮仍失败则停下来，避免在坏源之间无限轮换
+      loadFailCount += 1
+      if (loadFailCount >= musicList.value.length) {
+        isLoadFailed.value = true
+        console.error('[ERR]:音乐源全部加载失败，已停止自动切歌')
+        return
+      }
       nextMusic()
     },
   })
+
+  // AI修复：html5 模式下 Howler 只在 canplaythrough 才写内部 _duration，而该事件对远程大文件
+  //   常常迟迟不触发甚至不触发，于是 howler.duration() 恒为 0：右侧总长一直 0:00，
+  //   而 onSeek 又以 duration 作守卫，进度条就拖不动。这里直接听底层 audio 元素的
+  //   loadedmetadata（远早于 canplaythrough）取时长。
+  const audioNode = (howler as unknown as { _sounds: { _node?: HTMLAudioElement }[] })._sounds[0]
+    ?._node
+  audioNode?.addEventListener(
+    'loadedmetadata',
+    () => {
+      duration.value = Math.ceil(audioNode.duration * 10) / 10
+    },
+    { once: true },
+  )
 }
 
 export const loadMusic = (index: number, autoplay: boolean) => {
   const target = musicList.value[index]
   if (!target) return
   musicIndex.value = index
-  mount(target, autoplay)
+  musicMount(target, autoplay)
 }
 
 /* ====================<外层动作>==================== */
@@ -252,8 +289,8 @@ export const onVolume = (e: Event) => {
 /* ====================<search>==================== */
 type SearchDoc = { id: string; title: string; category: string; tags: string[]; date: string }
 
-export const RefKeyword = ref('')
-export const RefSearchRes = ref<SearchDoc[]>([])
+export const refKeyword = ref('')
+export const refSearchRes = ref<SearchDoc[]>([])
 export const searchReady = ref(false)
 export const searchLoading = ref(false)
 export const searchOpen = ref(false)
@@ -320,15 +357,15 @@ export const buildIndex = async () => {
 const assembler = (key: string) => {
   const q = key.trim()
   if (!q) {
-    RefSearchRes.value = []
+    refSearchRes.value = []
     return
   }
   if (!miniSearch) {
-    RefSearchRes.value = []
+    refSearchRes.value = []
     return
   }
   // SearchResult 靠索引签名携带 storeFields，显式提取字段映射回 SearchDoc 契约
-  RefSearchRes.value = miniSearch
+  refSearchRes.value = miniSearch
     .search(q)
     .slice(0, 10)
     .map((r) => ({
@@ -342,26 +379,32 @@ const assembler = (key: string) => {
 
 // 结果清空（原 _cleaner 因与数据清洗撞名加 _，当前无冲突用语义名 clearRes）
 export const clearRes = () => {
-  RefSearchRes.value = []
+  refSearchRes.value = []
 }
 
 // 输入清空：keyword、结果、面板一次性复位（点击结果/回车跳转后调用）
 export const resetSearch = () => {
-  RefKeyword.value = ''
+  refKeyword.value = ''
   clearRes()
   searchOpen.value = false
 }
 
-// 输入联动：空输入收起面板，非空则检索并展开（Search.vue 只做 v-model 绑定）
-watch(RefKeyword, (v) => {
+// 输入联动：空输入收起面板；非空则防抖检索并展开（Search.vue 只做 v-model 绑定）
+let searchTimer: ReturnType<typeof setTimeout> | null = null
+watch(refKeyword, (v) => {
   const q = v.trim()
+  if (searchTimer) clearTimeout(searchTimer)
   if (!q) {
     clearRes()
     searchOpen.value = false
     return
   }
-  assembler(q)
-  searchOpen.value = true
+  // AI修复：检索加轻量防抖，避免连打时每键都同步检索
+  searchTimer = setTimeout(() => {
+    assembler(q)
+    searchOpen.value = true
+    syncSearchPos()
+  }, 200)
 })
 
 // 高亮命中片段：keyword 前后内容分别转义后回填高亮标签
@@ -390,12 +433,12 @@ export const searchHl = (text: string, kw: string) => {
 
 /* ====================<search UI 交互>==================== */
 // 结果下拉定位：读输入框位置，下移 8px 对齐
-export const RefSearchPos = ref({ left: 0, top: 0, width: 0 })
+export const refSearchPos = ref({ left: 0, top: 0, width: 0 })
 const syncSearchPos = () => {
   const pane = document.querySelector<HTMLElement>('.search')
   if (!pane) return
   const r = pane.getBoundingClientRect()
-  RefSearchPos.value = { left: r.left, top: r.top + r.height + 8, width: r.width }
+  refSearchPos.value = { left: r.left, top: r.top + r.height + 8, width: r.width }
 }
 
 // 点击结果：跳转文章页并复位搜索状态（router 实例由 main.ts 注入）
@@ -404,28 +447,44 @@ export const go = (id: string) => {
   resetSearch()
 }
 
-export const onEnter = () => {
-  const first = RefSearchRes.value[0]
+export const onEnter = (e: KeyboardEvent) => {
+  // AI修复：中文输入法组词中的回车是选词，不当作跳转
+  if (e.isComposing) return
+  const first = refSearchRes.value[0]
   if (first) go(first.id)
 }
 
 export const onFocus = () => {
-  if (RefKeyword.value.trim()) searchOpen.value = true
+  if (refKeyword.value.trim()) searchOpen.value = true
 }
 
 const onClickOutside = (e: MouseEvent) => {
   if (!(e.target as HTMLElement).closest('.search')) searchOpen.value = false
 }
 
+// AI修复：滚动定位仅面板展开时同步，并用 rAF 节流（原 capture scroll 每次滚动都算 getBoundingClientRect）
+let posRaf: number | null = null
+const syncSearchPosOnView = () => {
+  if (!searchOpen.value || posRaf) return
+  posRaf = requestAnimationFrame(() => {
+    posRaf = null
+    syncSearchPos()
+  })
+}
+
 // 挂载/卸载：初始化定位并注册全局监听，Search.vue 生命周期调用
 export const mountSearch = () => {
   syncSearchPos()
   document.addEventListener('click', onClickOutside)
-  document.addEventListener('scroll', syncSearchPos, true)
-  window.addEventListener('resize', syncSearchPos)
+  document.addEventListener('scroll', syncSearchPosOnView, true)
+  window.addEventListener('resize', syncSearchPosOnView)
 }
 export const unmountSearch = () => {
   document.removeEventListener('click', onClickOutside)
-  document.removeEventListener('scroll', syncSearchPos, true)
-  window.removeEventListener('resize', syncSearchPos)
+  document.removeEventListener('scroll', syncSearchPosOnView, true)
+  window.removeEventListener('resize', syncSearchPosOnView)
+  if (posRaf) {
+    cancelAnimationFrame(posRaf)
+    posRaf = null
+  }
 }

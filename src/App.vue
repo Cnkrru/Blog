@@ -54,6 +54,9 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- AI修复：音乐播放器移出 header 常驻渲染，否则进首页(不渲染 header)会卸载 Music 触发 howler.unload 中断播放 -->
+  <HeaderMusic />
+
   <template v-if="isIndex">
     <RouterView to="/"></RouterView>
   </template>
@@ -63,7 +66,6 @@ onMounted(() => {
       <HeaderLogo />
       <HeaderSearch />
       <HeaderButtons />
-      <HeaderMusic />
     </header>
     <div class="center">
       <aside class="sidebar" :class="{ 'sidebar-open': refSidebar }">
@@ -161,23 +163,18 @@ onMounted(() => {
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
 
 @media (max-width: 768px) {
   /* [响应式-sm] 手机：侧栏改为左侧抽屉(脱离文档流)，主内容占满宽度 */
   .sidebar {
     position: fixed;
     top: 0;
-    bottom: 0;
     left: 0;
     width: 240px;
-    height: 100%;
+    /* AI修复：固定定位下用 100dvh 贴合可视视口（原 height:100% 在 iOS 会被地址栏裁切），
+       并解除基础样式的 max-height:600px，否则抽屉永远只有 600px 高 */
+    height: 100dvh;
+    max-height: none;
     margin: 0;
     transform: translateX(-100%);
     transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
@@ -195,10 +192,11 @@ onMounted(() => {
   }
   .main {
     width: 100%;
+    /* AI修复：解除基础样式的 max-height:600px 与内部滚动，改回整页滚动
+       （scrollProgress 检测到 .main 不可滚会自动回落 window，进度环不受影响） */
+    max-height: none;
+    overflow-y: visible;
   }
 }
 
-@media (max-width: 480px) {
-  /* [响应式-xs] 窄屏 */
-}
 </style>

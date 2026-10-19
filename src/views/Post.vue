@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Component } from 'vue'
 import { useSeo } from '../composables/seo'
+import { contentReady } from '../composables/pamin/post.ts'
 import PostStatus from '../components/pmain/PostStatus.vue'
-import postEdit from '../components/pmain/postEdit.vue'
+import PostEdit from '../components/pmain/PostEdit.vue'
 import Content from '../components/pmain/Content.vue'
 import PostShare from '../components/pmain/PostShare.vue'
 import PostNav from '../components/pmain/PostNav.vue'
@@ -12,9 +13,13 @@ import PostComment from '../components/pmain/PostComment.vue'
 import PostToc from '../components/pmain/PostToc.vue'
 
 const route = useRoute()
-const comps = import.meta.glob<{ default: Component }>('/.cache/*.vue', { eager: true })
+// AI修复：正文改为非 eager + 异步组件按需加载（原先 eager 会把全部文章的编译产物打进同一分包）
+const comps = import.meta.glob<{ default: Component }>('/.cache/*.vue')
 const postKey = computed(() => String(route.params.id))
-const content = computed(() => comps[`/.cache/${postKey.value}.vue`]?.default ?? null)
+const content = computed(() => {
+  const loader = comps[`/.cache/${postKey.value}.vue`]
+  return loader ? defineAsyncComponent(loader) : null
+})
 
 // SEO 元数据：.cache/post.json 是构建期从 public/config/post.json 复制的可 import 同源副本
 type PostSeo = {
@@ -52,11 +57,18 @@ useSeo({
   <div class="post-layout">
     <div class="post-main">
       <PostStatus />
-      <postEdit />
+      <PostEdit />
       <!-- 正文容器：编译期 md 产物经 slot 注入 -->
       <Content v-if="content">
-        <component :is="content" />
+        <!-- AI修复：Suspense 让 SSR/hydration 等正文就绪；@resolve 后再做图片放大与 mermaid 渲染 -->
+        <Suspense @resolve="contentReady">
+          <component :is="content" />
+        </Suspense>
       </Content>
+      <!-- AI修复：无效文章 id 兜底，避免整页空白 -->
+      <div v-else class="post-empty">
+        <p>没有找到这篇文章，<RouterLink to="/">返回首页</RouterLink></p>
+      </div>
       <div class="end-components">
         <PostShare />
         <PostNav />
@@ -85,10 +97,14 @@ useSeo({
   gap: var(--space-lg);
 }
 
-/* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
+/* AI修复：无效文章 id 的兜底提示 */
+.post-empty {
+  padding: 80px 0;
+  text-align: center;
+  color: var(--g-text);
 }
+
+/* ====================<响应式>==================== */
 
 @media (max-width: 1024px) {
   /* [响应式-md] 平板：目录列已缩到 180px，双栏间距收窄 */

@@ -5,41 +5,42 @@
         "date": "2026-10-04",
         "category": "随笔",
         "tags": [
-            "随笔",
-            "项目"
+            "随笔"
         ],
-        "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能",
+        "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件",
         "keywords": "个人博客, Vue 3",
         "updated": "",
-        "wordCount": 735,
-        "readingTime": 3
+        "wordCount": 1019,
+        "readingTime": 4
     },
     "post-1": {
         "order": 2,
-        "title": "Linux服务器-1",
-        "date": "2026-10-05",
-        "category": "Linux",
+        "title": "express-1-初次体验",
+        "date": "2026-10-18",
+        "category": "后端",
         "tags": [
-            "Linux，个人"
+            "express",
+            "后端"
         ],
-        "description": "记录第一次接触Linux服务器",
-        "keywords": "Linux服务器",
+        "description": "记录express初次体验",
+        "keywords": "express",
         "updated": "",
-        "wordCount": 117,
+        "wordCount": 133,
         "readingTime": 1
     },
     "post-2": {
         "order": 3,
-        "title": "写作组件测试",
-        "date": "2026-10-14",
-        "category": "前端",
+        "title": "express-2-drizzle+sqlite配置",
+        "date": "2026-10-19",
+        "category": "后端",
         "tags": [
-            "Markdown，组件"
+            "express",
+            "后端"
         ],
-        "description": "把引擎支持的每一种编译期写作组件各写一次，用于肉眼验收",
-        "keywords": "写作组件，Markdown 扩展语法",
+        "description": "记录给ts项目配置drizzleORM和sqlite数据库",
+        "keywords": "express",
         "updated": "",
-        "wordCount": 648,
-        "readingTime": 3
+        "wordCount": 152,
+        "readingTime": 1
     }
 }

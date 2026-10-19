@@ -105,13 +105,6 @@ onMounted(() => postNav(postKey))
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
 
 @media (max-width: 768px) {
   /* [响应式-sm] 手机：两按钮保持并排，收紧边距与内边距 */

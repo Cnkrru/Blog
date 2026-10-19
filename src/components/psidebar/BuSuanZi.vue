@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import X from '../icon/X.vue'
-import { bszOpen, bszClose } from '@/composables/psidebar'
+import { onMounted } from 'vue'
+import { bszOpen, bszClose, buSuanZi } from '@/composables/psidebar'
+
+onMounted(() => {
+  // AI修复：注入不蒜子统计脚本（此前 buSuanZi 从未被调用，占位符永远显示 …）
+  buSuanZi()
+})
 </script>
 
 <template>

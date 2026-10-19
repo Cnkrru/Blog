@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { useSeo } from '../composables/seo'
 import {
   linkClean,
+  linkCleanSync,
   linkChangePage,
   linkDisplayPages,
   setDropdown,
@@ -19,7 +20,12 @@ useSeo({
   path: '/link',
 })
 
-onMounted(linkClean)
+// AI修复：setup 期同步加载，让 SSG 产物就带链接内容；数据未就绪再走异步兜底
+const linkLoaded = linkCleanSync()
+
+onMounted(() => {
+  if (!linkLoaded) linkClean()
+})
 </script>
 
 <template>

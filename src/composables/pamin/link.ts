@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue'
 import axios from 'axios'
+import { windowPages } from './pager'
 
 type LinkData = {
   id: string
@@ -13,7 +14,10 @@ type LinkGroup = {
   links: LinkData[]
 }
 
-export let linkCache: LinkData[] = []
+// AI修复：构建期可同步取到 links 全表（.cache/links.json 由构建管线从 public/config/links.json 复制），
+//   setup 期即可用 → Link 页在 SSG 产物里就有真内容；副本缺失时仍走 axios 兜底
+const localLink = import.meta.glob<LinkData[]>('/.cache/links.json', { eager: true, import: 'default' })
+export let linkCache: LinkData[] = localLink['/.cache/links.json'] ?? []
 let links: LinkGroup[] = []
 export const linkCategories = ref<string[]>([])
 export const linkCategory = ref(1)
@@ -22,23 +26,12 @@ export const linkCategoryNum = ref(0)
 export const linkDropdown = ref(false)
 
 // 分类分页窗口：当前分类±2、最多 5 个页码（不足 5 项时向末尾补齐，无省略号）
-export const linkDisplayPages = computed(() => {
-  const pages: number[] = []
-  let start = Math.max(1, linkCategory.value - 2)
-  const end = Math.min(linkCategoryNum.value, start + 4)
-  if (end - start < 4) {
-    start = Math.max(1, end - 4)
-  }
-  for (let p = start; p <= end; p++) pages.push(p)
-  return pages
-})
+export const linkDisplayPages = computed(() =>
+  windowPages(linkCategory.value, linkCategoryNum.value),
+)
 
-export const linkClean = async () => {
-  if (links.length > 0) return
-  if (linkCache.length === 0) {
-    linkCache = (await axios.get<LinkData[]>('/config/links.json')).data
-  }
-
+// 分桶核心（同步）：数据已在内存即可算（SSG 期 .cache 副本已在）
+const linkGroupBuild = () => {
   const linkMap = new Map<string, LinkData[]>()
   linkCache.forEach((link) => {
     // 遍历原始数据，如果没有category桶，创建一个
@@ -49,10 +42,24 @@ export const linkClean = async () => {
   })
 
   // 转换数据容器格式
-  links = Array.from(linkMap, ([name, links]) => ({ name, links }))
+  links = Array.from(linkMap, ([name, itemLinks]) => ({ name, links: itemLinks }))
   linkItems.value = links[linkCategory.value - 1]!
   linkCategories.value = links.map((category) => category.name)
   linkCategoryNum.value = linkCategories.value.length
+}
+
+// AI修复：setup 期同步可用 → SSG 产物带真内容；未就绪返回 false 交异步兜底
+export const linkCleanSync = (): boolean => {
+  if (links.length > 0) return true
+  if (linkCache.length === 0) return false
+  linkGroupBuild()
+  return true
+}
+
+export const linkClean = async () => {
+  if (linkCleanSync()) return
+  linkCache = (await axios.get<LinkData[]>('/config/links.json')).data
+  linkGroupBuild()
 }
 
 // 切页：边界内切换当前分类并填充对应链接，关闭分类下拉

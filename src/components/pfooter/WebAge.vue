@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import Clock from '../icon/Clock.vue'
 import { onMounted } from 'vue'
-import { RefWebage, webageStart } from '@/composables/pfooter.ts'
+import { refWebage, webageStart } from '@/composables/pfooter.ts'
 onMounted(() => {
   webageStart()
 })
 </script>
 
 <template>
-  <div class="webage"><Clock class="icon" />{{ RefWebage }}</div>
+  <div class="webage"><Clock class="icon" />{{ refWebage }}</div>
 </template>
 
 <style scoped>
@@ -30,17 +30,6 @@ onMounted(() => {
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
-
-@media (max-width: 768px) {
-  /* [响应式-sm] 手机 */
-}
 
 @media (max-width: 480px) {
   /* [响应式-xs] 窄屏 */

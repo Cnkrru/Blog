@@ -46,6 +46,12 @@ export const routes: RouteRecordRaw[] = [
       name: 'notfound',
       component: () => import('../views/NotFound.vue'),
     },
+    // AI修复：catch-all 兜底，未知路径落到站内 404（原先会落到宿主 404，NotFound 页形同虚设）
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notfound-catch-all',
+      component: () => import('../views/NotFound.vue'),
+    },
   ]
 
 // router 实例由 ViteSSG 内部创建，这里持有其引用，供模块级 ts（如 pheader 的搜索跳转）复用

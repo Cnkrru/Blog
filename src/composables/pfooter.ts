@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 
 /* ====================<webage>==================== */
-export const RefWebage = ref('')
+// AI修复：模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefWebage）
+export const refWebage = ref('')
 let timer: ReturnType<typeof setInterval> | null = null
 export const webageTick = () => {
   const initDate: number = Number(new Date('2026-10-04'))
@@ -14,7 +15,7 @@ export const webageTick = () => {
   const minutes: number = Date.prototype.getMinutes.call(new Date(diffTime))
   const seconds: number = Date.prototype.getSeconds.call(new Date(diffTime))
 
-  RefWebage.value = `本博客已运行: ${year} 年 ${month} 月 ${day} 天 ${hours} 时 ${minutes} 分 ${seconds}秒`
+  refWebage.value = `本博客已运行: ${year} 年 ${month} 月 ${day} 天 ${hours} 时 ${minutes} 分 ${seconds}秒`
 }
 
 export const webageStart = () => {

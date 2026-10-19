@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import BackToTop from '../icon/BackToTop.vue'
 import { backToTop, scrollProgress } from '@/composables/pamin/post.ts'
 
+// AI修复：保存解绑函数，卸载时清理 scroll 监听，避免反复挂载累积
+let clearScroll: (() => void) | null = null
+
 onMounted(() => {
-  scrollProgress()
+  clearScroll = scrollProgress()
+})
+
+onUnmounted(() => {
+  clearScroll?.()
 })
 </script>
 
@@ -42,6 +49,7 @@ onMounted(() => {
   inset: -4px;
   border-radius: var(--radius-full);
   z-index: -1;
-  background: conic-gradient(var(--g-color) var(--progress), transparent 0);
+  /* AI修复：角度值改用 --scroll-deg（原 --progress 与透明度百分比同符，靠作用域侥幸不冲突） */
+  background: conic-gradient(var(--g-color) var(--scroll-deg), transparent 0);
 }
 </style>

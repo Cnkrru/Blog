@@ -131,39 +131,7 @@ onMounted(() => {
   padding: 0;
 }
 
-/* ============================== Loading ============================== */
-.loading-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid color-mix(in srgb, var(--g-text) 15%, transparent);
-  border-top-color: var(--g-color);
-  border-radius: 50%;
-  margin-bottom: 10px;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loading-text {
-  font-size: 13px;
-  color: var(--g-text);
-  opacity: 0.5;
-}
-
+/* ============================== 暂无数据 ============================== */
 .no-data {
   text-align: center;
   padding: 30px;
@@ -386,9 +354,6 @@ onMounted(() => {
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
 
 @media (max-width: 1024px) {
   /* [响应式-md] 平板 */

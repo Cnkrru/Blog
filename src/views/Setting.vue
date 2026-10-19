@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useSeo } from '../composables/seo'
 import {
-  RefTheme,
-  RefLayout,
-  RefBg,
-  RefOpacity,
+  refTheme,
+  refLayout,
+  refBg,
+  refOpacity,
   setTheme,
   setLayout,
   setBg,
@@ -25,35 +25,35 @@ useSeo({
       <div class="btn-list">
         <button
           class="btn btn-theme"
-          :class="RefTheme === 'blue' ? 'btn-on' : null"
+          :class="refTheme === 'blue' ? 'btn-on' : null"
           @click="setTheme('blue')"
         >
           天蓝色
         </button>
         <button
           class="btn btn-theme"
-          :class="RefTheme === 'ink' ? 'btn-on' : null"
+          :class="refTheme === 'ink' ? 'btn-on' : null"
           @click="setTheme('ink')"
         >
           水墨风
         </button>
         <button
           class="btn btn-theme"
-          :class="RefTheme === 'sakura' ? 'btn-on' : null"
+          :class="refTheme === 'sakura' ? 'btn-on' : null"
           @click="setTheme('sakura')"
         >
           樱花粉
         </button>
         <button
           class="btn btn-theme"
-          :class="RefTheme === 'purple' ? 'btn-on' : null"
+          :class="refTheme === 'purple' ? 'btn-on' : null"
           @click="setTheme('purple')"
         >
           紫罗兰
         </button>
         <button
           class="btn btn-theme"
-          :class="RefTheme === 'cyan' ? 'btn-on' : null"
+          :class="refTheme === 'cyan' ? 'btn-on' : null"
           @click="setTheme('cyan')"
         >
           天青色
@@ -66,14 +66,14 @@ useSeo({
       <div class="btn-list">
         <button
           class="btn btn-layout"
-          :class="RefLayout === 'default' ? 'btn-on' : null"
+          :class="refLayout === 'default' ? 'btn-on' : null"
           @click="setLayout('default')"
         >
           默认
         </button>
         <button
           class="btn btn-layout"
-          :class="RefLayout === 'card' ? 'btn-on' : null"
+          :class="refLayout === 'card' ? 'btn-on' : null"
           @click="setLayout('card')"
         >
           卡片式
@@ -89,7 +89,7 @@ useSeo({
         max="1"
         step="0.01"
         class="opacity-input"
-        v-model.number="RefOpacity"
+        v-model.number="refOpacity"
         @input="setOpacity()"
       />
     </div>
@@ -99,12 +99,12 @@ useSeo({
       <div class="btn-list">
         <button
           class="btn btn-bg"
-          :class="RefBg === 'video' ? 'btn-on' : null"
+          :class="refBg === 'video' ? 'btn-on' : null"
           @click="setBg('video')"
         >
           视频
         </button>
-        <button class="btn btn-bg" :class="RefBg === 'img' ? 'btn-on' : null" @click="setBg('img')">
+        <button class="btn btn-bg" :class="refBg === 'img' ? 'btn-on' : null" @click="setBg('img')">
           图片
         </button>
       </div>
@@ -234,8 +234,8 @@ useSeo({
   background: linear-gradient(
     /* 用两段色块模拟"进度填充"：左侧主题色，右侧底色 */ to right,
     var(--g-color) 0%,
-    var(--g-color) var(--progress, 0%),
-    color-mix(in srgb, var(--g-text) 25%, transparent) var(--progress, 0%),
+    var(--g-color) var(--glass-progress, 0%),
+    color-mix(in srgb, var(--g-text) 25%, transparent) var(--glass-progress, 0%),
     color-mix(in srgb, var(--g-text) 25%, transparent) 100%
   );
 }
@@ -291,20 +291,4 @@ useSeo({
   transform: scale(1.15);
 }
 
-/* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
-
-@media (max-width: 768px) {
-  /* [响应式-sm] 手机 */
-}
-
-@media (max-width: 480px) {
-  /* [响应式-xs] 窄屏 */
-}
 </style>

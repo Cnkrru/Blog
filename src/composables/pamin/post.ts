@@ -1,9 +1,9 @@
-import { reactive, ref, nextTick, computed } from 'vue'
+import { reactive, ref, nextTick, computed, watch } from 'vue'
 import QRCode from 'qrcode'
 import axios from 'axios'
 import type { Zoom } from 'medium-zoom'
-import { RefTheme } from './setting'
-import { RefLd } from '../pheader'
+import { refTheme } from './setting'
+import { refLd } from '../pheader'
 /* ====================<postData>==================== */
 type PostMeta = {
   order: number
@@ -20,17 +20,43 @@ type PostMeta = {
 }
 // 导出 PostData：index.ts 的 hitmap 单例复用此全表契约类型
 export type PostData = Record<string, PostMeta>
-export let postCache: PostData = {}
 
+// AI修复：构建期可同步取到 post 全表（.cache/post.json 由构建管线从 public/config/post.json 复制，
+//   是可 import 的同源副本），setup 期即可用 → 列表页/上下篇/字数在 SSG 产物里就有真内容；
+//   副本缺失时（异常场景）仍走 postData 的 axios 兜底
+const localPost = import.meta.glob<PostData>('/.cache/post.json', { eager: true, import: 'default' })
+export let postCache: PostData = localPost['/.cache/post.json'] ?? {}
+
+// AI修复：order→key 映射收敛到数据层构建一次，postClean/postNav 复用（原先各自重建一遍）
+let orderMapCache: Record<number, string> | null = null
+const orderMapGet = () => {
+  if (orderMapCache) return orderMapCache
+  const map: Record<number, string> = Object.create(null)
+  Object.entries(postCache).forEach(([k, v]) => {
+    map[v.order] = k
+  })
+  orderMapCache = map
+  return map
+}
+
+// AI修复：in-flight Promise 复用，避免同一 tick 内 PostStatus/postEdit/PostNav 并发重复拉取整表
+let postDataPromise: Promise<void> | null = null
 export const postData = async () => {
   if (Object.keys(postCache).length > 0) return // 有缓存直接读缓存
-  const meta = await axios.get<PostData>('/config/post.json')
-  postCache = meta.data
-  if (postCache) {
-    console.info('[INFO]:已经获取到post.json的数据')
-  } else {
-    console.error('[ERR]:未获取到post.json全表')
+  if (!postDataPromise) {
+    postDataPromise = axios
+      .get<PostData>('/config/post.json')
+      .then((meta) => {
+        orderMapCache = null // 新数据落地，作废旧映射
+        postCache = meta.data
+        console.info('[INFO]:已经获取到post.json的数据')
+      })
+      .catch(() => {
+        console.error('[ERR]:未获取到post.json全表')
+        postDataPromise = null // 失败后释放，允许下次重试
+      })
   }
+  await postDataPromise
 }
 
 // 导出 CleanData：tagClean 等 pamin 域内模块共享此类型
@@ -43,19 +69,14 @@ export type CleanData = {
 }
 export let postCleanCache: CleanData[] = []
 
-export const postClean = async () => {
-  if (postCleanCache.length > 0) return // 已有缓存直接返回
-  if (Object.keys(postCache).length === 0) {
-    await postData()
-  }
-  // 步骤1：将数据kv反转存入中间对象
-  const orderMap: Record<number, string> = Object.create(null)
-  Object.entries(postCache).forEach(([k, v]) => {
-    orderMap[v.order] = k
-  })
-  // 步骤2：遍历中间对象，将values取出来压入数组里
+// AI修复：清洗核心可同步执行（SSG 期 .cache 副本已在内存）；数据未就绪返回 false 交异步兜底
+export const postCleanSync = (): boolean => {
+  if (postCleanCache.length > 0) return true // 已有缓存直接返回
+  if (Object.keys(postCache).length === 0) return false
+  // 步骤1：复用数据层构建的 order→key 映射，将 values 取出来压入数组里
+  const orderMap = orderMapGet()
   const keys = Object.values(orderMap).filter(Boolean)
-  // 步骤3：遍历keys，把精简字段打入容器
+  // 步骤2：遍历keys，把精简字段打入容器
   postCleanCache = []
   keys.forEach((key) => {
     const meta = postCache[key]!
@@ -67,6 +88,13 @@ export const postClean = async () => {
       tags: meta.tags,
     })
   })
+  return true
+}
+
+export const postClean = async () => {
+  if (postCleanSync()) return
+  await postData()
+  postCleanSync()
 }
 
 /* ====================<share>==================== */
@@ -173,9 +201,8 @@ export const toastClose = () => {
   if (toastOn && toastTimer) {
     clearTimeout(toastTimer)
     toastOn.remove()
+    toastTimer = null
     console.info('[INFO]:toast已成功移除')
-  } else {
-    console.error('[ERR]:toast移除失败')
   }
 }
 
@@ -190,10 +217,10 @@ export const backToTop = () => {
   }
 }
 
-export const scrollProgress = () => {
+export const scrollProgress = (): (() => void) => {
   const area = document.querySelector<HTMLElement>('.main')
   const progress = document.querySelector<HTMLElement>('.progress')
-  if (!area || !progress) return
+  if (!area || !progress) return () => {}
 
   const canArea = area.scrollHeight > area.clientHeight
   const scroller = canArea ? area : window
@@ -204,32 +231,67 @@ export const scrollProgress = () => {
 
   const update = () => {
     const _progress = total > 0 ? Math.min(1, scrolled() / total) : 0 // 用总可滚px做保护
-    progress.style.setProperty('--progress', _progress * 360 + 'deg') // 设置样式
+    // AI修复：--progress 一符多义，这里角度值改用 --scroll-deg 专用
+    progress.style.setProperty('--scroll-deg', _progress * 360 + 'deg') // 设置样式
   }
   scroller.addEventListener('scroll', update, { passive: true })
   update()
+  // AI修复：返回清理函数，供 BackToTop 卸载时解绑（原先每次挂载都新增监听，反复切页累积）
+  return () => scroller.removeEventListener('scroll', update)
 }
 
 /* ====================<mermaid>==================== */
-export const mermaid = async () => {
-  const mermaidCode = document.querySelectorAll('pre[data-lang="mermaid"] code')
+// AI修复：mermaid 按当前亮暗初始化主题，并在主题变更时重渲染
+let mermaidWatchBound = false
+
+const mermaidRender = async () => {
+  const mermaidCode = document.querySelectorAll<HTMLElement>('pre[data-lang="mermaid"] code')
+  if (!mermaidCode.length) return
+  mermaidCode.forEach((el) => {
+    // run 会用 svg 替换 code 内容：首次存源码，重渲染前还原源码并清掉 processed 标记
+    const src = el.dataset.mermaidSrc ?? el.textContent ?? ''
+    el.dataset.mermaidSrc = src
+    el.textContent = src
+    el.removeAttribute('data-processed')
+  })
 
   //   库变量改名 mermaidLib，避免与导出函数同名遮蔽
   const { default: mermaidLib } = await import('mermaid')
-  // 配置mermaid.js
-  mermaidLib.initialize({ startOnLoad: false })
+  // 配置mermaid.js：主题跟随站点亮暗
+  mermaidLib.initialize({
+    startOnLoad: false,
+    theme: refLd.value === 'dark' ? 'dark' : 'default',
+  })
   try {
-    await mermaidLib.run({ nodes: Array.from(mermaidCode) as HTMLElement[] })
+    await mermaidLib.run({ nodes: Array.from(mermaidCode) })
   } catch {
     console.error('[ERR]:mermaid渲染错误')
   }
+}
+
+export const mermaid = async () => {
+  // 首次调用绑定一次主题监听（全局单例，不随组件卸载销毁）
+  if (!mermaidWatchBound) {
+    watch([refLd, refTheme], () => {
+      mermaidRender()
+    })
+    mermaidWatchBound = true
+  }
+  await mermaidRender()
+}
+
+// AI修复：正文改为异步组件后晚于 Content 挂载，图片放大与 mermaid 初始化改由此处触发
+//   （来源：Post.vue 的 Suspense @resolve），避免初始化时正文还没进 DOM
+export const contentReady = () => {
+  imgBox()
+  mermaid()
 }
 
 /* ====================<comment>==================== */
 // 首帧即算出完整主题 URL：giscus-widget 创建时 theme 属性就是对的，
 // 若先用空值再回填，iframe 会先按默认主题构建，后续变更来不及生效。
 // window 只在客户端访问，组件侧用 ClientOnly 包住，SSR 阶段不会求值
-export const comment = computed(() => `${window.location.origin}/css/${RefTheme.value}-${RefLd.value}.css`)
+export const comment = computed(() => `${window.location.origin}/css/${refTheme.value}-${refLd.value}.css`)
 
 /* ====================<postNav>==================== */
 export const preOrder = ref('')
@@ -241,15 +303,12 @@ export const postNav = async (postKey: string) => {
   const meta = postCache[postKey]
   if (!meta) return
 
-  // 抽order对调kv建新表
-  const orderMap = Object.create(null)
-  Object.entries(postCache).forEach(([k, v]) => {
-    orderMap[v.order] = k
-  })
+  // AI修复：复用数据层构建的 order→key 映射，不再各自重建
+  const orderMap = orderMapGet()
 
-  // 根据新表查原来的key（首尾无相邻文章时为 null）
-  preOrder.value = orderMap[meta.order - 1]
-  nextOrder.value = orderMap[meta.order + 1]
+  // 根据映射查原来的key（首尾无相邻文章时为空）
+  preOrder.value = orderMap[meta.order - 1] ?? ''
+  nextOrder.value = orderMap[meta.order + 1] ?? ''
 
   // 根据上下篇的key拿对应title
   preTitle.value = preOrder.value ? postCache[preOrder.value]!.title : '暂无'
@@ -276,12 +335,11 @@ type HistoryItem = {
 export const publish = ref('')
 export const update = ref('')
 export const history = reactive<HistoryItem[]>([])
-let historyRaw: string[] = []
 
 const historyClean = (meta: PostMeta) => {
-  historyRaw = meta.history
   const list: HistoryItem[] = []
-  historyRaw.forEach((item) => {
+  // AI修复：去掉 historyRaw 中转变量，直接遍历 meta.history
+  meta.history?.forEach((item) => {
     const text = String(item).trim()
     if (!text) return
     const match = text.match(/^(\S+)\s+(.*)$/)
@@ -432,7 +490,8 @@ export const jump = (id: string) => {
 }
 
 /* 挂载（PostToc 生命周期负责）：首扫 + 观察 .main 子树，异步注入/路由切换均触发重扫 */
-export const mount = () => {
+// AI修复：导出名按域加 toc 前缀，避免与 pheader.ts 的音乐 mount/unmount 同名导出撞车
+export const tocMount = () => {
   scan()
   const main = document.querySelector<HTMLElement>('.main')
   if (main && !mobs) {
@@ -443,7 +502,7 @@ export const mount = () => {
   }
 }
 
-export const unmount = () => {
+export const tocUnmount = () => {
   if (scanTimer) clearTimeout(scanTimer)
   if (scrollTimer) clearTimeout(scrollTimer)
   mobs?.disconnect()

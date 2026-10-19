@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/seo'
 import {
   turnView,
+  turnViewSync,
   turnGroup,
   categoryViewMode,
   categoryModeGroups,
@@ -16,7 +17,12 @@ useSeo({
   path: '/category',
 })
 
-onMounted(() => turnView(0))
+// AI修复：setup 期同步加载，让 SSG 产物就带归档内容；数据未就绪再走异步兜底
+const viewLoaded = turnViewSync(0)
+
+onMounted(() => {
+  if (!viewLoaded) turnView(0)
+})
 </script>
 
 <template>
@@ -256,15 +262,35 @@ onMounted(() => turnView(0))
 
 /* ====================<响应式>==================== */
 @media (max-width: 768px) {
+  /* [响应式-sm] 手机：工具栏与群组行各自收紧内边距，把宽度让给标题 */
   .tool-area {
     margin-bottom: var(--space-md);
+  }
+  .group-header {
+    padding: var(--space-sm) var(--space-md);
+  }
+  .group-item {
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md) var(--space-sm) 12px;
   }
 }
 
 @media (max-width: 480px) {
+  /* [响应式-xs] 窄屏：标题行（标题+标签+日期）三列并排太挤，标签与日期逐级缩小 */
   .view-tab {
     padding: 4px 12px;
     font-size: 12px;
+  }
+  .group-item {
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm) var(--space-xs) 10px;
+  }
+  .item-tag {
+    padding: 1px 5px;
+    font-size: 10px;
+  }
+  .item-date {
+    font-size: 11px;
   }
 }
 </style>

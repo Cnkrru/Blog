@@ -24,6 +24,8 @@ import { toolbar, splitRow } from './plugins/base.ts'
 
 // 文章元数据：frontmatter 展开 + 编译期算好的派生字段
 type ArticleMeta = {
+  // AI修复：order 来自 frontmatter，运行期的 order→key 映射依赖它，显式声明进契约
+  order: number
   title: string
   date: string
   updated: string
@@ -44,6 +46,9 @@ const articlePath = path.join(rootPath, ARTICLE_DIR)
 const vuePath = path.join(rootPath, '.cache')
 const jsonPath = path.join(rootPath, 'public/config/post.json')
 const postMetaPath = path.join(vuePath, 'post.json')
+// AI修复：links.json 同样需要可 import 的同源副本，供 Link 页在 SSR/setup 期同步取数据
+const linkJsonPath = path.join(rootPath, 'public/config/links.json')
+const linkMetaPath = path.join(vuePath, 'links.json')
 
 // 语法高亮器，configLanguage 初始化，fence 规则闭包使用
 let highlighter: Highlighter | null = null
@@ -234,6 +239,10 @@ const syncPostMeta = () => {
   if (fs.existsSync(jsonPath)) {
     fs.copyFileSync(jsonPath, postMetaPath)
   }
+  // AI修复：一并复制 links.json（Link 页 setup 期同步取数据）
+  if (fs.existsSync(linkJsonPath)) {
+    fs.copyFileSync(linkJsonPath, linkMetaPath)
+  }
 }
 
 /*
@@ -341,6 +350,27 @@ const sfcIsFresh = (file: string, pluginMtime: number): boolean => {
 }
 
 /*
+ * id: orderChecker
+ * fn: 校验 order 唯一。运行期的 order→key 映射是『后写覆盖先写』，order 重复会静默吞掉文章，
+ *   故在写盘前拦下并中止编译，既不落脏元数据，也不让问题被藏到列表页
+ */
+const orderChecker = (articles: Record<string, ArticleMeta>) => {
+  const owner = new Map<number, string>()
+  const conflicts: string[] = []
+  for (const [id, meta] of Object.entries(articles)) {
+    if (owner.has(meta.order)) {
+      conflicts.push(`order=${meta.order} 被 ${owner.get(meta.order)} 与 ${id} 同时占用`)
+      continue
+    }
+    owner.set(meta.order, id)
+  }
+  if (conflicts.length > 0) {
+    console.error(`[ERR]:文章 order 重复，已中止编译：\n  ${conflicts.join('\n  ')}`)
+    throw new Error(`文章 order 重复：${conflicts.join('；')}`)
+  }
+}
+
+/*
  * id: mdParser
  * fn: 解析md，将md的内容和元数据分别写入对应文件
  */
@@ -376,6 +406,7 @@ const mdParser = (files: string[]) => {
     // 把解析出的yaml元数据写入json
     articles[id] = {
       ...frontmatter,
+      order: frontmatter.order,
       title: frontmatter.title || id,
       date: frontmatter.date ? new Date(frontmatter.date).toISOString().slice(0, 10) : '',
       updated: frontmatter.updated ? new Date(frontmatter.updated).toISOString().slice(0, 10) : '',
@@ -385,6 +416,7 @@ const mdParser = (files: string[]) => {
     }
   }
 
+  orderChecker(articles) // 校验通过才落盘，避免脏元数据进 post.json
   fs.writeFileSync(jsonPath, JSON.stringify(articles, null, 4), 'utf8')
 }
 

@@ -4,8 +4,9 @@ import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/seo'
 import PostCover from '../components/pmain/PostCover.vue'
 import {
-  ListClean,
-  ListChangePage,
+  listClean,
+  listCleanSync,
+  listChangePage,
   listInitPage,
   listDisplayPages,
   listPageNum,
@@ -19,12 +20,14 @@ useSeo({
   path: '/postlist',
 })
 
-const load = async () => {
-  await ListClean() // 数据加载 + 算总页数
-  ListChangePage(listInitPage()) // 从 URL ?page= 读初始页渲染，无/非法回退第 1 页
-}
+// AI修复：setup 期同步加载，让 SSG 产物就带文章内容；数据未就绪再走异步兜底
+const listLoaded = listCleanSync()
+if (listLoaded) listChangePage(listInitPage())
 
-onMounted(load)
+onMounted(async () => {
+  if (!listLoaded) await listClean() // 数据加载 + 算总页数
+  listChangePage(listInitPage()) // 从 URL ?page= 读初始页渲染，无/非法回退第 1 页
+})
 </script>
 
 <template>
@@ -48,7 +51,7 @@ onMounted(load)
         <button
           class="page-side"
           :disabled="listNowPage === 1"
-          @click="ListChangePage(listNowPage - 1)"
+          @click="listChangePage(listNowPage - 1)"
         >
           上一页
         </button>
@@ -57,14 +60,14 @@ onMounted(load)
           :key="p"
           class="page-num"
           :class="{ 'page-on': p === listNowPage }"
-          @click="ListChangePage(p)"
+          @click="listChangePage(p)"
         >
           {{ p }}
         </button>
         <button
           class="page-side"
           :disabled="listNowPage === listPageNum"
-          @click="ListChangePage(listNowPage + 1)"
+          @click="listChangePage(listNowPage + 1)"
         >
           下一页
         </button>

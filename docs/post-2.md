@@ -1,310 +1,105 @@
 ---
 order: 3
-title: 写作组件测试
-date: 2026-10-14
-category: 前端
-tags: [Markdown，组件]
-description: 把引擎支持的每一种编译期写作组件各写一次，用于肉眼验收
-keywords: 写作组件，Markdown 扩展语法
+title: express-2-drizzle+sqlite配置
+date: 2026-10-19
+category: 后端
+tags: [express, 后端]
+description: 记录给ts项目配置drizzleORM和sqlite数据库
+keywords: express
 ---
 
-## 行内语法
+## 配置drizzle
 
-按 [[Ctrl]] + [[C]] 复制，当前版本 {{v1.0}}，其中 ==编译期== 是关键。
+### 1. 安装依赖
 
-语法是成对的定界符：`[[按键]]`、`{{徽章}}`、`==高亮==`。行内语法可出现在列表、标题等任何位置，但不作用于代码块内部。
-
----
-
-## 提示块
-
-围栏语言名即等级，四级共用同一套外壳；语言名之后可跟可选标题，省略时回落各等级的默认文案。
-
-```tip 提示
-标题可省略，省略时用各等级的默认文案。
+```sh
+npm install drizzle-orm better-sqlite3
+npm install -D drizzle-kit @types/better-sqlite3
 ```
 
-```info 信息
-省略标题时回落到：提示 / 信息 / 警告 / 错误。
+```tip
+这里笔者用的数据库是SQLite，其他的暂时没用过
+
+sqlite驱动用的是better-sqlite3，而不是node官方库node:sqlite
 ```
 
-```warn 警告
-标题也可以自己写，会覆盖默认文案。
+### 2. 定义表结构
+
+- 在src/db下创建一个表结构文件`schema.ts`,定义表结构
+- 这里定义了一个users表，id，name，email，，createdAt几列
+
+```ts
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
+
+export const users = sqliteTable('users', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+})
+
+// 导出类型，路由里可以直接用
+export type User = typeof users.$inferSelect
+export type NewUser = typeof users.$inferInsert
 ```
 
-```error 错误
-外壳结构由编译期直出，样式在 content.css。
+### 3. 初始化drizzle
+
+- 在src/db下创建一个初始化文件`index.ts`,初始化drizzle实例
+
+```ts
+import { drizzle } from 'drizzle-orm/better-sqlite3'
+import Database from 'better-sqlite3'
+import * as schema from './schema.js'
+
+const sqlite = new Database('app.db')
+// 开启 WAL 模式，提升并发读性能（可选但推荐）
+sqlite.pragma('journal_mode = WAL')
+
+export const db = drizzle(sqlite, { schema })
 ```
 
-块内正文走正常 markdown 渲染，**加粗**、`行内代码`、列表都照常生效。
+### 4. 修改drizzle配置文件
 
----
+- 在项目根目录创建`drizzle.config.ts`
 
-## 目录树
+```ts
+import { defineConfig } from 'drizzle-kit'
 
-语法是 Markdown 无序列表，缩进即层级，名称尾部带 `/` 表示目录，`|` 后接可选注释。
-
-```filetree
-- docs/ | 内容目录
-  - post-0.md
-  - post-1.md
-  - post-2.md
-- src/
-  - .build/ | 编译期
-    - plugins/
-  - components/ | 运行期
-- vite.config.ts | 构建配置
+export default defineConfig({
+  dialect: 'sqlite',
+  schema: './src/db/schema.ts',
+  out: './drizzle',
+  dbCredentials: {
+    url: './app.db',
+  },
+})
 ```
 
----
+### 5. 生成迁移文件
 
-## 终端
-
-语法是围栏代码块，以 `$ ` 开头的行按命令渲染，其余按输出渲染。
+- 运行`npx drizzle-kit generate`
 
 ```terminal
-$ npm run build
-[vite-ssg] Rendering Pages... (10)
-[vite-ssg] Build finished.
+$ npx drizzle-kit generate
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'D:\__projects\express\drizzle.config.ts'
+1 tables
+users 4 columns 1 indexes 0 fks
+
+[✓] Your SQL migration file ➜ drizzle\0000_outgoing_mandrill.sql 🚀
 ```
 
----
+- 这个指令会在`drizzle/`下生成几个文件，json+sql
 
-## 折叠块
+### 6. 创建数据库
 
-语法是围栏代码块，第一行作标题，其余为折叠内容；内容整体转义、保留换行，不渲染 Markdown。
+- 运行`npx drizzle-kit migrate`
 
-```details 点开看内容
-折叠块里的 **Markdown 不会被渲染**，原样展示。
-换行会保留，靠的是 CSS 的 pre-wrap。
+```terminal
+$ npx drizzle-kit migrate
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'D:\__projects\express\drizzle.config.ts'
 ```
 
----
-
-## 流程
-
-语法是每行「节点 | 可选说明」，节点之间自动画箭头。
-
-```flow
-读取 md | docs/*.md
-编译期插件 | 拦截围栏直出 HTML
-生成 SFC | .cache/*.vue
-渲染页面 | vite-ssg 预渲染
-```
-
----
-
-## 时间线
-
-语法是每行「时间 | 标题 | 描述（可省略）」，竖线由 CSS 绘制。
-
-```timeline
-2024-01 | 立项 | 确定技术选型
-2025-06 | 原型 | 打通编译期直出
-2026-10 | 移植 | 写作组件并入 blog
-```
-
----
-
-## 步骤
-
-语法是每行「标题 | 描述（可省略）」，序号由编译期自动生成，不写进内容里。
-
-```steps
-写文档 | 在 docs/ 下新增 md
-跑构建 | npm run build
-看效果 | 打开对应的文章页
-```
-
----
-
-## 流程图
-
-mermaid 在编译期只拦截并产出容器，图表由运行时按需渲染。
-
-```mermaid
-graph LR
-  A[Markdown] --> B[编译期插件]
-  B --> C[静态 HTML]
-  C --> D[浏览器交互]
-```
-
----
-
-## 图表
-
-echarts 块内必须是合法 JSON，编译期只校验并产出容器，非法时降级为纯文本展示源码。
-
-```echarts
-{
-  "xAxis": { "type": "category", "data": ["编译期", "运行期"] },
-  "yAxis": { "type": "value" },
-  "series": [{ "type": "bar", "data": [100, 5] }]
-}
-```
-
----
-
-## 卡片网格
-
-语法是每行「标题 | 描述 | 链接（可省略）」，带链接时整卡可点击。
-
-```cards
-Linux服务器 | 第一次接触云服务器 | /post/post-1
-无链接卡 | 只有标题和描述
-```
-
----
-
-## 链接卡
-
-语法是每行「标题 | 描述 | 网址」，仅 http(s) 会被渲染成可点卡片，其他协议降级为静态卡。
-
-```links
-Vue | 渐进式框架 | https://vuejs.org
-Vite | 下一代构建工具 | https://vite.dev
-站内链接会降级 | 只放行 http(s) | /post/post-0
-```
-
----
-
-## 图集
-
-语法是每行「图片地址 | 说明（可省略）」，复用正文图片的灯箱。
-
-```gallery
-/og-cover.png | 站点分享封面
-/favicon.svg | 站点图标
-```
-
----
-
-## 数据卡与进度条
-
-```stat
-24 | 写作组件
-100% | 编译期渲染
-0 KB | 组件运行时代码
-```
-
-```progress
-编译期渲染 | 85
-运行时交互 | 40
-超范围的数值会被收敛 | 120
-```
-
----
-
-## 属性列表
-
-语法是每行「属性名 | 值」。
-
-```attrs
-articleDir | docs
-outDir | dist
-ogImage | /og-cover.png
-```
-
----
-
-## 选项卡
-
-语法是用 `@tab 标签名` 分节，纯 CSS 切换，页内容整体转义、不渲染 Markdown。
-
-```tabs
-@tab 现象
-站内切换文章时，正文先空白、闪一下才出现。
-@tab 原因
-正文来自按文章拆分的独立 chunk，到达前无内容可渲染。
-@tab 做法
-在视口内的站内链接上提前预取对应 chunk。
-```
-
----
-
-## 代码组
-
-语法同样是 `@tab 标签名` 分节，区别在于标签名会被当作语言名送去 shiki 编译期高亮。
-
-```code-group
-@tab npm
-npm run build
-@tab pnpm
-pnpm build
-@tab ts
-export default defineConfig({ title: 'blog' })
-```
-
----
-
-## 定义列表
-
-```define
-SSG | 静态站点生成器，构建期把内容直出为 HTML 文件
-编译期 | 构建时执行，产物是静态文件
-运行期 | 浏览器里执行的少量交互逻辑
-```
-
----
-
-## 问答
-
-答案默认折叠，点击问题展开。
-
-```qa
-为什么把渲染放在编译期 | 首屏直出 HTML，SEO 友好，且客户端不需要模板渲染
-写作组件会不会增大包体积 | 不会，它们只产出 HTML，样式集中在 content.css
-```
-
----
-
-## 对比栏
-
-用 `@tab 栏标题` 分节，栏内每行一个条目。
-
-```compare
-@tab 编译期渲染
-首屏直出 HTML
-SEO 友好
-改内容需要重新构建
-@tab 运行时渲染
-首屏依赖 JS
-SEO 需额外处理
-改内容无需构建
-```
-
----
-
-## 引用卡
-
-语法是第一行为内容，之后「作者 | 出处」一行可省略。
-
-```quote
-任何可以用编译期解决的问题，都不应该留给运行时。
-设计原则 | 项目手册
-```
-
-```quote
-没有署名行也可以，只写内容即可。
-```
-
----
-
-## 标准 Markdown
-
-除上述组件外，基础语法照常可用。
-
-- 无序列表项一
-- 无序列表项二
-
-1. 有序列表项一
-2. 有序列表项二
-
-> 普通引用块仍然可用，不参与任何组件管线。
-
-行内 `code`、**加粗**、_斜体_、[链接](/post/post-0) 都是标准行为。
-
-```js
-// 普通代码块走 shiki 编译期高亮，不进组件管线
-const greeting = 'hello'
-```
+- 这里说没配置路径，用了配置文件默认的路径的位置，直接在根目录生成了一个`app.db`

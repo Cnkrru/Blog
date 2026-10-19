@@ -1,5 +1,8 @@
 import { ref } from 'vue'
 import { postCache, postData, type PostData } from './pamin/post'
+// AI修复：粒子配色跟随主题变化，需读取当前亮暗/主题
+import { refLd } from './pheader'
+import { refTheme } from './pamin/setting'
 
 /* ====================<hitmap>==================== */
 export const hitmap = (() => {
@@ -67,8 +70,6 @@ export const hitmap = (() => {
     // 按年份缓存：该年份已算过直接返回，避免切换年份时重复算或漏算
     if (yearsDone.has(year)) return
     yearsDone.add(year)
-    // 兜底：该年份数据已存在也直接返回（防止 yearsDone 被外部改动）
-    if (monthsData.value.some((m) => m.year === year)) return
 
     for (let m = 1; m <= 12; ++m) {
       const daysInMonth = new Date(year, m, 0).getDate()
@@ -173,20 +174,33 @@ export const particles = () => {
   let width = 0
   let height = 0
   let raf: number | null = null
+  let resizeRaf: number | null = null
   // 粒子与鼠标状态
   let particleList: Particle[] = []
   let mouse: MousePoint | null = null
-  let currentColor = ''
 
   // 主题色：随亮暗切换读取 CSS 变量
   const pickThemeColor = () => getComputedStyle(canvas!).getPropertyValue('--g-color').trim()
 
-  const toRgba = (hex: string, opacity: number) => {
+  // AI修复：rgb 分量在主题色变化时预解析一次，避免 O(n²) 连线循环里反复解析字符串
+  let colorRgb = { r: 0, g: 0, b: 0 }
+  const parseColor = (hex: string) => {
     const _hex = hex.replace('#', '')
-    const r = parseInt(_hex.slice(0, 2), 16)
-    const g = parseInt(_hex.slice(2, 4), 16)
-    const b = parseInt(_hex.slice(4, 6), 16)
-    return `rgba(${r},${g},${b},${opacity})`
+    colorRgb = {
+      r: parseInt(_hex.slice(0, 2), 16),
+      g: parseInt(_hex.slice(2, 4), 16),
+      b: parseInt(_hex.slice(4, 6), 16),
+    }
+  }
+  const toRgba = (opacity: number) => `rgba(${colorRgb.r},${colorRgb.g},${colorRgb.b},${opacity})`
+
+  // AI修复：主题色只在亮暗/主题变化时重读，避免每帧 getComputedStyle
+  let themeKey = ''
+  const syncThemeColor = () => {
+    const key = `${refLd.value}|${refTheme.value}`
+    if (key === themeKey) return
+    themeKey = key
+    parseColor(pickThemeColor())
   }
 
   // 粒子配置：随机位置/速度/半径
@@ -207,7 +221,7 @@ export const particles = () => {
 
     ctx!.beginPath()
     ctx!.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2)
-    ctx!.fillStyle = toRgba(currentColor, 0.8)
+    ctx!.fillStyle = toRgba(0.8)
     ctx!.fill()
   }
 
@@ -220,7 +234,7 @@ export const particles = () => {
         const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y)
         if (distance < LINK_DISTANCE) {
           ctx!.beginPath()
-          ctx!.strokeStyle = toRgba(currentColor, 1 - distance / LINK_DISTANCE)
+          ctx!.strokeStyle = toRgba(1 - distance / LINK_DISTANCE)
           ctx!.lineWidth = 1
           ctx!.moveTo(p1.x, p1.y)
           ctx!.lineTo(p2.x, p2.y)
@@ -245,7 +259,7 @@ export const particles = () => {
     ctx!.lineWidth = 1.5
     for (const item of nearParticles) {
       const particle = particleList[item.index]!
-      ctx!.strokeStyle = toRgba(currentColor, 1 - item.distance / LINK_DISTANCE)
+      ctx!.strokeStyle = toRgba(1 - item.distance / LINK_DISTANCE)
       ctx!.beginPath()
       ctx!.moveTo(particle.x, particle.y)
       ctx!.lineTo(mouse!.x, mouse!.y)
@@ -253,7 +267,7 @@ export const particles = () => {
     }
   }
 
-  // 画布配置：DPR 缩放 + 重设尺寸 + 重建粒子
+  // 画布配置：DPR 缩放 + 重设尺寸（复用已有粒子，尺寸变化时粒子自行反弹回界内）
   const resizeCanvas = () => {
     const dpr = Math.min(devicePixelRatio, DPR_CAP)
     const vw = document.documentElement.clientWidth
@@ -265,7 +279,19 @@ export const particles = () => {
     width = vw
     height = vh
 
-    particleList = Array.from({ length: PARTICLE_COUNT }, () => createParticle(width, height))
+    // AI修复：仅在首次创建粒子，避免每次 resize 重建 80 个粒子
+    if (!particleList.length) {
+      particleList = Array.from({ length: PARTICLE_COUNT }, () => createParticle(width, height))
+    }
+  }
+
+  // AI修复：resize 用 rAF 节流，连续拖拽窗口不再每个事件都重设画布
+  const onResize = () => {
+    if (resizeRaf) return
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = null
+      resizeCanvas()
+    })
   }
 
   /* ====================<鼠标/触摸事件>==================== */
@@ -290,7 +316,11 @@ export const particles = () => {
       cancelAnimationFrame(raf)
       raf = null
     }
-    window.removeEventListener('resize', resizeCanvas)
+    if (resizeRaf) {
+      cancelAnimationFrame(resizeRaf)
+      resizeRaf = null
+    }
+    window.removeEventListener('resize', onResize)
     window.removeEventListener('mousemove', mouseMove)
     window.removeEventListener('mouseleave', mouseLeave)
     window.removeEventListener('touchmove', touchMove)
@@ -302,7 +332,7 @@ export const particles = () => {
 
   // 帧循环：清屏 → 跑粒子 → 粒子连线 → 鼠标连线 → 下一帧
   const tick = () => {
-    currentColor = pickThemeColor()
+    syncThemeColor()
     ctx!.clearRect(0, 0, width, height)
     particleList.forEach((particle) => runParticle(particle))
     drawLinks()
@@ -316,7 +346,7 @@ export const particles = () => {
     ctx = el.getContext('2d')
     resizeCanvas()
 
-    window.addEventListener('resize', resizeCanvas)
+    window.addEventListener('resize', onResize)
     window.addEventListener('mousemove', mouseMove)
     window.addEventListener('mouseleave', mouseLeave)
     window.addEventListener('touchmove', touchMove, { passive: true })
@@ -330,8 +360,10 @@ export const particles = () => {
   }
 }
 /* ====================<typewrite>==================== */
-export const RefTw = ref('')
+// AI修复：模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefTw）
+export const refTw = ref('')
 let twTimer: ReturnType<typeof setTimeout> | null = null
+let twRunning = false // 打字链是否在跑
 let strIndex: number = 0 // 句子索引，打到第几个句子了
 let charIndex: number = 0 // 字符索引。打到第几个字符了
 let increasing: boolean = true // 是否正向，正反两个打字方向
@@ -339,34 +371,49 @@ const texts = ['欢迎来到我的博客', 'welcome to my blog']
 const onSpeed: number = 100 // 正向打字速度(打字间隔时间)
 const unSpeed: number = 40 // 反向打字速度
 const loopSpeed: number = 3000 // 句子轮询间隔时间
-export const twManager = (fn: () => void, delay: number) => {
+const twManager = (fn: () => void, delay: number) => {
   if (twTimer) clearTimeout(twTimer)
   twTimer = setTimeout(fn, delay)
 }
-export const twWorker = () => {
+// 打字步进（内部递归）：正/反两个方向 + 句子轮询
+const twStep = () => {
   const currentStr: string = texts[strIndex]!
   if (increasing) {
     charIndex++
-    RefTw.value = currentStr.slice(0, charIndex)
+    refTw.value = currentStr.slice(0, charIndex)
     // 反转打印方向，延时loop_speed后重新执行tw
     if (charIndex === currentStr.length) {
       increasing = false
-      twManager(twWorker, loopSpeed)
+      twManager(twStep, loopSpeed)
       return
     }
     // 正向打字+type_speed延时
-    twManager(twWorker, onSpeed)
+    twManager(twStep, onSpeed)
   } else {
     charIndex--
-    RefTw.value = currentStr.slice(0, charIndex)
+    refTw.value = currentStr.slice(0, charIndex)
     // 反转打印方向，延时loop_speed后重新执行tw
     if (charIndex === 0) {
       increasing = true
       strIndex = (strIndex + 1) % texts.length // 学到了，很精妙
-      twManager(twWorker, loopSpeed)
+      twManager(twStep, loopSpeed)
       return
     }
     // 反向打字+delete_speed延时
-    twManager(twWorker, unSpeed)
+    twManager(twStep, unSpeed)
   }
+}
+// AI修复：加运行守卫，反复进出首页时不再出现两条定时链同时改同一组游标
+export const twWorker = () => {
+  if (twRunning) return
+  twRunning = true
+  twStep()
+}
+// AI修复：停止定时链并复位守卫，供 Welcome 卸载时清理
+export const twStop = () => {
+  if (twTimer) {
+    clearTimeout(twTimer)
+    twTimer = null
+  }
+  twRunning = false
 }

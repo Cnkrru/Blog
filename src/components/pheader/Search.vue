@@ -2,9 +2,9 @@
 import { onMounted, onUnmounted } from 'vue'
 import SearchIcon from '../icon/SearchIcon.vue'
 import {
-  RefKeyword,
-  RefSearchRes,
-  RefSearchPos,
+  refKeyword,
+  refSearchRes,
+  refSearchPos,
   searchOpen,
   searchHl,
   buildIndex,
@@ -31,8 +31,8 @@ onUnmounted(() => {
     <input
       type="text"
       placeholder="搜索"
-      v-model="RefKeyword"
-      @keypress.enter="onEnter"
+      v-model="refKeyword"
+      @keydown.enter="onEnter"
       @focus="onFocus"
     />
 
@@ -42,23 +42,23 @@ onUnmounted(() => {
           v-if="searchOpen"
           class="search-results"
           :style="{
-            left: RefSearchPos.left + 'px',
-            top: RefSearchPos.top + 'px',
-            width: RefSearchPos.width + 'px',
+            left: refSearchPos.left + 'px',
+            top: refSearchPos.top + 'px',
+            width: refSearchPos.width + 'px',
           }"
         >
-          <div v-if="RefSearchRes.length === 0" class="search-empty">
-            搜索 "{{ RefKeyword }}"：未找到结果
+          <div v-if="refSearchRes.length === 0" class="search-empty">
+            搜索 "{{ refKeyword }}"：未找到结果
           </div>
 
           <template v-else>
-            <div class="search-counter">{{ RefSearchRes.length }} 个结果</div>
+            <div class="search-counter">{{ refSearchRes.length }} 个结果</div>
             <div class="search-list">
-              <div v-for="r in RefSearchRes" :key="r.id" class="search-item" @click="go(r.id)">
-                <div class="search-item-title" v-html="searchHl(r.title, RefKeyword)"></div>
+              <div v-for="r in refSearchRes" :key="r.id" class="search-item" @click="go(r.id)">
+                <div class="search-item-title" v-html="searchHl(r.title, refKeyword)"></div>
                 <div class="search-item-meta">
-                  分类: <span v-html="searchHl(r.category, RefKeyword)"></span>
-                  <span class="search-item-date" v-html="searchHl(r.date, RefKeyword)"></span>
+                  分类: <span v-html="searchHl(r.category, refKeyword)"></span>
+                  <span class="search-item-date" v-html="searchHl(r.date, refKeyword)"></span>
                 </div>
                 <div class="search-item-tags" v-if="r.tags && r.tags.length">
                   <span v-for="t in r.tags" :key="t" class="search-tag">{{ t }}</span>
@@ -201,13 +201,6 @@ onUnmounted(() => {
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
 
 @media (max-width: 768px) {
   /* [响应式-sm] 手机 */

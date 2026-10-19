@@ -23,8 +23,8 @@ onMounted(() => postEdit(postKey))
         <span>{{ publish }}</span>
       </div>
     </div>
-    <!-- 更新时间 -->
-    <div class="update-time">
+    <!-- 更新时间：无 updated 时 update 为空串，不渲染这一块 -->
+    <div v-if="update" class="update-time">
       <RefreshCw class="refresh-icon" />
       <div class="update-info">
         <span>更新于</span>
@@ -190,13 +190,6 @@ onMounted(() => postEdit(postKey))
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
 
 @media (max-width: 768px) {
   /* [响应式-sm] 手机：日期条内边距与图标收紧，保持发布/更新并排 */

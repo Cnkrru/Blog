@@ -2,10 +2,10 @@
 import { useRoute } from 'vue-router'
 import {
   linkOpen,
+  postCache,
   qrcodeOpen,
   qrcodeClose,
   shareCopy,
-  toastOpen,
   qrCanvas,
 } from '../../composables/pamin/post.ts'
 import Share from '../icon/share/Share.vue'
@@ -22,7 +22,10 @@ import X from '../icon/X.vue'
 const route = useRoute()
 const origin = typeof window !== 'undefined' ? window.location.origin : ''
 const url = `${origin}${route.path}`
-const title = `${origin}${route.path}`
+
+// AI修复：分享文案取文章标题（原先误赋成 URL）；postData 已由同页组件拉取，点击时缓存已就绪
+const postKey = String(route.params.id)
+const shareTitle = () => postCache[postKey]?.title ?? url
 </script>
 
 <template>
@@ -36,15 +39,13 @@ const title = `${origin}${route.path}`
       <!-- 按钮列表 -->
       <div class="btn-list">
         <button class="btn weixin" @click="qrcodeOpen(url)"><Wechat /></button>
-        <button class="btn qq" @click="linkOpen('qq', url, title)"><QQIcon /></button>
-        <button class="btn weibo" @click="linkOpen('weibo', url, title)"><Weibo /></button>
-        <button class="btn tg" @click="linkOpen('tg', url, title)"><Telegram /></button>
-        <button class="btn facebook" @click="linkOpen('facebook', url, title)"><Facebook /></button>
-        <button class="btn x" @click="linkOpen('x', url, title)"><XIcon /></button>
-        <button
-          class="btn copy-btn"
-          @click="[shareCopy(url), toastOpen('success', '已成功复制链接')]"
-        >
+        <button class="btn qq" @click="linkOpen('qq', url, shareTitle())"><QQIcon /></button>
+        <button class="btn weibo" @click="linkOpen('weibo', url, shareTitle())"><Weibo /></button>
+        <button class="btn tg" @click="linkOpen('tg', url, shareTitle())"><Telegram /></button>
+        <button class="btn facebook" @click="linkOpen('facebook', url, shareTitle())"><Facebook /></button>
+        <button class="btn x" @click="linkOpen('x', url, shareTitle())"><XIcon /></button>
+        <!-- AI修复：复制按钮去掉冗余的 toastOpen（shareCopy 内部已 toast 且 toastOpen 有"已存在则忽略"守卫） -->
+        <button class="btn copy-btn" @click="shareCopy(url)">
           <Copy />
         </button>
       </div>
@@ -255,13 +256,6 @@ const title = `${origin}${route.path}`
 }
 
 /* ====================<响应式>==================== */
-@media (max-width: 1280px) {
-  /* [响应式-lg] 大屏 */
-}
-
-@media (max-width: 1024px) {
-  /* [响应式-md] 平板 */
-}
 
 @media (max-width: 768px) {
   /* [响应式-sm] 手机：分享盒改列向堆叠，按钮列表允许换行，避免七个按钮横向溢出 */

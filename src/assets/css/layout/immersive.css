@@ -7,3 +7,13 @@
 .immersive .sidebar {
     display: none !important;
 }
+
+/* ====================<响应式>==================== */
+@media (max-width: 768px) {
+    /* [响应式-sm] 手机 */
+    /* AI修复：此档 .sidebar 已改为脱离文档流的左侧抽屉，若继续 display:none，
+       点汉堡只会冒出遮罩、抽屉永远不出现；此处把显示还原回来 */
+    .immersive .sidebar {
+        display: flex !important;
+    }
+}

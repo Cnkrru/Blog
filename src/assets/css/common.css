@@ -172,8 +172,13 @@ hr {
 
 /*=========== 小屏隐藏下划线，避免拥挤 ===========*/
 @media (max-width: 768px) {
+  /* [响应式-sm] 手机 */
   h1::after,
   h2::after {
     display: none;
+  }
+  /* AI修复：抽屉打开时锁住底层页面滚动（body 是页面级滚动容器，特异性(0,1,1)足以覆盖 body 的 overflow:auto） */
+  body:has(.sidebar-open) {
+    overflow: hidden;
   }
 }

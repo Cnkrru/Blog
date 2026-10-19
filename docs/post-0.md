@@ -3,8 +3,8 @@ order: 1
 title: Hello world
 date: 2026-10-04
 category: 随笔
-tags: [随笔, 项目]
-description: 一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能
+tags: [随笔]
+description: 一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件
 keywords: 个人博客, Vue 3
 ---
 
@@ -30,138 +30,303 @@ keywords: 个人博客, Vue 3
 
 ## 功能测试
 
-### md测试
+### 标准 Markdown
 
-基础 Markdown 渲染测试，覆盖文本格式、列表、任务列表、表格、引用与链接。
-
-**加粗文本**、_斜体文本_、_**加粗斜体**_、~~删除线~~、`行内代码`。
+除上述组件外，基础语法照常可用。
 
 - 无序列表项一
-  - 嵌套子项
-  - 嵌套子项
 - 无序列表项二
 
 1. 有序列表项一
 2. 有序列表项二
 
-- [x] 已完成的任务
-- [ ] 待完成的任务
+> 普通引用块仍然可用，不参与任何组件管线。
 
-| 功能     | 依赖        | 状态 |
-| -------- | ----------- | :--: |
-| 正文渲染 | markdown-it | 通过 |
-| 代码高亮 | shiki       | 通过 |
-| 数学公式 | katex       | 通过 |
+行内 `code`、**加粗**、_斜体_、[链接](/post/post-0) 都是标准行为。
 
-> 这是一段引用文本，
-> 支持多行内容。
-
-[站内链接](/postlist)、[外部链接](https://cnkrru.top)。
-
-### 代码块测试
-
-代码块在编译期由 shiki 高亮，右上角带语言徽章与复制按钮。
-
-```javascript
-// 按日期倒序排列文章
-const sortByDate = (posts) => [...posts].sort((a, b) => new Date(b.date) - new Date(a.date))
-
-console.log(sortByDate(postList))
+```js
+// 普通代码块走 shiki 编译期高亮，不进组件管线
+const greeting = 'hello'
 ```
 
-```python
-def reading_time(word_count: int, speed: int = 300) -> int:
-    """按每分钟 300 字估算阅读时长，最少 1 分钟"""
-    return max(1, -(-word_count // speed))
+### 行内语法
+
+按 [[Ctrl]] + [[C]] 复制，当前版本 {{v1.0}}，其中 ==编译期== 是关键。
+
+语法是成对的定界符：`[[按键]]`、`{{徽章}}`、`==高亮==`。行内语法可出现在列表、标题等任何位置，但不作用于代码块内部。
+
+---
+
+### 提示块
+
+围栏语言名即等级，四级共用同一套外壳；语言名之后可跟可选标题，省略时回落各等级的默认文案。
+
+```tip 提示
+标题可省略，省略时用各等级的默认文案。
 ```
 
-```css
-/* 卡片悬浮态 */
-.card {
-  border-radius: 8px;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+```info 信息
+省略标题时回落到：提示 / 信息 / 警告 / 错误。
+```
+
+```warn 警告
+标题也可以自己写，会覆盖默认文案。
+```
+
+```error 错误
+外壳结构由编译期直出，样式在 content.css。
+```
+
+块内正文走正常 markdown 渲染，**加粗**、`行内代码`、列表都照常生效。
+
+---
+
+### 目录树
+
+语法是 Markdown 无序列表，缩进即层级，名称尾部带 `/` 表示目录，`|` 后接可选注释。
+
+```filetree
+- docs/ | 内容目录
+  - post-0.md
+  - post-1.md
+  - post-2.md
+- src/
+  - .build/ | 编译期
+    - plugins/
+  - components/ | 运行期
+- vite.config.ts | 构建配置
+```
+
+---
+
+### 终端
+
+语法是围栏代码块，以 `$ ` 开头的行按命令渲染，其余按输出渲染。
+
+```terminal
+$ npm run build
+[vite-ssg] Rendering Pages... (10)
+[vite-ssg] Build finished.
+```
+
+---
+
+### 折叠块
+
+语法是围栏代码块，第一行作标题，其余为折叠内容；内容整体转义、保留换行，不渲染 Markdown。
+
+```details 点开看内容
+折叠块里的 **Markdown 不会被渲染**，原样展示。
+换行会保留，靠的是 CSS 的 pre-wrap。
+```
+
+---
+
+### 流程
+
+语法是每行「节点 | 可选说明」，节点之间自动画箭头。
+
+```flow
+读取 md | docs/*.md
+编译期插件 | 拦截围栏直出 HTML
+生成 SFC | .cache/*.vue
+渲染页面 | vite-ssg 预渲染
+```
+
+---
+
+### 时间线
+
+语法是每行「时间 | 标题 | 描述（可省略）」，竖线由 CSS 绘制。
+
+```timeline
+2024-01 | 立项 | 确定技术选型
+2025-06 | 原型 | 打通编译期直出
+2026-10 | 移植 | 写作组件并入 blog
+```
+
+---
+
+### 步骤
+
+语法是每行「标题 | 描述（可省略）」，序号由编译期自动生成，不写进内容里。
+
+```steps
+写文档 | 在 docs/ 下新增 md
+跑构建 | npm run build
+看效果 | 打开对应的文章页
+```
+
+---
+
+### 流程图
+
+mermaid 在编译期只拦截并产出容器，图表由运行时按需渲染。
+
+```mermaid
+graph LR
+  A[Markdown] --> B[编译期插件]
+  B --> C[静态 HTML]
+  C --> D[浏览器交互]
+```
+
+---
+
+### 图表
+
+echarts 块内必须是合法 JSON，编译期只校验并产出容器，非法时降级为纯文本展示源码。
+
+```echarts
+{
+  "xAxis": { "type": "category", "data": ["编译期", "运行期"] },
+  "yAxis": { "type": "value" },
+  "series": [{ "type": "bar", "data": [100, 5] }]
 }
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
 ```
 
-```bash
-npm install
-npm run dev
+---
+
+### 卡片网格
+
+语法是每行「标题 | 描述 | 链接（可省略）」，带链接时整卡可点击。
+
+```cards
+Linux服务器 | 第一次接触云服务器 | /post/post-1
+无链接卡 | 只有标题和描述
+```
+
+---
+
+### 链接卡
+
+语法是每行「标题 | 描述 | 网址」，仅 http(s) 会被渲染成可点卡片，其他协议降级为静态卡。
+
+```links
+Vue | 渐进式框架 | https://vuejs.org
+Vite | 下一代构建工具 | https://vite.dev
+站内链接会降级 | 只放行 http(s) | /post/post-0
+```
+
+---
+
+### 图集
+
+语法是每行「图片地址 | 说明（可省略）」，复用正文图片的灯箱。
+
+```gallery
+/og-cover.png | 站点分享封面
+/favicon.svg | 站点图标
+```
+
+---
+
+### 数据卡与进度条
+
+```stat
+24 | 写作组件
+100% | 编译期渲染
+0 KB | 组件运行时代码
+```
+
+```progress
+编译期渲染 | 85
+运行时交互 | 40
+超范围的数值会被收敛 | 120
+```
+
+---
+
+### 属性列表
+
+语法是每行「属性名 | 值」。
+
+```attrs
+articleDir | docs
+outDir | dist
+ogImage | /og-cover.png
+```
+
+---
+
+### 选项卡
+
+语法是用 `@tab 标签名` 分节，纯 CSS 切换，页内容整体转义、不渲染 Markdown。
+
+```tabs
+@tab 现象
+站内切换文章时，正文先空白、闪一下才出现。
+@tab 原因
+正文来自按文章拆分的独立 chunk，到达前无内容可渲染。
+@tab 做法
+在视口内的站内链接上提前预取对应 chunk。
+```
+
+---
+
+### 代码组
+
+语法同样是 `@tab 标签名` 分节，区别在于标签名会被当作语言名送去 shiki 编译期高亮。
+
+```code-group
+@tab npm
 npm run build
+@tab pnpm
+pnpm build
+@tab ts
+export default defineConfig({ title: 'blog' })
 ```
 
-### katex测试
+---
 
-行内公式：一元二次方程 $ax^2 + bx + c = 0$ 的求根公式为 $x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}$。
+### 定义列表
 
-行间公式：
-
-$$
-\int_{a}^{b} f(x) \, dx = F(b) - F(a)
-$$
-
-$$
-\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e
-$$
-
-$$
-\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
-$$
-
-### mermaid测试
-
-```mermaid
-graph TD
-    A[开始] --> B{判断条件}
-    B -->|条件1| C[处理1]
-    B -->|条件2| D[处理2]
-    C --> E[结束]
-    D --> E
+```define
+SSG | 静态站点生成器，构建期把内容直出为 HTML 文件
+编译期 | 构建时执行，产物是静态文件
+运行期 | 浏览器里执行的少量交互逻辑
 ```
 
-```mermaid
-sequenceDiagram
-    participant U as 用户
-    participant F as 前端
-    participant B as 后端
-    U->>F: 访问文章页
-    F->>B: 请求文章数据
-    B-->>F: 返回 JSON
-    F-->>U: 渲染正文
+---
+
+### 问答
+
+答案默认折叠，点击问题展开。
+
+```qa
+为什么把渲染放在编译期 | 首屏直出 HTML，SEO 友好，且客户端不需要模板渲染
+写作组件会不会增大包体积 | 不会，它们只产出 HTML，样式集中在 content.css
 ```
 
-### 灯箱测试
+---
 
-点击图片由 medium-zoom 打开灯箱，支持滚轮缩放、拖拽平移、ESC 关闭。
+### 对比栏
 
-![灯箱测试图片 1](https://picsum.photos/id/1015/1200/800)
+用 `@tab 栏标题` 分节，栏内每行一个条目。
 
-![灯箱测试图片 2](https://picsum.photos/id/1016/1200/800)
+```compare
+@tab 编译期渲染
+首屏直出 HTML
+SEO 友好
+改内容需要重新构建
+@tab 运行时渲染
+首屏依赖 JS
+SEO 需额外处理
+改内容无需构建
+```
 
-![灯箱测试图片 3](https://picsum.photos/id/1018/1200/800)
+---
 
-### 提示块测试
+### 引用卡
 
-`:::type 可选标题` 语法支持 tip / info / warn / error 四种等级。
+语法是第一行为内容，之后「作者 | 出处」一行可省略。
 
-::: tip 小提示
-提示块内容支持 `行内代码`、**加粗**、[链接](https://cnkrru.top) 等 Markdown 语法。
-:::
+```quote
+任何可以用编译期解决的问题，都不应该留给运行时。
+设计原则 | 项目手册
+```
 
-::: info 信息
-用于展示一般性说明信息。
-:::
+```quote
+没有署名行也可以，只写内容即可。
+```
 
-::: warn 警告
-此操作会覆盖现有配置，请确认后再执行。
-:::
-
-::: error 错误
-连接超时，无法访问远程服务器，请检查网络后重试。
-:::
+---

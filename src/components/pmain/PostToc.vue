@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { headings, active, jump, mount, unmount } from '../../composables/pamin/post.ts'
+import { headings, active, jump, tocMount, tocUnmount } from '../../composables/pamin/post.ts'
 
-onMounted(() => mount())
-onUnmounted(() => unmount())
+onMounted(() => tocMount())
+onUnmounted(() => tocUnmount())
 </script>
 
 <template>
@@ -115,7 +115,4 @@ onUnmounted(() => unmount())
   }
 }
 
-@media (max-width: 480px) {
-  /* [响应式-xs] 窄屏 */
-}
 </style>
