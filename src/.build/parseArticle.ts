@@ -435,15 +435,18 @@ const manager = async () => {
   // 输入签名比对：两次 vite build 乃至无改动重跑都靠磁盘 sidecar 短路复用缓存
   const sig = compileSignature(files)
   const sigFile = path.join(vuePath, '.compile-sig')
+  const ids = new Set(files.map((f) => f.replace(/\.md$/, '')))
   // 产物完整性：post.json 缺失时不短路，否则被删的产物永远不会被重建
   const postJsonExists = fs.existsSync(jsonPath)
   if (postJsonExists && fs.existsSync(sigFile) && fs.readFileSync(sigFile, 'utf8') === sig) {
     console.log('[INFO]:输入未变,短路复用.cache编译缓存')
+    // AI修复：中止的编译（如 order 重复）会在 .cache 留下写了一半的 SFC，签名退回旧值后
+    //   短路分支不跑 vuePathCleaner，孤儿会被 includedRoutes 枚举成幻影路由，这里补清一次
+    vuePathCleaner(ids)
     syncPostMeta() // .cache 被清时补建可 import 副本，保证 SSR 每次构建都读得到
     return
   }
   // 2. 检查缓存与元数据文件路径（清除已删除文章的过时产物）
-  const ids = new Set(files.map((f) => f.replace(/\.md$/, '')))
   vuePathChecker(ids)
   jsonPathChecker()
   // 3. 仅当有文件需要重渲染时才扫描语言、初始化高亮器（全量未变时跳过createHighlighter）

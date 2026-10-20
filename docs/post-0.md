@@ -3,7 +3,7 @@ order: 1
 title: Hello world
 date: 2026-10-04
 category: 随笔
-tags: [随笔]
+tags: [blog]
 description: 一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件
 keywords: 个人博客, Vue 3
 ---

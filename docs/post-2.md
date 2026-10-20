@@ -3,7 +3,7 @@ order: 3
 title: express-2-drizzle+sqlite配置
 date: 2026-10-19
 category: 后端
-tags: [express, 后端]
+tags: [express]
 description: 记录给ts项目配置drizzleORM和sqlite数据库
 keywords: express
 ---

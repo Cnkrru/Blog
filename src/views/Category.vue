@@ -263,6 +263,10 @@ onMounted(() => {
 /* ====================<响应式>==================== */
 @media (max-width: 768px) {
   /* [响应式-sm] 手机：工具栏与群组行各自收紧内边距，把宽度让给标题 */
+  /* AI修复：高度链接上后 .main 在手机上已是定高，放开根容器高度以保住"整页滚动" */
+  .archive-list {
+    height: auto;
+  }
   .tool-area {
     margin-bottom: var(--space-md);
   }

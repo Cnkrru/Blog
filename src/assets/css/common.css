@@ -69,6 +69,20 @@ body {
   z-index: 2;
 }
 
+/* AI修复：接上高度链。html/body 的 100% 到这里就断了——四块区域挂在 #app 之下，
+   而 #app 原先没有任何 height/display 规则，于是任何 height:100% 都拿不到确定父高，
+   内容少的页面整页高度只剩内容高度，#app 底部那条空隙直接露出背景（手机端标签/归档页最明显）。
+   补上后 #app 才是真正的纵向容器，.center 吃满剩余高度，玻璃块铺满视口、页脚贴底 */
+#app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#app > .center {
+  flex: 1;
+}
+
 /* ==========<commoncss========== */
 
 /* 四大区域玻璃化 */

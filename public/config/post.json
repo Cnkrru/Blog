@@ -5,7 +5,7 @@
         "date": "2026-10-04",
         "category": "随笔",
         "tags": [
-            "随笔"
+            "blog"
         ],
         "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件",
         "keywords": "个人博客, Vue 3",
@@ -19,8 +19,7 @@
         "date": "2026-10-18",
         "category": "后端",
         "tags": [
-            "express",
-            "后端"
+            "express"
         ],
         "description": "记录express初次体验",
         "keywords": "express",
@@ -34,13 +33,27 @@
         "date": "2026-10-19",
         "category": "后端",
         "tags": [
-            "express",
-            "后端"
+            "express"
         ],
         "description": "记录给ts项目配置drizzleORM和sqlite数据库",
         "keywords": "express",
         "updated": "",
         "wordCount": 152,
         "readingTime": 1
+    },
+    "post-3": {
+        "order": 4,
+        "title": "hugoTheme-hello-开发记录",
+        "date": "2026-10-20",
+        "category": "前端",
+        "tags": [
+            "hugo",
+            "blog"
+        ],
+        "description": "记录按照自己博客的样式，给hugo做一个主题",
+        "keywords": "hugoTheme_hello",
+        "updated": "",
+        "wordCount": 413,
+        "readingTime": 2
     }
 }

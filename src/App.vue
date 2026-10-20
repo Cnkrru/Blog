@@ -34,6 +34,8 @@ useHead({
 
 const route = useRoute()
 const isIndex = computed(() => route.path === '/')
+// AI修复：返回顶部只在文章页出现（阅读进度环与"回到正文顶部"仅对文章有意义）
+const isPost = computed(() => route.name === 'post')
 
 watch(
   () => route.fullPath,
@@ -88,7 +90,7 @@ onMounted(() => {
       <FooterCopyright />
     </footer>
 
-    <BackToTop />
+    <BackToTop v-if="isPost" />
   </template>
 </template>
 
