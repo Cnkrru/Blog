@@ -5,7 +5,7 @@ onMounted(() => {
   twWorker()
 })
 onUnmounted(() => {
-  // AI修复：卸载时停掉打字定时链，避免残留定时器在别的页面继续跑
+  // 卸载时停掉打字定时链，避免残留定时器在别的页面继续跑
   twStop()
 })
 </script>

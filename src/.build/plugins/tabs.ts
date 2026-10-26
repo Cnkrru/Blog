@@ -22,8 +22,8 @@ import { panelTabs, splitPanels } from './panel.ts'
 const TABS_PANEL = (group: string, index: number, body: string): string => `
     <div class="tabs-panel" data-panel="${group}-${index}">${body}</div>`
 
-const TABS_WRAP = (nav: string, bodies: string): string => `
-<div class="tabs" v-pre>${nav}${bodies}
+const TABS_WRAP = (items: string): string => `
+<div class="tabs" v-pre>${items}
 </div>`
 
 /* ====================<插件实现>==================== */
@@ -34,8 +34,10 @@ export const tabsBlock: ComponentPlugin = {
   render(ctx, content) {
     const panels = splitPanels(content, 'tabs')
     if (panels.length === 0) return ''
-    const { group, nav } = panelTabs(ctx, 'tabs', panels)
-    const bodies = panels.map((p, i) => TABS_PANEL(group, i, ctx.escapeHtml(p.body))).join('')
-    return TABS_WRAP(nav, bodies)
+    const { group, labels } = panelTabs(ctx, 'tabs', panels)
+    const items = panels
+      .map((p, i) => `${labels[i] ?? ''}${TABS_PANEL(group, i, ctx.escapeHtml(p.body))}`)
+      .join('')
+    return TABS_WRAP(items)
   },
 }

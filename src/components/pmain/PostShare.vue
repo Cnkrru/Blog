@@ -8,6 +8,7 @@ import {
   shareCopy,
   qrCanvas,
 } from '../../composables/pamin/post.ts'
+import { refText } from '../../composables/i18n.ts'
 import Share from '../icon/share/Share.vue'
 import Heart from '../icon/Heart.vue'
 import Wechat from '../icon/share/Wechat.vue'
@@ -23,7 +24,7 @@ const route = useRoute()
 const origin = typeof window !== 'undefined' ? window.location.origin : ''
 const url = `${origin}${route.path}`
 
-// AI修复：分享文案取文章标题（原先误赋成 URL）；postData 已由同页组件拉取，点击时缓存已就绪
+// 分享文案取文章标题（原先误赋成 URL）；postData 已由同页组件拉取，点击时缓存已就绪
 const postKey = String(route.params.id)
 const shareTitle = () => postCache[postKey]?.title ?? url
 </script>
@@ -35,7 +36,7 @@ const shareTitle = () => postCache[postKey]?.title ?? url
       <!-- 分享图标 -->
       <Share class="share-icon" />
       <!-- 分享字串 -->
-      <p class="share-text">分享这篇文章</p>
+      <p class="share-text">{{ refText.shareThis }}</p>
       <!-- 按钮列表 -->
       <div class="btn-list">
         <button class="btn weixin" @click="qrcodeOpen(url)"><Wechat /></button>
@@ -44,7 +45,7 @@ const shareTitle = () => postCache[postKey]?.title ?? url
         <button class="btn tg" @click="linkOpen('tg', url, shareTitle())"><Telegram /></button>
         <button class="btn facebook" @click="linkOpen('facebook', url, shareTitle())"><Facebook /></button>
         <button class="btn x" @click="linkOpen('x', url, shareTitle())"><XIcon /></button>
-        <!-- AI修复：复制按钮去掉冗余的 toastOpen（shareCopy 内部已 toast 且 toastOpen 有"已存在则忽略"守卫） -->
+        <!-- 复制按钮去掉冗余的 toastOpen（shareCopy 内部已 toast 且 toastOpen 有"已存在则忽略"守卫） -->
         <button class="btn copy-btn" @click="shareCopy(url)">
           <Copy />
         </button>
@@ -54,13 +55,13 @@ const shareTitle = () => postCache[postKey]?.title ?? url
 
       <a href="https://ifdian.net/a/Cnkrru" class="sponser-btn">
         <Heart class="sponser-icon" />
-        <p>赞助</p>
+        <p>{{ refText.sponsor }}</p>
       </a>
 
       <!-- 微信分享的弹窗 -->
       <dialog class="qrcode-dialog">
         <div class="dialog-head">
-          <p>微信分享二维码</p>
+          <p>{{ refText.wechatQr }}</p>
           <button class="dialog-close" @click="qrcodeClose"><X /></button>
         </div>
         <canvas ref="qrCanvas"></canvas>

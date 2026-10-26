@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { postNav, preOrder, nextOrder, preTitle, nextTitle } from '../../composables/pamin/post.ts'
+import { refText } from '../../composables/i18n.ts'
 
 const route = useRoute()
 const postKey = String(route.params.id)
@@ -13,22 +14,22 @@ onMounted(() => postNav(postKey))
   <div class="postnav-area">
     <!-- 上一篇的按钮 -->
     <router-link v-if="preOrder" :to="`/post/${preOrder}`" class="post-btn pre-post">
-      <div class="post-label">上一篇</div>
+      <div class="post-label">{{ refText.prevPost }}</div>
       <div class="post-title">{{ preTitle }}</div>
     </router-link>
     <a v-else class="post-btn pre-post">
-      <div class="post-label">上一篇</div>
-      <div class="post-title">暂无</div>
+      <div class="post-label">{{ refText.prevPost }}</div>
+      <div class="post-title">{{ refText.noPost }}</div>
     </a>
 
     <!-- 下一篇的按钮 -->
     <router-link v-if="nextOrder" :to="`/post/${nextOrder}`" class="post-btn next-post">
-      <div class="post-label">下一篇</div>
+      <div class="post-label">{{ refText.nextPost }}</div>
       <div class="post-title">{{ nextTitle }}</div>
     </router-link>
     <a v-else class="post-btn next-post">
-      <div class="post-label">下一篇</div>
-      <div class="post-title">暂无</div>
+      <div class="post-label">{{ refText.nextPost }}</div>
+      <div class="post-title">{{ refText.noPost }}</div>
     </a>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/seo'
+import { refText } from '../composables/i18n'
 import {
   tagClean,
   tagCleanSync,
@@ -18,7 +19,7 @@ useSeo({
   path: '/tag',
 })
 
-// AI修复：setup 期同步加载，让 SSG 产物就带标签云；数据未就绪再走异步兜底
+// setup 期同步加载，让 SSG 产物就带标签云；数据未就绪再走异步兜底
 const tagLoaded = tagCleanSync()
 
 onMounted(() => {
@@ -44,7 +45,7 @@ onMounted(() => {
     <!-- 选中标签的文章列表 -->
     <div class="timeline-area" v-if="tagItem">
       <div class="tl-bar">
-        <span class="tl-title">「{{ tagItem }}」下的文章</span>
+        <span class="tl-title">{{ refText.tagPosts(tagItem) }}</span>
       </div>
 
       <div class="tl-body">
@@ -172,7 +173,7 @@ onMounted(() => {
   font-size: 12px;
   opacity: 0.6;
   color: var(--g-text);
-  /* AI修复：窄屏下日期会被折成 2026- / 10-19 两行（归档页的 .item-date 一直有这两条） */
+  /* 窄屏下日期会被折成 2026- / 10-19 两行（归档页的 .item-date 一直有这两条） */
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -180,7 +181,7 @@ onMounted(() => {
 /* ====================<响应式>==================== */
 @media (max-width: 768px) {
   /* [响应式-sm] 手机：标签云与时间线各区留白收紧 */
-  /* AI修复：高度链接上后 .main 在手机上已是定高，若继续 height:100% 会让 .tl-body 接手滚动，
+  /* 高度链接上后 .main 在手机上已是定高，若继续 height:100% 会让 .tl-body 接手滚动，
      这里放开根容器高度，保住"整页滚动" */
   .tag-list {
     height: auto;

@@ -12,9 +12,15 @@ keywords: express
 
 ### 1. `npm init`
 
+- 初始化JavaScript项目
+
 ### 2. `npm install typescript`
 
+- 安装typescript
+
 ### 3. `npx tsc --init`
+
+- 用tsc初始化ts配置文件
 
 ### 4. 安装express
 
@@ -42,30 +48,30 @@ npm install --save-dev @types/express @types/node   // 安装express的类型
   ```
 - main:dist/index.js
 
+---
+
 ## 二、hello world
 
 ### 1. 在`src`文件夹下创建`index.ts`
 
 ```ts
 import express from 'express'
+// express请求体和返回体的数据类型
 import type { Request, Response } from 'express'
 
+// 创建expressAPP实例
 const app = express()
+// 实例在3000端口运行
 const port = 3000
-
+// get接口，helloworld
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!')
 })
 
+// 监听端口(这个必须放到最后)
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
-```
-
-```tip
-const app = express()     // 创建express实例
-
-app.listen(port,回调函数) // 在指定端口开启服务
 ```
 
 ### 2. 运行项目
@@ -74,13 +80,26 @@ app.listen(port,回调函数) // 在指定端口开启服务
 npm start // 在package.json里配置了start命令
 ```
 
+---
+
 ## 三、热重载
 
 ### 1. 安装tsx
 
+- 官网文档地址:[https://tsx.hirok.io/](https://tsx.hirok.io/)
+
 ```sh
 npm install -D tsx
 ```
+
+```info
+- node的增强,直接将node指令的`node`替换成`tsx`即可
+- 支持热重载(watch模式),自动重新运行更新的ts文件
+- 支持直接运行ts文件,而不需要编译为js再运行
+- 通过`npx`执行
+```
+
+- npx官方文档地址:[https://docs.npmjs.com/cli/v12/commands/npx](https://docs.npmjs.com/cli/v12/commands/npx)
 
 ### 2. 修改`package.json`
 
@@ -92,10 +111,14 @@ npm install -D tsx
 }
 ```
 
+---
+
 ## 四、配置swaggerAPI文档
 
 ```tip
 非必须，只是笔者自己挺喜欢这个文档
+
+- 菜鸟教程swagger文档:[https://www.runoob.com/swagger/swagger-tutorial.html](https://www.runoob.com/swagger/swagger-tutorial.html)
 ```
 
 ### 1. 安装依赖

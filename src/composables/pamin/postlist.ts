@@ -18,7 +18,7 @@ const listFill = () => {
   listPageNum.value = Math.max(1, Math.ceil(list.length / POST_NUM))
 }
 
-// AI修复：setup 期同步加载，让 SSG 产物就有文章内容；数据未就绪返回 false 交异步兜底
+// setup 期同步加载，让 SSG 产物就有文章内容；数据未就绪返回 false 交异步兜底
 export const listCleanSync = (): boolean => {
   if (!postCleanSync()) return false
   listFill()
@@ -33,7 +33,7 @@ export const listClean = async () => {
 
 // 从 URL 读页码：?page= 缺失或越界一律回退 1（首页即默认页）
 export const listInitPage = () => {
-  // AI修复：SSG 期无 location，构建产物固定渲染第 1 页
+  // SSG 期无 location，构建产物固定渲染第 1 页
   if (typeof window === 'undefined') return 1
   const p = Number(new URLSearchParams(window.location.search).get('page'))
   if (p >= 1 && p <= listPageNum.value) return p
@@ -46,7 +46,7 @@ export const listChangePage = (n: number) => {
   listItems.value = list.slice(POST_NUM * (n - 1), POST_NUM * n)
   if (n >= 1 && n <= listPageNum.value) {
     listNowPage.value = n
-    // AI修复：SSG 期无 location/history，URL 同步仅客户端执行
+    // SSG 期无 location/history，URL 同步仅客户端执行
     if (typeof window === 'undefined') return
     // URL 同步：replaceState 只改地址不触发刷新
     const url = new URL(window.location.href)

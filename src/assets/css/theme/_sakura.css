@@ -2,6 +2,7 @@
 
 .sakura.light {
     --g-color:#e8758f;                      /* 樱粉主色 */
+    --g-on-color:#1a0f2e;                   /* 主色上的文字（樱粉亮，压深字） */
     --g-bg:#fdeef3;                         /* 樱雾底 */
     --glass-r:255;                          /* 玻璃底色 R（= 樱白亮面） */
     --glass-g:250;                          /* 玻璃底色 G */
@@ -14,6 +15,7 @@
 
 .sakura.dark {
     --g-color:#e58fb0;                      /* 夜樱粉 */
+    --g-on-color:#1a0f2e;                   /* 主色上的文字（夜樱粉亮，压深字） */
     --g-bg:#1a0f2e;                         /* 夜樱深紫 */
     --glass-r:37;                           /* 玻璃底色 R（= 夜紫面） */
     --glass-g:22;                           /* 玻璃底色 G */

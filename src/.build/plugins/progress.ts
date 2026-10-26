@@ -13,7 +13,7 @@ import type { ComponentPlugin } from './base.ts'
 const PROGRESS_ITEM = (esc: (s: string) => string, label: string, pct: number): string => `
     <div class="progress-item">
         <span class="progress-label">${esc(label)}</span>
-        <div class="progress-track">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" aria-label="${esc(label) || '进度'}">
             <div class="progress-bar" style="width:${pct}%"></div>
         </div>
         <span class="progress-pct">${pct}%</span>

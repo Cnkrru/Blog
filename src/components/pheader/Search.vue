@@ -1,19 +1,49 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import SearchIcon from '../icon/SearchIcon.vue'
 import {
   refKeyword,
   refSearchRes,
   refSearchPos,
   searchOpen,
+  searchReady,
+  searchLoading,
+  searchFailed,
   searchHl,
   buildIndex,
   go,
   onEnter,
   onFocus,
+  resetSearch,
   mountSearch,
   unmountSearch,
 } from '@/composables/pheader.ts'
+import { refText } from '@/composables/i18n.ts'
+
+const inputEl = ref<HTMLInputElement | null>(null)
+const resultsEl = ref<HTMLElement | null>(null)
+
+// 收起面板并把焦点还给输入框
+const closeSearch = () => {
+  resetSearch()
+  inputEl.value?.focus()
+}
+
+// 从输入框直接进入第一条结果
+const focusFirstResult = () => {
+  const first = resultsEl.value?.querySelector<HTMLButtonElement>('.search-item')
+  if (first) first.focus()
+}
+
+// 在结果按钮之间循环移动焦点
+const moveFocus = (step: number) => {
+  const items = resultsEl.value?.querySelectorAll<HTMLButtonElement>('.search-item')
+  if (!items?.length) return
+  const list = Array.from(items)
+  const current = list.indexOf(document.activeElement as HTMLButtonElement)
+  const next = (current + step + list.length) % list.length
+  list[next]?.focus()
+}
 
 onMounted(() => {
   buildIndex()
@@ -29,10 +59,14 @@ onUnmounted(() => {
   <div class="search">
     <SearchIcon class="search-icon" />
     <input
+      ref="inputEl"
       type="text"
-      placeholder="搜索"
+      :placeholder="refText.searchPlaceholder"
+      :aria-label="refText.searchAria"
       v-model="refKeyword"
       @keydown.enter="onEnter"
+      @keydown.esc.prevent="closeSearch"
+      @keydown.down.prevent="focusFirstResult"
       @focus="onFocus"
     />
 
@@ -40,6 +74,7 @@ onUnmounted(() => {
       <Transition name="search-fade">
         <div
           v-if="searchOpen"
+          ref="resultsEl"
           class="search-results"
           :style="{
             left: refSearchPos.left + 'px',
@@ -47,23 +82,42 @@ onUnmounted(() => {
             width: refSearchPos.width + 'px',
           }"
         >
-          <div v-if="refSearchRes.length === 0" class="search-empty">
-            搜索 "{{ refKeyword }}"：未找到结果
+          <div v-if="searchLoading && !searchReady" class="search-empty" role="status">
+            {{ refText.searchIndexing }}
+          </div>
+          <div v-else-if="searchFailed" class="search-empty" role="status">
+            {{ refText.searchFailed }}
+          </div>
+          <div v-else-if="refSearchRes.length === 0" class="search-empty" role="status">
+            {{ refText.searchNoResult(refKeyword) }}
           </div>
 
           <template v-else>
-            <div class="search-counter">{{ refSearchRes.length }} 个结果</div>
-            <div class="search-list">
-              <div v-for="r in refSearchRes" :key="r.id" class="search-item" @click="go(r.id)">
-                <div class="search-item-title" v-html="searchHl(r.title, refKeyword)"></div>
-                <div class="search-item-meta">
-                  分类: <span v-html="searchHl(r.category, refKeyword)"></span>
+            <div class="search-counter" role="status">
+              {{ refText.searchResults(refSearchRes.length) }}
+            </div>
+            <div
+              class="search-list"
+              @keydown.down.prevent="moveFocus(1)"
+              @keydown.up.prevent="moveFocus(-1)"
+              @keydown.esc.prevent="closeSearch"
+            >
+              <button
+                v-for="r in refSearchRes"
+                :key="r.id"
+                type="button"
+                class="search-item"
+                @click="go(r.id)"
+              >
+                <span class="search-item-title" v-html="searchHl(r.title, refKeyword)"></span>
+                <span class="search-item-meta">
+                  {{ refText.searchCategory }} <span v-html="searchHl(r.category, refKeyword)"></span>
                   <span class="search-item-date" v-html="searchHl(r.date, refKeyword)"></span>
-                </div>
-                <div class="search-item-tags" v-if="r.tags && r.tags.length">
+                </span>
+                <span v-if="r.tags && r.tags.length" class="search-item-tags">
                   <span v-for="t in r.tags" :key="t" class="search-tag">{{ t }}</span>
-                </div>
-              </div>
+                </span>
+              </button>
             </div>
           </template>
         </div>
@@ -155,24 +209,42 @@ onUnmounted(() => {
 }
 
 .search-item {
+  display: block;
+  width: calc(100% - 12px);
+
   padding: 12px 16px;
   margin: 2px 6px;
+
+  border: none;
   border-radius: var(--radius-md);
-  cursor: pointer;
+
+  font: inherit;
+  text-align: left;
   color: var(--g-text);
+  background: transparent;
+  cursor: pointer;
+
   transition: background-color 0.15s ease;
 }
 
-.search-item:hover {
+.search-item:hover,
+.search-item:focus-visible {
   background-color: color-mix(in srgb, var(--g-color) 15%, transparent);
 }
 
+.search-item:focus-visible {
+  outline: 2px solid var(--g-color);
+  outline-offset: -2px;
+}
+
 .search-item-title {
+  display: block;
   font-weight: 600;
   margin-bottom: 4px;
 }
 
 .search-item-meta {
+  display: block;
   font-size: 13px;
   opacity: 0.7;
 }
@@ -182,6 +254,7 @@ onUnmounted(() => {
 }
 
 .search-item-tags {
+  display: block;
   font-size: 12px;
   margin-top: 6px;
 }

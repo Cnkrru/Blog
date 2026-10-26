@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { hitmap } from '@/composables/index.ts'
+import { refText } from '@/composables/i18n.ts'
 
 const {
   years,
@@ -17,21 +18,6 @@ const {
   setMonth,
 } = hitmap
 
-const months = [
-  '一月',
-  '二月',
-  '三月',
-  '四月',
-  '五月',
-  '六月',
-  '七月',
-  '八月',
-  '九月',
-  '十月',
-  '十一月',
-  '十二月',
-]
-
 onMounted(() => {
   hitmap.load()
 })
@@ -42,7 +28,9 @@ onMounted(() => {
     <div class="heatmap-header">
       <div class="custom-select">
         <button class="select-trigger" :class="{ active: openYear }" @click="toggleYear">
-          <span class="select-value">{{ selectedYear }}年</span>
+          <span class="select-value">{{
+            selectedYear === null ? '' : refText.yearLabel(selectedYear)
+          }}</span>
           <span class="select-arrow" :class="{ rotated: openYear }"></span>
         </button>
         <transition name="dropdown">
@@ -54,13 +42,13 @@ onMounted(() => {
               :class="{ active: y === selectedYear }"
               @click="setYear(y)"
             >
-              {{ y }}年
+              {{ refText.yearLabel(y) }}
             </li>
           </ul>
         </transition>
       </div>
 
-      <h3 class="heatmap-title">创作活动热力图</h3>
+      <h3 class="heatmap-title">{{ refText.heatmapTitle }}</h3>
 
       <div class="custom-select">
         <button
@@ -69,13 +57,13 @@ onMounted(() => {
           :disabled="isLoading"
           @click="toggleMonth"
         >
-          <span class="select-value">{{ months[selectedMonth - 1] }}</span>
+          <span class="select-value">{{ refText.months[selectedMonth - 1] }}</span>
           <span class="select-arrow" :class="{ rotated: openMonth }"></span>
         </button>
         <transition name="dropdown">
           <ul v-if="openMonth" class="dropdown-menu" @click.stop>
             <li
-              v-for="(m, i) in months"
+              v-for="(m, i) in refText.months"
               :key="i"
               class="dropdown-item"
               :class="{ active: i + 1 === selectedMonth }"
@@ -95,14 +83,14 @@ onMounted(() => {
           :key="day.date"
           class="heatmap-cell"
           :class="['heatmap-lv' + level(day)]"
-          :title="day.date + '：' + (day.activity > 0 ? day.activity + ' 次活动' : '无活动')"
+          :title="refText.heatmapTip(day.date, day.activity)"
         ></span>
       </div>
-      <div v-else class="no-data">暂无数据</div>
+      <div v-else class="no-data">{{ refText.heatmapNoData }}</div>
     </div>
 
     <div class="heatmap-legend">
-      <span class="legend-text">少</span>
+      <span class="legend-text">{{ refText.heatmapLess }}</span>
       <div class="legend-cells">
         <div class="legend-cell heatmap-lv0"></div>
         <div class="legend-cell heatmap-lv1"></div>
@@ -110,7 +98,7 @@ onMounted(() => {
         <div class="legend-cell heatmap-lv3"></div>
         <div class="legend-cell heatmap-lv4"></div>
       </div>
-      <span class="legend-text">多</span>
+      <span class="legend-text">{{ refText.heatmapMore }}</span>
     </div>
   </div>
 </template>

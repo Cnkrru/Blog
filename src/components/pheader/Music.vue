@@ -25,6 +25,7 @@ import {
   loadConfig,
   musicUnmount,
 } from '@/composables/pheader.ts'
+import { refText } from '@/composables/i18n.ts'
 import MusicIcon from '../icon/Music.vue'
 import SkipBack from '../icon/SkipBack.vue'
 import Play from '../icon/Play.vue'
@@ -49,29 +50,31 @@ onUnmounted(() => {
       <div v-if="openControl" class="music-player">
         <div class="mp-head">
           <div class="mp-cover">
-            <img v-if="currentMusic?.cover" :src="currentMusic.cover" alt="封面" />
+            <img v-if="currentMusic?.cover" :src="currentMusic.cover" :alt="refText.musicCoverAlt" />
             <MusicIcon v-else class="mp-cover-fallback" />
           </div>
           <div class="mp-meta">
-            <h4 class="mp-title">{{ currentMusic?.title || '未选择歌曲' }}</h4>
-            <p class="mp-artist">{{ currentMusic?.artist || '未知艺术家' }}</p>
-            <p v-if="isLoading" class="mp-status">加载中…</p>
-            <p v-else-if="isLoadFailed" class="mp-status mp-status-error">音乐源加载失败</p>
+            <h4 class="mp-title">{{ currentMusic?.title || refText.musicNoSong }}</h4>
+            <p class="mp-artist">{{ currentMusic?.artist || refText.musicUnknownArtist }}</p>
+            <p v-if="isLoading" class="mp-status">{{ refText.musicLoading }}</p>
+            <p v-else-if="isLoadFailed" class="mp-status mp-status-error">
+              {{ refText.musicLoadFailed }}
+            </p>
           </div>
-          <button class="mp-close" title="关闭" @click="openControl = false">
+          <button class="mp-close" :title="refText.musicClose" @click="openControl = false">
             <X class="mp-close-icon" />
           </button>
         </div>
 
         <div class="mp-controls">
-          <button class="mp-btn" title="上一首" @click="preMusic()">
+          <button class="mp-btn" :title="refText.musicPrev" @click="preMusic()">
             <SkipBack class="mp-ctrl-icon" />
           </button>
-          <button class="mp-play" title="播放/暂停" @click="toggleMusic()">
+          <button class="mp-play" :title="refText.musicPlayPause" @click="toggleMusic()">
             <Pause v-if="isPlaying" class="mp-play-icon" />
             <Play v-else class="mp-play-icon" />
           </button>
-          <button class="mp-btn" title="下一首" @click="nextMusic()">
+          <button class="mp-btn" :title="refText.musicNext" @click="nextMusic()">
             <SkipForward class="mp-ctrl-icon" />
           </button>
         </div>
@@ -92,7 +95,7 @@ onUnmounted(() => {
         </div>
 
         <div class="mp-volume">
-          <button class="mp-btn" title="静音" @click="toggleMuted()">
+          <button class="mp-btn" :title="refText.musicMute" @click="toggleMuted()">
             <VolumeX v-if="isMuted || volume === 0" class="mp-ctrl-icon" />
             <Volume v-else class="mp-ctrl-icon" />
           </button>
@@ -110,7 +113,7 @@ onUnmounted(() => {
         <div class="mp-listhead">
           <button class="mp-listtoggle" @click="openList = !openList">
             <List class="mp-ctrl-icon" />
-            <span>播放列表 ({{ musicList.length }})</span>
+            <span>{{ refText.musicPlaylist(musicList.length) }}</span>
           </button>
         </div>
 
@@ -213,7 +216,7 @@ onUnmounted(() => {
   white-space: nowrap;
 }
 
-/* AI修复：加载/失败提示（原来 isLoading 只写不读，加载慢与加载失败在界面上都看不出来） */
+/* 加载/失败提示（原来 isLoading 只写不读，加载慢与加载失败在界面上都看不出来） */
 .mp-status {
   margin: 2px 0 0;
   font-size: 12px;

@@ -166,4 +166,19 @@ vue和hugo有一些相似之处，在下文会介绍
 该blog的部分功能hugo内置，可以等效替换，在下文会介绍
 ```
 
+### hugo自带功能(部分等效blog的功能)
+
+1. 元数据解析,blog项目用的是`grey-matter`,将md的元数据与正文分别输出到json的一个子字典的不同字段
+2. chroma高亮,blog项目用的是`shiki`,`chroma`是go生态的语法高亮库
+3. rss,sitemap,blog项目用的是`vite-ssg-sitemap`
+4. ssg,blog项目用的是`vite-ssg`
+5. md->html,blog项目用的是`markdown-it`
+6. 标题锚点,blog用的是`markdown-it`的插件
+7. 分页,blog用的是笔者自己写的,把post.json的数据清洗,切分,然后每一个列表子页面对应一个切片
+
+### 需要笔者自己迁移过来的功能
+
+1. 音乐播放,原blog项目使用的是howler+自己写的UI
+2.
+
 ### hugo与vue

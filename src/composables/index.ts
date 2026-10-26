@@ -1,8 +1,9 @@
 import { ref } from 'vue'
 import { postCache, postData, type PostData } from './pamin/post'
-// AI修复：粒子配色跟随主题变化，需读取当前亮暗/主题
+// 粒子配色跟随主题变化，需读取当前亮暗/主题
 import { refLd } from './pheader'
 import { refTheme } from './pamin/setting'
+import { refText } from './i18n'
 
 /* ====================<hitmap>==================== */
 export const hitmap = (() => {
@@ -163,10 +164,17 @@ export const hitmap = (() => {
 export const particles = () => {
   type Particle = { x: number; y: number; vX: number; vY: number; radius: number }
   type MousePoint = { x: number; y: number }
+  type Ripple = { x: number; y: number; radius: number }
 
   const LINK_DISTANCE = 180 // 连接长度阈值
-  const PARTICLE_COUNT = 80
+  const PARTICLE_COUNT = 80 // 桌面端粒子数
+  const PARTICLE_COUNT_SM = 32 // 移动端（≤768px）粒子数，避免小屏拥挤与算力浪费
   const DPR_CAP = 2
+  const REPEL_DISTANCE = 110 // 光标排斥半径
+  const REPEL_STRENGTH = 2.2 // 光标排斥强度（每帧位移）
+  const RIPPLE_MAX = 140 // 涟漪最大半径，超过即销毁
+  const RIPPLE_SPEED = 3.2 // 涟漪每帧扩张量
+  const RIPPLE_FORCE = 6 // 点击时附近粒子获得的径向冲量
 
   // 画布上下文与尺寸
   let canvas: HTMLCanvasElement | null = null
@@ -178,11 +186,12 @@ export const particles = () => {
   // 粒子与鼠标状态
   let particleList: Particle[] = []
   let mouse: MousePoint | null = null
+  let rippleList: Ripple[] = []
 
   // 主题色：随亮暗切换读取 CSS 变量
   const pickThemeColor = () => getComputedStyle(canvas!).getPropertyValue('--g-color').trim()
 
-  // AI修复：rgb 分量在主题色变化时预解析一次，避免 O(n²) 连线循环里反复解析字符串
+  // rgb 分量在主题色变化时预解析一次，避免 O(n²) 连线循环里反复解析字符串
   let colorRgb = { r: 0, g: 0, b: 0 }
   const parseColor = (hex: string) => {
     const _hex = hex.replace('#', '')
@@ -194,7 +203,7 @@ export const particles = () => {
   }
   const toRgba = (opacity: number) => `rgba(${colorRgb.r},${colorRgb.g},${colorRgb.b},${opacity})`
 
-  // AI修复：主题色只在亮暗/主题变化时重读，避免每帧 getComputedStyle
+  // 主题色只在亮暗/主题变化时重读，避免每帧 getComputedStyle
   let themeKey = ''
   const syncThemeColor = () => {
     const key = `${refLd.value}|${refTheme.value}`
@@ -267,6 +276,54 @@ export const particles = () => {
     }
   }
 
+  // 光标排斥：光标附近的粒子被轻微推开，移开后自行漂回原轨迹
+  const applyRepel = () => {
+    if (!mouse) return
+    for (let i = 0; i < particleList.length; i++) {
+      const particle = particleList[i]!
+      const dx = particle.x - mouse.x
+      const dy = particle.y - mouse.y
+      const distance = Math.hypot(dx, dy)
+      if (distance > 0 && distance < REPEL_DISTANCE) {
+        const force = (1 - distance / REPEL_DISTANCE) * REPEL_STRENGTH
+        particle.x += (dx / distance) * force
+        particle.y += (dy / distance) * force
+      }
+    }
+  }
+
+  // 点击涟漪：半径逐帧扩张并淡出，超出阈值即移除
+  const runRipple = () => {
+    for (let i = rippleList.length - 1; i >= 0; i--) {
+      const ripple = rippleList[i]!
+      ripple.radius += RIPPLE_SPEED
+      if (ripple.radius > RIPPLE_MAX) {
+        rippleList.splice(i, 1)
+        continue
+      }
+      ctx!.beginPath()
+      ctx!.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2)
+      ctx!.strokeStyle = toRgba(0.5 * (1 - ripple.radius / RIPPLE_MAX))
+      ctx!.lineWidth = 1.5
+      ctx!.stroke()
+    }
+  }
+
+  // 双端粒子配置：断点与 CSS 的 sm（768px）保持一致
+  const particleCount = () => (window.matchMedia('(max-width: 768px)').matches ? PARTICLE_COUNT_SM : PARTICLE_COUNT)
+
+  // 粒子数量同步：只按目标数量增删，不重建已有粒子，resize 时位置不会重置
+  const syncParticleCount = () => {
+    const target = particleCount()
+    if (particleList.length < target) {
+      for (let i = particleList.length; i < target; i++) {
+        particleList.push(createParticle(width, height))
+      }
+    } else if (particleList.length > target) {
+      particleList.length = target
+    }
+  }
+
   // 画布配置：DPR 缩放 + 重设尺寸（复用已有粒子，尺寸变化时粒子自行反弹回界内）
   const resizeCanvas = () => {
     const dpr = Math.min(devicePixelRatio, DPR_CAP)
@@ -279,13 +336,10 @@ export const particles = () => {
     width = vw
     height = vh
 
-    // AI修复：仅在首次创建粒子，避免每次 resize 重建 80 个粒子
-    if (!particleList.length) {
-      particleList = Array.from({ length: PARTICLE_COUNT }, () => createParticle(width, height))
-    }
+    syncParticleCount()
   }
 
-  // AI修复：resize 用 rAF 节流，连续拖拽窗口不再每个事件都重设画布
+  // resize 用 rAF 节流，连续拖拽窗口不再每个事件都重设画布
   const onResize = () => {
     if (resizeRaf) return
     resizeRaf = requestAnimationFrame(() => {
@@ -309,6 +363,21 @@ export const particles = () => {
   const touchLeave = () => {
     mouse = null
   }
+  // 点击：生成涟漪，并给附近粒子一次径向冲量
+  const windowClick = (e: MouseEvent) => {
+    rippleList.push({ x: e.clientX, y: e.clientY, radius: 0 })
+    for (let i = 0; i < particleList.length; i++) {
+      const particle = particleList[i]!
+      const dx = particle.x - e.clientX
+      const dy = particle.y - e.clientY
+      const distance = Math.hypot(dx, dy)
+      if (distance > 0 && distance < RIPPLE_MAX) {
+        const force = (1 - distance / RIPPLE_MAX) * RIPPLE_FORCE
+        particle.x += (dx / distance) * force
+        particle.y += (dy / distance) * force
+      }
+    }
+  }
 
   // 清理器：停帧循环并解绑全部监听
   const stop = () => {
@@ -325,18 +394,22 @@ export const particles = () => {
     window.removeEventListener('mouseleave', mouseLeave)
     window.removeEventListener('touchmove', touchMove)
     window.removeEventListener('touchend', touchLeave)
+    window.removeEventListener('click', windowClick)
 
     particleList = []
     mouse = null
+    rippleList = []
   }
 
-  // 帧循环：清屏 → 跑粒子 → 粒子连线 → 鼠标连线 → 下一帧
+  // 帧循环：清屏 → 排斥 → 跑粒子 → 粒子连线 → 鼠标连线 → 涟漪 → 下一帧
   const tick = () => {
     syncThemeColor()
     ctx!.clearRect(0, 0, width, height)
+    applyRepel()
     particleList.forEach((particle) => runParticle(particle))
     drawLinks()
     drawMouseLinks()
+    runRipple()
     raf = requestAnimationFrame(tick)
   }
 
@@ -351,6 +424,7 @@ export const particles = () => {
     window.addEventListener('mouseleave', mouseLeave)
     window.addEventListener('touchmove', touchMove, { passive: true })
     window.addEventListener('touchend', touchLeave)
+    window.addEventListener('click', windowClick)
     tick()
   }
 
@@ -360,14 +434,13 @@ export const particles = () => {
   }
 }
 /* ====================<typewrite>==================== */
-// AI修复：模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefTw）
+// 模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefTw）
 export const refTw = ref('')
 let twTimer: ReturnType<typeof setTimeout> | null = null
 let twRunning = false // 打字链是否在跑
 let strIndex: number = 0 // 句子索引，打到第几个句子了
 let charIndex: number = 0 // 字符索引。打到第几个字符了
 let increasing: boolean = true // 是否正向，正反两个打字方向
-const texts = ['欢迎来到我的博客', 'welcome to my blog']
 const onSpeed: number = 100 // 正向打字速度(打字间隔时间)
 const unSpeed: number = 40 // 反向打字速度
 const loopSpeed: number = 3000 // 句子轮询间隔时间
@@ -377,7 +450,11 @@ const twManager = (fn: () => void, delay: number) => {
 }
 // 打字步进（内部递归）：正/反两个方向 + 句子轮询
 const twStep = () => {
-  const currentStr: string = texts[strIndex]!
+  // 每次步进都读当前语言的文案，切换语言后下一句即生效
+  const texts = refText.value.welcomeTexts
+  const currentStr: string = texts[strIndex] ?? texts[0] ?? ''
+  // 切换语言后句长可能变短，游标先夹回当前句长，避免越界后无法收敛
+  charIndex = Math.min(charIndex, currentStr.length)
   if (increasing) {
     charIndex++
     refTw.value = currentStr.slice(0, charIndex)
@@ -403,13 +480,13 @@ const twStep = () => {
     twManager(twStep, unSpeed)
   }
 }
-// AI修复：加运行守卫，反复进出首页时不再出现两条定时链同时改同一组游标
+// 加运行守卫，反复进出首页时不再出现两条定时链同时改同一组游标
 export const twWorker = () => {
   if (twRunning) return
   twRunning = true
   twStep()
 }
-// AI修复：停止定时链并复位守卫，供 Welcome 卸载时清理
+// 停止定时链并复位守卫，供 Welcome 卸载时清理
 export const twStop = () => {
   if (twTimer) {
     clearTimeout(twTimer)

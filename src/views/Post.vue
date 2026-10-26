@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Component } from 'vue'
 import { useSeo } from '../composables/seo'
+import { refText } from '../composables/i18n'
 import { contentReady } from '../composables/pamin/post.ts'
 import PostStatus from '../components/pmain/PostStatus.vue'
 import PostEdit from '../components/pmain/PostEdit.vue'
@@ -13,7 +14,7 @@ import PostComment from '../components/pmain/PostComment.vue'
 import PostToc from '../components/pmain/PostToc.vue'
 
 const route = useRoute()
-// AI修复：正文改为非 eager + 异步组件按需加载（原先 eager 会把全部文章的编译产物打进同一分包）
+// 正文改为非 eager + 异步组件按需加载（原先 eager 会把全部文章的编译产物打进同一分包）
 const comps = import.meta.glob<{ default: Component }>('/.cache/*.vue')
 const postKey = computed(() => String(route.params.id))
 const content = computed(() => {
@@ -60,14 +61,23 @@ useSeo({
       <PostEdit />
       <!-- 正文容器：编译期 md 产物经 slot 注入 -->
       <Content v-if="content">
-        <!-- AI修复：Suspense 让 SSR/hydration 等正文就绪；@resolve 后再做图片放大与 mermaid 渲染 -->
+        <!-- Suspense 让 SSR/hydration 等正文就绪；@resolve 后再做图片放大与 mermaid 渲染 -->
         <Suspense @resolve="contentReady">
           <component :is="content" />
+          <template #fallback>
+            <div class="post-skeleton" aria-hidden="true">
+              <div class="post-skeleton-title"></div>
+              <div class="post-skeleton-line"></div>
+              <div class="post-skeleton-line"></div>
+              <div class="post-skeleton-line"></div>
+              <div class="post-skeleton-line"></div>
+            </div>
+          </template>
         </Suspense>
       </Content>
-      <!-- AI修复：无效文章 id 兜底，避免整页空白 -->
+      <!-- 无效文章 id 兜底，避免整页空白 -->
       <div v-else class="post-empty">
-        <p>没有找到这篇文章，<RouterLink to="/">返回首页</RouterLink></p>
+        <p>{{ refText.postNotFound }}<RouterLink to="/">{{ refText.backHome }}</RouterLink></p>
       </div>
       <div class="end-components">
         <PostShare />
@@ -97,11 +107,65 @@ useSeo({
   gap: var(--space-lg);
 }
 
-/* AI修复：无效文章 id 的兜底提示 */
+/* 无效文章 id 的兜底提示 */
 .post-empty {
   padding: 80px 0;
   text-align: center;
   color: var(--g-text);
+}
+
+/* 正文组件懒加载骨架：延迟淡入，避免秒开时闪烁 */
+.post-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  padding: var(--space-md) 0;
+
+  opacity: 0;
+  animation: skeleton-fade 0.2s ease 0.15s forwards;
+}
+
+.post-skeleton-title {
+  width: 55%;
+  height: 26px;
+  margin-bottom: var(--space-sm);
+}
+
+.post-skeleton-line {
+  width: 100%;
+  height: 14px;
+}
+
+.post-skeleton-line:nth-child(3) {
+  width: 94%;
+}
+
+.post-skeleton-line:nth-child(4) {
+  width: 88%;
+}
+
+.post-skeleton-line:last-child {
+  width: 62%;
+}
+
+.post-skeleton-title,
+.post-skeleton-line {
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--g-text) 10%, transparent);
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes skeleton-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* ====================<响应式>==================== */

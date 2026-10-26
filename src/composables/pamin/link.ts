@@ -14,7 +14,7 @@ type LinkGroup = {
   links: LinkData[]
 }
 
-// AI修复：构建期可同步取到 links 全表（.cache/links.json 由构建管线从 public/config/links.json 复制），
+// 构建期可同步取到 links 全表（.cache/links.json 由构建管线从 public/config/links.json 复制），
 //   setup 期即可用 → Link 页在 SSG 产物里就有真内容；副本缺失时仍走 axios 兜底
 const localLink = import.meta.glob<LinkData[]>('/.cache/links.json', { eager: true, import: 'default' })
 export let linkCache: LinkData[] = localLink['/.cache/links.json'] ?? []
@@ -48,7 +48,7 @@ const linkGroupBuild = () => {
   linkCategoryNum.value = linkCategories.value.length
 }
 
-// AI修复：setup 期同步可用 → SSG 产物带真内容；未就绪返回 false 交异步兜底
+// setup 期同步可用 → SSG 产物带真内容；未就绪返回 false 交异步兜底
 export const linkCleanSync = (): boolean => {
   if (links.length > 0) return true
   if (linkCache.length === 0) return false

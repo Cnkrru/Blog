@@ -25,14 +25,14 @@
 /* ====================<响应式>==================== */
 @media (max-width: 768px) {
   /* [响应式-sm] 手机 */
-  /* AI修复：此档 .sidebar 是脱离文档流的 fixed 浮层抽屉，卡片化的圆角/投影/边框不再适用；
+  /* 此档 .sidebar 是脱离文档流的 fixed 浮层抽屉，卡片化的圆角/投影/边框不再适用；
      需 !important 才能盖过 App.vue 中同特异性的 .sidebar[data-v] 基础边框（与本文件桌面档同一处既有冲突） */
   .card .sidebar {
     border-radius: 0 !important;
     box-shadow: none !important;
     border: none !important;
   }
-  /* AI修复：卡片内缩与块间距在窄屏收紧一档，避免可视区被留白吃掉 */
+  /* 卡片内缩与块间距在窄屏收紧一档，避免可视区被留白吃掉 */
   .card {
     padding: var(--space-sm);
   }
@@ -46,7 +46,7 @@
 
 @media (max-width: 480px) {
   /* [响应式-xs] 窄屏 */
-  /* AI修复：窄屏再收紧一档 */
+  /* 窄屏再收紧一档 */
   .card {
     padding: var(--space-xs);
   }

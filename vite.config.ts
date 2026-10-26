@@ -11,7 +11,7 @@ import { SITE_TITLE, SITE_URL } from './src/config/site.ts'
 import 'vite-ssg'
 
 // katex 公式产物里的 MathML 标签，告知 Vue 模板编译器按原生元素处理（不解析为组件）
-// AI修复：补全 KaTeX 实际会产出的标签（矩阵/对齐/cases 等），否则会被 Vue 当组件解析告警
+// 补全 KaTeX 实际会产出的标签（矩阵/对齐/cases 等），否则会被 Vue 当组件解析告警
 const mathmlTags = [
   'math',
   'semantics',
@@ -49,7 +49,7 @@ const mathmlTags = [
 // giscus 的 web component，由浏览器 customElements 接管，Vue 按原生元素渲染
 const customTags = [...mathmlTags, 'giscus-widget']
 
-// AI修复：md 源目录（dev 期 watcher 用它过滤变更），路径统一成 posix 风格再比较
+// md 源目录（dev 期 watcher 用它过滤变更），路径统一成 posix 风格再比较
 const docsRoot = normalizePath(fileURLToPath(new URL('./docs', import.meta.url)))
 
 // https://vite.dev/config/
@@ -67,7 +67,7 @@ export default defineConfig({
       async buildStart() {
         await compileArticles()
       },
-      // AI修复：dev 期 docs 下的 md 变更后重编译并整页刷新
+      // dev 期 docs 下的 md 变更后重编译并整页刷新
       //   原先编译只挂在 buildStart，只随 dev server 启动跑一次，改 md 必须重启才能生效；
       //   且 .cache 被 server.watch.ignored 排除，Vite 自身感知不到产物变化，故这里手动重编译 + 手动失效模块图
       configureServer(server) {
@@ -99,7 +99,7 @@ export default defineConfig({
               server.moduleGraph.invalidateAll()
               server.hot.send({ type: 'full-reload' })
             })
-            // AI修复：编译校验失败(如 order 重复)只跳过本次刷新，
+            // 编译校验失败(如 order 重复)只跳过本次刷新，
             //   不能让异常逃逸成 unhandled rejection 把 dev server 直接终止
             .catch(() => {
               console.warn('[WARN]:本次 md 变更编译失败，已跳过刷新；修好后重新保存即可')

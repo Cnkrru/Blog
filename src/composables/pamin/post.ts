@@ -4,6 +4,7 @@ import axios from 'axios'
 import type { Zoom } from 'medium-zoom'
 import { refTheme } from './setting'
 import { refLd } from '../pheader'
+import { refText } from '../i18n'
 /* ====================<postData>==================== */
 type PostMeta = {
   order: number
@@ -21,13 +22,13 @@ type PostMeta = {
 // 导出 PostData：index.ts 的 hitmap 单例复用此全表契约类型
 export type PostData = Record<string, PostMeta>
 
-// AI修复：构建期可同步取到 post 全表（.cache/post.json 由构建管线从 public/config/post.json 复制，
+// 构建期可同步取到 post 全表（.cache/post.json 由构建管线从 public/config/post.json 复制，
 //   是可 import 的同源副本），setup 期即可用 → 列表页/上下篇/字数在 SSG 产物里就有真内容；
 //   副本缺失时（异常场景）仍走 postData 的 axios 兜底
 const localPost = import.meta.glob<PostData>('/.cache/post.json', { eager: true, import: 'default' })
 export let postCache: PostData = localPost['/.cache/post.json'] ?? {}
 
-// AI修复：order→key 映射收敛到数据层构建一次，postClean/postNav 复用（原先各自重建一遍）
+// order→key 映射收敛到数据层构建一次，postClean/postNav 复用（原先各自重建一遍）
 let orderMapCache: Record<number, string> | null = null
 const orderMapGet = () => {
   if (orderMapCache) return orderMapCache
@@ -39,7 +40,7 @@ const orderMapGet = () => {
   return map
 }
 
-// AI修复：in-flight Promise 复用，避免同一 tick 内 PostStatus/postEdit/PostNav 并发重复拉取整表
+// in-flight Promise 复用，避免同一 tick 内 PostStatus/postEdit/PostNav 并发重复拉取整表
 let postDataPromise: Promise<void> | null = null
 export const postData = async () => {
   if (Object.keys(postCache).length > 0) return // 有缓存直接读缓存
@@ -69,7 +70,7 @@ export type CleanData = {
 }
 export let postCleanCache: CleanData[] = []
 
-// AI修复：清洗核心可同步执行（SSG 期 .cache 副本已在内存）；数据未就绪返回 false 交异步兜底
+// 清洗核心可同步执行（SSG 期 .cache 副本已在内存）；数据未就绪返回 false 交异步兜底
 export const postCleanSync = (): boolean => {
   if (postCleanCache.length > 0) return true // 已有缓存直接返回
   if (Object.keys(postCache).length === 0) return false
@@ -138,7 +139,7 @@ export const qrcodeClose = () => {
 export const shareCopy = async (text: string) => {
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(text)
-    toastOpen('success', `已成功复制${text}`)
+    toastOpen('success', refText.value.copied(text))
     console.info('[INFO]:已复制指定内容')
   } else {
     console.error('[ERR]:复制指定内容失败')
@@ -157,52 +158,70 @@ const levelIconMap: Record<Level, string> = {
   error:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="错误"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4-9.4-24.6-9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>',
 }
-// 关闭图标cons
+// 关闭图标
 const xIcon: string =
   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
 let toastTimer: ReturnType<typeof setTimeout> | null = null
 
 export const toastOpen = (level: Level, mes: string) => {
-  const toastOn = document.querySelector('.toast-box') ?? undefined
-  if (!toastOn) {
-    const body = document.body
-    const toast = document.createElement('div')
-    const icon = document.createElement('div')
-    const message = document.createElement('span')
-    const x = document.createElement('div')
-
-    // 给父级加样式
-    toast.className = 'toast-box'
-    // 给level图标的位置填充一下图标，加一下样式
-    icon.innerHTML = levelIconMap[level]
-    icon.className = 'toast-icon'
-    // 把toast消息填进去，加一下样式
-    message.innerText = mes
-    message.className = 'toast-mes'
-    // 把关闭图标加上，加一下样式
-    x.innerHTML = xIcon
-    x.className = 'toast-close'
-    x.addEventListener('click', () => toastClose())
-    // 先给子级挂上去，生成时，先生成父级，再挂载子级
-    toast.appendChild(icon)
-    toast.appendChild(message)
-    toast.appendChild(x)
-    // 挂父级
-    body.appendChild(toast)
-    // 按照level添加对应样式
-    toast.classList.add('toast-' + level)
-
-    toastTimer = setTimeout(() => toastClose(), 3000)
+  let toast = document.querySelector<HTMLElement>('.toast-box')
+  // 退场中的旧节点直接丢弃，避免新旧提示重叠
+  if (toast?.classList.contains('is-hide')) {
+    toast.remove()
+    toast = null
   }
+
+  let icon: HTMLElement
+  let message: HTMLElement
+
+  if (toast) {
+    icon = toast.querySelector<HTMLElement>('.toast-icon')!
+    message = toast.querySelector<HTMLElement>('.toast-mes')!
+  } else {
+    toast = document.createElement('div')
+    toast.className = 'toast-box'
+    toast.setAttribute('role', 'status')
+
+    icon = document.createElement('div')
+    icon.className = 'toast-icon'
+
+    message = document.createElement('span')
+    message.className = 'toast-mes'
+
+    const closeButton = document.createElement('button')
+    closeButton.type = 'button'
+    closeButton.className = 'toast-close'
+    closeButton.setAttribute('aria-label', refText.value.closeTip)
+    closeButton.title = refText.value.closeTip
+    closeButton.innerHTML = xIcon
+    closeButton.addEventListener('click', () => toastClose())
+
+    toast.append(icon, message, closeButton)
+    document.body.appendChild(toast)
+  }
+
+  icon.innerHTML = levelIconMap[level]
+  message.textContent = mes
+  toast.className = 'toast-box toast-' + level
+
+  if (toastTimer) {
+    clearTimeout(toastTimer)
+  }
+  toastTimer = setTimeout(() => toastClose(), 3000)
 }
 
 export const toastClose = () => {
-  const toastOn = document.querySelector('.toast-box')
-  if (toastOn && toastTimer) {
+  const toastOn = document.querySelector<HTMLElement>('.toast-box')
+  if (toastTimer) {
     clearTimeout(toastTimer)
-    toastOn.remove()
     toastTimer = null
-    console.info('[INFO]:toast已成功移除')
+  }
+  if (toastOn && !toastOn.classList.contains('is-hide')) {
+    toastOn.classList.add('is-hide')
+    setTimeout(() => {
+      toastOn.remove()
+      console.info('[INFO]:toast已成功移除')
+    }, 200)
   }
 }
 
@@ -219,17 +238,17 @@ export const backToTop = () => {
 
 export const scrollProgress = (): (() => void) => {
   const area = document.querySelector<HTMLElement>('.main')
-  // AI修复：收窄到返回顶部按钮内部。正文的 progress 围栏代码块也生成 .progress（在 .main 内、文档序更靠前），
+  // 收窄到返回顶部按钮内部。正文的 progress 围栏代码块也生成 .progress（在 .main 内、文档序更靠前），
   //   用全局 '.progress' 会命中正文那个 div，进度环 span 反而取不到、--scroll-deg 永远没值
   const progress = document.querySelector<HTMLElement>('.back-top-btn .progress')
   if (!area || !progress) return () => {}
 
   const update = () => {
-    // AI修复：canArea 改为每次重算。原先只在挂载时探一次，而正文是异步组件（客户端跳转时挂载瞬间
+    // canArea 改为每次重算。原先只在挂载时探一次，而正文是异步组件（客户端跳转时挂载瞬间
     //   .main 还没被撑开），会被误判成"不可滚"从而只监听 window；此后桌面端真正滚动的是 .main，
     //   收不到 window 的 scroll 事件，进度就永久冻结（移动端恰好 window 才是滚动者，所以没暴露）
     const canArea = area.scrollHeight > area.clientHeight
-    // AI修复：进度改以正文块(.content)为基准。桌面端 .main 可滚时仍按容器行程计；
+    // 进度改以正文块(.content)为基准。桌面端 .main 可滚时仍按容器行程计；
     //   移动端整页滚动时不再回落 window(body) 整页行程，改按正文块顶部进视口→底部出视口计
     let _progress = 0
     if (canArea) {
@@ -243,16 +262,16 @@ export const scrollProgress = (): (() => void) => {
         _progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0
       }
     }
-    // AI修复：--progress 一符多义，这里角度值改用 --scroll-deg 专用
+    // --progress 一符多义，这里角度值改用 --scroll-deg 专用
     progress.style.setProperty('--scroll-deg', _progress * 360 + 'deg') // 设置样式
   }
 
-  // AI修复：同时监听 .main 与 window——滚动者取决于当前布局（桌面滚 .main、移动端滚 window），
+  // 同时监听 .main 与 window——滚动者取决于当前布局（桌面滚 .main、移动端滚 window），
   //   两边都挂才能在异步内容撑开 .main 后自动切换到正确的度量口径
   area.addEventListener('scroll', update, { passive: true })
   window.addEventListener('scroll', update, { passive: true })
   update()
-  // AI修复：返回清理函数，供 BackToTop 卸载时解绑（原先每次挂载都新增监听，反复切页累积）
+  // 返回清理函数，供 BackToTop 卸载时解绑（原先每次挂载都新增监听，反复切页累积）
   return () => {
     area.removeEventListener('scroll', update)
     window.removeEventListener('scroll', update)
@@ -260,7 +279,7 @@ export const scrollProgress = (): (() => void) => {
 }
 
 /* ====================<mermaid>==================== */
-// AI修复：mermaid 按当前亮暗初始化主题，并在主题变更时重渲染
+// mermaid 按当前亮暗初始化主题，并在主题变更时重渲染
 let mermaidWatchBound = false
 
 const mermaidRender = async () => {
@@ -299,7 +318,7 @@ export const mermaid = async () => {
   await mermaidRender()
 }
 
-// AI修复：正文改为异步组件后晚于 Content 挂载，图片放大与 mermaid 初始化改由此处触发
+// 正文改为异步组件后晚于 Content 挂载，图片放大与 mermaid 初始化改由此处触发
 //   （来源：Post.vue 的 Suspense @resolve），避免初始化时正文还没进 DOM
 export const contentReady = () => {
   imgBox()
@@ -312,6 +331,11 @@ export const contentReady = () => {
 // window 只在客户端访问，组件侧用 ClientOnly 包住，SSR 阶段不会求值
 export const comment = computed(() => `${window.location.origin}/css/${refTheme.value}-${refLd.value}.css`)
 
+/* ====================<comment loading>==================== */
+// 评论加载态：脚本导入结束即收起骨架；导入失败单独标记，避免骨架一直转
+export const refCommentLoading = ref(true)
+export const refCommentFailed = ref(false)
+
 /* ====================<postNav>==================== */
 export const preOrder = ref('')
 export const nextOrder = ref('')
@@ -322,7 +346,7 @@ export const postNav = async (postKey: string) => {
   const meta = postCache[postKey]
   if (!meta) return
 
-  // AI修复：复用数据层构建的 order→key 映射，不再各自重建
+  // 复用数据层构建的 order→key 映射，不再各自重建
   const orderMap = orderMapGet()
 
   // 根据映射查原来的key（首尾无相邻文章时为空）
@@ -330,8 +354,8 @@ export const postNav = async (postKey: string) => {
   nextOrder.value = orderMap[meta.order + 1] ?? ''
 
   // 根据上下篇的key拿对应title
-  preTitle.value = preOrder.value ? postCache[preOrder.value]!.title : '暂无'
-  nextTitle.value = nextOrder.value ? postCache[nextOrder.value]!.title : '暂无'
+  preTitle.value = preOrder.value ? postCache[preOrder.value]!.title : refText.value.noPost
+  nextTitle.value = nextOrder.value ? postCache[nextOrder.value]!.title : refText.value.noPost
 }
 
 /* ====================<postStatus>==================== */
@@ -357,7 +381,7 @@ export const history = reactive<HistoryItem[]>([])
 
 const historyClean = (meta: PostMeta) => {
   const list: HistoryItem[] = []
-  // AI修复：去掉 historyRaw 中转变量，直接遍历 meta.history
+  // 去掉 historyRaw 中转变量，直接遍历 meta.history
   meta.history?.forEach((item) => {
     const text = String(item).trim()
     if (!text) return
@@ -509,7 +533,7 @@ export const jump = (id: string) => {
 }
 
 /* 挂载（PostToc 生命周期负责）：首扫 + 观察 .main 子树，异步注入/路由切换均触发重扫 */
-// AI修复：导出名按域加 toc 前缀，避免与 pheader.ts 的音乐 mount/unmount 同名导出撞车
+// 导出名按域加 toc 前缀，避免与 pheader.ts 的音乐 mount/unmount 同名导出撞车
 export const tocMount = () => {
   scan()
   const main = document.querySelector<HTMLElement>('.main')
@@ -556,6 +580,36 @@ export const codeCopy = (e: MouseEvent) => {
       el.blur()
     }, 2000)
   })
+}
+export const codeToggle = (e: MouseEvent) => {
+  const el = (e.target as HTMLElement).closest<HTMLButtonElement>('button.code-expand')
+  if (!el || !root.value?.contains(el)) return
+  const wrapper = el.closest<HTMLElement>('.code-collapse')
+  if (!wrapper) return
+
+  const expanded = wrapper.classList.toggle('code-expanded')
+  const lines = el.dataset.lines ?? ''
+  const text = el.querySelector<HTMLElement>('.code-expand-text')
+  if (text)
+    text.textContent = expanded
+      ? refText.value.codeCollapse
+      : refText.value.codeExpand(lines)
+  el.setAttribute('aria-expanded', String(expanded))
+  el.setAttribute(
+    'aria-label',
+    expanded ? refText.value.codeCollapse : refText.value.codeExpandAria(lines),
+  )
+  el.title = expanded ? refText.value.codeCollapse : refText.value.codeExpandAria(lines)
+
+  // 收起时若代码块顶部已滚出视口，拉回顶部，避免高度骤减导致页面跳动
+  if (!expanded && wrapper.getBoundingClientRect().top < 0) {
+    wrapper.scrollIntoView({ block: 'start' })
+  }
+}
+// 正文点击统一入口：复制与折叠各自判断目标，互不干扰
+export const contentClick = (e: MouseEvent) => {
+  codeCopy(e)
+  codeToggle(e)
 }
 export const imgBox = async () => {
   if (!root.value) return

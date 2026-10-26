@@ -7,14 +7,11 @@ export const toggleSidebar = () => {
 }
 
 /* ====================<api>==================== */
-// API 响应契约：先类型化整个响应对象，再中转取出所需字段
 type IpInfo = { city: string; loc: string }
 type WeatherResponse = { current: { temperature_2m: number } }
 
 /* ====================<ip>==================== */
-// AI修复：模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefIp）
 export const refIp = ref('')
-// AI修复：ip 结果模块级缓存，避免 Weather 挂载时重复请求 ipinfo.io
 let ipCache: IpInfo | null = null
 export const ip = async (): Promise<IpInfo | null> => {
   if (ipCache) return ipCache
@@ -25,37 +22,42 @@ export const ip = async (): Promise<IpInfo | null> => {
     console.log('[INFO]:IP数据获取成功')
     return data
   } catch {
-    // AI修复：限流/网络异常补 try/catch，避免未处理的 Promise rejection
     console.error('[ERR]:IP数据获取失败')
     return null
   }
 }
 /* ====================<weather>==================== */
-// AI修复：命名统一（原 RefWeather）
+// 命名统一（原 RefWeather）
 export const refWeather = ref('')
+// 天气胶囊加载态：IP 与温度两次请求都结束后才置 false
+export const refWeatherLoading = ref(true)
 export const weather = async () => {
-  const _ipData = await ip()
-  // IP 失败时 ip() 内部已打日志，这里直接返回，不再重复报错
-  if (!_ipData?.loc) return
-
-  const lat = _ipData.loc.split(',')[0]!
-  const lon = _ipData.loc.split(',')[1]!
-
   try {
-    const { data } = await axios.get<WeatherResponse>(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
-    )
-    refWeather.value = `${String(data.current.temperature_2m)}°`
-    console.info('[INFO]:天气数据获取成功')
-  } catch {
-    // AI修复：天气接口异常补 try/catch
-    console.error('[ERR]:天气数据获取失败')
+    const _ipData = await ip()
+    // IP 失败时 ip() 内部已打日志，这里直接返回，不再重复报错
+    if (!_ipData?.loc) return
+
+    const lat = _ipData.loc.split(',')[0]!
+    const lon = _ipData.loc.split(',')[1]!
+
+    try {
+      const { data } = await axios.get<WeatherResponse>(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
+      )
+      refWeather.value = `${String(data.current.temperature_2m)}°`
+      console.info('[INFO]:天气数据获取成功')
+    } catch {
+      // 天气接口异常补 try/catch
+      console.error('[ERR]:天气数据获取失败')
+    }
+  } finally {
+    // 无 loc、接口异常、成功三条路径统一收起骨架
+    refWeatherLoading.value = false
   }
 }
 /* ====================<busuanzi>==================== */
 let bszLoaded = false
 export const buSuanZi = () => {
-  // AI修复：加重复注入守卫（此前选择器写成 'bsz-script' 且无人调用，统计永远为 …）
   if (bszLoaded || document.querySelector('.bsz-script')) return
   bszLoaded = true
   const s = document.createElement('script')

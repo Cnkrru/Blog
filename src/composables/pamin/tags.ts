@@ -15,7 +15,7 @@ const tagBuild = () => {
   })
 }
 
-// AI修复：setup 期同步可用 → SSG 产物带真内容；未就绪返回 false 交异步兜底
+// setup 期同步可用 → SSG 产物带真内容；未就绪返回 false 交异步兜底
 export const tagCleanSync = (): boolean => {
   if (!postCleanSync()) return false
   tagBuild()

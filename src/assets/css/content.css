@@ -79,6 +79,25 @@
   margin: 2em auto;
   border: 8px solid var(--g-color);
   border-radius: 12px;
+
+  /* 加载占位：图片解码前铺静态底纹，再扫一次微光；图像不透明区域会自然盖住底纹 */
+  background-color: color-mix(in srgb, var(--g-text) 6%, transparent);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--g-text) 8%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  background-position: 200% 0;
+  animation: content-img-shimmer 1.2s ease-out 1 forwards;
+}
+
+/* 一次性微光：扫过一次后停住，避免图片加载完成后仍有常驻动画 */
+@keyframes content-img-shimmer {
+  to {
+    background-position: -200% 0;
+  }
 }
 
 /* ============ 引用 ============ */
@@ -272,31 +291,106 @@
     center/contain no-repeat;
 }
 
-/* ===== 提示块 admonition（编译期生成，配色见下方变量） ===== */
+/* 长代码折叠：默认露出约 20 行（14px × 1.6 + 上下内边距），展开后解除限制 */
+.content div[class*='language-'].code-collapse .code-body {
+  position: relative;
+  max-height: 480px;
+  overflow: hidden;
+}
+/* 底部渐变提示还有内容：颜色取代码块背景，随主题切换 */
+.content div[class*='language-'].code-collapse .code-body::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 72px;
+  background: linear-gradient(to bottom, transparent, var(--shiki-background));
+  pointer-events: none;
+}
+.content div[class*='language-'].code-collapse.code-expanded .code-body {
+  max-height: none;
+}
+.content div[class*='language-'].code-collapse.code-expanded .code-body::after {
+  display: none;
+}
+
+/* 折叠按钮：与复制按钮同高、同悬停反馈 */
+.content div[class*='language-'] .code-toolbar .code-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.content div[class*='language-'] .code-toolbar button.code-expand {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 6px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: color-mix(in srgb, var(--g-text) 55%, transparent);
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+.content div[class*='language-'] .code-toolbar button.code-expand:hover,
+.content div[class*='language-'] .code-toolbar button.code-expand:focus-visible {
+  color: var(--g-color);
+  background: color-mix(in srgb, var(--g-color) 10%, transparent);
+}
+.content div[class*='language-'] .code-toolbar button.code-expand:focus-visible {
+  outline: 2px solid var(--g-color);
+  outline-offset: 1px;
+}
+.content div[class*='language-'] .code-toolbar .code-expand-icon {
+  transition: transform 0.2s;
+}
+.content div[class*='language-'].code-collapse.code-expanded .code-expand-icon {
+  transform: rotate(180deg);
+}
+@media print {
+  .content div[class*='language-'].code-collapse .code-body {
+    max-height: none;
+  }
+  .content div[class*='language-'].code-collapse .code-body::after {
+    display: none;
+  }
+  .content div[class*='language-'] .code-toolbar button.code-expand {
+    display: none;
+  }
+}
+
+/* ===== 提示块 admonition（编译期生成；对齐 GitHub Alerts / VitePress Callout 规范） ===== */
 .content .admonition {
   position: relative;
-  margin: 1em 0;
-  border-radius: 8px;
+  margin: 16px 0;
+  border-radius: 6px;
   border: 1px solid color-mix(in srgb, var(--admo-color) 30%, transparent);
   border-left: 4px solid var(--admo-color);
-  background: color-mix(in srgb, var(--admo-color) 8%, transparent);
+  background: color-mix(in srgb, var(--admo-color) 7%, transparent);
   overflow: hidden;
 }
 .content .admonition-head {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
+  padding: 12px 16px 0;
   color: var(--admo-color);
   font-weight: 600;
   font-size: 14px;
-  background: color-mix(in srgb, var(--admo-color) 12%, transparent);
+  line-height: 1.4;
 }
 .content .admonition-head svg {
   flex-shrink: 0;
+  width: 16px;
+  height: 16px;
 }
 .content .admonition-body {
-  padding: 10px 14px 12px;
+  padding: 8px 16px 12px;
   color: var(--g-text);
   font-size: 14px;
   line-height: 1.7;
@@ -307,17 +401,31 @@
 .content .admonition-body > :last-child {
   margin-bottom: 0;
 }
+/* 配色取 GitHub Primer 语义色，保证亮底下的正文对比度 */
 .content .admonition-tip {
-  --admo-color: #10b981;
+  --admo-color: #1a7f37;
 }
 .content .admonition-info {
-  --admo-color: #3b82f6;
+  --admo-color: #0969da;
 }
 .content .admonition-warn {
-  --admo-color: #f59e0b;
+  --admo-color: #9a6700;
 }
 .content .admonition-error {
-  --admo-color: #ef4444;
+  --admo-color: #cf222e;
+}
+/* 暗色换 Primer dark 的浅一档语义色，避免低对比 */
+.dark .content .admonition-tip {
+  --admo-color: #3fb950;
+}
+.dark .content .admonition-info {
+  --admo-color: #4493f8;
+}
+.dark .content .admonition-warn {
+  --admo-color: #d29922;
+}
+.dark .content .admonition-error {
+  --admo-color: #f85149;
 }
 
 /* 行号（CSS计数器，shiki每行一个span.line，mermaid无shiki类不受影响） */
@@ -348,35 +456,6 @@
 }
 .content .task-list-item .task-list-item-label {
   vertical-align: 1px;
-}
-
-/* ============ 提示块（directive，语义色） ============ */
-.content .directive {
-  margin: 1em 0;
-  padding: 12px 16px;
-  border: 1px solid;
-  border-radius: 8px;
-}
-.content .directive p {
-  margin: 0.4em 0;
-}
-.content .directive-title {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.content .directive-info {
-  border-color: color-mix(in srgb, var(--color-info) 40%, transparent);
-  background: color-mix(in srgb, var(--color-info) 10%, transparent);
-}
-.content .directive-info .directive-title {
-  color: var(--color-info);
-}
-.content .directive-warning {
-  border-color: color-mix(in srgb, var(--color-warning) 40%, transparent);
-  background: color-mix(in srgb, var(--color-warning) 10%, transparent);
-}
-.content .directive-warning .directive-title {
-  color: var(--color-warning);
 }
 
 /* ====================<响应式>==================== */
@@ -431,8 +510,7 @@
   .content .katex-display,
   .content .katex-block,
   .content .katex,
-  .content .admonition,
-  .content .directive {
+  .content .admonition {
     overflow-x: auto;
     overflow-y: hidden;
     max-width: 100%;
@@ -457,8 +535,10 @@
     padding: 10px;
     font-size: 12px;
   }
-  .content .admonition-body,
-  .content .directive {
+  .content .admonition-head {
+    padding: 10px 12px 0;
+  }
+  .content .admonition-body {
     padding: 8px 12px;
   }
 }
@@ -480,14 +560,14 @@
 }
 .content .timeline-dot {
   position: absolute;
-  left: -9px;
+  left: -10px;
   top: 5px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: var(--g-color);
-  border: 2px solid var(--g-bg);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--g-color) 35%, transparent);
+  /* 光环用半透明主色绘制，不拿 --g-bg 描边：换主题或叠在图片上都不会漏出异色 */
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--g-color) 25%, transparent);
 }
 .content .timeline-time {
   font-size: 0.85em;
@@ -532,7 +612,7 @@
   height: 28px;
   border-radius: 50%;
   background: var(--g-color);
-  color: #fff;
+  color: var(--g-on-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -552,49 +632,60 @@
   margin-top: 2px;
 }
 
-/* ===== 标签页 tabs（纯 CSS：radio + 兄弟选择器） ===== */
+/* ===== 标签页 tabs（纯 CSS：radio + 相邻兄弟选择器，tab 数量无上限） ===== */
 .content .tabs {
+  display: flex;
+  flex-wrap: wrap;
   margin: 16px 0;
   border: 1px solid color-mix(in srgb, var(--g-color) 25%, transparent);
   border-radius: 8px;
   overflow: hidden;
 }
-.content .tabs input[type='radio'] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-.content .tabs label {
-  display: inline-block;
+/* 导航项用 flex 排列，避免 inline-block 之间的空白节点撑出缝隙 */
+.content .tabs-tab {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  order: 0;
+  align-items: center;
+  justify-content: center;
   padding: 10px 16px;
   cursor: pointer;
+  white-space: nowrap;
   font-size: 0.9em;
   color: color-mix(in srgb, var(--g-text) 70%, transparent);
   border-bottom: 2px solid transparent;
   background: color-mix(in srgb, var(--g-color) 6%, transparent);
 }
-.content .tabs input[type='radio']:checked + label {
+.content .tabs-tab input[type='radio'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.content .tabs-tab:has(> input[type='radio']:checked) {
   color: var(--g-color);
   border-bottom-color: var(--g-color);
   font-weight: 600;
 }
+/* radio 本身不可见，聚焦环画在 label 上 */
+.content .tabs-tab:has(> input[type='radio']:focus-visible) {
+  outline: 2px solid var(--g-color);
+  outline-offset: -2px;
+}
 .content .tabs-panel {
+  order: 1;
+  flex: 0 0 100%;
   display: none;
+  width: 100%;
   padding: 16px;
   white-space: pre-wrap;
   font-size: 0.95em;
   border-top: 1px solid color-mix(in srgb, var(--g-color) 20%, transparent);
 }
-/* 面板显隐：label 与 input 在 nav 区相邻，面板靠 data-panel 与 radio id 对应，
-   用 :has() 按选中态点亮对应面板 */
-.content .tabs:has(> input[id$='-0']:checked) > .tabs-panel[data-panel$='-0'],
-.content .tabs:has(> input[id$='-1']:checked) > .tabs-panel[data-panel$='-1'],
-.content .tabs:has(> input[id$='-2']:checked) > .tabs-panel[data-panel$='-2'],
-.content .tabs:has(> input[id$='-3']:checked) > .tabs-panel[data-panel$='-3'],
-.content .tabs:has(> input[id$='-4']:checked) > .tabs-panel[data-panel$='-4'],
-.content .tabs:has(> input[id$='-5']:checked) > .tabs-panel[data-panel$='-5'],
-.content .tabs:has(> input[id$='-6']:checked) > .tabs-panel[data-panel$='-6'],
-.content .tabs:has(> input[id$='-7']:checked) > .tabs-panel[data-panel$='-7'] {
+/* 面板显隐：每块 label 紧跟自己的面板，相邻兄弟选择器即可，不再按序号枚举 */
+.content .tabs-tab:has(> input[type='radio']:checked) + .tabs-panel {
   display: block;
 }
 
@@ -642,13 +733,14 @@
 /* ===== 图片画廊 gallery ===== */
 .content .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* auto-fit：条目不足时铺满整行，不留尾部空轨道 */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
   margin: 16px 0;
 }
 .content .gallery-item {
   margin: 0;
-  border: 1px solid color-mix(in srgb, var(--g-color) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-color) 25%, transparent);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -671,7 +763,7 @@
   .content .gallery {
     grid-template-columns: 1fr;
   }
-  .content .tabs label {
+  .content .tabs-tab {
     padding: 8px 10px;
     font-size: 0.85em;
   }
@@ -687,7 +779,7 @@
   --ft-row: calc(1px + 0.85em);
   margin: 16px 0;
   padding: 12px 16px;
-  border: 1px solid color-mix(in srgb, var(--g-text) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-text) 25%, transparent);
   border-radius: 8px;
   background: var(--shiki-background);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -764,7 +856,7 @@
   margin: 16px 0;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--g-text) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-text) 25%, transparent);
   background: #1e1e1e;
 }
 .content .terminal-bar {
@@ -828,15 +920,28 @@
   background: color-mix(in srgb, var(--g-color) 6%, transparent);
   user-select: none;
 }
+/* Safari 仍会绘制原生三角，显式清掉；其余浏览器走 ::marker 重置 */
+.content .details > summary::-webkit-details-marker {
+  display: none;
+}
+.content .details > summary::marker {
+  content: '';
+}
+/* 展开指示：边框绘制 chevron（收起向右，展开向下），不依赖字体字形 */
 .content .details > summary::before {
-  content: '▸';
+  content: '';
   display: inline-block;
+  width: 6px;
+  height: 6px;
   margin-right: 8px;
-  color: var(--g-color);
+  vertical-align: 1px;
+  border-right: 2px solid var(--g-color);
+  border-bottom: 2px solid var(--g-color);
+  transform: rotate(-45deg);
   transition: transform 0.2s;
 }
 .content .details[open] > summary::before {
-  transform: rotate(90deg);
+  transform: rotate(45deg);
 }
 .content .details-body {
   padding: 12px 14px;
@@ -916,15 +1021,28 @@
   list-style: none;
   user-select: none;
 }
+/* Safari 原生三角兜底，与 details 同款处理 */
+.content .qa-q::-webkit-details-marker {
+  display: none;
+}
+.content .qa-q::marker {
+  content: '';
+}
+/* 展开指示：与 details 同款边框 chevron，替代原先的「点击展开 / 收起」文案 */
 .content .qa-q::after {
-  content: '点击展开';
+  content: '';
+  flex: 0 0 auto;
+  align-self: center;
+  width: 6px;
+  height: 6px;
   margin-left: auto;
-  font-size: 0.75em;
-  font-weight: 400;
-  color: color-mix(in srgb, var(--g-text) 45%, transparent);
+  border-right: 2px solid color-mix(in srgb, var(--g-text) 45%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--g-text) 45%, transparent);
+  transform: rotate(-45deg);
+  transition: transform 0.2s;
 }
 .content .qa-item[open] .qa-q::after {
-  content: '收起';
+  transform: rotate(45deg);
 }
 .content .qa-badge {
   flex: 0 0 auto;
@@ -935,7 +1053,7 @@
   height: 20px;
   border-radius: 50%;
   background: var(--g-color);
-  color: #fff;
+  color: var(--g-on-color);
   font-size: 0.72em;
   font-weight: 700;
   transform: translateY(2px);
@@ -948,7 +1066,7 @@
   align-items: baseline;
   gap: 8px;
   padding: 10px 14px;
-  border-top: 1px dashed color-mix(in srgb, var(--g-color) 30%, transparent);
+  border-top: 1px dashed color-mix(in srgb, var(--g-color) 20%, transparent);
   color: color-mix(in srgb, var(--g-text) 85%, transparent);
   font-size: 0.95em;
 }
@@ -1021,13 +1139,20 @@
   font-size: 1.05em;
   line-height: 1.8;
 }
-.content .quote-body::before {
-  content: '“';
+.content .quote-body::before,
+.content .quote-body::after {
   font-size: 1.6em;
   color: var(--g-color);
   line-height: 0;
-  margin-right: 4px;
   vertical-align: -0.3em;
+}
+.content .quote-body::before {
+  content: '“';
+  margin-right: 4px;
+}
+.content .quote-body::after {
+  content: '”';
+  margin-left: 4px;
 }
 .content .quote-cite {
   margin-top: 8px;
@@ -1070,6 +1195,10 @@
   background: color-mix(in srgb, #ffd43b 55%, transparent);
   color: inherit;
 }
+/* 暗色下高亮底变橄榄黄，继承浅色文字会低于 AA，固定为深色文字 */
+.dark .content mark {
+  color: #1f2328;
+}
 
 /* ===== 第二批组件响应式 ===== */
 @media (max-width: 480px) {
@@ -1089,7 +1218,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px;
-  margin: 1em 0;
+  margin: 16px 0;
 }
 .content .card-link {
   text-decoration: none;
@@ -1097,7 +1226,7 @@
 }
 .content .card-item {
   padding: 14px 16px;
-  border: 1px solid color-mix(in srgb, var(--g-text) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--g-text) 25%, transparent);
   border-radius: 8px;
   background: color-mix(in srgb, var(--g-text) 4%, transparent);
   transition:
@@ -1127,7 +1256,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 1em 0;
+  margin: 16px 0;
 }
 .content .progress-item {
   display: flex;
@@ -1163,8 +1292,8 @@
 
 /* ==================== attrs 属性列表 ==================== */
 .content .attrs {
-  margin: 1em 0;
-  border: 1px solid color-mix(in srgb, var(--g-text) 15%, transparent);
+  margin: 16px 0;
+  border: 1px solid color-mix(in srgb, var(--g-text) 25%, transparent);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -1206,12 +1335,72 @@
 /* ===== 代码组 code-group（复用 tabs 切换，面板内嵌高亮代码块） ===== */
 .content .tabs.code-group .tabs-panel {
   padding: 0;
-}
-.content .tabs.code-group .tabs-panel > .language- {
-  display: none;
+  /* 面板内是 pre，缩进空白交给 pre 处理；pre-wrap 会把模板缩进渲染成空行 */
+  white-space: normal;
 }
 .content .tabs.code-group .tabs-panel > div[class*='language-'] {
   margin: 0;
-  border-radius: 0 0 6px 6px;
+  border-radius: 0 0 8px 8px;
   border-top: none;
 }
+
+/* ===== diff 代码块（GitHub 统一 diff 约定：符号留在行内，按行铺背景色） ===== */
+.content pre.diff {
+  padding: 0;
+  background: var(--shiki-background);
+}
+.content pre.diff code {
+  display: block;
+  counter-reset: diff-line;
+}
+/* 行宽至少铺满整行，背景色才能从左边界延到右边界；空行靠 min-height 撑出行高 */
+.content pre.diff .diff-line {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  min-height: 1.6em;
+  padding: 0 16px;
+  box-sizing: border-box;
+  white-space: pre;
+  counter-increment: diff-line;
+}
+/* 行号：与普通代码块同一套 CSS 计数器，不写进 HTML */
+.content pre.diff .diff-line::before {
+  content: counter(diff-line);
+  display: inline-block;
+  width: 2em;
+  margin-right: 1em;
+  text-align: right;
+  color: color-mix(in srgb, var(--g-text) 40%, transparent);
+  user-select: none;
+}
+/* 配色取 GitHub Primer 的 diff 基线色，暗色单独覆盖 */
+.content pre.diff .diff-add {
+  background: #e6ffec;
+}
+.content pre.diff .diff-del {
+  background: #ffebe9;
+}
+.content pre.diff .diff-hunk {
+  background: #f1f8ff;
+  color: #57606a;
+}
+.content pre.diff .diff-file,
+.content pre.diff .diff-meta {
+  color: #57606a;
+}
+.dark .content pre.diff .diff-add {
+  background: rgba(46, 160, 67, 0.15);
+}
+.dark .content pre.diff .diff-del {
+  background: rgba(248, 81, 73, 0.1);
+}
+.dark .content pre.diff .diff-hunk {
+  background: rgba(56, 139, 253, 0.1);
+  color: #8b949e;
+}
+.dark .content pre.diff .diff-file,
+.dark .content pre.diff .diff-meta {
+  color: #8b949e;
+}
+

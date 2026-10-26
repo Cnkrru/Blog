@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/seo'
+import { refText } from '../composables/i18n'
 import {
   turnView,
   turnViewSync,
@@ -17,7 +18,7 @@ useSeo({
   path: '/category',
 })
 
-// AI修复：setup 期同步加载，让 SSG 产物就带归档内容；数据未就绪再走异步兜底
+// setup 期同步加载，让 SSG 产物就带归档内容；数据未就绪再走异步兜底
 const viewLoaded = turnViewSync(0)
 
 onMounted(() => {
@@ -31,13 +32,13 @@ onMounted(() => {
     <div class="tool-area">
       <div class="view-tabs">
         <button class="view-tab" :class="{ 'tab-on': categoryViewMode === 0 }" @click="turnView(0)">
-          分类
+          {{ refText.categoryTab }}
         </button>
         <button class="view-tab" :class="{ 'tab-on': categoryViewMode === 1 }" @click="turnView(1)">
-          年份
+          {{ refText.yearTab }}
         </button>
         <button class="view-tab" :class="{ 'tab-on': categoryViewMode === 2 }" @click="turnView(2)">
-          月份
+          {{ refText.monthTab }}
         </button>
       </div>
     </div>
@@ -52,7 +53,7 @@ onMounted(() => {
           @click.prevent="turnGroup(g.name)"
         >
           <span class="group-name">{{ g.name }}</span>
-          <span class="group-count">{{ g.items.length }} 篇</span>
+          <span class="group-count">{{ refText.postsCount(g.items.length) }}</span>
           <span class="group-arrow" :class="{ 'arrow-open': categoryExpandGroup === g.name }"
             >▾</span
           >
@@ -72,7 +73,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-if="!categoryModeGroups.length" class="arch-empty">暂无文章</div>
+      <div v-if="!categoryModeGroups.length" class="arch-empty">{{ refText.noPosts }}</div>
     </div>
   </div>
 </template>
@@ -263,7 +264,7 @@ onMounted(() => {
 /* ====================<响应式>==================== */
 @media (max-width: 768px) {
   /* [响应式-sm] 手机：工具栏与群组行各自收紧内边距，把宽度让给标题 */
-  /* AI修复：高度链接上后 .main 在手机上已是定高，放开根容器高度以保住"整页滚动" */
+  /* 高度链接上后 .main 在手机上已是定高，放开根容器高度以保住"整页滚动" */
   .archive-list {
     height: auto;
   }

@@ -2,45 +2,45 @@
 import X from '../icon/X.vue'
 import { onMounted } from 'vue'
 import { bszOpen, bszClose, buSuanZi } from '@/composables/psidebar'
+import { refText } from '@/composables/i18n'
 
 onMounted(() => {
-  // AI修复：注入不蒜子统计脚本（此前 buSuanZi 从未被调用，占位符永远显示 …）
   buSuanZi()
 })
 </script>
 
 <template>
-  <button class="bsz-btn" @click="bszOpen()">统计</button>
+  <button class="bsz-btn" @click="bszOpen()">{{ refText.stats }}</button>
 
   <dialog class="bsz-box">
     <div class="bsz-header">
-      <p>站点统计</p>
+      <p>{{ refText.siteStats }}</p>
       <button @click="bszClose()"><X /></button>
     </div>
 
     <div class="bsz-body">
       <div class="bsz-item">
-        <span class="bsz-label">今日访问</span>
+        <span class="bsz-label">{{ refText.todayPv }}</span>
         <span class="bsz-num" id="busuanzi_today_pv">…</span>
       </div>
       <div class="bsz-item">
-        <span class="bsz-label">今日访客</span>
+        <span class="bsz-label">{{ refText.todayUv }}</span>
         <span class="bsz-num" id="busuanzi_today_uv">…</span>
       </div>
       <div class="bsz-item">
-        <span class="bsz-label">站点访问</span>
+        <span class="bsz-label">{{ refText.sitePv }}</span>
         <span class="bsz-num" id="busuanzi_site_pv">…</span>
       </div>
       <div class="bsz-item">
-        <span class="bsz-label">站点访客</span>
+        <span class="bsz-label">{{ refText.siteUv }}</span>
         <span class="bsz-num" id="busuanzi_site_uv">…</span>
       </div>
       <div class="bsz-item">
-        <span class="bsz-label">本页浏览</span>
+        <span class="bsz-label">{{ refText.pagePv }}</span>
         <span class="bsz-num" id="busuanzi_page_pv">…</span>
       </div>
       <div class="bsz-item">
-        <span class="bsz-label">本页访客</span>
+        <span class="bsz-label">{{ refText.pageUv }}</span>
         <span class="bsz-num" id="busuanzi_page_uv">…</span>
       </div>
     </div>

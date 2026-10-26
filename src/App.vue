@@ -2,25 +2,22 @@
 import { computed, onMounted, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 // 页头区
-import HeaderLogo from './components/pheader/Logo.vue'
-import HeaderSearch from './components/pheader/Search.vue'
-import HeaderButtons from './components/pheader/Buttons.vue'
 import HeaderMusic from './components/pheader/Music.vue'
+import Header from './components/Header.vue'
 // 侧栏区
-import SidebarAvator from './components/psidebar/Avator.vue'
-import SidebarWelcome from './components/psidebar/Welcome.vue'
-import SidebarNav from './components/psidebar/Nav.vue'
-import SidebarWeather from './components/psidebar/Weather.vue'
-import SidebarBuSuanZi from './components/psidebar/BuSuanZi.vue'
+import Sidebar from './components/Sidebar.vue'
+// 正文区
+import Main from './components/Main.vue'
 // 页脚区
-import FooterWebAge from './components/pfooter/WebAge.vue'
-import FooterCopyright from './components/pfooter/Copyright.vue'
+import Footer from './components/Footer.vue'
 // 全局
 import BackToTop from './components/pmain/BackToTop.vue'
+import LoadingBar from './components/pheader/LoadingBar.vue'
 // ts
 import { initTheme, initLayout, initBg, initOpacity } from './composables/pamin/setting.ts'
 import { initLD } from './composables/pheader.ts'
-import { refSidebar, toggleSidebar } from './composables/psidebar.ts'
+import { initLocale } from './composables/i18n.ts'
+import { refSidebar } from './composables/psidebar.ts'
 import { useHead } from '@unhead/vue'
 
 // 站点图标已固化在 index.html 静态 head（favicon 不依赖 JS 注入，首帧即可用），此处只留 feed 自动发现
@@ -34,7 +31,7 @@ useHead({
 
 const route = useRoute()
 const isIndex = computed(() => route.path === '/')
-// AI修复：返回顶部只在文章页出现（阅读进度环与"回到正文顶部"仅对文章有意义）
+// 返回顶部只在文章页出现（阅读进度环与"回到正文顶部"仅对文章有意义）
 const isPost = computed(() => route.name === 'post')
 
 watch(
@@ -52,11 +49,15 @@ onMounted(() => {
   initBg()
   initOpacity()
   initLD()
+  initLocale()
 })
 </script>
 
 <template>
-  <!-- AI修复：音乐播放器移出 header 常驻渲染，否则进首页(不渲染 header)会卸载 Music 触发 howler.unload 中断播放 -->
+  <!-- 全局路由加载进度条：所有页面共用，放在 isIndex 分支外 -->
+  <LoadingBar />
+
+  <!-- 音乐播放器移出 header 常驻渲染，否则进首页(不渲染 header)会卸载 Music 触发 howler.unload 中断播放 -->
   <HeaderMusic />
 
   <template v-if="isIndex">
@@ -64,50 +65,18 @@ onMounted(() => {
   </template>
 
   <template v-else>
-    <header class="header">
-      <HeaderLogo />
-      <HeaderSearch />
-      <HeaderButtons />
-    </header>
+    <Header />
     <div class="center">
-      <aside class="sidebar" :class="{ 'sidebar-open': refSidebar }">
-        <SidebarAvator />
-        <SidebarWelcome />
-        <SidebarWeather />
-        <SidebarNav />
-        <SidebarBuSuanZi />
-      </aside>
-      <div class="sidebar-overlay" v-show="refSidebar" @click="toggleSidebar"></div>
-
-      <main class="main">
-        <!-- 以 path 作 key：/post/:id 是同一条路由记录，不换 key 会复用组件实例、setup 不重跑，子组件残留上一篇数据 -->
-        <RouterView :key="route.path" />
-      </main>
+      <Sidebar />
+      <Main />
     </div>
-
-    <footer class="footer">
-      <FooterWebAge />
-      <FooterCopyright />
-    </footer>
+    <Footer />
 
     <BackToTop v-if="isPost" />
   </template>
 </template>
 
 <style scoped>
-.header {
-  width: 100%;
-  height: 64px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  gap: var(--space-md);
-
-  border: var(--border-width) solid color-mix(in srgb, var(--g-color) 15%, transparent);
-}
-
 .center {
   width: 100%;
   height: auto;
@@ -115,90 +84,4 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
 }
-
-.sidebar {
-  width: 15%;
-  /* [AI修复] 固定高度改为最大高度：短内容不再被撑满，超高时自身滚动，避免溢出压到页脚 */
-  max-height: 600px;
-  overflow-y: auto;
-
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  flex-direction: column;
-  gap: var(--space-lg);
-
-  border: var(--border-width) solid color-mix(in srgb, var(--g-color) 15%, transparent);
-}
-
-.main {
-  width: 85%;
-  /* [AI修复] 固定高度改为最大高度：正文最高 600px，超出部分在容器内滚动 */
-  max-height: 600px;
-  overflow-y: auto;
-
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-
-  padding: var(--space-md);
-
-  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-opacity, 0.6));
-  border: var(--border-width) solid color-mix(in srgb, var(--g-text) 10%, transparent);
-}
-
-.footer {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-md);
-
-  padding: var(--space-md);
-}
-
-/* 桌面端遮罩恒隐藏（仅移动端抽屉有效） */
-.sidebar-overlay {
-  display: none;
-}
-
-/* ====================<响应式>==================== */
-
-@media (max-width: 768px) {
-  /* [响应式-sm] 手机：侧栏改为左侧抽屉(脱离文档流)，主内容占满宽度 */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 240px;
-    /* AI修复：固定定位下用 100dvh 贴合可视视口（原 height:100% 在 iOS 会被地址栏裁切），
-       并解除基础样式的 max-height:600px，否则抽屉永远只有 600px 高 */
-    height: 100dvh;
-    max-height: none;
-    margin: 0;
-    transform: translateX(-100%);
-    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-    z-index: 9999;
-  }
-  .sidebar.sidebar-open {
-    transform: translateX(0);
-  }
-  .sidebar-overlay {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-    background: rgba(0, 0, 0, 0.45);
-  }
-  .main {
-    width: 100%;
-    /* AI修复：解除基础样式的 max-height:600px 与内部滚动，改回整页滚动
-       （scrollProgress 检测到 .main 不可滚会自动回落 window，进度环不受影响） */
-    max-height: none;
-    overflow-y: visible;
-  }
-}
-
 </style>

@@ -16,9 +16,11 @@ const CARDS_ITEM = (esc: (s: string) => string, title: string, desc: string): st
         ${desc ? `<div class="card-desc">${esc(desc)}</div>` : ''}
     </div>`
 
-// 有链接时整卡可点击
-const CARDS_LINK = (esc: (s: string) => string, href: string, body: string): string =>
-  `\n    <a class="card-link" href="${esc(href)}">${body}\n    </a>`
+// 有链接时整卡可点击；外链与 links 卡片行为一致，新窗口打开并隔离 opener
+const CARDS_LINK = (esc: (s: string) => string, href: string, body: string): string => {
+  const external = /^https?:\/\//i.test(href) ? ' target="_blank" rel="noopener noreferrer"' : ''
+  return `\n    <a class="card-link" href="${esc(href)}"${external}>${body}\n    </a>`
+}
 
 const CARDS_WRAP = (items: string): string => `\n<div class="cards" v-pre>${items}\n</div>`
 

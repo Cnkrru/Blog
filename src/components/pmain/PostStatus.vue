@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { postStatus, word, time } from '../../composables/pamin/post.ts'
+import { refText } from '../../composables/i18n.ts'
 import FileText from '../icon/FileText.vue'
 import Clock from '../icon/Clock.vue'
 
@@ -18,15 +19,15 @@ onMounted(() => postStatus(postKey))
       <FileText class="file-icon" />
       <div class="word-info">
         <span>{{ word }}</span>
-        <span>总字数</span>
+        <span>{{ refText.wordCount }}</span>
       </div>
     </div>
     <!-- 阅读时长区域 -->
     <div class="reading-time">
       <Clock class="clock-icon" />
       <div class="reading-info">
-        <span>{{ time }}分钟</span>
-        <span>预计时间</span>
+        <span>{{ refText.readingMinutes(time) }}</span>
+        <span>{{ refText.readingTimeLabel }}</span>
       </div>
     </div>
   </div>

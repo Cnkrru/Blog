@@ -1,16 +1,18 @@
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import axios from 'axios'
 import MiniSearch from 'minisearch'
 import { Howl } from 'howler'
+import { START_LOCATION, type Router } from 'vue-router'
 import { getRouter } from '../router'
 import { postClean, postCleanCache } from './pamin/post'
 import { refLayout, setLayout } from './pamin/setting'
+import { switchLocale, type Locale } from './i18n'
 
 /* ====================<ld>==================== */
 type LD = 'light' | 'dark'
 const lds: LD[] = ['light', 'dark']
 
-// AI修复：模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefLd）
+// 模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefLd）
 export const refLd = ref<LD>('dark')
 export const setLd = (ld: LD) => {
   const body = document.body
@@ -29,7 +31,7 @@ export const initLD = () => {
   console.info('亮暗初始化成功')
 }
 
-// AI修复：明暗切换动作收敛到 .ts，组件模板只做事件转发
+// 明暗切换动作收敛到 .ts，组件模板只做事件转发
 export const toggleLd = () => {
   setLd(refLd.value === 'light' ? 'dark' : 'light')
 }
@@ -69,7 +71,7 @@ const isBrowser = typeof window !== 'undefined'
 
 let howler: Howl | null = null
 let timer: ReturnType<typeof setInterval> | null = null
-// AI修复：连续加载失败计数。所有歌曲源都不通时用它止损，避免 onloaderror 无限切歌
+// 连续加载失败计数。所有歌曲源都不通时用它止损，避免 onloaderror 无限切歌
 let loadFailCount = 0
 
 export const musicList = ref<Song[]>([])
@@ -82,7 +84,7 @@ export const isMuted = ref(false)
 export const openControl = ref(false)
 export const openList = ref(false)
 export const isLoading = ref(false)
-// AI修复：音乐源全部加载失败时置位，供 UI 提示（原先加载态与失败态都无处可见）
+// 音乐源全部加载失败时置位，供 UI 提示（原先加载态与失败态都无处可见）
 export const isLoadFailed = ref(false)
 
 /* ====================<派生数据>==================== */
@@ -96,7 +98,7 @@ export const formatTime = (time: number) => {
 }
 
 /* ====================<工人：进度轮询>==================== */
-// AI修复：导出名按域加 music 前缀，避免与 post.ts 的 mount/unmount 等同名导出撞车
+// 导出名按域加 music 前缀，避免与 post.ts 的 mount/unmount 等同名导出撞车
 export const musicStop = () => {
   if (timer) {
     clearInterval(timer)
@@ -124,7 +126,7 @@ export const musicUnmount = () => {
 export const musicMount = (song: Song, autoplay: boolean) => {
   musicUnmount()
   if (!song.audio) return
-  // AI修复：换歌时重置播放进度与时长，避免进度条停留在上一首的位置
+  // 换歌时重置播放进度与时长，避免进度条停留在上一首的位置
   musicTime.value = 0
   duration.value = 0
   isLoading.value = true
@@ -155,11 +157,11 @@ export const musicMount = (song: Song, autoplay: boolean) => {
     onload: () => {
       duration.value = howler?.duration() ?? 0
       isLoading.value = false
-      loadFailCount = 0 // AI修复：加载成功即清零失败计数
+      loadFailCount = 0 // 加载成功即清零失败计数
     },
     onloaderror: () => {
       isLoading.value = false
-      // AI修复：每首歌都试过一轮仍失败则停下来，避免在坏源之间无限轮换
+      // 每首歌都试过一轮仍失败则停下来，避免在坏源之间无限轮换
       loadFailCount += 1
       if (loadFailCount >= musicList.value.length) {
         isLoadFailed.value = true
@@ -170,7 +172,7 @@ export const musicMount = (song: Song, autoplay: boolean) => {
     },
   })
 
-  // AI修复：html5 模式下 Howler 只在 canplaythrough 才写内部 _duration，而该事件对远程大文件
+  // html5 模式下 Howler 只在 canplaythrough 才写内部 _duration，而该事件对远程大文件
   //   常常迟迟不触发甚至不触发，于是 howler.duration() 恒为 0：右侧总长一直 0:00，
   //   而 onSeek 又以 duration 作守卫，进度条就拖不动。这里直接听底层 audio 元素的
   //   loadedmetadata（远早于 canplaythrough）取时长。
@@ -293,6 +295,7 @@ export const refKeyword = ref('')
 export const refSearchRes = ref<SearchDoc[]>([])
 export const searchReady = ref(false)
 export const searchLoading = ref(false)
+export const searchFailed = ref(false)
 export const searchOpen = ref(false)
 
 let miniSearch: MiniSearch<SearchDoc> | null = null
@@ -319,6 +322,7 @@ const slicer = (text: string) => {
 export const buildIndex = async () => {
   if (buildFlag) return
   searchLoading.value = true
+  searchFailed.value = false
 
   try {
     await postClean()
@@ -349,6 +353,7 @@ export const buildIndex = async () => {
     console.info('[INFO]:minisearch初始化完成')
   } catch {
     searchLoading.value = false
+    searchFailed.value = true
     console.error('[ERR]:miniSearch初始化失败')
   }
 }
@@ -399,7 +404,7 @@ watch(refKeyword, (v) => {
     searchOpen.value = false
     return
   }
-  // AI修复：检索加轻量防抖，避免连打时每键都同步检索
+  // 检索加轻量防抖，避免连打时每键都同步检索
   searchTimer = setTimeout(() => {
     assembler(q)
     searchOpen.value = true
@@ -448,7 +453,7 @@ export const go = (id: string) => {
 }
 
 export const onEnter = (e: KeyboardEvent) => {
-  // AI修复：中文输入法组词中的回车是选词，不当作跳转
+  // 中文输入法组词中的回车是选词，不当作跳转
   if (e.isComposing) return
   const first = refSearchRes.value[0]
   if (first) go(first.id)
@@ -462,7 +467,7 @@ const onClickOutside = (e: MouseEvent) => {
   if (!(e.target as HTMLElement).closest('.search')) searchOpen.value = false
 }
 
-// AI修复：滚动定位仅面板展开时同步，并用 rAF 节流（原 capture scroll 每次滚动都算 getBoundingClientRect）
+// 滚动定位仅面板展开时同步，并用 rAF 节流（原 capture scroll 每次滚动都算 getBoundingClientRect）
 let posRaf: number | null = null
 const syncSearchPosOnView = () => {
   if (!searchOpen.value || posRaf) return
@@ -487,4 +492,228 @@ export const unmountSearch = () => {
     cancelAnimationFrame(posRaf)
     posRaf = null
   }
+}
+
+/* ====================<locale menu>==================== */
+export const refLocaleOpen = ref(false)
+export const refLocaleMenuPos = ref({ left: 0, top: 0 })
+
+// 菜单宽度与 CSS 的 .locale-menu width 保持一致
+const LOCALE_MENU_WIDTH = 168
+const LOCALE_MENU_GAP = 8
+let localeIndex = 0
+
+const localeTriggerEl = () => document.querySelector<HTMLElement>('.locale-btn')
+const localeItemEls = () =>
+  Array.from(document.querySelectorAll<HTMLButtonElement>('.locale-menu .locale-item'))
+
+const syncLocaleMenuPos = () => {
+  const trigger = localeTriggerEl()
+  if (!trigger) return
+  const rect = trigger.getBoundingClientRect()
+  const maxLeft = window.innerWidth - LOCALE_MENU_WIDTH - 8
+  refLocaleMenuPos.value = {
+    left: Math.max(8, Math.min(rect.right - LOCALE_MENU_WIDTH, maxLeft)),
+    top: rect.bottom + LOCALE_MENU_GAP,
+  }
+}
+
+const focusLocaleItem = (index: number) => {
+  const items = localeItemEls()
+  if (!items.length) return
+  localeIndex = (index + items.length) % items.length
+  items[localeIndex]?.focus()
+}
+
+const onLocaleClickOutside = (e: MouseEvent) => {
+  const target = e.target as HTMLElement
+  if (target.closest('.locale-btn') || target.closest('.locale-menu')) return
+  closeLocaleMenu()
+}
+
+let localeRaf: number | null = null
+const syncLocaleMenuPosOnView = () => {
+  if (!refLocaleOpen.value || localeRaf) return
+  localeRaf = requestAnimationFrame(() => {
+    localeRaf = null
+    syncLocaleMenuPos()
+  })
+}
+
+// 开合与外部监听成对注册：只在菜单展开期间挂全局事件，避免常驻监听
+export const openLocaleMenu = async () => {
+  syncLocaleMenuPos()
+  refLocaleOpen.value = true
+  document.addEventListener('click', onLocaleClickOutside)
+  document.addEventListener('scroll', syncLocaleMenuPosOnView, true)
+  window.addEventListener('resize', syncLocaleMenuPosOnView)
+
+  await nextTick()
+  // 打开即聚焦当前语言项，键盘用户可直接上下选择
+  const items = localeItemEls()
+  const current = items.findIndex((el) => el.getAttribute('aria-checked') === 'true')
+  localeIndex = Math.max(0, current)
+  items[localeIndex]?.focus()
+}
+
+export const closeLocaleMenu = (focusTrigger = false) => {
+  if (!refLocaleOpen.value) return
+  refLocaleOpen.value = false
+  document.removeEventListener('click', onLocaleClickOutside)
+  document.removeEventListener('scroll', syncLocaleMenuPosOnView, true)
+  window.removeEventListener('resize', syncLocaleMenuPosOnView)
+  if (localeRaf) {
+    cancelAnimationFrame(localeRaf)
+    localeRaf = null
+  }
+  if (focusTrigger) localeTriggerEl()?.focus()
+}
+
+export const toggleLocaleMenu = () => {
+  if (refLocaleOpen.value) closeLocaleMenu()
+  else openLocaleMenu()
+}
+
+export const chooseLocale = (locale: Locale) => {
+  switchLocale(locale)
+  closeLocaleMenu(true)
+}
+
+// Enter/Space 交给按钮原生 click，只在方向键时手动展开，避免双触发
+export const localeTriggerKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault()
+    openLocaleMenu()
+  } else if (e.key === 'Escape') {
+    closeLocaleMenu(true)
+  }
+}
+
+export const localeMenuKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    focusLocaleItem(localeIndex + 1)
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    focusLocaleItem(localeIndex - 1)
+  } else if (e.key === 'Escape') {
+    e.preventDefault()
+    closeLocaleMenu(true)
+  } else if (e.key === 'Tab') {
+    closeLocaleMenu()
+  }
+}
+
+// 组件卸载时兜底收尾，避免 Header 已卸载但全局监听还挂在 document 上
+export const unmountLocaleMenu = () => {
+  closeLocaleMenu()
+}
+
+/* ====================<route loading>==================== */
+// 全局路由加载状态：模块级单例，由 App 的 LoadingBar 消费
+export const refRouteLoading = ref(false)
+export const refProgress = ref(0)
+
+const SHOW_DELAY = 150 // 延迟出现，避免快速跳转闪一下
+const MIN_VISIBLE = 300 // 出现后最短停留
+const LEAVE_DURATION = 200 // 补满 100% 后淡出的时间
+const SAFE_TIMEOUT = 10000 // 守卫异常时的兜底收尾
+
+let pending = 0
+let showTimer: ReturnType<typeof setTimeout> | null = null
+let finishTimer: ReturnType<typeof setTimeout> | null = null
+let safeTimer: ReturnType<typeof setTimeout> | null = null
+let shownAt = 0
+
+// 清空上一轮导航的定时器，避免旧回调落到新导航
+const clearTimers = () => {
+  if (showTimer) {
+    clearTimeout(showTimer)
+    showTimer = null
+  }
+  if (finishTimer) {
+    clearTimeout(finishTimer)
+    finishTimer = null
+  }
+  if (safeTimer) {
+    clearTimeout(safeTimer)
+    safeTimer = null
+  }
+}
+
+const reset = () => {
+  pending = 0
+  clearTimers()
+  refRouteLoading.value = false
+  refProgress.value = 0
+}
+
+const start = () => {
+  pending++
+  if (pending > 1) return
+  clearTimers()
+
+  // 上一轮进度条还没淡出：直接复用，重新计时并回落到 80%
+  if (refRouteLoading.value) {
+    shownAt = Date.now()
+    refProgress.value = 80
+    safeTimer = setTimeout(() => reset(), SAFE_TIMEOUT)
+    return
+  }
+
+  refProgress.value = 0
+  showTimer = setTimeout(() => {
+    showTimer = null
+    shownAt = Date.now()
+    refRouteLoading.value = true
+    refProgress.value = 80
+  }, SHOW_DELAY)
+  safeTimer = setTimeout(() => reset(), SAFE_TIMEOUT)
+}
+
+const finish = () => {
+  if (pending === 0) return
+  pending--
+  if (pending > 0) return
+
+  // 还没到显示时机：本轮没有出现过进度条，直接复位
+  if (showTimer) {
+    clearTimeout(showTimer)
+    showTimer = null
+    if (safeTimer) {
+      clearTimeout(safeTimer)
+      safeTimer = null
+    }
+    refProgress.value = 0
+    return
+  }
+
+  if (!refRouteLoading.value) return
+
+  refProgress.value = 100
+  if (safeTimer) {
+    clearTimeout(safeTimer)
+    safeTimer = null
+  }
+
+  const wait = Math.max(0, MIN_VISIBLE - (Date.now() - shownAt)) + LEAVE_DURATION
+  finishTimer = setTimeout(() => {
+    finishTimer = null
+    refRouteLoading.value = false
+    refProgress.value = 0
+  }, wait)
+}
+
+export const bindLoading = (router: Router) => {
+  // SSG 构建期不挂进度条，避免服务端定时器拖慢构建
+  if (typeof window === 'undefined') return
+
+  router.beforeEach((to, from) => {
+    // 首次导航是 SSG 首屏 hydration，不显示进度条
+    if (from === START_LOCATION) return
+    start()
+  })
+  // 成功、取消、重定向都会走到 afterEach，计数在这里平衡
+  router.afterEach(() => finish())
+  router.onError(() => reset())
 }

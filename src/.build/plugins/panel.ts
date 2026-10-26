@@ -22,10 +22,11 @@ let groupSeq = 0
 
 /* ====================<HTML 模板>==================== */
 
-// 选项卡（radio + label 对），首项默认选中；label 文本由调用方转义后传入
+/* 选项卡：radio 嵌进 label，首项默认选中；label 文本由调用方转义后传入。
+ * 每块 label 紧跟自己的面板，切页只需 `label:has(input:checked) + .tabs-panel`，
+ * 不再按 `-0`…`-7` 下标枚举，tab 数量无上限 */
 const PANEL_TAB = (group: string, index: number, label: string): string => `
-    <input type="radio" id="${group}-${index}" name="${group}"${index === 0 ? ' checked' : ''}>
-    <label for="${group}-${index}">${label}</label>`
+    <label class="tabs-tab"><input type="radio" id="${group}-${index}" name="${group}"${index === 0 ? ' checked' : ''}>${label}</label>`
 
 /* ====================<共享管道>==================== */
 
@@ -49,7 +50,7 @@ export const splitPanels = (content: string, componentName: string): Panel[] => 
 
 /*
  * id: panelTabs
- * fn: 生成面板分组导航条，返回组名与导航 HTML
+ * fn: 分配面板组名并生成每块选项卡，返回组名与逐块 label HTML
  * 组名必须同页唯一 —— 同页多组面板的 radio 一旦同名，切换就会互串。
  * 早前拿「首标签名 + 面板数」拼组名，既会把标签名里的引号带进 id/name/for 属性，
  * 也会在两个组的标签名与面板数都相同时撞名，故改为「前缀 + 本页第 N 组」
@@ -58,7 +59,7 @@ export const panelTabs = (
   ctx: PluginContext,
   prefix: string,
   panels: Panel[],
-): { group: string; nav: string } => {
+): { group: string; labels: string[] } => {
   if (ctx.pageKey !== pageKey) {
     pageKey = ctx.pageKey
     groupSeq = 0
@@ -66,6 +67,6 @@ export const panelTabs = (
   groupSeq += 1
   const group = `${prefix}-${groupSeq}`
   const esc = ctx.escapeHtml
-  const nav = panels.map((p, i) => PANEL_TAB(group, i, esc(p.name))).join('')
-  return { group, nav }
+  const labels = panels.map((p, i) => PANEL_TAB(group, i, esc(p.name)))
+  return { group, labels }
 }

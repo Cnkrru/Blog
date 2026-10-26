@@ -29,8 +29,8 @@ const CODE_GROUP_PANEL = (group: string, index: number, lang: string, body: stri
 const CODE_GROUP_PLAIN = (esc: (s: string) => string, code: string): string =>
   `<pre class="shiki"><code>${esc(code)}</code></pre>`
 
-const CODE_GROUP_WRAP = (nav: string, bodies: string): string => `
-<div class="tabs code-group" v-pre>${nav}${bodies}
+const CODE_GROUP_WRAP = (items: string): string => `
+<div class="tabs code-group" v-pre>${items}
 </div>`
 
 /* ====================<插件实现>==================== */
@@ -43,19 +43,19 @@ export const codeGroupBlock: ComponentPlugin = {
     const esc = ctx.escapeHtml
     const panels = splitPanels(content, 'code-group')
     if (panels.length === 0) return ''
-    const { group, nav } = panelTabs(ctx, 'cg', panels)
+    const { group, labels } = panelTabs(ctx, 'cg', panels)
 
     // 面板内容：优先走编译期 shiki 高亮（标签名即语言名），未提供高亮能力时回退纯文本
-    const bodies = panels
+    const items = panels
       .map((p, i) => {
         const label = p.name.toLowerCase()
         // 类名直接拼进 HTML 属性，先消毒再落盘；送 shiki 的仍是原标签名，着色行为不变
         const attrLang = label.replace(/[^\w-]/g, '') || 'text'
         const codeHtml = ctx.highlight ? ctx.highlight(p.body, label) : CODE_GROUP_PLAIN(esc, p.body)
-        return CODE_GROUP_PANEL(group, i, attrLang, codeHtml)
+        return `${labels[i] ?? ''}${CODE_GROUP_PANEL(group, i, attrLang, codeHtml)}`
       })
       .join('')
 
-    return CODE_GROUP_WRAP(nav, bodies)
+    return CODE_GROUP_WRAP(items)
   },
 }

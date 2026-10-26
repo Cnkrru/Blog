@@ -20,7 +20,7 @@ npm install -D drizzle-kit @types/better-sqlite3
 ```tip
 这里笔者用的数据库是SQLite，其他的暂时没用过
 
-sqlite驱动用的是better-sqlite3，而不是node官方库node:sqlite
+sqlite驱动用的是better-sqlite3，而不是node官方库node:sqlite(截止到这篇文章发布那天,node:sqlite还是处于测试阶段)
 ```
 
 ### 2. 定义表结构
@@ -67,10 +67,14 @@ export const db = drizzle(sqlite, { schema })
 import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({
+  // 数据库类型
   dialect: 'sqlite',
+  // 表结构位置
   schema: './src/db/schema.ts',
+  // 输出位置drizzle文件夹
   out: './drizzle',
   dbCredentials: {
+    // 数据库路径及名字
     url: './app.db',
   },
 })
@@ -90,7 +94,7 @@ users 4 columns 1 indexes 0 fks
 [✓] Your SQL migration file ➜ drizzle\0000_outgoing_mandrill.sql 🚀
 ```
 
-- 这个指令会在`drizzle/`下生成几个文件，json+sql
+- 这个指令会在`drizzle/`下生成几个文件，json和sql
 
 ### 6. 创建数据库
 

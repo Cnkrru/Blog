@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { postEdit, publish, update, history } from '../../composables/pamin/post.ts'
+import { refText } from '../../composables/i18n.ts'
 import Calendar from '../icon/Calendar.vue'
 import RefreshCw from '../icon/RefreshCw.vue'
 import Clock from '../icon/Clock.vue'
@@ -18,7 +19,7 @@ onMounted(() => postEdit(postKey))
     <div class="publish-time">
       <Calendar class="calendar-icon" />
       <div class="pulish-info">
-        <span>发布</span>
+        <span>{{ refText.postPublished }}</span>
         <!-- 模板原绑定 date（未导入），发布日数据在 post.ts 的 publish 上 -->
         <span>{{ publish }}</span>
       </div>
@@ -27,7 +28,7 @@ onMounted(() => postEdit(postKey))
     <div v-if="update" class="update-time">
       <RefreshCw class="refresh-icon" />
       <div class="update-info">
-        <span>更新于</span>
+        <span>{{ refText.postUpdated }}</span>
         <span>{{ update }}</span>
       </div>
     </div>
@@ -37,7 +38,7 @@ onMounted(() => postEdit(postKey))
   <div v-if="history.length" class="history-area">
     <div class="history-head">
       <Clock class="history-icon" />
-      <span>更新记录</span>
+      <span>{{ refText.postHistory }}</span>
     </div>
     <ul class="history-list">
       <li v-for="(h, i) in history" :key="i" class="history-item">

@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { refIp, refWeather, weather } from '@/composables/psidebar'
+import { refIp, refWeather, refWeatherLoading, weather } from '@/composables/psidebar'
+import { refText } from '@/composables/i18n'
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  // AI修复：weather() 内部已 await ip() 并复用缓存，这里不再单独调 ip()，避免重复请求
   weather()
 })
 </script>
 
 <template>
   <div class="weather-ip">
-    <span class="weather-number">{{ refWeather }}</span>
-    <span class="ip">{{ refIp }}</span>
+    <template v-if="refWeatherLoading">
+      <span class="weather-number weather-skeleton weather-skeleton-temp"></span>
+      <span class="ip weather-skeleton weather-skeleton-city"></span>
+    </template>
+    <template v-else>
+      <span class="weather-number">{{ refWeather || '--°' }}</span>
+      <span class="ip">{{ refIp || refText.unknown }}</span>
+    </template>
   </div>
 </template>
 
@@ -53,5 +59,26 @@ onMounted(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--g-text);
+}
+
+.weather-skeleton {
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--g-text) 12%, transparent);
+  animation: weather-pulse 1.2s ease-in-out infinite;
+}
+
+.weather-skeleton-temp {
+  width: 34px;
+}
+
+.weather-skeleton-city {
+  width: 52px;
+}
+
+@keyframes weather-pulse {
+  50% {
+    opacity: 0.45;
+  }
 }
 </style>

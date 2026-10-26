@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { particles } from '@/composables/index.ts'
+import { refText } from '@/composables/i18n.ts'
 import { useSeo } from '../composables/seo'
 import Logo from '../components/index/Logo.vue'
 import Nav from '../components/index/Nav.vue'
@@ -32,8 +33,8 @@ onUnmounted(() => {
     <div class="index-body">
       <Welcome />
       <div class="btn-list">
-        <router-link to="/postlist" class="btn btn-read">开始阅读</router-link>
-        <router-link to="/about" class="btn btn-about">关于我</router-link>
+        <router-link to="/postlist" class="btn btn-read">{{ refText.startReading }}</router-link>
+        <router-link to="/about" class="btn btn-about">{{ refText.aboutMe }}</router-link>
       </div>
       <div class="glass-card">
         <HitMap />
@@ -110,6 +111,14 @@ onUnmounted(() => {
     opacity 0.2s ease;
 }
 
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
 .btn-read {
   background: var(--g-color);
   color: #fff;
@@ -142,6 +151,34 @@ onUnmounted(() => {
   border: 1px solid color-mix(in srgb, var(--g-text) 8%, transparent);
   display: flex;
   justify-content: center;
+}
+
+/* 首屏编排：粒子画布立即出现，各模块按 60ms 递增依次上浮 */
+.index-head .logo,
+.index-head .index-nav,
+.index-body .welcome,
+.index-body .btn-list,
+.index-body .glass-card {
+  animation: index-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.index-head .index-nav {
+  animation-delay: 0.06s;
+}
+.index-body .welcome {
+  animation-delay: 0.12s;
+}
+.index-body .btn-list {
+  animation-delay: 0.18s;
+}
+.index-body .glass-card {
+  animation-delay: 0.24s;
+}
+
+@keyframes index-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
 /* ====================<响应式>==================== */

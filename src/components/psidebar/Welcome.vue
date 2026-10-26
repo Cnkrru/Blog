@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { refText } from '@/composables/i18n'
+</script>
 
 <template>
-  <div class="welcome">欢迎来到我的博客</div>
+  <div class="welcome">{{ refText.sidebarWelcome }}</div>
 </template>
 
 <style scoped>

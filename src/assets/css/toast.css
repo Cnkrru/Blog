@@ -1,64 +1,106 @@
 .toast-box {
-    width: fit-content;
-    height: fit-content;
-    min-width: 100px;
-    min-height: 64px;
+  width: fit-content;
+  height: fit-content;
+  min-width: 100px;
+  min-height: 64px;
+  max-width: min(480px, calc(100vw - 40px));
 
-    padding: 10px 14px;
+  padding: 10px 14px;
 
-    border: var(--border-width) solid var(--g-color);
-    border-radius: var(--radius-md);
-    background: var(--g-color);
-    box-shadow: var(--shadow-lg);
+  border: var(--border-width) solid var(--toast-bg, var(--g-color));
+  border-radius: var(--radius-md);
+  background: var(--toast-bg, var(--g-color));
+  box-shadow: var(--shadow-lg);
+  /* level 背景是固定高饱和色，文字固定用深色，避免暗色主题下浅字落在黄底上不可读 */
+  color: #111827;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
 
-    position: fixed;
-    right: 20px;
-    top: 20px;
-    z-index: 9999;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 9999;
+
+  animation: toast-in 0.24s ease-out;
 }
 
 .toast-icon {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .toast-mes {
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--g-text);
-    white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.5;
+  color: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .toast-close {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
 
-    border-radius: var(--radius-sm);
-    cursor: pointer;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.toast-close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .toast-success {
-    background: #22c55e;
+  --toast-bg: #22c55e;
 }
 
 .toast-info {
-    background-color: #3b82f6;
+  --toast-bg: #3b82f6;
 }
 
 .toast-warning {
-    background: #eab308;
+  --toast-bg: #eab308;
 }
 
 .toast-error {
-    background: #ef4444;
+  --toast-bg: #ef4444;
+}
+
+.toast-box.is-hide {
+  animation: toast-out 0.2s ease forwards;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }

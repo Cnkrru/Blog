@@ -25,6 +25,7 @@ import { detailsBlock } from './details.ts'
 import { flowBlock } from './flow.ts'
 // 代码
 import { codeGroupBlock } from './code-group.ts'
+import { diffBlock } from './diff.ts'
 import { echartsBlock } from './echarts.ts'
 // 展示
 import { cardsBlock } from './cards.ts'
@@ -56,6 +57,7 @@ const componentPlugins: readonly ComponentPlugin[] = [
   detailsBlock,
   flowBlock,
   codeGroupBlock,
+  diffBlock,
   echartsBlock,
   cardsBlock,
   linksBlock,

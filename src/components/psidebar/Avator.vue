@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { refText } from '@/composables/i18n'
 </script>
 
 <template>
   <div class="avator">
-    <img src="@/assets/media/avator.webp" alt="Cnkrru的头像" loading="lazy" title="头像">
+    <img
+      src="@/assets/media/avator.webp"
+      :alt="refText.avatarAlt"
+      loading="lazy"
+      :title="refText.avatarTitle"
+    />
   </div>
 </template>
 

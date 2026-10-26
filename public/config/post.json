@@ -10,7 +10,7 @@
         "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件",
         "keywords": "个人博客, Vue 3",
         "updated": "",
-        "wordCount": 1019,
+        "wordCount": 1089,
         "readingTime": 4
     },
     "post-1": {
@@ -24,7 +24,7 @@
         "description": "记录express初次体验",
         "keywords": "express",
         "updated": "",
-        "wordCount": 133,
+        "wordCount": 177,
         "readingTime": 1
     },
     "post-2": {
@@ -38,7 +38,7 @@
         "description": "记录给ts项目配置drizzleORM和sqlite数据库",
         "keywords": "express",
         "updated": "",
-        "wordCount": 152,
+        "wordCount": 153,
         "readingTime": 1
     },
     "post-3": {
@@ -53,7 +53,63 @@
         "description": "记录按照自己博客的样式，给hugo做一个主题",
         "keywords": "hugoTheme_hello",
         "updated": "",
-        "wordCount": 413,
+        "wordCount": 594,
         "readingTime": 2
+    },
+    "post-4": {
+        "order": 5,
+        "title": "express-3-auth鉴权认证",
+        "date": "2026-10-21",
+        "category": "后端",
+        "tags": [
+            "express"
+        ],
+        "description": "记录express鉴权登入的做法",
+        "keywords": "express,auth",
+        "updated": "",
+        "wordCount": 57,
+        "readingTime": 1
+    },
+    "post-5": {
+        "order": 6,
+        "title": "blog-1-站内年龄组件",
+        "date": "2026-10-24",
+        "category": "前端",
+        "tags": [
+            "blog"
+        ],
+        "description": "记录blog页脚的组件——siteage的做法",
+        "keywords": "blog,siteage",
+        "updated": "",
+        "wordCount": 176,
+        "readingTime": 1
+    },
+    "post-6": {
+        "order": 7,
+        "title": "blog-2-版权组件",
+        "date": "2026-10-25",
+        "category": "前端",
+        "tags": [
+            "blog"
+        ],
+        "description": "记录blog页脚的版权组件的做法",
+        "keywords": "blog,copyright",
+        "updated": "",
+        "wordCount": 157,
+        "readingTime": 1
+    },
+    "post-7": {
+        "order": 8,
+        "title": "blog-2-天气IP组件",
+        "date": "2026-10-26",
+        "category": "前端",
+        "tags": [
+            "blog"
+        ],
+        "description": "记录blog侧边栏天气组件的做法",
+        "keywords": "blog,weather,ip",
+        "updated": "",
+        "wordCount": 93,
+        "readingTime": 1
     }
 }

@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/seo'
+import { refText } from '../composables/i18n'
 import PostCover from '../components/pmain/PostCover.vue'
 import {
   listClean,
@@ -20,7 +21,7 @@ useSeo({
   path: '/postlist',
 })
 
-// AI修复：setup 期同步加载，让 SSG 产物就带文章内容；数据未就绪再走异步兜底
+// setup 期同步加载，让 SSG 产物就带文章内容；数据未就绪再走异步兜底
 const listLoaded = listCleanSync()
 if (listLoaded) listChangePage(listInitPage())
 
@@ -53,7 +54,7 @@ onMounted(async () => {
           :disabled="listNowPage === 1"
           @click="listChangePage(listNowPage - 1)"
         >
-          上一页
+          {{ refText.prevPage }}
         </button>
         <button
           v-for="p in listDisplayPages"
@@ -69,10 +70,10 @@ onMounted(async () => {
           :disabled="listNowPage === listPageNum"
           @click="listChangePage(listNowPage + 1)"
         >
-          下一页
+          {{ refText.nextPage }}
         </button>
       </div>
-      <div class="pager-info">共 {{ listPageNum }} 页</div>
+      <div class="pager-info">{{ refText.totalPages(listPageNum) }}</div>
     </div>
   </div>
 </template>
@@ -134,6 +135,7 @@ onMounted(async () => {
 .page-side:hover:not(:disabled) {
   border-color: var(--g-color);
   color: var(--g-color);
+  transform: translateY(-1px);
 }
 
 .page-side:disabled {
@@ -158,6 +160,12 @@ onMounted(async () => {
 .page-num:hover:not(:disabled) {
   border-color: var(--g-color);
   color: var(--g-color);
+  transform: translateY(-1px);
+}
+
+.page-side:active:not(:disabled),
+.page-num:active:not(:disabled) {
+  transform: translateY(0) scale(0.96);
 }
 
 /* 省略号占位项：不显示边框点击态，只做分隔 */
@@ -202,6 +210,31 @@ onMounted(async () => {
   transition:
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.3s ease;
+  /* 交错入场用 backwards：延迟期保持起始态，动画结束后交还 hover 的 transform */
+  animation: card-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.post-card:nth-child(2) {
+  animation-delay: 0.04s;
+}
+.post-card:nth-child(3) {
+  animation-delay: 0.08s;
+}
+.post-card:nth-child(4) {
+  animation-delay: 0.12s;
+}
+.post-card:nth-child(5) {
+  animation-delay: 0.16s;
+}
+.post-card:nth-child(6) {
+  animation-delay: 0.2s;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
 .post-card:hover {

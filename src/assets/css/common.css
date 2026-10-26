@@ -69,7 +69,7 @@ body {
   z-index: 2;
 }
 
-/* AI修复：接上高度链。html/body 的 100% 到这里就断了——四块区域挂在 #app 之下，
+/* 接上高度链。html/body 的 100% 到这里就断了——四块区域挂在 #app 之下，
    而 #app 原先没有任何 height/display 规则，于是任何 height:100% 都拿不到确定父高，
    内容少的页面整页高度只剩内容高度，#app 底部那条空隙直接露出背景（手机端标签/归档页最明显）。
    补上后 #app 才是真正的纵向容器，.center 吃满剩余高度，玻璃块铺满视口、页脚贴底 */
@@ -184,6 +184,31 @@ hr {
   scrollbar-color: var(--g-color) transparent; /* thumb 轨道 */
 }
 
+/*=========== 首页与内页互切的入场过渡 ===========*/
+/* 布局壳只在跨首页边界时重新挂载，因此挂载动画天然只在这类切换时播放；
+   不做遮罩、不拦导航，只让新内容自己淡入上浮 */
+.header,
+.center,
+.footer {
+  animation: page-fade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.main {
+  animation: page-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes page-rise {
+  from {
+    transform: translateY(8px);
+  }
+}
+
 /*=========== 小屏隐藏下划线，避免拥挤 ===========*/
 @media (max-width: 768px) {
   /* [响应式-sm] 手机 */
@@ -191,7 +216,7 @@ hr {
   h2::after {
     display: none;
   }
-  /* AI修复：抽屉打开时锁住底层页面滚动（body 是页面级滚动容器，特异性(0,1,1)足以覆盖 body 的 overflow:auto） */
+  /* 抽屉打开时锁住底层页面滚动（body 是页面级滚动容器，特异性(0,1,1)足以覆盖 body 的 overflow:auto） */
   body:has(.sidebar-open) {
     overflow: hidden;
   }

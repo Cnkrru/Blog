@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSeo } from '../composables/seo'
+import { refText } from '../composables/i18n'
 
 useSeo({
   title: '关于我',
@@ -10,56 +11,27 @@ useSeo({
 
 <template>
   <div class="content">
-    <h2>关于我</h2>
+    <h2>{{ refText.aboutTitle }}</h2>
 
-    <h3>个人简介</h3>
+    <h3>{{ refText.aboutIntro }}</h3>
 
-    <p>就读于东北电力大学,专业为电气工程及其自动化.</p>
-    <p>对编程感兴趣,自学了点编程.</p>
+    <p>{{ refText.aboutIntro1 }}</p>
+    <p>{{ refText.aboutIntro2 }}</p>
 
-    <h3>技术栈</h3>
+    <h3>{{ refText.aboutStack }}</h3>
     <ul>
-      <li><strong>前端</strong>:HTML5,CSS3,TypeScript(JavaScript),Vue3,SSG(Hexo,Hugo,vitepress)</li>
-      <li><strong>后端</strong>:Python,TypeScript</li>
-      <li><strong>硬件</strong>:arduino(Cpp),stm32(C)</li>
-      <li><strong>工具</strong>:Vite,Git,npm</li>
+      <li><strong>{{ refText.aboutFrontend }}</strong>:HTML5,CSS3,TypeScript(JavaScript),Vue3,SSG(Hugo,vitepress)</li>
+      <li><strong>{{ refText.aboutBackend }}</strong>:Python,TypeScript,express</li>
+      <li><strong>{{ refText.aboutHardware }}</strong>:arduino(Cpp),stm32(C)</li>
+      <li><strong>{{ refText.aboutTools }}</strong>:Vite,Git,npm</li>
     </ul>
 
-    <h3>联系方式</h3>
+    <h3>{{ refText.aboutContact }}</h3>
     <ul>
-      <li><strong>邮箱</strong>:3253884026@qq.com</li>
+      <li><strong>{{ refText.aboutEmail }}</strong>:3253884026@qq.com</li>
       <li><strong>GitHub</strong>:https://github.com/Cnkrru</li>
-    </ul>
-
-    <hr />
-
-    <h3>关于AI编程</h3>
-    <ul>
-      <li>我不反感AI编程,但是不喜欢All in AI</li>
-      <li>根据个人使用AI编程的体验来看,AI能发挥多大能力取决于你自己的知识储备和代码水平</li>
-      <li>不管是前端,后端还是硬件,在AI辅助下,确实轻松了不少,但是目前AI写的代码,感觉和屎山差不多</li>
-      <li>不多说了,AI是好事,但是不管做什么还是得看个人水平</li>
-    </ul>
-
-    <hr />
-
-    <ul>
-      <li>这个博客站点的所有文章以及示例代码均是手写</li>
-      <li>
-        说这个不是为了炫耀什么,该博客中所有文章涉及的内容如有疑问,随便问我,可能我会记不清楚具体的解决方法,但是自己写过的总会有印象
-      </li>
-    </ul>
-
-    <hr />
-
-    <ul>
-      <li>
-        ai写的最好自己看看,写的不好,经过人工审查后,一些模块代码能减少50%,一些是代码精简,但是功能保持不变,一些是死代码
-      </li>
     </ul>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

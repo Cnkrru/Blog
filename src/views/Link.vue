@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useSeo } from '../composables/seo'
+import { refText } from '../composables/i18n'
 import {
   linkClean,
   linkCleanSync,
@@ -20,7 +21,7 @@ useSeo({
   path: '/link',
 })
 
-// AI修复：setup 期同步加载，让 SSG 产物就带链接内容；数据未就绪再走异步兜底
+// setup 期同步加载，让 SSG 产物就带链接内容；数据未就绪再走异步兜底
 const linkLoaded = linkCleanSync()
 
 onMounted(() => {
@@ -55,7 +56,7 @@ onMounted(() => {
           :disabled="linkCategory === 1"
           @click="linkChangePage(linkCategory - 1)"
         >
-          上一页
+          {{ refText.prevPage }}
         </button>
         <button
           v-for="p in linkDisplayPages"
@@ -71,11 +72,11 @@ onMounted(() => {
           :disabled="linkCategory === linkCategoryNum"
           @click="linkChangePage(linkCategory + 1)"
         >
-          下一页
+          {{ refText.nextPage }}
         </button>
         <div class="category-wrap">
           <button class="page-side category-btn" @click.stop="setDropdown(!linkDropdown)">
-            分类 ▾
+            {{ refText.linkCategoryBtn }}
           </button>
           <div class="dropdown-card" v-if="linkDropdown" @click.stop>
             <button
@@ -91,9 +92,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="pager-info">
-        第 {{ linkCategory }} / {{ linkCategoryNum }} 页 · 当前分类：{{
-          linkCategories[linkCategory - 1]
-        }}
+        {{ refText.linkPageInfo(linkCategory, linkCategoryNum, linkCategories[linkCategory - 1] ?? '') }}
       </div>
     </div>
   </div>
@@ -212,6 +211,7 @@ onMounted(() => {
 .page-side:hover:not(:disabled) {
   border-color: var(--g-color);
   color: var(--g-color);
+  transform: translateY(-1px);
 }
 
 .page-side:disabled {
@@ -236,6 +236,12 @@ onMounted(() => {
 .page-num:hover:not(:disabled) {
   border-color: var(--g-color);
   color: var(--g-color);
+  transform: translateY(-1px);
+}
+
+.page-side:active:not(:disabled),
+.page-num:active:not(:disabled) {
+  transform: translateY(0) scale(0.96);
 }
 
 /* 省略号占位项：不显示边框点击态，只做分隔 */
@@ -282,6 +288,41 @@ onMounted(() => {
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.3s ease,
     border-color 0.3s ease;
+  /* 交错入场用 backwards：延迟期保持起始态，动画结束后交还 hover 的 transform */
+  animation: card-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.link-card:nth-child(2) {
+  animation-delay: 0.04s;
+}
+.link-card:nth-child(3) {
+  animation-delay: 0.08s;
+}
+.link-card:nth-child(4) {
+  animation-delay: 0.12s;
+}
+.link-card:nth-child(5) {
+  animation-delay: 0.16s;
+}
+.link-card:nth-child(6) {
+  animation-delay: 0.2s;
+}
+.link-card:nth-child(7) {
+  animation-delay: 0.24s;
+}
+.link-card:nth-child(8) {
+  animation-delay: 0.28s;
+}
+/* 超过 8 张时统一跟在队尾，避免后面的卡片抢在前面出现 */
+.link-card:nth-child(n + 9) {
+  animation-delay: 0.32s;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
 .link-card:hover {

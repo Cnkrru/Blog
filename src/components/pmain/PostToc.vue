@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { headings, active, jump, tocMount, tocUnmount } from '../../composables/pamin/post.ts'
+import { refText } from '../../composables/i18n.ts'
 import List from '../icon/List.vue'
 import X from '../icon/X.vue'
 
@@ -18,48 +19,59 @@ const tocDialogClose = () => tocDialog.value?.close()
   <aside class="toc-sidebar">
     <div v-if="headings.length" class="toc-box">
       <div class="toc-head">
-        <span>目录</span>
+        <span>{{ refText.toc }}</span>
       </div>
       <div class="toc-list">
-        <p
+        <button
           v-for="h in headings"
           :key="h.id"
+          type="button"
           class="toc-item"
           :class="{ 'toc-item-on': active === h.id }"
           :style="{ paddingLeft: 6 + (h.level - 1) * 12 + 'px' }"
+          :title="h.text"
           @click="jump(h.id)"
         >
           {{ h.text }}
-        </p>
+        </button>
       </div>
     </div>
   </aside>
 
-  <!-- AI修复：移动端目录入口与弹层必须 Teleport 到 body。PostToc 挂在 .post-layout 里、即 .main 内部，
+  <!-- 移动端目录入口与弹层必须 Teleport 到 body。PostToc 挂在 .post-layout 里、即 .main 内部，
        而 .main 带 backdrop-filter（见 common.css 四区玻璃化），按规范会为 position:fixed 后代创建包含块，
        浮钮的 bottom 就变成相对 .main 盒子而非视口（实测 scrollY=0 时 rect.top≈8383、视口高仅 554，整个在屏幕外，
        只有滚到页面底部附近才出现）。Teleport 出去后与 App.vue 的 BackToTop 同以视口为参照 -->
   <Teleport to="body" v-if="headings.length">
-    <button class="toc-fab" @click="tocDialogOpen">
+    <button type="button" class="toc-fab" :aria-label="refText.tocOpen" @click="tocDialogOpen">
       <List />
     </button>
 
-    <dialog ref="tocDialog" class="toc-dialog">
+    <dialog ref="tocDialog" class="toc-dialog" :aria-label="refText.tocTitle">
       <div class="dialog-head">
-        <span>目录</span>
-        <button class="dialog-close" @click="tocDialogClose"><X /></button>
+        <span>{{ refText.toc }}</span>
+        <button
+          type="button"
+          class="dialog-close"
+          :aria-label="refText.tocClose"
+          @click="tocDialogClose"
+        >
+          <X />
+        </button>
       </div>
       <div class="toc-dialog-list">
-        <p
+        <button
           v-for="h in headings"
           :key="h.id"
+          type="button"
           class="toc-item"
           :class="{ 'toc-item-on': active === h.id }"
           :style="{ paddingLeft: 6 + (h.level - 1) * 12 + 'px' }"
+          :title="h.text"
           @click="tocDialogClose(); jump(h.id)"
         >
           {{ h.text }}
-        </p>
+        </button>
       </div>
     </dialog>
   </Teleport>
@@ -100,12 +112,22 @@ const tocDialogClose = () => tocDialog.value?.close()
 }
 
 .toc-item {
+  display: block;
+  width: 100%;
+
   margin: 1px 0;
   padding: 4px var(--space-sm);
+
+  border: none;
+  border-left: 2px solid transparent;
+  background: transparent;
+
+  font: inherit;
   font-size: 13px;
   line-height: 1.5;
+  text-align: left;
   color: var(--g-text);
-  border-left: 2px solid transparent;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -116,14 +138,21 @@ const tocDialogClose = () => tocDialog.value?.close()
     background 0.15s ease;
 }
 
-.toc-item:hover {
+.toc-item:hover,
+.toc-item:focus-visible {
   color: var(--g-color);
   background: color-mix(in srgb, var(--g-color) 8%, transparent);
 }
 
+.toc-item:focus-visible {
+  outline: 2px solid var(--g-color);
+  outline-offset: -2px;
+}
+
 /* 当前章节：左侧色条 + 高亮 */
 .toc-item-on,
-.toc-item-on:hover {
+.toc-item-on:hover,
+.toc-item-on:focus-visible {
   color: var(--g-color);
   background: color-mix(in srgb, var(--g-color) 10%, transparent);
   border-left-color: var(--g-color);
@@ -168,6 +197,12 @@ const tocDialogClose = () => tocDialog.value?.close()
   border-radius: var(--radius-md);
   background-color: transparent;
   color: var(--g-text);
+}
+
+.toc-fab:focus-visible,
+.dialog-close:focus-visible {
+  outline: 2px solid var(--g-color);
+  outline-offset: 2px;
 }
 
 .toc-dialog-list {

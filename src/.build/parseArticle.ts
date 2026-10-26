@@ -4,11 +4,12 @@
 // 新增组件 = 加一个插件文件 + 在 registry 登记一行，本脚本不再改动
 import fs from 'node:fs'
 import path from 'node:path'
+import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 
 import matter from 'gray-matter'
 import MarkdownIt from 'markdown-it'
-import type { Highlighter } from 'shiki'
+import type { BundledLanguage, Highlighter } from 'shiki'
 import { createHighlighter, createCssVariablesTheme } from 'shiki'
 import { anchor } from '@mdit/plugin-anchor'
 import { tasklist } from '@mdit/plugin-tasklist'
@@ -24,7 +25,7 @@ import { toolbar, splitRow } from './plugins/base.ts'
 
 // 文章元数据：frontmatter 展开 + 编译期算好的派生字段
 type ArticleMeta = {
-  // AI修复：order 来自 frontmatter，运行期的 order→key 映射依赖它，显式声明进契约
+  // order 来自 frontmatter，运行期的 order→key 映射依赖它，显式声明进契约
   order: number
   title: string
   date: string
@@ -46,7 +47,7 @@ const articlePath = path.join(rootPath, ARTICLE_DIR)
 const vuePath = path.join(rootPath, '.cache')
 const jsonPath = path.join(rootPath, 'public/config/post.json')
 const postMetaPath = path.join(vuePath, 'post.json')
-// AI修复：links.json 同样需要可 import 的同源副本，供 Link 页在 SSR/setup 期同步取数据
+// links.json 同样需要可 import 的同源副本，供 Link 页在 SSR/setup 期同步取数据
 const linkJsonPath = path.join(rootPath, 'public/config/links.json')
 const linkMetaPath = path.join(vuePath, 'links.json')
 
@@ -83,6 +84,16 @@ const pluginFiles = (): string[] => {
 const pluginLatestMtime = (): number =>
   pluginFiles().reduce((max, f) => Math.max(max, fs.statSync(f).mtimeMs), 0)
 
+// 从 node_modules 读 shiki 版本，参与签名；读不到时退回 unknown，不影响编译
+const requireFromHere = createRequire(import.meta.url)
+const shikiVersion = (): string => {
+  try {
+    return String(requireFromHere('shiki/package.json').version)
+  } catch {
+    return 'unknown'
+  }
+}
+
 /*
  * id: compileSignature
  * fn: 输入签名。一次 build 会跑"客户端+服务端"两次 vite build，且每次构建都重新 import 本模块
@@ -95,6 +106,8 @@ const pluginLatestMtime = (): number =>
 const compileSignature = (files: string[]): string => {
   const self = fs.statSync(scriptPath)
   const selfTag = `__self__:${self.mtimeMs}:${self.size}`
+  // shiki 版本参与签名：语法包升级后旧产物里的 span 可能已经失效，不能复用
+  const shikiTag = `__shiki__:${shikiVersion()}`
   const pluginTags = (() => {
     const list = pluginFiles()
     if (list.length === 0) return ['__plugins__:missing']
@@ -106,6 +119,7 @@ const compileSignature = (files: string[]): string => {
   })()
   return [
     selfTag,
+    shikiTag,
     ...pluginTags,
     ...files.map((f) => {
       const s = fs.statSync(path.join(articlePath, f))
@@ -116,29 +130,65 @@ const compileSignature = (files: string[]): string => {
     .join('|')
 }
 
+// 围栏语言名归一：取首个词、去掉 `ts{1}` 这类行内属性后缀、统一小写；
+// 语言收集与围栏渲染共用，保证「加载的语言」和「请求的语言」始终一致
+const fenceLang = (info: string): string => {
+  const first = info.split(/\s+/)[0] || 'text'
+  return (first.replace(/\{.*$/, '') || 'text').toLowerCase()
+}
+
+// 同一语言只告警一次：一页多个同语言块失败时不刷屏
+const warnedLang = new Set<string>()
+const warnFallback = (lang: string, err: unknown) => {
+  if (warnedLang.has(lang)) return
+  warnedLang.add(lang)
+  const msg = err instanceof Error ? err.message : String(err)
+  console.warn(`[WARN]:shiki 无法高亮「${lang}」，已降级为纯文本：${msg}`)
+}
+
 // 语言名消毒：只保留字母数字下划线连字符，防止注入类名/属性
 const safeLang = (lang: string): string => String(lang).replace(/[^\w-]/g, '')
 
 /* ====================<代码块外壳模板>==================== */
+// 超过该行数才折叠：阈值在编译期决定，运行期只负责展开/收起
+const CODE_COLLAPSE_LINES = 50
+
 /*
  * id: codeShell
  * fn: 普通代码块外壳，编译期把shiki高亮结果塞进顶栏+内容区结构
  * 顶栏对齐 blog-map：语言徽章(圆点+文本) + 内联 SVG 复制图标
+ * 超过 50 行时追加折叠标记与展开按钮，正文包进 .code-body 供 CSS 裁切
  */
-const codeShell = (lang: string, highlighted: string): string => `
-<div class="language-${lang}" v-pre>
+const codeShell = (lang: string, highlighted: string, lineCount: number): string => {
+  const collapsible = lineCount > CODE_COLLAPSE_LINES
+  const copyButton = `
+        <button class="copy" type="button" aria-label="复制代码" title="复制代码">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>`
+  const expandButton = collapsible
+    ? `<button class="code-expand" type="button" data-lines="${lineCount}" aria-expanded="false" aria-label="展开代码（共 ${lineCount} 行）" title="展开代码">
+            <span class="code-expand-text">展开（共 ${lineCount} 行）</span>
+            <svg class="code-expand-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>`
+    : ''
+  const toolbarActions = collapsible
+    ? `<div class="code-actions">${expandButton}${copyButton}</div>`
+    : copyButton
+  const body = collapsible ? `<div class="code-body">${highlighted}</div>` : highlighted
+
+  return `
+<div class="language-${lang}${collapsible ? ' code-collapse' : ''}" v-pre>
     <div class="code-toolbar">
         <span class="lang lang-${lang}">
             <span class="lang-dot"></span>
             <span class="lang-text">${lang}</span>
         </span>
-        <button class="copy">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        </button>
+        ${toolbarActions}
     </div>
-    ${highlighted}
+    ${body}
 </div>
 `
+}
 
 /*
  * id: countWords
@@ -239,7 +289,7 @@ const syncPostMeta = () => {
   if (fs.existsSync(jsonPath)) {
     fs.copyFileSync(jsonPath, postMetaPath)
   }
-  // AI修复：一并复制 links.json（Link 页 setup 期同步取数据）
+  // 一并复制 links.json（Link 页 setup 期同步取数据）
   if (fs.existsSync(linkJsonPath)) {
     fs.copyFileSync(linkJsonPath, linkMetaPath)
   }
@@ -247,28 +297,50 @@ const syncPostMeta = () => {
 
 /*
  * id: configLanguage
- * fn: 遍历md，扫描代码块，每遇到一种语言，集合追加这门，组件语言排除，按需加载
+ * fn: 先用 markdown-it 分词，按真实 fence token 收集语言：比正则扫原文更准，
+ *   多反引号、引用块内围栏、`` ```ts{1} `` 这类写法都能覆盖；
+ *   code-group 的 @tab 标签名会被当作语言用，发生在围栏正文里，单独补收
  */
 const configLanguage = async (files: string[]) => {
   const langSet = new Set<string>(['text'])
-  // 语言集合追加
+  const md = initMd() // 只用来分词，不渲染
+
   for (const file of files) {
-    const _ = fs.readFileSync(path.join(articlePath, file), 'utf-8')
-    // 兼容缩进围栏与「``` js」空格分隔：只认 ^``` 会漏掉缩进块和空格写法，语言进不了 shiki 白名单
-    for (const i of _.matchAll(/^[ \t]*```[ \t]*([\w+-]+)/gm)) {
-      const lang = (i[1] ?? '').toLowerCase()
+    const raw = fs.readFileSync(path.join(articlePath, file), 'utf-8')
+    const content = matter(raw).content
+    for (const token of md.parse(content, {})) {
+      if (token.type !== 'fence') continue
+      // 与围栏渲染共用同一套归一规则，扫描结果就是渲染端将要请求的语言
+      const lang = fenceLang(md.utils.unescapeAll(token.info))
       // 组件语言名都走 fence 拦截拼外壳，不是真语言，不进 shiki（注册表统一汇总，含 mermaid）
-      if (!componentFenceLangs.has(lang)) {
-        langSet.add(lang)
+      if (componentFenceLangs.has(lang)) {
+        // code-group 的面板标签名即语言名（如 ts / vue），只出现在块内正文
+        if (lang === 'code-group') {
+          for (const i of token.content.matchAll(/^@tab[ \t]+(.+?)[ \t]*$/gm)) {
+            const label = (i[1] ?? '').trim().toLowerCase()
+            if (label && !componentFenceLangs.has(label)) langSet.add(label)
+          }
+        }
+        continue
       }
+      langSet.add(lang)
     }
   }
 
-  // shiki语法高亮配置
-  highlighter = await createHighlighter({
+  // 逐个语言加载：某个语言不被 shiki 支持时只跳过它，不会让整轮高亮全部降级
+  const nextHighlighter = await createHighlighter({
     themes: [highlightTheme],
-    langs: [...langSet],
+    langs: ['text'],
   })
+  for (const lang of langSet) {
+    if (lang === 'text') continue
+    try {
+      await nextHighlighter.loadLanguage(lang as BundledLanguage)
+    } catch (e) {
+      warnFallback(lang, e)
+    }
+  }
+  highlighter = nextHighlighter
 }
 
 /*
@@ -294,9 +366,13 @@ const configFence = (md: InstanceType<typeof MarkdownIt>) => {
   md.renderer.rules.fence = (tokens, idx) => {
     const token = tokens[idx]!
     const info = md.utils.unescapeAll(token.info).trim()
-    // 统一小写：收集侧已 toLowerCase，这里不转会让 Cpp/Vue 这类写法命中 shiki 的 catch 静默回退纯文本
-    const lang = (info.split(/\s+/)[0] || 'text').toLowerCase()
+    // 与 configLanguage 共用同一套归一规则，避免「加载的语言」和「请求的语言」不一致
+    const lang = fenceLang(info)
     const safe = safeLang(lang)
+
+    // shiki 会把围栏内容末尾的换行也渲染成一个空行 span，2 行代码会变成 3 行，
+    //   行号计数器还会多出第 3 个数字；高亮前先去掉末尾换行（含手写成空行的情况）
+    const code = token.content.replace(/\n+$/, '')
 
     // 组件插件：mermaid 与写作组件（timeline/steps/tabs/links/gallery 等，注册表统一调度）
     // highlight：code-group 等内嵌代码的组件用，编译期 shiki 高亮；未知语言回退纯文本
@@ -308,11 +384,16 @@ const configFence = (md: InstanceType<typeof MarkdownIt>) => {
         splitRow,
         renderMarkdown: (s: string): string => md.render(s),
         pageKey: currentPageKey,
-        highlight: (code: string, codeLang: string): string => {
+        highlight: (codeText: string, codeLang: string): string => {
+          // 同上：内嵌代码段同样要去掉末尾换行，否则面板里也会多一行空行
+          const body = codeText.replace(/\n+$/, '')
+          // 面板标签名同样要归一（如 `ts{1}`、带空格写法），否则请求的语言和加载的对不上
+          const panelLang = fenceLang(codeLang)
           try {
-            return highlighter!.codeToHtml(code, { lang: codeLang, theme: highlightTheme })
-          } catch {
-            return highlighter!.codeToHtml(code, { lang: 'text', theme: highlightTheme })
+            return highlighter!.codeToHtml(body, { lang: panelLang, theme: highlightTheme })
+          } catch (e) {
+            warnFallback(panelLang, e)
+            return highlighter!.codeToHtml(body, { lang: 'text', theme: highlightTheme })
           }
         },
       },
@@ -325,11 +406,13 @@ const configFence = (md: InstanceType<typeof MarkdownIt>) => {
     // highlighter 由 manager 的 configLanguage 初始化，此处必有值
     let highlighted: string
     try {
-      highlighted = highlighter!.codeToHtml(token.content, { lang, theme: highlightTheme })
-    } catch {
-      highlighted = highlighter!.codeToHtml(token.content, { lang: 'text', theme: highlightTheme })
+      highlighted = highlighter!.codeToHtml(code, { lang, theme: highlightTheme })
+    } catch (e) {
+      // 降级不能再静默：明确报出语言与原因，否则只表现为「有时没颜色」
+      warnFallback(lang, e)
+      highlighted = highlighter!.codeToHtml(code, { lang: 'text', theme: highlightTheme })
     }
-    return codeShell(safe, highlighted)
+    return codeShell(safe, highlighted, code.split('\n').length)
   }
 }
 
@@ -440,7 +523,7 @@ const manager = async () => {
   const postJsonExists = fs.existsSync(jsonPath)
   if (postJsonExists && fs.existsSync(sigFile) && fs.readFileSync(sigFile, 'utf8') === sig) {
     console.log('[INFO]:输入未变,短路复用.cache编译缓存')
-    // AI修复：中止的编译（如 order 重复）会在 .cache 留下写了一半的 SFC，签名退回旧值后
+    // 中止的编译（如 order 重复）会在 .cache 留下写了一半的 SFC，签名退回旧值后
     //   短路分支不跑 vuePathCleaner，孤儿会被 includedRoutes 枚举成幻影路由，这里补清一次
     vuePathCleaner(ids)
     syncPostMeta() // .cache 被清时补建可 import 副本，保证 SSR 每次构建都读得到

@@ -20,7 +20,7 @@ const ICON_FILE =
  * 树结构由编译期逐层拼装，标签本身是控制流的一部分，故单独抽成常量：
  * 一个节点先出开标签（保持未闭合），进子级时把 ul 嵌进其内部，回退时逐层收尾
  */
-const FILES_TREE_ROOT_OPEN = '<ul class="filetree">'
+const FILES_TREE_ROOT_OPEN = '<ul>'
 const FILES_TREE_SUB_OPEN = '<ul>'
 const FILES_TREE_NODE_CLOSE = '</li></ul>'
 const FILES_TREE_SIBLING_CLOSE = '</li>'

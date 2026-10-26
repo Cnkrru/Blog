@@ -20,8 +20,10 @@ import 'katex/dist/katex.min.css'
 import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
 import { routes, setRouter } from './router'
+import { bindLoading } from './composables/pheader'
 
 // 第三参是 ViteSSG 的 app 创建回调：拿到内部 router 实例并持有，供模块级 ts 复用
 export const createApp = ViteSSG(App, { routes }, ({ router }) => {
   setRouter(router)
+  bindLoading(router)
 })

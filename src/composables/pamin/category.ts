@@ -33,7 +33,7 @@ const categoryBuild = (fn: (v: CleanData) => string, sortMode: boolean): Categor
   return items.map((k) => ({ name: k, items: map.get(k)! }))
 }
 
-// AI修复：setup 期同步可用 → SSG 产物带真内容；未就绪返回 null 交异步兜底
+// setup 期同步可用 → SSG 产物带真内容；未就绪返回 null 交异步兜底
 export const categoryCleanSync = (
   fn: (v: CleanData) => string,
   sortMode: boolean,
@@ -59,7 +59,7 @@ const viewRule = (mode: 0 | 1 | 2): { key: (v: CleanData) => string; sortMode: b
   return { key: (v) => v.date.slice(0, 7), sortMode: true }
 }
 
-// AI修复：setup 期同步切换视图；未就绪返回 false 交异步兜底
+// setup 期同步切换视图；未就绪返回 false 交异步兜底
 export const turnViewSync = (mode: 0 | 1 | 2): boolean => {
   const { key, sortMode } = viewRule(mode)
   const groups = categoryCleanSync(key, sortMode)

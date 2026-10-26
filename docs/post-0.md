@@ -28,6 +28,8 @@ keywords: 个人博客, Vue 3
   9. 音乐:依赖于howler
   10. 灯箱:依赖于medium-zoom
 
+---
+
 ## 功能测试
 
 ### 标准 Markdown
@@ -327,6 +329,28 @@ SEO 需额外处理
 
 ```quote
 没有署名行也可以，只写内容即可。
+```
+
+---
+
+### diff 代码块
+
+语法是围栏代码块，语言名 `diff`，块内按 git 的标准 unified diff 写：`diff --git` / `index` / `---` / `+++` 是文件头，`@@ -l,s +l,s @@` 是块头，行首 `+` 为新增、`-` 为删除、一个空格开头为上下文。符号保留在行内，复制出来仍是可直接应用的 diff。
+
+```diff
+diff --git a/src/.build/plugins/diff.ts b/src/.build/plugins/diff.ts
+index 4b1c9f2..8d3e5a7 100644
+--- a/src/.build/plugins/diff.ts
++++ b/src/.build/plugins/diff.ts
+@@ -22,7 +22,6 @@
+-// 符号列与正文列分开，主题层可把符号列钉成窄列
+-const DIFF_LINE = (cls: string, sign: string, text: string): string =>
+-  `<span class="diff-line ${cls}"><span class="diff-sign">${sign}</span><span class="diff-text">${text}</span></span>`
++// 符号不拆列，整行连符号一起转义，复制出来仍是合法 diff
++const DIFF_LINE = (cls: string, text: string): string =>
++  `<span class="diff-line ${cls}">${text}</span>`
+
+ // 块外壳：顶栏 + 行流
 ```
 
 ---
