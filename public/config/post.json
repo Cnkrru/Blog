@@ -10,22 +10,22 @@
         "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件",
         "keywords": "个人博客, Vue 3",
         "updated": "",
-        "wordCount": 1089,
-        "readingTime": 4
+        "wordCount": 1918,
+        "readingTime": 7
     },
     "post-1": {
         "order": 2,
         "title": "express-1-初次体验",
         "date": "2026-10-18",
+        "updated": "2026-10-27",
         "category": "后端",
         "tags": [
             "express"
         ],
         "description": "记录express初次体验",
         "keywords": "express",
-        "updated": "",
-        "wordCount": 177,
-        "readingTime": 1
+        "wordCount": 904,
+        "readingTime": 4
     },
     "post-2": {
         "order": 3,
@@ -38,8 +38,8 @@
         "description": "记录给ts项目配置drizzleORM和sqlite数据库",
         "keywords": "express",
         "updated": "",
-        "wordCount": 153,
-        "readingTime": 1
+        "wordCount": 450,
+        "readingTime": 2
     },
     "post-3": {
         "order": 4,
@@ -53,25 +53,11 @@
         "description": "记录按照自己博客的样式，给hugo做一个主题",
         "keywords": "hugoTheme_hello",
         "updated": "",
-        "wordCount": 594,
-        "readingTime": 2
+        "wordCount": 923,
+        "readingTime": 4
     },
     "post-4": {
         "order": 5,
-        "title": "express-3-auth鉴权认证",
-        "date": "2026-10-21",
-        "category": "后端",
-        "tags": [
-            "express"
-        ],
-        "description": "记录express鉴权登入的做法",
-        "keywords": "express,auth",
-        "updated": "",
-        "wordCount": 57,
-        "readingTime": 1
-    },
-    "post-5": {
-        "order": 6,
         "title": "blog-1-站内年龄组件",
         "date": "2026-10-24",
         "category": "前端",
@@ -81,11 +67,11 @@
         "description": "记录blog页脚的组件——siteage的做法",
         "keywords": "blog,siteage",
         "updated": "",
-        "wordCount": 176,
-        "readingTime": 1
+        "wordCount": 664,
+        "readingTime": 3
     },
-    "post-6": {
-        "order": 7,
+    "post-5": {
+        "order": 6,
         "title": "blog-2-版权组件",
         "date": "2026-10-25",
         "category": "前端",
@@ -95,12 +81,12 @@
         "description": "记录blog页脚的版权组件的做法",
         "keywords": "blog,copyright",
         "updated": "",
-        "wordCount": 157,
+        "wordCount": 268,
         "readingTime": 1
     },
-    "post-7": {
-        "order": 8,
-        "title": "blog-2-天气IP组件",
+    "post-6": {
+        "order": 7,
+        "title": "blog-3-天气IP组件",
         "date": "2026-10-26",
         "category": "前端",
         "tags": [
@@ -109,7 +95,21 @@
         "description": "记录blog侧边栏天气组件的做法",
         "keywords": "blog,weather,ip",
         "updated": "",
-        "wordCount": 93,
-        "readingTime": 1
+        "wordCount": 709,
+        "readingTime": 3
+    },
+    "post-7": {
+        "order": 8,
+        "title": "typescript-代码规范工具配置",
+        "date": "2026-10-30",
+        "category": "typescript",
+        "tags": [
+            "typescript"
+        ],
+        "description": "记录ts的代码规范工具的配置",
+        "keywords": "typescript.代码规范工具",
+        "updated": "",
+        "wordCount": 670,
+        "readingTime": 3
     }
 }

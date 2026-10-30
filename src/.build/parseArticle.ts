@@ -192,16 +192,16 @@ const codeShell = (lang: string, highlighted: string, lineCount: number): string
 
 /*
  * id: countWords
- * fn: 统计md原文的纯文本字数，剔除代码块/行内代码/图片链接语法，
- * 中文按字符计，英文按单词计，二者相加（阅读时长=字数/300 向上取整，最少1分钟）
+ * fn: 统计md原文的总字数：代码块与行内代码同样计入（技术文章代码占比高，排除后数值会远低于实际字数），
+ * 只剔除围栏标记行、图片与链接语法；中文按字符计，英文按单词计，二者相加
+ * （阅读时长=字数/300 向上取整，最少1分钟）
  */
 const countWords = (content: string): number => {
   const pure = content
-    .replace(/```[\s\S]*?```/g, ' ') // 去代码块
-    .replace(/`[^`]*`/g, ' ') // 去行内代码
+    .replace(/^\s*(?:`{3,}|~{3,})[^\n]*$/gm, ' ') // 只去围栏标记行，块内代码/说明文字保留
+    .replace(/`/g, '') // 去行内代码的反引号，内容保留
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // 去图片
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // 链接保留文字
-    .replace(/[#>*_~\-|]/g, ' ') // 去md符号
   const cn = (pure.match(/[\u4e00-\u9fff]/g) || []).length // 中文字符
   const en = (pure.match(/[a-zA-Z0-9]+(?:['-][a-zA-Z0-9]+)*/g) || []).length // 英文单词
   return cn + en

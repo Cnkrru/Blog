@@ -2,6 +2,7 @@
 order: 2
 title: express-1-初次体验
 date: 2026-10-18
+updated: 2026-10-27
 category: 后端
 tags: [express]
 description: 记录express初次体验
@@ -203,3 +204,76 @@ http://localhost:3000/api-docs/
 
 - 最终效果
   ![swagger文档图](../public/img/post-1/swagger.png)
+
+### 4. 将swagger的文档与代码文件分离
+
+- 由于swagger文档一般过长，与代码写一块儿的话，代码可读性太差了，所以这里改配置，将文档独立出来
+
+#### 1. 更新依赖
+
+```terminal
+npm install yaml
+npm uninstall swagger-jsdoc
+```
+
+#### 2. 将文档写到独立的yaml文件
+
+1. 把原本写在代码里的文档去掉
+2. 创建`docs/`文件夹(自己想放哪里都无所谓)
+3. 写yaml文档
+
+```yaml
+/me:
+  get:
+    tags: [Auth]
+    security:
+      - bearerAuth: [] # 复用 components 里的 bearer 定义
+    responses:
+      '200':
+        description: 当前用户信息
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User' # 复用公共 schema
+```
+
+#### 3. 修改原本的ts代码
+
+- 删除doc.ts
+- index.ts
+
+```diff
+@@ 导入区 @@
+-import { fileURLToPath } from 'node:url';
+-import { swaggerSpec } from './doc.js';
++import { readFileSync } from 'node:fs';
++import { fileURLToPath } from 'node:url';
++import { parse } from 'yaml';
+
+@@ webDir 之后新增 @@
++// OpenAPI 契约与源码分离，路径基于当前模块解析，不依赖启动目录
++const swaggerSpec = parse(readFileSync(new URL('../docs/openapi.yaml', import.meta.url), 'utf8'));
+
+@@ Swagger 挂载 @@
+-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
++// Swagger UI：接口默认折叠、隐藏 Models、刷新后保留 token
++app.use(
++  '/api-docs',
++  swaggerUi.serve,
++  swaggerUi.setup(swaggerSpec, {
++    customSiteTitle: 'Express API 文档',
++    swaggerOptions: {
++      docExpansion: 'none',
++      defaultModelsExpandDepth: -1,
++      persistAuthorization: true,
++      filter: true,
++      tryItOutEnabled: true,
++      displayRequestDuration: true,
++    },
++  }),
++);
+```
+
+```info
+这两步直接把原本doc.ts的配置去掉，在中间件挂载时配置swagger
+```
