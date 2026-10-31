@@ -17,14 +17,18 @@
         "order": 2,
         "title": "express-1-初次体验",
         "date": "2026-10-18",
-        "updated": "2026-10-27",
+        "updated": "2026-10-31",
+        "history": [
+            "2026-10-27 更新swagger文档配置到代码外侧的方法",
+            "2026-10-31 重新初始化项目(前后端分离),补充express初始化的部分"
+        ],
         "category": "后端",
         "tags": [
             "express"
         ],
         "description": "记录express初次体验",
         "keywords": "express",
-        "wordCount": 904,
+        "wordCount": 1108,
         "readingTime": 4
     },
     "post-2": {
@@ -109,7 +113,22 @@
         "description": "记录ts的代码规范工具的配置",
         "keywords": "typescript.代码规范工具",
         "updated": "",
-        "wordCount": 670,
+        "wordCount": 692,
         "readingTime": 3
+    },
+    "post-8": {
+        "order": 9,
+        "title": "express-3-前后端分离，单端口服务配置",
+        "date": "2026-10-31",
+        "category": "后端",
+        "tags": [
+            "express",
+            "serverPanel"
+        ],
+        "description": "记录express项目前后端分离，但是一个端口起前后端的配置",
+        "keywords": "express",
+        "updated": "",
+        "wordCount": 934,
+        "readingTime": 4
     }
 }

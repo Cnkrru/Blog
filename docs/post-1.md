@@ -2,7 +2,10 @@
 order: 2
 title: express-1-初次体验
 date: 2026-10-18
-updated: 2026-10-27
+updated: 2026-10-31
+history:
+  - 2026-10-27 更新swagger文档配置到代码外侧的方法
+  - 2026-10-31 重新初始化项目(前后端分离),补充express初始化的部分
 category: 后端
 tags: [express]
 description: 记录express初次体验
@@ -11,17 +14,77 @@ keywords: express
 
 ## 一、初始化项目
 
-### 1. `npm init`
+### 1. 初始化JavaScript项目
 
-- 初始化JavaScript项目
+```terminal
+$ npm init
 
-### 2. `npm install typescript`
+package name: (server) spback
+version: (1.0.0)
+description: serverPanel backend
+entry point: (index.js)
+test command: test
+git repository:
+keywords: serverPanel
+author: Cnkrru
+license: (ISC) MIT
+type: (commonjs) module
+```
 
-- 安装typescript
+这里笔者只取了需要自己填写的配置
 
-### 3. `npx tsc --init`
+1. 包名
+2. 版本号
+3. 描述
+4. 入口文件
+5. 测试指令(这个后续增添编辑器有提示)
+6. git仓库(留空)
+7. 关键词
+8. 作者
+9. 开源协议
+10. 类型(这里笔者选的是ESM,CommonJs现在大家不怎么用)
 
-- 用tsc初始化ts配置文件
+- 生成的配置文件
+
+```json
+{
+  "name": "spback",
+  "version": "1.0.0",
+  "description": "serverPanel backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": ["serverPanel"],
+  "author": "Cnkrru",
+  "license": "MIT",
+  "type": "module"
+}
+```
+
+### 2. 安装typescript
+
+```sh
+npm install typescript
+```
+
+```tip
+看个人情况，不喜欢写ts，不用也挺好
+```
+
+### 3. 初始化ts配置并简单修改一下
+
+```sh
+npx tsc --init
+```
+
+- 会在根目录生成tsconfig.json
+- "rootDir": "./src"
+- "outDir": "./dist"
+  - 这两个注释解开,源码目录以及构建产物输出目录
+- "lib": ["esnext"]
+- "types": ["node"]
+  - 这两个注释解开,限定环境为node，不导入DOM库
 
 ### 4. 安装express
 
@@ -30,24 +93,19 @@ npm install express                                 // 安装express
 npm install --save-dev @types/express @types/node   // 安装express的类型
 ```
 
-### 5. 修改`tsconfig.json`
+### 5. 修改`package.json`
 
-- rootDir注释解开
-- outDir注释解开
-  - 改不改无所谓，src和dist已经是行业通用规范了
+```diff
+- "main": "index.js"
++ "main": "dist/index.js"
+```
 
-### 6. 修改`package.json`
-
-- type:module
-- script
-  ```json
-  "scripts": {
-      "build": "tsc",
-      "start": "node dist/index.js",
-      "dev": "tsc --watch"
-  }
-  ```
-- main:dist/index.js
+```diff
+- "test": "test"
++ "build": "tsc",
++ "start": "node dist/index.js",
++ "dev": "tsc --watch"
+```
 
 ---
 
@@ -104,12 +162,9 @@ npm install -D tsx
 
 ### 2. 修改`package.json`
 
-```json
-"scripts": {
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "dev": "tsx watch src/index.ts"
-}
+```diff
+- "dev": "tsc --watch"
++ "dev": "tsx watch src/index.ts"
 ```
 
 ---
@@ -123,6 +178,10 @@ npm install -D tsx
 ```
 
 ### 1. 安装依赖
+
+```tip
+如果不想yaml注释写到代码内部，请看后续步骤，不要现在跟着操作
+```
 
 ```sh
 npm install swagger-jsdoc swagger-ui-express
@@ -247,7 +306,6 @@ npm uninstall swagger-jsdoc
 -import { fileURLToPath } from 'node:url';
 -import { swaggerSpec } from './doc.js';
 +import { readFileSync } from 'node:fs';
-+import { fileURLToPath } from 'node:url';
 +import { parse } from 'yaml';
 
 @@ webDir 之后新增 @@

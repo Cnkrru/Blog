@@ -97,6 +97,7 @@ export default tseslint.config(
 3. 使用typescript默认的规则
 4. 后端部分的配置
 5. 前端部分的配置
+  - 如果是前后端分离，前端项目自己管自己的eslint配置文件，不需要在后端配置文件里配置
 6. 测试部分的配置
   - 这三部分，主要改一下files对应的路径，按照你的项目的实际情况改，然后就是languageOptions的环境配置也按照你实际的情况改
 ```
@@ -131,15 +132,10 @@ package-lock.json
 - 在`scripts`部分补充四个配置
 
 ```diff
-  "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsx watch server/index.ts",
 +    "lint": "eslint .",
 +    "lint:fix": "eslint . --fix --cache",
 +    "format": "prettier --write --no-error-on-unmatched-pattern server web",
 +    "format:check": "prettier --check --no-error-on-unmatched-pattern server web"
-  },
 ```
 
 #### 5. 配置editconfig
