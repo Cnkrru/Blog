@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { SITE_COPYRIGHT } from '@/composables/common/config'
+</script>
 
 <template>
-  <div class="copyright">&copy Cnkrru,power by Vue,All rights reserved</div>
+  <div class="copyright">{{ SITE_COPYRIGHT }}</div>
 </template>
 
 <style scoped>

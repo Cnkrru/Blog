@@ -44,8 +44,7 @@ __screenshots__/
 *.timestamp-*-*.mjs
 .vite-ssg-temp/
 
-# 编译中间产物（md → SFC/JSON）
-/.cache/
+# 编译中间产物（md → SFC/JSON）输出到 dist，已在上面忽略
 doc/
 
 # --------------------------------------------------

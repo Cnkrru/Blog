@@ -1,11 +1,12 @@
 import { ref } from 'vue'
-import { refText } from './i18n'
+import { refText } from './common/i18n'
+import { SITE_START_TIME } from './common/config'
 
 /* ====================<webage>==================== */
 export const refWebage = ref('')
 let timer: ReturnType<typeof setInterval> | null = null
 export const webageTick = () => {
-  const initDate: number = Number(new Date('2026-10-04'))
+  const initDate: number = Number(new Date(SITE_START_TIME))
   const currentDate: number = Number(new Date())
   const diffTime: number = currentDate - initDate
 

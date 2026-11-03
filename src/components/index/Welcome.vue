@@ -19,7 +19,7 @@ onUnmounted(() => {
 <style scoped>
 .welcome {
   width: fit-content;
-  height: 50vh;
+  height: 30vh;
 
   display: flex;
   justify-content: center;

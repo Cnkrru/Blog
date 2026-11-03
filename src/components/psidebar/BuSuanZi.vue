@@ -2,7 +2,7 @@
 import X from '../icon/X.vue'
 import { onMounted } from 'vue'
 import { bszOpen, bszClose, buSuanZi } from '@/composables/psidebar'
-import { refText } from '@/composables/i18n'
+import { refText } from '@/composables/common/i18n'
 
 onMounted(() => {
   buSuanZi()

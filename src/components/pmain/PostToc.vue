@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { headings, active, jump, tocMount, tocUnmount } from '../../composables/pamin/post.ts'
-import { refText } from '../../composables/i18n.ts'
+import { refText } from '../../composables/common/i18n.ts'
 import List from '../icon/List.vue'
 import X from '../icon/X.vue'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { refText } from '@/composables/i18n'
+import { refText } from '@/composables/common/i18n'
 </script>
 
 <template>
@@ -8,6 +8,7 @@ import { refText } from '@/composables/i18n'
     <router-link to="/about" class="nav-element">{{ refText.navAbout }}</router-link>
     <router-link to="/category" class="nav-element">{{ refText.navArchive }}</router-link>
     <router-link to="/tag" class="nav-element">{{ refText.navTag }}</router-link>
+    <router-link to="/photo" class="nav-element">{{ refText.navPhoto }}</router-link>
     <router-link to="/link" class="nav-element">{{ refText.navLink }}</router-link>
     <router-link to="/setting" class="nav-element">{{ refText.navSetting }}</router-link>
   </nav>

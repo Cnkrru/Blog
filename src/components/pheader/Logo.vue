@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { SITE_LOGO } from '@/composables/common/config'
 </script>
 
 <template>
-  <router-link class="logo" to="/"><p>Cnkrru</p></router-link>
+  <router-link class="logo" to="/"><p>{{ SITE_LOGO }}</p></router-link>
 </template>
 
 <style scoped>

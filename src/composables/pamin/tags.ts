@@ -6,7 +6,7 @@ export const tagSet = ref(new Set<string>())
 export const tagList = ref<CleanData[]>([])
 export const tags: CleanData[] = []
 
-// 打标核心（同步）：数据已在内存即可算（SSG 期 .cache 副本已在）
+// 打标核心（同步）：数据已在内存即可算（SSG 期 dist/.cache 副本已在）
 const tagBuild = () => {
   tags.splice(0, tags.length, ...postCleanCache)
 

@@ -2,8 +2,8 @@
 import { computed, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Component } from 'vue'
-import { useSeo } from '../composables/seo'
-import { refText } from '../composables/i18n'
+import { useSeo } from '../composables/common/seo'
+import { refText } from '../composables/common/i18n'
 import { contentReady } from '../composables/pamin/post.ts'
 import PostStatus from '../components/pmain/PostStatus.vue'
 import PostEdit from '../components/pmain/PostEdit.vue'
@@ -15,14 +15,14 @@ import PostToc from '../components/pmain/PostToc.vue'
 
 const route = useRoute()
 // 正文改为非 eager + 异步组件按需加载（原先 eager 会把全部文章的编译产物打进同一分包）
-const comps = import.meta.glob<{ default: Component }>('/.cache/*.vue')
+const comps = import.meta.glob<{ default: Component }>('/dist/.cache/*.vue')
 const postKey = computed(() => String(route.params.id))
 const content = computed(() => {
-  const loader = comps[`/.cache/${postKey.value}.vue`]
+  const loader = comps[`/dist/.cache/${postKey.value}.vue`]
   return loader ? defineAsyncComponent(loader) : null
 })
 
-// SEO 元数据：.cache/post.json 是构建期从 public/config/post.json 复制的可 import 同源副本
+// SEO 元数据：dist/.cache/post.json 是构建期从 public/config/post.json 复制的可 import 同源副本
 type PostSeo = {
   title?: string
   description?: string
@@ -33,11 +33,11 @@ type PostSeo = {
   tags?: string[]
   cover?: string
 }
-const metaMap = import.meta.glob<Record<string, PostSeo>>('/.cache/post.json', {
+const metaMap = import.meta.glob<Record<string, PostSeo>>('/dist/.cache/post.json', {
   eager: true,
   import: 'default',
 })
-const postMeta = computed(() => metaMap['/.cache/post.json']?.[postKey.value])
+const postMeta = computed(() => metaMap['/dist/.cache/post.json']?.[postKey.value])
 
 useSeo({
   title: postMeta.value?.title,

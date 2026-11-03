@@ -16,7 +16,7 @@ import LoadingBar from './components/pheader/LoadingBar.vue'
 // ts
 import { initTheme, initLayout, initBg, initOpacity } from './composables/pamin/setting.ts'
 import { initLD } from './composables/pheader.ts'
-import { initLocale } from './composables/i18n.ts'
+import { initLocale } from './composables/common/i18n.ts'
 import { refSidebar } from './composables/psidebar.ts'
 import { useHead } from '@unhead/vue'
 

@@ -42,13 +42,6 @@
     "url": "https://gohugo.io/"
   },
   {
-    "id": "7",
-    "name": "dumi",
-    "category": "SSG",
-    "description": "dumi网站文档",
-    "url": "https://d.umijs.org/"
-  },
-  {
     "id": "8",
     "name": "docsify",
     "category": "SSG",
@@ -91,28 +84,14 @@
     "url": "https://vuejs.org/"
   },
   {
-    "id": "14",
-    "name": "作品集",
-    "category": "个人",
-    "description": "个人作品集网站",
-    "url": "https://portfolio.cnkrru.top"
-  },
-  {
     "id": "15",
-    "name": "个人笔记",
+    "name": "笔记",
     "category": "个人",
     "description": "个人笔记站点",
-    "url": "https://notes.cnkrru.top"
+    "url": "https://note.cnkrru.top"
   },
   {
-    "id": "17",
-    "name": "Steam",
-    "category": "官网",
-    "description": "Steam官网",
-    "url": "https://store.steampowered.com/"
-  },
-  {
-    "'id": "18",
+    "id": "18",
     "name": "MDN",
     "category": "前端",
     "description": "前端文档",

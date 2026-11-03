@@ -37,6 +37,11 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('../views/Link.vue'),
   },
   {
+    path: '/photo',
+    name: 'photo',
+    component: () => import('../views/Photo.vue'),
+  },
+  {
     path: '/setting',
     name: 'setting',
     component: () => import('../views/Setting.vue'),

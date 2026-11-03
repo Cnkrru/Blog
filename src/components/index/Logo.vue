@@ -1,8 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { INDEX_LOGO } from '@/composables/common/config'
+</script>
 
 <template>
   <div class="logo">
-    <router-link to="/postlist"><p>Cnkrru</p></router-link>
+    <router-link to="/postlist"><p>{{ INDEX_LOGO }}</p></router-link>
   </div>
 </template>
 

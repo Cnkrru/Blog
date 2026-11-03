@@ -19,7 +19,7 @@ import {
   localeMenuKeydown,
   unmountLocaleMenu,
 } from '@/composables/pheader.ts'
-import { refLocale, refText } from '@/composables/i18n.ts'
+import { refLocale, refText } from '@/composables/common/i18n.ts'
 import { toggleSidebar } from '@/composables/psidebar.ts'
 
 // Header 卸载（如回到首页）时收掉语言菜单的全局监听

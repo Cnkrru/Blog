@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { hitmap } from '@/composables/index.ts'
-import { refText } from '@/composables/i18n.ts'
+import { refText } from '@/composables/common/i18n.ts'
 
 const {
   years,

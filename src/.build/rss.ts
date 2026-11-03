@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Feed } from 'feed'
+import { SITE_COPYRIGHT } from '../composables/common/config.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -41,7 +42,7 @@ export function generateRss({ siteUrl, siteTitle }: { siteUrl: string; siteTitle
     link: siteUrl,
     description: '个人技术博客：Vue 3 / Markdown 现代前端与技术记录',
     language: 'zh-CN',
-    copyright: `© ${new Date().getFullYear()} ${siteTitle}`,
+    copyright: SITE_COPYRIGHT,
     updated: list.length ? pickDate(list[0])! : new Date(),
     author: { name: siteTitle, link: siteUrl },
     favicon: `${siteUrl}/favicon.svg`,

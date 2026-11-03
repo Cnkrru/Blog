@@ -25,7 +25,7 @@ import {
   loadConfig,
   musicUnmount,
 } from '@/composables/pheader.ts'
-import { refText } from '@/composables/i18n.ts'
+import { refText } from '@/composables/common/i18n.ts'
 import MusicIcon from '../icon/Music.vue'
 import SkipBack from '../icon/SkipBack.vue'
 import Play from '../icon/Play.vue'

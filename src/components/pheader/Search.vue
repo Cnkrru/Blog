@@ -18,7 +18,7 @@ import {
   mountSearch,
   unmountSearch,
 } from '@/composables/pheader.ts'
-import { refText } from '@/composables/i18n.ts'
+import { refText } from '@/composables/common/i18n.ts'
 
 const inputEl = ref<HTMLInputElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { refProgress, refRouteLoading } from '../../composables/pheader'
-import { refText } from '../../composables/i18n'
+import { refText } from '../../composables/common/i18n'
 </script>
 
 <template>

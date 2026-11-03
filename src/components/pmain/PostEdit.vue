@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { postEdit, publish, update, history } from '../../composables/pamin/post.ts'
-import { refText } from '../../composables/i18n.ts'
+import { refText } from '../../composables/common/i18n.ts'
 import Calendar from '../icon/Calendar.vue'
 import RefreshCw from '../icon/RefreshCw.vue'
 import Clock from '../icon/Clock.vue'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { refText } from '@/composables/i18n'
+import { refText } from '@/composables/common/i18n'
 </script>
 
 <template>

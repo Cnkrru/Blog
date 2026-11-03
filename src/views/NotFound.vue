@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useSeo } from '../composables/seo'
-import { refText } from '../composables/i18n'
+import { useSeo } from '../composables/common/seo'
+import { refText } from '../composables/common/i18n'
 
 useSeo({
   title: '页面不存在',

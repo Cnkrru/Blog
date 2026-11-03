@@ -8,7 +8,7 @@ import {
   shareCopy,
   qrCanvas,
 } from '../../composables/pamin/post.ts'
-import { refText } from '../../composables/i18n.ts'
+import { refText } from '../../composables/common/i18n.ts'
 import Share from '../icon/share/Share.vue'
 import Heart from '../icon/Heart.vue'
 import Wechat from '../icon/share/Wechat.vue'

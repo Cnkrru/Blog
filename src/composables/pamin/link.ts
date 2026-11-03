@@ -14,10 +14,10 @@ type LinkGroup = {
   links: LinkData[]
 }
 
-// 构建期可同步取到 links 全表（.cache/links.json 由构建管线从 public/config/links.json 复制），
+// 构建期可同步取到 links 全表（dist/.cache/links.json 由构建管线从 public/config/links.json 复制），
 //   setup 期即可用 → Link 页在 SSG 产物里就有真内容；副本缺失时仍走 axios 兜底
-const localLink = import.meta.glob<LinkData[]>('/.cache/links.json', { eager: true, import: 'default' })
-export let linkCache: LinkData[] = localLink['/.cache/links.json'] ?? []
+const localLink = import.meta.glob<LinkData[]>('/dist/.cache/links.json', { eager: true, import: 'default' })
+export let linkCache: LinkData[] = localLink['/dist/.cache/links.json'] ?? []
 let links: LinkGroup[] = []
 export const linkCategories = ref<string[]>([])
 export const linkCategory = ref(1)
@@ -30,7 +30,7 @@ export const linkDisplayPages = computed(() =>
   windowPages(linkCategory.value, linkCategoryNum.value),
 )
 
-// 分桶核心（同步）：数据已在内存即可算（SSG 期 .cache 副本已在）
+// 分桶核心（同步）：数据已在内存即可算（SSG 期 dist/.cache 副本已在）
 const linkGroupBuild = () => {
   const linkMap = new Map<string, LinkData[]>()
   linkCache.forEach((link) => {

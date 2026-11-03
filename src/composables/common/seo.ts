@@ -6,7 +6,7 @@ import {
   SITE_KEYWORDS,
   SITE_OG_IMAGE,
   SITE_OG_IMAGE_ALT,
-} from '../config/site'
+} from './config'
 
 type SeoOptions = {
   title?: string

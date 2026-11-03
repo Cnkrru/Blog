@@ -1,5 +1,5 @@
-// 编译期脚本：docs/*.md → .cache/*.vue（正文 SFC）+ public/config/post.json（元数据）
-// 并把 post.json 原样复制为 .cache/post.json（可 import 同源副本，供 SSR 取 SEO 元数据），由 vite buildStart 调用
+// 编译期脚本：docs/*.md → dist/.cache/*.vue（正文 SFC）+ public/config/post.json（元数据）
+// 并把 post.json 原样复制为 dist/.cache/post.json（可 import 同源副本，供 SSR 取 SEO 元数据），由 vite buildStart 调用
 // 写作组件已插件化（src/.build/plugins/），围栏拦截与行内规则由 registry.ts 统一调度，
 // 新增组件 = 加一个插件文件 + 在 registry 登记一行，本脚本不再改动
 import fs from 'node:fs'
@@ -44,12 +44,17 @@ const scriptPath = fileURLToPath(import.meta.url)
 const dirPath = path.dirname(scriptPath)
 const rootPath = path.resolve(dirPath, '../..')
 const articlePath = path.join(rootPath, ARTICLE_DIR)
-const vuePath = path.join(rootPath, '.cache')
+const vuePath = path.join(rootPath, 'dist', '.cache')
 const jsonPath = path.join(rootPath, 'public/config/post.json')
 const postMetaPath = path.join(vuePath, 'post.json')
 // links.json 同样需要可 import 的同源副本，供 Link 页在 SSR/setup 期同步取数据
 const linkJsonPath = path.join(rootPath, 'public/config/links.json')
 const linkMetaPath = path.join(vuePath, 'links.json')
+// photos.json 同样需要可 import 的同源副本，供 Photo 页在 SSR/setup 期同步取数据
+const photoJsonPath = path.join(rootPath, 'public/config/photos.json')
+const photoMetaPath = path.join(vuePath, 'photos.json')
+// md 里写的是相对 docs 的 `../public/`，SFC 落在 vuePath 下，需要按实际目录深度换成可用相对路径
+const publicRelPath = path.relative(vuePath, path.join(rootPath, 'public')).replace(/\\/g, '/')
 
 // 语法高亮器，configLanguage 初始化，fence 规则闭包使用
 let highlighter: Highlighter | null = null
@@ -97,11 +102,11 @@ const shikiVersion = (): string => {
 /*
  * id: compileSignature
  * fn: 输入签名。一次 build 会跑"客户端+服务端"两次 vite build，且每次构建都重新 import 本模块
- * —— 内存态无法跨构建存活，改用 `.cache/.compile-sig` 磁盘 sidecar：签名一致则短路复用缓存
+ * —— 内存态无法跨构建存活，改用 `dist/.cache/.compile-sig` 磁盘 sidecar：签名一致则短路复用缓存
  *
  * 签名必须掺入本脚本自身的 mtime/size 与 plugins/ 下所有插件文件：
  * 元数据提取逻辑或组件外壳改动后，docs/ 一个字没变，签名却必须变化，
- * 否则缓存短路会让新逻辑要手动清 .cache 才生效
+ * 否则缓存短路会让新逻辑要手动清 dist/.cache 才生效
  */
 const compileSignature = (files: string[]): string => {
   const self = fs.statSync(scriptPath)
@@ -239,7 +244,7 @@ const vuePathCleaner = (ids: Set<string>) => {
 
 /*
  * id: vuePathChecker
- * fn: 检查.cache文件夹是否存在，如果没有则创建一个
+ * fn: 检查dist/.cache文件夹是否存在，如果没有则创建一个
  */
 const vuePathChecker = (ids: Set<string>) => {
   try {
@@ -282,7 +287,7 @@ const jsonPathChecker = () => {
 
 /*
  * id: syncPostMeta
- * fn: public/ 下的静态资源不进 Vite 模块图，无法 import；把 post.json 原样复制到 .cache/，
+ * fn: public/ 下的静态资源不进 Vite 模块图，无法 import；把 post.json 原样复制到 dist/.cache/，
  * 得到可 import 的同源副本，供 Post.vue 在 SSR/客户端同步取 SEO 元数据（单一数据源，不做二次加工）
  */
 const syncPostMeta = () => {
@@ -292,6 +297,10 @@ const syncPostMeta = () => {
   // 一并复制 links.json（Link 页 setup 期同步取数据）
   if (fs.existsSync(linkJsonPath)) {
     fs.copyFileSync(linkJsonPath, linkMetaPath)
+  }
+  // 一并复制 photos.json（Photo 页 setup 期同步取数据）
+  if (fs.existsSync(photoJsonPath)) {
+    fs.copyFileSync(photoJsonPath, photoMetaPath)
   }
 }
 
@@ -478,7 +487,12 @@ const mdParser = (files: string[]) => {
       currentPageKey = id // 换页：分节面板的页内组序号随页归零
       // 更新记录改运行期渲染（EditHistory组件读post.json的history），编译期不再追加到正文
       const rendered = md.render(content) // 先把文章内容转义为HTML
-      const vue = `<template>${rendered}</template>` // 把文章内容拼接成vue的HTML块
+      // 把 src/href 里的 ../public/ 换成相对 SFC 所在目录的路径，避免缓存目录变动后图片解析失败
+      const withPublicRel = rendered.replace(
+        /(src|href)="\.\.\/public\//g,
+        `$1="${publicRelPath}/`,
+      )
+      const vue = `<template>${withPublicRel}</template>` // 把文章内容拼接成vue的HTML块
       fs.writeFileSync(sfcPath, vue, 'utf8') // 把拼接好的块写入对应文件
     }
 
@@ -522,11 +536,11 @@ const manager = async () => {
   // 产物完整性：post.json 缺失时不短路，否则被删的产物永远不会被重建
   const postJsonExists = fs.existsSync(jsonPath)
   if (postJsonExists && fs.existsSync(sigFile) && fs.readFileSync(sigFile, 'utf8') === sig) {
-    console.log('[INFO]:输入未变,短路复用.cache编译缓存')
-    // 中止的编译（如 order 重复）会在 .cache 留下写了一半的 SFC，签名退回旧值后
+    console.log('[INFO]:输入未变,短路复用dist/.cache编译缓存')
+    // 中止的编译（如 order 重复）会在 dist/.cache 留下写了一半的 SFC，签名退回旧值后
     //   短路分支不跑 vuePathCleaner，孤儿会被 includedRoutes 枚举成幻影路由，这里补清一次
     vuePathCleaner(ids)
-    syncPostMeta() // .cache 被清时补建可 import 副本，保证 SSR 每次构建都读得到
+    syncPostMeta() // dist/.cache 被清时补建可 import 副本，保证 SSR 每次构建都读得到
     return
   }
   // 2. 检查缓存与元数据文件路径（清除已删除文章的过时产物）

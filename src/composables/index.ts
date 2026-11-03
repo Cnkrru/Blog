@@ -3,7 +3,14 @@ import { postCache, postData, type PostData } from './pamin/post'
 // 粒子配色跟随主题变化，需读取当前亮暗/主题
 import { refLd } from './pheader'
 import { refTheme } from './pamin/setting'
-import { refText } from './i18n'
+import { refText } from './common/i18n'
+import {
+  INDEX_PARTICLE_LOAD,
+  PARTICLE_DISTANCE,
+  INCREASE_SPEED,
+  DECREASE_SPEED,
+  LOOP_SPEED,
+} from './common/config'
 
 /* ====================<hitmap>==================== */
 export const hitmap = (() => {
@@ -166,7 +173,6 @@ export const particles = () => {
   type MousePoint = { x: number; y: number }
   type Ripple = { x: number; y: number; radius: number }
 
-  const LINK_DISTANCE = 180 // 连接长度阈值
   const PARTICLE_COUNT = 80 // 桌面端粒子数
   const PARTICLE_COUNT_SM = 32 // 移动端（≤768px）粒子数，避免小屏拥挤与算力浪费
   const DPR_CAP = 2
@@ -241,9 +247,9 @@ export const particles = () => {
       for (let j = i + 1; j < particleList.length; j++) {
         const p2 = particleList[j]!
         const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y)
-        if (distance < LINK_DISTANCE) {
+        if (distance < PARTICLE_DISTANCE) {
           ctx!.beginPath()
-          ctx!.strokeStyle = toRgba(1 - distance / LINK_DISTANCE)
+          ctx!.strokeStyle = toRgba(1 - distance / PARTICLE_DISTANCE)
           ctx!.lineWidth = 1
           ctx!.moveTo(p1.x, p1.y)
           ctx!.lineTo(p2.x, p2.y)
@@ -261,14 +267,14 @@ export const particles = () => {
         index,
         distance: Math.hypot(particle.x - mouse!.x, particle.y - mouse!.y),
       }))
-      .filter((item) => item.distance < LINK_DISTANCE)
+      .filter((item) => item.distance < PARTICLE_DISTANCE)
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 8)
 
     ctx!.lineWidth = 1.5
     for (const item of nearParticles) {
       const particle = particleList[item.index]!
-      ctx!.strokeStyle = toRgba(1 - item.distance / LINK_DISTANCE)
+      ctx!.strokeStyle = toRgba(1 - item.distance / PARTICLE_DISTANCE)
       ctx!.beginPath()
       ctx!.moveTo(particle.x, particle.y)
       ctx!.lineTo(mouse!.x, mouse!.y)
@@ -310,7 +316,8 @@ export const particles = () => {
   }
 
   // 双端粒子配置：断点与 CSS 的 sm（768px）保持一致
-  const particleCount = () => (window.matchMedia('(max-width: 768px)').matches ? PARTICLE_COUNT_SM : PARTICLE_COUNT)
+  const particleCount = () =>
+    window.matchMedia('(max-width: 768px)').matches ? PARTICLE_COUNT_SM : PARTICLE_COUNT
 
   // 粒子数量同步：只按目标数量增删，不重建已有粒子，resize 时位置不会重置
   const syncParticleCount = () => {
@@ -379,6 +386,35 @@ export const particles = () => {
     }
   }
 
+  // 帧循环：清屏 → 排斥 → 跑粒子 → 粒子连线 → 鼠标连线 → 涟漪 → 下一帧
+  const tick = () => {
+    syncThemeColor()
+    ctx!.clearRect(0, 0, width, height)
+    applyRepel()
+    particleList.forEach((particle) => runParticle(particle))
+    drawLinks()
+    drawMouseLinks()
+    runRipple()
+    raf = requestAnimationFrame(tick)
+  }
+
+  // 启动函数：绑定画布/上下文/监听后进入帧循环
+  const start = (el: HTMLCanvasElement) => {
+    if (INDEX_PARTICLE_LOAD) {
+      canvas = el
+      ctx = el.getContext('2d')
+      resizeCanvas()
+
+      window.addEventListener('resize', onResize)
+      window.addEventListener('mousemove', mouseMove)
+      window.addEventListener('mouseleave', mouseLeave)
+      window.addEventListener('touchmove', touchMove, { passive: true })
+      window.addEventListener('touchend', touchLeave)
+      window.addEventListener('click', windowClick)
+      tick()
+    }
+  }
+
   // 清理器：停帧循环并解绑全部监听
   const stop = () => {
     if (raf) {
@@ -401,33 +437,6 @@ export const particles = () => {
     rippleList = []
   }
 
-  // 帧循环：清屏 → 排斥 → 跑粒子 → 粒子连线 → 鼠标连线 → 涟漪 → 下一帧
-  const tick = () => {
-    syncThemeColor()
-    ctx!.clearRect(0, 0, width, height)
-    applyRepel()
-    particleList.forEach((particle) => runParticle(particle))
-    drawLinks()
-    drawMouseLinks()
-    runRipple()
-    raf = requestAnimationFrame(tick)
-  }
-
-  // 启动函数：绑定画布/上下文/监听后进入帧循环
-  const start = (el: HTMLCanvasElement) => {
-    canvas = el
-    ctx = el.getContext('2d')
-    resizeCanvas()
-
-    window.addEventListener('resize', onResize)
-    window.addEventListener('mousemove', mouseMove)
-    window.addEventListener('mouseleave', mouseLeave)
-    window.addEventListener('touchmove', touchMove, { passive: true })
-    window.addEventListener('touchend', touchLeave)
-    window.addEventListener('click', windowClick)
-    tick()
-  }
-
   return {
     start,
     stop,
@@ -441,9 +450,6 @@ let twRunning = false // 打字链是否在跑
 let strIndex: number = 0 // 句子索引，打到第几个句子了
 let charIndex: number = 0 // 字符索引。打到第几个字符了
 let increasing: boolean = true // 是否正向，正反两个打字方向
-const onSpeed: number = 100 // 正向打字速度(打字间隔时间)
-const unSpeed: number = 40 // 反向打字速度
-const loopSpeed: number = 3000 // 句子轮询间隔时间
 const twManager = (fn: () => void, delay: number) => {
   if (twTimer) clearTimeout(twTimer)
   twTimer = setTimeout(fn, delay)
@@ -461,11 +467,11 @@ const twStep = () => {
     // 反转打印方向，延时loop_speed后重新执行tw
     if (charIndex === currentStr.length) {
       increasing = false
-      twManager(twStep, loopSpeed)
+      twManager(twStep, LOOP_SPEED)
       return
     }
     // 正向打字+type_speed延时
-    twManager(twStep, onSpeed)
+    twManager(twStep, INCREASE_SPEED)
   } else {
     charIndex--
     refTw.value = currentStr.slice(0, charIndex)
@@ -473,11 +479,11 @@ const twStep = () => {
     if (charIndex === 0) {
       increasing = true
       strIndex = (strIndex + 1) % texts.length // 学到了，很精妙
-      twManager(twStep, loopSpeed)
+      twManager(twStep, LOOP_SPEED)
       return
     }
     // 反向打字+delete_speed延时
-    twManager(twStep, unSpeed)
+    twManager(twStep, DECREASE_SPEED)
   }
 }
 // 加运行守卫，反复进出首页时不再出现两条定时链同时改同一组游标

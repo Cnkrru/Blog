@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { particles } from '@/composables/index.ts'
-import { refText } from '@/composables/i18n.ts'
-import { useSeo } from '../composables/seo'
+import { refText } from '@/composables/common/i18n.ts'
+import { useSeo } from '../composables/common/seo'
 import Logo from '../components/index/Logo.vue'
 import Nav from '../components/index/Nav.vue'
 import Welcome from '../components/index/Welcome.vue'

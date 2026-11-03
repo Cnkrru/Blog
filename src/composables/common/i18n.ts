@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { INDEX_WELCOME_SAYING, WELCOME_SAYINGS } from './config'
 
 /* ====================<locale>==================== */
 // 当前语言只存字符串；文案表整表切换，模板里只做 {{}} 插值
@@ -13,6 +14,7 @@ const zhText = {
   navAbout: '关于',
   navArchive: '归档',
   navTag: '标签',
+  navPhoto: '图集',
   navLink: '链接',
   navSetting: '设置',
 
@@ -33,7 +35,7 @@ const zhText = {
   localeEn: 'English',
 
   /* ----- 首页 ----- */
-  welcomeTexts: ['欢迎来到我的博客'],
+  welcomeTexts: INDEX_WELCOME_SAYING,
   startReading: '开始阅读',
   aboutMe: '关于我',
 
@@ -76,7 +78,7 @@ const zhText = {
   /* ----- 侧栏 ----- */
   avatarAlt: 'Cnkrru的头像',
   avatarTitle: '头像',
-  sidebarWelcome: '欢迎来到我的博客',
+  sidebarWelcome: WELCOME_SAYINGS,
   stats: '统计',
   siteStats: '站点统计',
   todayPv: '今日访问',
@@ -183,6 +185,7 @@ const enText: I18nText = {
   navAbout: 'About',
   navArchive: 'Archive',
   navTag: 'Tags',
+  navPhoto: 'Photos',
   navLink: 'Links',
   navSetting: 'Settings',
 

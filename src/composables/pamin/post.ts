@@ -4,7 +4,7 @@ import axios from 'axios'
 import type { Zoom } from 'medium-zoom'
 import { refTheme } from './setting'
 import { refLd } from '../pheader'
-import { refText } from '../i18n'
+import { refText } from '../common/i18n'
 /* ====================<postData>==================== */
 type PostMeta = {
   order: number
@@ -22,11 +22,11 @@ type PostMeta = {
 // 导出 PostData：index.ts 的 hitmap 单例复用此全表契约类型
 export type PostData = Record<string, PostMeta>
 
-// 构建期可同步取到 post 全表（.cache/post.json 由构建管线从 public/config/post.json 复制，
+// 构建期可同步取到 post 全表（dist/.cache/post.json 由构建管线从 public/config/post.json 复制，
 //   是可 import 的同源副本），setup 期即可用 → 列表页/上下篇/字数在 SSG 产物里就有真内容；
 //   副本缺失时（异常场景）仍走 postData 的 axios 兜底
-const localPost = import.meta.glob<PostData>('/.cache/post.json', { eager: true, import: 'default' })
-export let postCache: PostData = localPost['/.cache/post.json'] ?? {}
+const localPost = import.meta.glob<PostData>('/dist/.cache/post.json', { eager: true, import: 'default' })
+export let postCache: PostData = localPost['/dist/.cache/post.json'] ?? {}
 
 // order→key 映射收敛到数据层构建一次，postClean/postNav 复用（原先各自重建一遍）
 let orderMapCache: Record<number, string> | null = null
@@ -70,7 +70,7 @@ export type CleanData = {
 }
 export let postCleanCache: CleanData[] = []
 
-// 清洗核心可同步执行（SSG 期 .cache 副本已在内存）；数据未就绪返回 false 交异步兜底
+// 清洗核心可同步执行（SSG 期 dist/.cache 副本已在内存）；数据未就绪返回 false 交异步兜底
 export const postCleanSync = (): boolean => {
   if (postCleanCache.length > 0) return true // 已有缓存直接返回
   if (Object.keys(postCache).length === 0) return false

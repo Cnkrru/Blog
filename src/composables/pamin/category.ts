@@ -11,7 +11,7 @@ export const categoryModeGroups = ref<CategoryGroup[]>([])
 export const categoryExpandGroup = ref('')
 export const categories: CleanData[] = []
 
-// 分桶核心（同步）：数据已在内存即可算（SSG 期 .cache 副本已在）
+// 分桶核心（同步）：数据已在内存即可算（SSG 期 dist/.cache 副本已在）
 const categoryBuild = (fn: (v: CleanData) => string, sortMode: boolean): CategoryGroup[] => {
   categories.splice(0, categories.length, ...postCleanCache) // 就地填充，保持管线引用
 

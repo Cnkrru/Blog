@@ -7,7 +7,7 @@ import vue from '@vitejs/plugin-vue'
 import generateSitemap from 'vite-ssg-sitemap'
 import compileArticles from './src/.build/parseArticle.ts'
 import { generateRss } from './src/.build/rss.ts'
-import { SITE_TITLE, SITE_URL } from './src/config/site.ts'
+import { SITE_TITLE, SITE_URL } from './src/composables/common/config.ts'
 import 'vite-ssg'
 
 // katex 公式产物里的 MathML 标签，告知 Vue 模板编译器按原生元素处理（不解析为组件）
@@ -69,7 +69,7 @@ export default defineConfig({
       },
       // dev 期 docs 下的 md 变更后重编译并整页刷新
       //   原先编译只挂在 buildStart，只随 dev server 启动跑一次，改 md 必须重启才能生效；
-      //   且 .cache 被 server.watch.ignored 排除，Vite 自身感知不到产物变化，故这里手动重编译 + 手动失效模块图
+      //   且 dist/.cache 被 server.watch.ignored 排除，Vite 自身感知不到产物变化，故这里手动重编译 + 手动失效模块图
       configureServer(server) {
         // 串行化：连改时编译不并发写盘；正在跑就把这次变更挂起，跑完再补一次
         let compiling = false
@@ -95,7 +95,7 @@ export default defineConfig({
           if (event !== 'change' && event !== 'add' && event !== 'unlink') return
           void recompile()
             .then(() => {
-              // .cache/*.vue 不在 watcher 内，不手动失效模块图的话，整页刷新会命中旧的 transform 缓存
+              // dist/.cache/*.vue 不在 watcher 内，不手动失效模块图的话，整页刷新会命中旧的 transform 缓存
               server.moduleGraph.invalidateAll()
               server.hot.send({ type: 'full-reload' })
             })
@@ -110,7 +110,7 @@ export default defineConfig({
   ],
   ssgOptions: {
     includedRoutes(paths) {
-      const cacheDir = fileURLToPath(new URL('./.cache', import.meta.url))
+      const cacheDir = fileURLToPath(new URL('./dist/.cache', import.meta.url))
       const postIds = readdirSync(cacheDir)
         .filter((name) => /^post-.*\.vue$/.test(name))
         .map((name) => name.replace(/\.vue$/, ''))
@@ -160,7 +160,7 @@ export default defineConfig({
     cors: true,
     watch: {
       // 编译缓存目录不进 watcher，避免产物写入/更新触发 reload 循环
-      ignored: ['**/.cache/**'],
+      ignored: ['**/dist/**'],
     },
   },
 })

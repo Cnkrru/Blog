@@ -6,14 +6,15 @@ import { START_LOCATION, type Router } from 'vue-router'
 import { getRouter } from '../router'
 import { postClean, postCleanCache } from './pamin/post'
 import { refLayout, setLayout } from './pamin/setting'
-import { switchLocale, type Locale } from './i18n'
+import { switchLocale, type Locale } from './common/i18n'
+import { DEFAULT_LD } from './common/config'
 
 /* ====================<ld>==================== */
 type LD = 'light' | 'dark'
 const lds: LD[] = ['light', 'dark']
 
 // 模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefLd）
-export const refLd = ref<LD>('dark')
+export const refLd = ref<LD>(DEFAULT_LD as LD)
 export const setLd = (ld: LD) => {
   const body = document.body
   lds.forEach((name) => body.classList.remove(name)) // 清理旧类，避免硬编码
@@ -26,7 +27,7 @@ export const setLd = (ld: LD) => {
 
 export const initLD = () => {
   const store = localStorage.getItem('ld')
-  const l: LD = lds.includes(store as LD) ? (store as LD) : 'dark'
+  const l: LD = lds.includes(store as LD) ? (store as LD) : (DEFAULT_LD as LD)
   setLd(l)
   console.info('亮暗初始化成功')
 }

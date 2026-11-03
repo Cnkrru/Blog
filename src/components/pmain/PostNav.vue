@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { postNav, preOrder, nextOrder, preTitle, nextTitle } from '../../composables/pamin/post.ts'
-import { refText } from '../../composables/i18n.ts'
+import { refText } from '../../composables/common/i18n.ts'
 
 const route = useRoute()
 const postKey = String(route.params.id)

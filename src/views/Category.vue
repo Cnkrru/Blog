@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useSeo } from '../composables/seo'
-import { refText } from '../composables/i18n'
+import { useSeo } from '../composables/common/seo'
+import { refText } from '../composables/common/i18n'
 import {
   turnView,
   turnViewSync,

@@ -1,5 +1,11 @@
 import { ref } from 'vue'
 import bgVideo from '@/assets/media/bg.mp4'
+import {
+  DEFAULT_THEME,
+  DEFAULT_LAYOUT,
+  DEFAULT_BG,
+  DEFAULT_OPACITY,
+} from '../common/config'
 
 /* ====================<theme>==================== */
 // 主题键类型：PascalCase，作为唯一的"取值集合"类型
@@ -9,7 +15,7 @@ const themes: Theme[] = ['ink', 'blue', 'cyan', 'sakura', 'purple']
 
 // UI 响应式状态：初值给默认主题，避免加载期 ref 为空
 // 模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefTheme）
-export const refTheme = ref<Theme>('sakura')
+export const refTheme = ref<Theme>(DEFAULT_THEME as Theme)
 
 export const setTheme = (theme: Theme) => {
   const body = document.body
@@ -22,7 +28,7 @@ export const setTheme = (theme: Theme) => {
 
 export const initTheme = () => {
   const store = localStorage.getItem('theme')
-  const t: Theme = themes.includes(store as Theme) ? (store as Theme) : 'sakura'
+  const t: Theme = themes.includes(store as Theme) ? (store as Theme) : (DEFAULT_THEME as Theme)
   setTheme(t)
   console.info('[INFO]:主题初始化成功')
 }
@@ -32,7 +38,7 @@ type Layout = 'default' | 'card'
 const layouts: Layout[] = ['default', 'card']
 
 // 命名统一（原 RefLayout）
-export const refLayout = ref<Layout>('default')
+export const refLayout = ref<Layout>(DEFAULT_LAYOUT as Layout)
 export const setLayout = (layout: Layout) => {
   const body = document.body
   layouts.forEach((name) => body.classList.remove(name)) // 清理旧类，避免硬编码
@@ -44,7 +50,7 @@ export const setLayout = (layout: Layout) => {
 }
 export const initLayout = () => {
   const store = localStorage.getItem('layout')
-  const l: Layout = layouts.includes(store as Layout) ? (store as Layout) : 'default'
+  const l: Layout = layouts.includes(store as Layout) ? (store as Layout) : (DEFAULT_LAYOUT as Layout)
   setLayout(l)
   console.info('[INFO]:布局初始化成功')
 }
@@ -54,7 +60,7 @@ type Bg = 'video' | 'img'
 const bgs: Bg[] = ['video', 'img']
 
 // 命名统一（原 RefBg）
-export const refBg = ref<Bg>('img')
+export const refBg = ref<Bg>(DEFAULT_BG as Bg)
 export const setBg = (bg: Bg) => {
   const body = document.body
   if (bg === 'img') {
@@ -85,28 +91,33 @@ export const setBg = (bg: Bg) => {
 }
 export const initBg = () => {
   const store = localStorage.getItem('bg')
-  const b: Bg = bgs.includes(store as Bg) ? (store as Bg) : 'img'
+  const b: Bg = bgs.includes(store as Bg) ? (store as Bg) : (DEFAULT_BG as Bg)
   setBg(b)
   console.info('[INFO]:背景初始化成功')
 }
 
 /* ====================<opacity>==================== */
 // 命名统一（原 refOpacity）
-export const refOpacity = ref(1)
+export const refOpacity = ref(Number(DEFAULT_OPACITY))
 
 export const setOpacity = () => {
   document.documentElement.style.setProperty('--glass-opacity', String(refOpacity.value)) // 修改透明度CSS
   // --progress 一符多义（此处百分比、返回顶部处角度），拆为 --glass-progress 专用
-  document.documentElement.style.setProperty('--glass-progress', String(refOpacity.value * 100) + '%') // 修改进度条CSS
+  document.documentElement.style.setProperty(
+    '--glass-progress',
+    String(refOpacity.value * 100) + '%',
+  ) // 修改进度条CSS
   localStorage.setItem('opacity', String(refOpacity.value)) // 持久化存储
   console.info('[INFO]:透明度修改成功')
 }
 
 export const initOpacity = () => {
-  const store = localStorage.getItem('opacity') ?? '1'
+  const store = localStorage.getItem('opacity') ?? DEFAULT_OPACITY
   const value = parseFloat(store)
   // 滑块位置由 refOpacity 驱动，初始化必须回填，否则滑块停在 100% 与实际渲染值不一致
-  refOpacity.value = Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 1
+  refOpacity.value = Number.isFinite(value)
+    ? Math.min(1, Math.max(0, value))
+    : Number(DEFAULT_OPACITY)
   document.documentElement.style.setProperty('--glass-opacity', String(refOpacity.value))
   document.documentElement.style.setProperty(
     '--glass-progress',

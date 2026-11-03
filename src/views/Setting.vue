@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSeo } from '../composables/seo'
+import { useSeo } from '../composables/common/seo'
 import {
   refTheme,
   refLayout,
@@ -10,7 +10,7 @@ import {
   setBg,
   setOpacity,
 } from '../composables/pamin/setting'
-import { refText } from '../composables/i18n'
+import { refText } from '../composables/common/i18n'
 
 useSeo({
   title: '设置',

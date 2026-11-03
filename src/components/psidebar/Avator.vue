@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { refText } from '@/composables/i18n'
+import { refText } from '@/composables/common/i18n'
+import { AVATOR_SRC } from '@/composables/common/config'
 </script>
 
 <template>
   <div class="avator">
-    <img
-      src="@/assets/media/avator.webp"
-      :alt="refText.avatarAlt"
-      loading="lazy"
-      :title="refText.avatarTitle"
-    />
+    <img :src="AVATOR_SRC" :alt="refText.avatarAlt" loading="lazy" :title="refText.avatarTitle" />
   </div>
 </template>
 

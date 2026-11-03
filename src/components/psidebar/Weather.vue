@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { refIp, refWeather, refWeatherLoading, weather } from '@/composables/psidebar'
-import { refText } from '@/composables/i18n'
+import { refText } from '@/composables/common/i18n'
 import { onMounted } from 'vue'
 
 onMounted(() => {
