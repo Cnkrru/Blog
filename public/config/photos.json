@@ -1,44 +1,13 @@
 [
   {
-    "id": "album-1",
-    "name": "示例相册",
-    "description": "图片路径直接写在本文件里，支持本地 /img/... 或任意外链地址。",
+    "id": "东电",
+    "name": "东电",
     "images": [
       {
-        "src": "https://picsum.photos/seed/photo-1/1200/800",
-        "thumb": "https://picsum.photos/seed/photo-1/300/200",
-        "alt": "示例照片一",
-        "caption": "这是一张示例照片，用于演示相册的长期维护结构。",
-        "shotAt": "2026-10-30",
-        "location": "上海"
-      },
-      {
-        "src": "https://picsum.photos/seed/photo-2/800/1200",
-        "thumb": "https://picsum.photos/seed/photo-2/200/300",
-        "alt": "示例照片二",
-        "caption": "竖构图示例，缩略图与原图可以是不同尺寸。",
-        "shotAt": "2026-10-31"
-      },
-      {
-        "src": "https://picsum.photos/seed/photo-3/1200/800",
-        "thumb": "https://picsum.photos/seed/photo-3/300/200",
-        "alt": "示例照片三"
-      },
-      {
-        "src": "https://picsum.photos/seed/photo-4/800/1200",
-        "thumb": "https://picsum.photos/seed/photo-4/200/300",
-        "alt": "示例照片四",
-        "caption": "没有 thumb 字段时，列表会直接使用 src 原图。"
-      },
-      {
-        "src": "https://picsum.photos/seed/photo-5/1200/800",
-        "alt": "示例照片五",
-        "caption": "这张没有配置 thumb，列表加载原图，可以对照前几张的差异。"
-      },
-      {
-        "src": "https://picsum.photos/seed/photo-6/800/1200",
-        "thumb": "https://picsum.photos/seed/photo-6/200/300",
-        "alt": "示例照片六"
+        "src": "/photos/东电/东电-1-26-11-04.webp",
+        "alt": "东电 1",
+        "caption": "东电 1",
+        "shotAt": "2026-11-04"
       }
     ]
   }

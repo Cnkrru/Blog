@@ -90,10 +90,12 @@ onUnmounted(() => {
         @click="photoOpenAlbum(album.id)"
       >
         <img class="album-cover" :src="photoAlbumCover(album)" :alt="album.name" loading="lazy" />
+        <!-- 文字压在封面底部：渐变遮罩保证任意主题下都可读，张数单独放在右上角 -->
         <div class="album-info">
           <div class="album-name">{{ album.name }}</div>
-          <div class="album-meta">{{ album.images.length }} 张</div>
+          <div class="album-desc" v-if="album.description">{{ album.description }}</div>
         </div>
+        <span class="album-count">{{ album.images.length }} 张</span>
       </button>
       <div class="photo-empty" v-if="photoAlbums.length === 0">暂无相册</div>
     </div>
@@ -104,7 +106,8 @@ onUnmounted(() => {
         <button class="back-btn" @click="photoCloseAlbum">返回</button>
         <div class="album-title">
           <div class="album-name">{{ photoAlbum.name }}</div>
-          <div class="album-desc">{{ photoAlbum.description }}</div>
+          <div class="album-desc" v-if="photoAlbum.description">{{ photoAlbum.description }}</div>
+          <div class="album-desc" v-else>{{ photoAlbum.images.length }} 张照片</div>
         </div>
       </div>
       <div class="photo-grid">
@@ -163,19 +166,28 @@ onUnmounted(() => {
 /* ====================<相册列表>==================== */
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--space-md);
+  animation: album-grid-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes album-grid-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 .album-card {
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  display: block;
   padding: 0;
-  border: var(--border-width) solid color-mix(in srgb, var(--g-color) 25%, transparent);
+  aspect-ratio: 4 / 3;
+  border: var(--border-width) solid color-mix(in srgb, var(--g-color) 18%, transparent);
   border-radius: var(--radius-lg);
-  background-color: color-mix(in srgb, var(--glass-r), transparent);
+  background-color: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition:
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -185,25 +197,40 @@ onUnmounted(() => {
 
 .album-card:hover {
   transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--g-color) 40%, transparent);
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.06),
-    0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: color-mix(in srgb, var(--g-color) 45%, transparent);
+  box-shadow: var(--shadow-lg);
 }
 
+.album-card:focus-visible {
+  outline: 2px solid var(--g-color);
+  outline-offset: 2px;
+}
+
+/* 封面铺满整卡，悬停时轻微放大，做出景深 */
 .album-cover {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.album-card:hover .album-cover {
+  transform: scale(1.06);
+}
+
+/* 底部渐变压暗层：文字压在图上，任何主题下都保持可读 */
 .album-info {
+  position: absolute;
+  inset: auto 0 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: var(--space-sm) var(--space-md) var(--space-md);
+  gap: 2px;
+  padding: var(--space-lg) var(--space-md) var(--space-md);
   text-align: left;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.24) 55%, transparent);
 }
 
 .album-name {
@@ -212,20 +239,51 @@ onUnmounted(() => {
   color: var(--g-text);
 }
 
-.album-meta,
+.album-info .album-name {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
 .album-desc {
   font-size: 13px;
   color: var(--g-text);
   opacity: 0.7;
 }
 
+/* 封面上的简介：单行截断，避免长文案把卡片撑乱 */
+.album-info .album-desc {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgba(255, 255, 255, 0.78);
+  opacity: 1;
+}
+
+/* 张数徽标：右上角胶囊 + 毛玻璃，亮暗封面上都看得清 */
+.album-count {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  padding: 2px var(--space-sm);
+  font-size: 12px;
+  line-height: 1.4;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
 .photo-empty {
   grid-column: 1 / -1;
-  padding: var(--space-lg);
+  padding: var(--space-xl) var(--space-lg);
   text-align: center;
   font-size: 14px;
   color: var(--g-text);
   opacity: 0.6;
+  border: var(--border-width) dashed color-mix(in srgb, var(--g-text) 18%, transparent);
+  border-radius: var(--radius-lg);
 }
 
 /* ====================<相册详情>==================== */
@@ -239,12 +297,20 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--g-text) 12%, transparent);
 }
 
 .album-title {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+}
+
+.album-title .album-name {
+  font-size: 20px;
+  letter-spacing: 0.2px;
 }
 
 .back-btn {
@@ -259,8 +325,10 @@ onUnmounted(() => {
   transition: all 0.3s ease;
 }
 
-.back-btn:hover {
-  border-color: var(--g-color);
+.back-btn:hover,
+.back-btn:focus-visible {
+  border-color: color-mix(in srgb, var(--g-color) 55%, transparent);
+  background: color-mix(in srgb, var(--g-color) 8%, transparent);
   color: var(--g-color);
 }
 
@@ -277,22 +345,29 @@ onUnmounted(() => {
   border: none;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: color-mix(in srgb, var(--glass-r), transparent);
+  background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
   cursor: zoom-in;
   break-inside: avoid;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 .photo-item img {
   width: 100%;
   display: block;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .photo-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg);
+}
+
+.photo-item:hover img {
+  transform: scale(1.04);
+}
+
+.photo-item:focus-visible {
+  outline: 2px solid var(--g-color);
+  outline-offset: 2px;
 }
 
 /* ====================<灯箱>==================== */

@@ -175,6 +175,8 @@ npm install -D tsx
 非必须，只是笔者自己挺喜欢这个文档
 
 - 菜鸟教程swagger文档:[https://www.runoob.com/swagger/swagger-tutorial.html](https://www.runoob.com/swagger/swagger-tutorial.html)
+
+- 笔者第一个express项目后来不用swagger文档了，改用vitepress了，暂时不想学OpenAPI的语法
 ```
 
 ### 1. 安装依赖

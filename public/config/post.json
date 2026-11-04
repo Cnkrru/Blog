@@ -28,7 +28,7 @@
         ],
         "description": "记录express初次体验",
         "keywords": "express",
-        "wordCount": 1108,
+        "wordCount": 1137,
         "readingTime": 4
     },
     "post-2": {
@@ -130,5 +130,20 @@
         "updated": "",
         "wordCount": 934,
         "readingTime": 4
+    },
+    "post-9": {
+        "order": 10,
+        "title": "express-4-后端接口初次尝试",
+        "date": "2026-11-04",
+        "category": "后端",
+        "tags": [
+            "express",
+            "serverPanel"
+        ],
+        "description": "记录express项目第一次接口实现",
+        "keywords": "express",
+        "updated": "",
+        "wordCount": 426,
+        "readingTime": 2
     }
 }
