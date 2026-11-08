@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { refText } from '@/composables/common/i18n'
 import { AVATOR_SRC } from '@/composables/common/config'
 </script>
 
 <template>
   <div class="avator">
-    <img :src="AVATOR_SRC" :alt="refText.avatarAlt" loading="lazy" :title="refText.avatarTitle" />
+    <img
+      :src="AVATOR_SRC"
+      alt="Cnkrru的头像"
+      loading="lazy"
+      title="头像"
+    />
   </div>
 </template>
 

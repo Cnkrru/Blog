@@ -26,18 +26,7 @@ import { flowBlock } from './flow.ts'
 // 代码
 import { codeGroupBlock } from './code-group.ts'
 import { diffBlock } from './diff.ts'
-import { echartsBlock } from './echarts.ts'
-// 展示
-import { cardsBlock } from './cards.ts'
-import { linksBlock } from './links.ts'
-import { galleryBlock } from './gallery.ts'
-import { statBlock } from './stat.ts'
-import { progressBlock } from './progress.ts'
-import { attrsBlock } from './attrs.ts'
-// 编排
-import { tabsBlock } from './tabs.ts'
 // 笔记
-import { defineBlock } from './define.ts'
 import { qaBlock } from './qa.ts'
 import { compareBlock } from './compare.ts'
 import { quoteBlock } from './quote.ts'
@@ -58,15 +47,6 @@ const componentPlugins: readonly ComponentPlugin[] = [
   flowBlock,
   codeGroupBlock,
   diffBlock,
-  echartsBlock,
-  cardsBlock,
-  linksBlock,
-  galleryBlock,
-  statBlock,
-  progressBlock,
-  attrsBlock,
-  tabsBlock,
-  defineBlock,
   qaBlock,
   compareBlock,
   quoteBlock,

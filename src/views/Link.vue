@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useSeo } from '../composables/common/seo'
-import { refText } from '../composables/common/i18n'
 import {
   linkClean,
   linkCleanSync,
@@ -56,7 +55,7 @@ onMounted(() => {
           :disabled="linkCategory === 1"
           @click="linkChangePage(linkCategory - 1)"
         >
-          {{ refText.prevPage }}
+          上一页
         </button>
         <button
           v-for="p in linkDisplayPages"
@@ -72,11 +71,11 @@ onMounted(() => {
           :disabled="linkCategory === linkCategoryNum"
           @click="linkChangePage(linkCategory + 1)"
         >
-          {{ refText.nextPage }}
+          下一页
         </button>
         <div class="category-wrap">
           <button class="page-side category-btn" @click.stop="setDropdown(!linkDropdown)">
-            {{ refText.linkCategoryBtn }}
+            分类 ▾
           </button>
           <div class="dropdown-card" v-if="linkDropdown" @click.stop>
             <button
@@ -92,7 +91,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="pager-info">
-        {{ refText.linkPageInfo(linkCategory, linkCategoryNum, linkCategories[linkCategory - 1] ?? '') }}
+        {{ `第 ${linkCategory} / ${linkCategoryNum} 页 · 当前分类：${linkCategories[linkCategory - 1] ?? ''}` }}
       </div>
     </div>
   </div>

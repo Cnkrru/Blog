@@ -29,10 +29,10 @@ const ADMONITION_CLOSE = '</div></div>'
 
 // 等级 → 图标键 + 默认文案
 const ADMONITION_META: Record<string, { icon: string; label: string }> = Object.freeze({
-  tip: { icon: 'bulb', label: '提示' },
-  info: { icon: 'info', label: '信息' },
-  warn: { icon: 'alert', label: '警告' },
-  error: { icon: 'close', label: '错误' },
+  tip: { icon: 'bulb', label: 'Tip' },
+  info: { icon: 'info', label: 'Info' },
+  warn: { icon: 'alert', label: 'Warning' },
+  error: { icon: 'close', label: 'Error' },
 })
 
 // 内联 SVG path（Lucide 图标集，stroke 风格，随 currentColor 变色）

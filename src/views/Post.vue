@@ -3,7 +3,6 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Component } from 'vue'
 import { useSeo } from '../composables/common/seo'
-import { refText } from '../composables/common/i18n'
 import { contentReady } from '../composables/pamin/post.ts'
 import PostStatus from '../components/pmain/PostStatus.vue'
 import PostEdit from '../components/pmain/PostEdit.vue'
@@ -65,7 +64,7 @@ useSeo({
         <Suspense @resolve="contentReady">
           <component :is="content" />
           <template #fallback>
-            <div class="post-skeleton" aria-hidden="true">
+            <div class="post-skeleton">
               <div class="post-skeleton-title"></div>
               <div class="post-skeleton-line"></div>
               <div class="post-skeleton-line"></div>
@@ -77,7 +76,7 @@ useSeo({
       </Content>
       <!-- 无效文章 id 兜底，避免整页空白 -->
       <div v-else class="post-empty">
-        <p>{{ refText.postNotFound }}<RouterLink to="/">{{ refText.backHome }}</RouterLink></p>
+        <p>没有找到这篇文章，<RouterLink to="/">返回首页</RouterLink></p>
       </div>
       <div class="end-components">
         <PostShare />

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted } from 'vue'
 import { comment, refCommentFailed, refCommentLoading } from '../../composables/pamin/post.ts'
-import { refText } from '../../composables/common/i18n.ts'
 
 // 每次进入文章页重新走一次加载态：脚本虽已缓存，iframe 仍需重新构建
 refCommentLoading.value = true
@@ -22,12 +21,11 @@ onMounted(async () => {
 
 <template>
   <div class="comment">
-    <p class="comment-head">{{ refText.commentTitle }}</p>
-    <p class="comment-text">{{ refText.commentPlaceholder }}</p>
+    <p class="comment-head">评论</p>
+    <p class="comment-text">想说点什么呢……</p>
     <div
       class="comment-box"
       :class="{ 'comment-box-loading': refCommentLoading }"
-      :aria-busy="refCommentLoading"
     >
       <!-- vite-ssg组件，只在客户端渲染 -->
       <ClientOnly>
@@ -47,7 +45,7 @@ onMounted(async () => {
       </ClientOnly>
 
       <!-- 加载态骨架：覆盖在未就绪的 iframe 上，widget 本身保持挂载 -->
-      <div v-if="refCommentLoading" class="comment-skeleton" aria-hidden="true">
+      <div v-if="refCommentLoading" class="comment-skeleton">
         <div class="comment-skeleton-head">
           <span class="comment-skeleton-avatar"></span>
           <div class="comment-skeleton-lines">
@@ -59,7 +57,7 @@ onMounted(async () => {
       </div>
 
       <!-- 脚本导入失败时的可操作提示 -->
-      <p v-if="refCommentFailed" class="comment-failed">{{ refText.commentFailed }}</p>
+      <p v-if="refCommentFailed" class="comment-failed">评论加载失败，请刷新页面</p>
     </div>
   </div>
 </template>

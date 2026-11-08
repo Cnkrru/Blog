@@ -2,7 +2,6 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/common/seo'
-import { refText } from '../composables/common/i18n'
 import {
   turnView,
   turnViewSync,
@@ -32,13 +31,13 @@ onMounted(() => {
     <div class="tool-area">
       <div class="view-tabs">
         <button class="view-tab" :class="{ 'tab-on': categoryViewMode === 0 }" @click="turnView(0)">
-          {{ refText.categoryTab }}
+          分类
         </button>
         <button class="view-tab" :class="{ 'tab-on': categoryViewMode === 1 }" @click="turnView(1)">
-          {{ refText.yearTab }}
+          年份
         </button>
         <button class="view-tab" :class="{ 'tab-on': categoryViewMode === 2 }" @click="turnView(2)">
-          {{ refText.monthTab }}
+          月份
         </button>
       </div>
     </div>
@@ -53,7 +52,7 @@ onMounted(() => {
           @click.prevent="turnGroup(g.name)"
         >
           <span class="group-name">{{ g.name }}</span>
-          <span class="group-count">{{ refText.postsCount(g.items.length) }}</span>
+          <span class="group-count">{{ `${g.items.length} 篇` }}</span>
           <span class="group-arrow" :class="{ 'arrow-open': categoryExpandGroup === g.name }"
             >▾</span
           >
@@ -73,7 +72,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-if="!categoryModeGroups.length" class="arch-empty">{{ refText.noPosts }}</div>
+      <div v-if="!categoryModeGroups.length" class="arch-empty">暂无文章</div>
     </div>
   </div>
 </template>

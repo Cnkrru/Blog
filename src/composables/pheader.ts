@@ -1,4 +1,4 @@
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import axios from 'axios'
 import MiniSearch from 'minisearch'
 import { Howl } from 'howler'
@@ -6,15 +6,14 @@ import { START_LOCATION, type Router } from 'vue-router'
 import { getRouter } from '../router'
 import { postClean, postCleanCache } from './pamin/post'
 import { refLayout, setLayout } from './pamin/setting'
-import { switchLocale, type Locale } from './common/i18n'
 import { DEFAULT_LD } from './common/config'
 
 /* ====================<ld>==================== */
 type LD = 'light' | 'dark'
 const lds: LD[] = ['light', 'dark']
 
-// 模块级共享 ref 命名统一为 camelCase 的 ref 前缀（原 RefLd）
 export const refLd = ref<LD>(DEFAULT_LD as LD)
+// 设置亮暗
 export const setLd = (ld: LD) => {
   const body = document.body
   lds.forEach((name) => body.classList.remove(name)) // 清理旧类，避免硬编码
@@ -24,17 +23,12 @@ export const setLd = (ld: LD) => {
   localStorage.setItem('ld', ld)
   console.info(`亮暗设置成功,当前布局为${ld}`)
 }
-
+// 初始化亮暗
 export const initLD = () => {
   const store = localStorage.getItem('ld')
   const l: LD = lds.includes(store as LD) ? (store as LD) : (DEFAULT_LD as LD)
   setLd(l)
   console.info('亮暗初始化成功')
-}
-
-// 明暗切换动作收敛到 .ts，组件模板只做事件转发
-export const toggleLd = () => {
-  setLd(refLd.value === 'light' ? 'dark' : 'light')
 }
 
 /* ====================<immersive>==================== */
@@ -495,123 +489,7 @@ export const unmountSearch = () => {
   }
 }
 
-/* ====================<locale menu>==================== */
-export const refLocaleOpen = ref(false)
-export const refLocaleMenuPos = ref({ left: 0, top: 0 })
-
-// 菜单宽度与 CSS 的 .locale-menu width 保持一致
-const LOCALE_MENU_WIDTH = 168
-const LOCALE_MENU_GAP = 8
-let localeIndex = 0
-
-const localeTriggerEl = () => document.querySelector<HTMLElement>('.locale-btn')
-const localeItemEls = () =>
-  Array.from(document.querySelectorAll<HTMLButtonElement>('.locale-menu .locale-item'))
-
-const syncLocaleMenuPos = () => {
-  const trigger = localeTriggerEl()
-  if (!trigger) return
-  const rect = trigger.getBoundingClientRect()
-  const maxLeft = window.innerWidth - LOCALE_MENU_WIDTH - 8
-  refLocaleMenuPos.value = {
-    left: Math.max(8, Math.min(rect.right - LOCALE_MENU_WIDTH, maxLeft)),
-    top: rect.bottom + LOCALE_MENU_GAP,
-  }
-}
-
-const focusLocaleItem = (index: number) => {
-  const items = localeItemEls()
-  if (!items.length) return
-  localeIndex = (index + items.length) % items.length
-  items[localeIndex]?.focus()
-}
-
-const onLocaleClickOutside = (e: MouseEvent) => {
-  const target = e.target as HTMLElement
-  if (target.closest('.locale-btn') || target.closest('.locale-menu')) return
-  closeLocaleMenu()
-}
-
-let localeRaf: number | null = null
-const syncLocaleMenuPosOnView = () => {
-  if (!refLocaleOpen.value || localeRaf) return
-  localeRaf = requestAnimationFrame(() => {
-    localeRaf = null
-    syncLocaleMenuPos()
-  })
-}
-
-// 开合与外部监听成对注册：只在菜单展开期间挂全局事件，避免常驻监听
-export const openLocaleMenu = async () => {
-  syncLocaleMenuPos()
-  refLocaleOpen.value = true
-  document.addEventListener('click', onLocaleClickOutside)
-  document.addEventListener('scroll', syncLocaleMenuPosOnView, true)
-  window.addEventListener('resize', syncLocaleMenuPosOnView)
-
-  await nextTick()
-  // 打开即聚焦当前语言项，键盘用户可直接上下选择
-  const items = localeItemEls()
-  const current = items.findIndex((el) => el.getAttribute('aria-checked') === 'true')
-  localeIndex = Math.max(0, current)
-  items[localeIndex]?.focus()
-}
-
-export const closeLocaleMenu = (focusTrigger = false) => {
-  if (!refLocaleOpen.value) return
-  refLocaleOpen.value = false
-  document.removeEventListener('click', onLocaleClickOutside)
-  document.removeEventListener('scroll', syncLocaleMenuPosOnView, true)
-  window.removeEventListener('resize', syncLocaleMenuPosOnView)
-  if (localeRaf) {
-    cancelAnimationFrame(localeRaf)
-    localeRaf = null
-  }
-  if (focusTrigger) localeTriggerEl()?.focus()
-}
-
-export const toggleLocaleMenu = () => {
-  if (refLocaleOpen.value) closeLocaleMenu()
-  else openLocaleMenu()
-}
-
-export const chooseLocale = (locale: Locale) => {
-  switchLocale(locale)
-  closeLocaleMenu(true)
-}
-
-// Enter/Space 交给按钮原生 click，只在方向键时手动展开，避免双触发
-export const localeTriggerKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-    e.preventDefault()
-    openLocaleMenu()
-  } else if (e.key === 'Escape') {
-    closeLocaleMenu(true)
-  }
-}
-
-export const localeMenuKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'ArrowDown') {
-    e.preventDefault()
-    focusLocaleItem(localeIndex + 1)
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    focusLocaleItem(localeIndex - 1)
-  } else if (e.key === 'Escape') {
-    e.preventDefault()
-    closeLocaleMenu(true)
-  } else if (e.key === 'Tab') {
-    closeLocaleMenu()
-  }
-}
-
-// 组件卸载时兜底收尾，避免 Header 已卸载但全局监听还挂在 document 上
-export const unmountLocaleMenu = () => {
-  closeLocaleMenu()
-}
-
-/* ====================<route loading>==================== */
-// 全局路由加载状态：模块级单例，由 App 的 LoadingBar 消费
+/* ====================<loading progress>==================== */
 export const refRouteLoading = ref(false)
 export const refProgress = ref(0)
 

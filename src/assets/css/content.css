@@ -689,80 +689,8 @@
   display: block;
 }
 
-/* ===== 链接卡片 links ===== */
-.content .linkcards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
-  margin: 16px 0;
-}
-.content .linkcard {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px 32px 12px 14px;
-  border: 1px solid color-mix(in srgb, var(--g-color) 25%, transparent);
-  border-radius: 8px;
-  text-decoration: none;
-  color: var(--g-text);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    transform 0.2s;
-}
-.content a.linkcard:hover {
-  border-color: var(--g-color);
-  box-shadow: 0 2px 12px var(--g-shadow);
-  transform: translateY(-1px);
-}
-.content .linkcard-title {
-  font-weight: 600;
-}
-.content .linkcard-desc {
-  font-size: 0.88em;
-  color: color-mix(in srgb, var(--g-text) 65%, transparent);
-}
-.content .linkcard-arrow {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  color: color-mix(in srgb, var(--g-text) 45%, transparent);
-}
-
-/* ===== 图片画廊 gallery ===== */
-.content .gallery {
-  display: grid;
-  /* auto-fit：条目不足时铺满整行，不留尾部空轨道 */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin: 16px 0;
-}
-.content .gallery-item {
-  margin: 0;
-  border: 1px solid color-mix(in srgb, var(--g-color) 25%, transparent);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.content .gallery-item img {
-  display: block;
-  width: 100%;
-  margin: 0;
-  cursor: zoom-in;
-}
-.content .gallery-item figcaption {
-  padding: 6px 10px;
-  font-size: 0.85em;
-  color: color-mix(in srgb, var(--g-text) 65%, transparent);
-  background: color-mix(in srgb, var(--g-color) 6%, transparent);
-}
-
 /* ===== 写作组件响应式：窄屏收紧 ===== */
 @media (max-width: 480px) {
-  .content .linkcards,
-  .content .gallery {
-    grid-template-columns: 1fr;
-  }
   .content .tabs-tab {
     padding: 8px 10px;
     font-size: 0.85em;
@@ -979,28 +907,6 @@
   display: flex;
 }
 
-/* ===== 定义块 define ===== */
-.content .define {
-  margin: 16px 0;
-  border-left: 3px solid var(--g-color);
-  padding-left: 16px;
-}
-.content .define-item {
-  margin-bottom: 12px;
-}
-.content .define-item:last-child {
-  margin-bottom: 0;
-}
-.content .define-term {
-  font-weight: 700;
-  color: var(--g-color);
-}
-.content .define-def {
-  margin: 2px 0 0;
-  color: color-mix(in srgb, var(--g-text) 85%, transparent);
-  font-size: 0.95em;
-}
-
 /* ===== 问答块 qa ===== */
 .content .qa {
   margin: 16px 0;
@@ -1069,34 +975,6 @@
   border-top: 1px dashed color-mix(in srgb, var(--g-color) 20%, transparent);
   color: color-mix(in srgb, var(--g-text) 85%, transparent);
   font-size: 0.95em;
-}
-
-/* ===== 数据卡 stat ===== */
-.content .stat {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 16px 0;
-}
-.content .stat-item {
-  flex: 1 1 140px;
-  padding: 14px 16px;
-  border: 1px solid color-mix(in srgb, var(--g-color) 25%, transparent);
-  border-radius: 8px;
-  text-align: center;
-  background: color-mix(in srgb, var(--g-color) 4%, transparent);
-}
-.content .stat-value {
-  font-size: 1.6em;
-  font-weight: 700;
-  color: var(--g-color);
-  font-variant-numeric: tabular-nums;
-  line-height: 1.2;
-}
-.content .stat-label {
-  font-size: 0.85em;
-  color: color-mix(in srgb, var(--g-text) 60%, transparent);
-  margin-top: 4px;
 }
 
 /* ===== 对比双栏 compare ===== */
@@ -1205,130 +1083,8 @@
   .content .compare {
     grid-template-columns: 1fr;
   }
-  .content .stat-item {
-    flex: 1 1 100%;
-  }
   .content .quote {
     padding: 10px 12px;
-  }
-}
-
-/* ==================== cards 卡片网格 ==================== */
-.content .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-  margin: 16px 0;
-}
-.content .card-link {
-  text-decoration: none;
-  color: inherit;
-}
-.content .card-item {
-  padding: 14px 16px;
-  border: 1px solid color-mix(in srgb, var(--g-text) 25%, transparent);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--g-text) 4%, transparent);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    transform 0.2s;
-}
-.content .card-link:hover .card-item,
-.content .card-item:hover {
-  border-color: var(--g-color);
-  box-shadow: 0 2px 12px var(--g-shadow);
-  transform: translateY(-2px);
-}
-.content .card-title {
-  font-weight: 600;
-  color: var(--g-text);
-  margin-bottom: 4px;
-}
-.content .card-desc {
-  font-size: 0.88em;
-  color: color-mix(in srgb, var(--g-text) 70%, transparent);
-  line-height: 1.5;
-}
-
-/* ==================== progress 进度条 ==================== */
-.content .progress {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 16px 0;
-}
-.content .progress-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.content .progress-label {
-  flex: 0 0 auto;
-  min-width: 4.5em;
-  font-size: 0.9em;
-  color: var(--g-text);
-}
-.content .progress-track {
-  flex: 1 1 auto;
-  height: 8px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--g-text) 12%, transparent);
-  overflow: hidden;
-}
-.content .progress-bar {
-  height: 100%;
-  border-radius: 999px;
-  background: var(--g-gradient);
-}
-.content .progress-pct {
-  flex: 0 0 auto;
-  min-width: 3.5em;
-  text-align: right;
-  font-size: 0.85em;
-  font-variant-numeric: tabular-nums;
-  color: color-mix(in srgb, var(--g-text) 70%, transparent);
-}
-
-/* ==================== attrs 属性列表 ==================== */
-.content .attrs {
-  margin: 16px 0;
-  border: 1px solid color-mix(in srgb, var(--g-text) 25%, transparent);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.content .attrs-row {
-  display: flex;
-  gap: 16px;
-  padding: 9px 14px;
-}
-.content .attrs-row + .attrs-row {
-  border-top: 1px solid color-mix(in srgb, var(--g-text) 10%, transparent);
-}
-.content .attrs-key {
-  flex: 0 0 9em;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.85em;
-  color: var(--g-color);
-}
-.content .attrs-val {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 0.92em;
-  color: var(--g-text);
-}
-
-/* ===== 第三批组件响应式 ===== */
-@media (max-width: 480px) {
-  .content .cards {
-    grid-template-columns: 1fr;
-  }
-  .content .attrs-row {
-    flex-direction: column;
-    gap: 2px;
-  }
-  .content .attrs-key {
-    flex-basis: auto;
   }
 }
 

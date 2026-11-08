@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { particles } from '@/composables/index.ts'
-import { refText } from '@/composables/common/i18n.ts'
 import { useSeo } from '../composables/common/seo'
 import Logo from '../components/index/Logo.vue'
 import Nav from '../components/index/Nav.vue'
@@ -33,8 +32,8 @@ onUnmounted(() => {
     <div class="index-body">
       <Welcome />
       <div class="btn-list">
-        <router-link to="/postlist" class="btn btn-read">{{ refText.startReading }}</router-link>
-        <router-link to="/about" class="btn btn-about">{{ refText.aboutMe }}</router-link>
+        <router-link to="/postlist" class="btn btn-read">开始阅读</router-link>
+        <router-link to="/about" class="btn btn-about">关于我</router-link>
       </div>
       <div class="glass-card">
         <HitMap />

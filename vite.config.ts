@@ -5,9 +5,8 @@ import { resolve } from 'node:path'
 import { defineConfig, normalizePath } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import generateSitemap from 'vite-ssg-sitemap'
-import compileArticles from './src/.build/parseArticle.ts'
-import { generateRss } from './src/.build/rss.ts'
-import { SITE_TITLE, SITE_URL } from './src/composables/common/config.ts'
+import compileArticles from './src/node/main.ts'
+import { SITE_URL } from './src/composables/common/config.ts'
 import 'vite-ssg'
 
 // katex 公式产物里的 MathML 标签，告知 Vue 模板编译器按原生元素处理（不解析为组件）
@@ -116,10 +115,8 @@ export default defineConfig({
         .map((name) => name.replace(/\.vue$/, ''))
       return [...paths.filter((path) => !path.includes(':')), ...postIds.map((id) => `/post/${id}`)]
     },
-    // 构建完成后：生成 RSS/Atom 订阅源 + sitemap.xml/robots.txt
+    // 构建完成后：生成 sitemap.xml/robots.txt
     onFinished() {
-      generateRss({ siteUrl: SITE_URL, siteTitle: SITE_TITLE })
-
       // sitemap 分级：首页最高、文章次之（并用真实更新时间做 lastmod）、归档/工具页最低
       // 插件默认把全部页面写成 priority 1.0 + lastmod=构建时间，搜索引擎会忽略无区分度的权重
       const posts: Record<string, { date?: string; updated?: string }> = JSON.parse(

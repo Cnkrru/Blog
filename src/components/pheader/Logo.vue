@@ -3,7 +3,9 @@ import { SITE_LOGO } from '@/composables/common/config'
 </script>
 
 <template>
-  <router-link class="logo" to="/"><p>{{ SITE_LOGO }}</p></router-link>
+  <router-link class="logo" to="/"
+    ><p>{{ SITE_LOGO }}</p></router-link
+  >
 </template>
 
 <style scoped>
@@ -22,7 +24,9 @@ import { SITE_LOGO } from '@/composables/common/config'
   font-size: 26px;
   font-weight: 600;
   letter-spacing: -0.3px;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei',
+    sans-serif;
   white-space: nowrap;
   transition: opacity 0.2s ease;
   color: var(--g-color);
@@ -32,17 +36,21 @@ import { SITE_LOGO } from '@/composables/common/config'
   opacity: 0.8;
 }
 
-/* ====================<响应式>==================== */
-
 @media (max-width: 768px) {
-  /* [响应式-sm] 手机 */
-  .logo { margin-left: var(--space-sm); }
-  .logo p { font-size: 22px; }
+  .logo {
+    margin-left: var(--space-sm);
+  }
+  .logo p {
+    font-size: 22px;
+  }
 }
 
 @media (max-width: 480px) {
-  /* [响应式-xs] 窄屏 */
-  .logo { margin-left: var(--space-xs); }
-  .logo p { font-size: 20px; }
+  .logo {
+    margin-left: var(--space-xs);
+  }
+  .logo p {
+    font-size: 20px;
+  }
 }
 </style>

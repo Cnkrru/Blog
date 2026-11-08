@@ -10,7 +10,6 @@ import {
   setBg,
   setOpacity,
 } from '../composables/pamin/setting'
-import { refText } from '../composables/common/i18n'
 
 useSeo({
   title: '设置',
@@ -22,68 +21,68 @@ useSeo({
 <template>
   <div class="set">
     <div class="btn-area">
-      <span>{{ refText.themeStyle }}</span>
+      <span>主题风格</span>
       <div class="btn-list">
         <button
           class="btn btn-theme"
           :class="refTheme === 'blue' ? 'btn-on' : null"
           @click="setTheme('blue')"
         >
-          {{ refText.themeBlue }}
+          天蓝色
         </button>
         <button
           class="btn btn-theme"
           :class="refTheme === 'ink' ? 'btn-on' : null"
           @click="setTheme('ink')"
         >
-          {{ refText.themeInk }}
+          水墨风
         </button>
         <button
           class="btn btn-theme"
           :class="refTheme === 'sakura' ? 'btn-on' : null"
           @click="setTheme('sakura')"
         >
-          {{ refText.themeSakura }}
+          樱花粉
         </button>
         <button
           class="btn btn-theme"
           :class="refTheme === 'purple' ? 'btn-on' : null"
           @click="setTheme('purple')"
         >
-          {{ refText.themePurple }}
+          紫罗兰
         </button>
         <button
           class="btn btn-theme"
           :class="refTheme === 'cyan' ? 'btn-on' : null"
           @click="setTheme('cyan')"
         >
-          {{ refText.themeCyan }}
+          天青色
         </button>
       </div>
     </div>
 
     <div class="btn-area">
-      <span>{{ refText.layoutStyle }}</span>
+      <span>布局风格</span>
       <div class="btn-list">
         <button
           class="btn btn-layout"
           :class="refLayout === 'default' ? 'btn-on' : null"
           @click="setLayout('default')"
         >
-          {{ refText.layoutDefault }}
+          默认
         </button>
         <button
           class="btn btn-layout"
           :class="refLayout === 'card' ? 'btn-on' : null"
           @click="setLayout('card')"
         >
-          {{ refText.layoutCard }}
+          卡片式
         </button>
       </div>
     </div>
 
     <div class="opacity">
-      <span>{{ refText.opacityAdjust }}</span>
+      <span>透明度调节</span>
       <input
         type="range"
         min="0"
@@ -96,17 +95,17 @@ useSeo({
     </div>
 
     <div class="btn-area">
-      <span>{{ refText.background }}</span>
+      <span>背景</span>
       <div class="btn-list">
         <button
           class="btn btn-bg"
           :class="refBg === 'video' ? 'btn-on' : null"
           @click="setBg('video')"
         >
-          {{ refText.bgVideo }}
+          视频
         </button>
         <button class="btn btn-bg" :class="refBg === 'img' ? 'btn-on' : null" @click="setBg('img')">
-          {{ refText.bgImage }}
+          图片
         </button>
       </div>
     </div>

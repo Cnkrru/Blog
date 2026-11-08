@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Clock from '../icon/Clock.vue'
 import { onMounted } from 'vue'
-import { refWebage, webageStart } from '@/composables/pfooter.ts'
+import { refWebage, webageInit } from '@/composables/pfooter.ts'
 onMounted(() => {
-  webageStart()
+  webageInit()
 })
 </script>
 
@@ -29,10 +29,7 @@ onMounted(() => {
   color: var(--g-text);
 }
 
-/* ====================<响应式>==================== */
-
 @media (max-width: 480px) {
-  /* [响应式-xs] 窄屏 */
   .webage {
     width: 90%;
     font-size: 0.9em;

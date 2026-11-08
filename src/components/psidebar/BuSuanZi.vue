@@ -2,7 +2,15 @@
 import X from '../icon/X.vue'
 import { onMounted } from 'vue'
 import { bszOpen, bszClose, buSuanZi } from '@/composables/psidebar'
-import { refText } from '@/composables/common/i18n'
+
+const busuanziList = [
+  { item: '今日访问', id: 'busuanzi_today_pv' },
+  { item: '今日访客', id: 'busuanzi_today_uv' },
+  { item: '站点访问', id: 'busuanzi_site_pv' },
+  { item: '站点访客', id: 'busuanzi_site_uv' },
+  { item: '本页浏览', id: 'busuanzi_page_pv' },
+  { item: '本页访客', id: 'busuanzi_page_uv' },
+]
 
 onMounted(() => {
   buSuanZi()
@@ -10,38 +18,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <button class="bsz-btn" @click="bszOpen()">{{ refText.stats }}</button>
+  <button
+    class="bsz-btn"
+    @click="bszOpen()"
+  >
+    统计
+  </button>
 
   <dialog class="bsz-box">
     <div class="bsz-header">
-      <p>{{ refText.siteStats }}</p>
+      <p>站点统计</p>
       <button @click="bszClose()"><X /></button>
     </div>
 
     <div class="bsz-body">
-      <div class="bsz-item">
-        <span class="bsz-label">{{ refText.todayPv }}</span>
-        <span class="bsz-num" id="busuanzi_today_pv">…</span>
-      </div>
-      <div class="bsz-item">
-        <span class="bsz-label">{{ refText.todayUv }}</span>
-        <span class="bsz-num" id="busuanzi_today_uv">…</span>
-      </div>
-      <div class="bsz-item">
-        <span class="bsz-label">{{ refText.sitePv }}</span>
-        <span class="bsz-num" id="busuanzi_site_pv">…</span>
-      </div>
-      <div class="bsz-item">
-        <span class="bsz-label">{{ refText.siteUv }}</span>
-        <span class="bsz-num" id="busuanzi_site_uv">…</span>
-      </div>
-      <div class="bsz-item">
-        <span class="bsz-label">{{ refText.pagePv }}</span>
-        <span class="bsz-num" id="busuanzi_page_pv">…</span>
-      </div>
-      <div class="bsz-item">
-        <span class="bsz-label">{{ refText.pageUv }}</span>
-        <span class="bsz-num" id="busuanzi_page_uv">…</span>
+      <div
+        class="bsz-item"
+        v-for="{ item, id } in busuanziList"
+        :key="item"
+      >
+        <span class="bsz-label">{{ item }}</span>
+        <span
+          class="bsz-num"
+          :id="id"
+        ></span>
       </div>
     </div>
 

@@ -58,3 +58,4 @@ hugo-theme-hello/**/resources/
 
 # WorkBuddy 本地工作数据（记忆、临时产物）
 .workbuddy/
+review.txt

@@ -1,24 +1,46 @@
 import axios from 'axios'
 import { ref } from 'vue'
 
+/* ====================<sidebar>==================== */
 export const refSidebar = ref(false)
+/*
+ * id:侧边栏显隐
+ * fn:header的按钮呼出侧边栏，移动端侧边栏遮盖层点击隐藏侧边栏
+ */
 export const toggleSidebar = () => {
   refSidebar.value = !refSidebar.value
 }
 
-/* ====================<api>==================== */
-type IpInfo = { city: string; loc: string }
-type WeatherResponse = { current: { temperature_2m: number } }
-
-/* ====================<ip>==================== */
+/* ====================<weather>==================== */
+type IpInfo = {
+  city: string
+  loc: string
+}
+type WeatherResponse = {
+  current: { temperature_2m: number }
+}
+// IP
 export const refIp = ref('')
+// 天气
+export const refWeather = ref('')
+// 加载态
+export const refIpLoading = ref(true)
+export const refWeatherLoading = ref(true)
+// ip和天气的缓存
 let ipCache: IpInfo | null = null
+let weatherCache: number | null = null
+
+/*
+ * id:IP获取函数
+ * fn:用ipinfo获取IP
+ */
 export const ip = async (): Promise<IpInfo | null> => {
   if (ipCache) return ipCache
   try {
     const { data } = await axios.get<IpInfo>('https://ipinfo.io/json')
     ipCache = data
     refIp.value = data.city
+    refIpLoading.value = false
     console.log('[INFO]:IP数据获取成功')
     return data
   } catch {
@@ -26,40 +48,34 @@ export const ip = async (): Promise<IpInfo | null> => {
     return null
   }
 }
-/* ====================<weather>==================== */
-// 命名统一（原 RefWeather）
-export const refWeather = ref('')
-// 天气胶囊加载态：IP 与温度两次请求都结束后才置 false
-export const refWeatherLoading = ref(true)
+
+/*
+ * id:天气获取函数
+ * fn:给open-meteo从ipAPI获取到的经纬度，获取对应的温度
+ */
 export const weather = async () => {
+  if (weatherCache) return
+  const _ipData = await ip()
+  if (!_ipData?.loc) return
+
+  const lat = _ipData.loc.split(',')[0]!
+  const lon = _ipData.loc.split(',')[1]!
+
   try {
-    const _ipData = await ip()
-    // IP 失败时 ip() 内部已打日志，这里直接返回，不再重复报错
-    if (!_ipData?.loc) return
-
-    const lat = _ipData.loc.split(',')[0]!
-    const lon = _ipData.loc.split(',')[1]!
-
-    try {
-      const { data } = await axios.get<WeatherResponse>(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
-      )
-      refWeather.value = `${String(data.current.temperature_2m)}°`
-      console.info('[INFO]:天气数据获取成功')
-    } catch {
-      // 天气接口异常补 try/catch
-      console.error('[ERR]:天气数据获取失败')
-    }
-  } finally {
-    // 无 loc、接口异常、成功三条路径统一收起骨架
+    const { data } = await axios.get<WeatherResponse>(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
+    )
+    weatherCache = data.current.temperature_2m
     refWeatherLoading.value = false
+    refWeather.value = `${String(data.current.temperature_2m)}°`
+    console.info('[INFO]:天气数据获取成功')
+  } catch {
+    console.error('[ERR]:天气数据获取失败')
   }
 }
 /* ====================<busuanzi>==================== */
-let bszLoaded = false
 export const buSuanZi = () => {
-  if (bszLoaded || document.querySelector('.bsz-script')) return
-  bszLoaded = true
+  if (document.querySelector('.bsz-script')) return
   const s = document.createElement('script')
   s.className = 'bsz-script'
   s.async = true

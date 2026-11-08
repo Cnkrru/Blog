@@ -3,9 +3,9 @@ import { postCache, postData, type PostData } from './pamin/post'
 // 粒子配色跟随主题变化，需读取当前亮暗/主题
 import { refLd } from './pheader'
 import { refTheme } from './pamin/setting'
-import { refText } from './common/i18n'
 import {
   INDEX_PARTICLE_LOAD,
+  INDEX_WELCOME_SAYING,
   PARTICLE_DISTANCE,
   INCREASE_SPEED,
   DECREASE_SPEED,
@@ -14,9 +14,21 @@ import {
 
 /* ====================<hitmap>==================== */
 export const hitmap = (() => {
-  type DayData = { date: string; activity: number; publish: number }
-  type MonthData = { year: number; month: number; days: DayData[] }
-  type DateCounter = { publish: number; updated: number; history: number }
+  type DayData = {
+    date: string
+    activity: number
+    publish: number
+  }
+  type MonthData = {
+    year: number
+    month: number
+    days: DayData[]
+  }
+  type DateCounter = {
+    publish: number
+    updated: number
+    history: number
+  }
 
   const years = ref<number[]>([])
   const monthsData = ref<MonthData[]>([])
@@ -169,9 +181,22 @@ export const hitmap = (() => {
 })()
 /* ====================<particle>==================== */
 export const particles = () => {
-  type Particle = { x: number; y: number; vX: number; vY: number; radius: number }
-  type MousePoint = { x: number; y: number }
-  type Ripple = { x: number; y: number; radius: number }
+  type Particle = {
+    x: number
+    y: number
+    vX: number
+    vY: number
+    radius: number
+  }
+  type MousePoint = {
+    x: number
+    y: number
+  }
+  type Ripple = {
+    x: number
+    y: number
+    radius: number
+  }
 
   const PARTICLE_COUNT = 80 // 桌面端粒子数
   const PARTICLE_COUNT_SM = 32 // 移动端（≤768px）粒子数，避免小屏拥挤与算力浪费
@@ -457,7 +482,7 @@ const twManager = (fn: () => void, delay: number) => {
 // 打字步进（内部递归）：正/反两个方向 + 句子轮询
 const twStep = () => {
   // 每次步进都读当前语言的文案，切换语言后下一句即生效
-  const texts = refText.value.welcomeTexts
+  const texts = INDEX_WELCOME_SAYING
   const currentStr: string = texts[strIndex] ?? texts[0] ?? ''
   // 切换语言后句长可能变短，游标先夹回当前句长，避免越界后无法收敛
   charIndex = Math.min(charIndex, currentStr.length)

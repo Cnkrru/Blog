@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { refProgress, refRouteLoading } from '../../composables/pheader'
-import { refText } from '../../composables/common/i18n'
 </script>
 
 <template>
   <div
     class="loading-bar"
     :class="{ 'loading-bar-on': refRouteLoading }"
-    :aria-hidden="!refRouteLoading"
-    role="progressbar"
-    :aria-label="refText.pageLoading"
-    aria-valuemin="0"
-    aria-valuemax="100"
-    :aria-valuenow="Math.round(refProgress)"
   >
     <div class="loading-bar-inner" :style="{ transform: `scaleX(${refProgress / 100})` }"></div>
   </div>

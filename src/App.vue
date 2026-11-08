@@ -16,18 +16,7 @@ import LoadingBar from './components/pheader/LoadingBar.vue'
 // ts
 import { initTheme, initLayout, initBg, initOpacity } from './composables/pamin/setting.ts'
 import { initLD } from './composables/pheader.ts'
-import { initLocale } from './composables/common/i18n.ts'
 import { refSidebar } from './composables/psidebar.ts'
-import { useHead } from '@unhead/vue'
-
-// 站点图标已固化在 index.html 静态 head（favicon 不依赖 JS 注入，首帧即可用），此处只留 feed 自动发现
-// title 交给各页 useSeo（含首页），全局不再兜底，避免与页面级标题竞争
-useHead({
-  link: [
-    { rel: 'alternate', type: 'application/rss+xml', title: 'RSS', href: '/feed.xml' },
-    { rel: 'alternate', type: 'application/atom+xml', title: 'Atom', href: '/atom.xml' },
-  ],
-})
 
 const route = useRoute()
 const isIndex = computed(() => route.path === '/')
@@ -49,7 +38,6 @@ onMounted(() => {
   initBg()
   initOpacity()
   initLD()
-  initLocale()
 })
 </script>
 

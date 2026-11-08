@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { refText } from '@/composables/common/i18n'
+import { WELCOME_SAYINGS } from '@/composables/common/config'
 </script>
 
 <template>
-  <div class="welcome">{{ refText.sidebarWelcome }}</div>
+  <div class="welcome">{{ WELCOME_SAYINGS }}</div>
 </template>
 
 <style scoped>

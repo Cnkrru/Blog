@@ -102,18 +102,18 @@ export default router
 ```diff
 + import router from './router/index.js'
 
-+ app.use('/', router)
++ app.use('/api', router)
 ```
 
 ```tip
-这里`sysinfo.ts`所有需要接口的函数,自己`router.<方法>('router',handleFn)`挂载到`router`,然后统一挂载到`system`上,然后在`index.ts`挂载到`/`
-- //system/cpu
+这里`sysinfo.ts`所有需要接口的函数,自己`router.<方法>('router',handleFn)`挂载到`router`,然后统一挂载到`system`上,然后在`index.ts`挂载到`/api`
+- /api/system/cpu
 ```
 
 - 这里最终挂载的路径是:
 
 ```terminal
-localhost:3000/system/cpu
+localhost:3000/api/system/cpu
 ```
 
 - 访问这个地址获取到的结果

@@ -1,16 +1,12 @@
-<script setup lang="ts">
-import { refText } from '@/composables/common/i18n'
-</script>
-
 <template>
   <nav class="index-nav">
-    <router-link to="/postlist" class="nav-element">{{ refText.navPost }}</router-link>
-    <router-link to="/about" class="nav-element">{{ refText.navAbout }}</router-link>
-    <router-link to="/category" class="nav-element">{{ refText.navArchive }}</router-link>
-    <router-link to="/tag" class="nav-element">{{ refText.navTag }}</router-link>
-    <router-link to="/photo" class="nav-element">{{ refText.navPhoto }}</router-link>
-    <router-link to="/link" class="nav-element">{{ refText.navLink }}</router-link>
-    <router-link to="/setting" class="nav-element">{{ refText.navSetting }}</router-link>
+    <router-link to="/postlist" class="nav-element">文章</router-link>
+    <router-link to="/about" class="nav-element">关于</router-link>
+    <router-link to="/category" class="nav-element">归档</router-link>
+    <router-link to="/tag" class="nav-element">标签</router-link>
+    <router-link to="/photo" class="nav-element">图集</router-link>
+    <router-link to="/link" class="nav-element">链接</router-link>
+    <router-link to="/setting" class="nav-element">设置</router-link>
   </nav>
 </template>
 
@@ -26,7 +22,7 @@ import { refText } from '@/composables/common/i18n'
   flex-direction: row;
   gap: var(--space-lg);
 
-  padding: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
   margin-bottom: var(--space-xs);
 
   text-align: center;

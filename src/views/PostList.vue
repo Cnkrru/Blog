@@ -2,7 +2,6 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/common/seo'
-import { refText } from '../composables/common/i18n'
 import PostCover from '../components/pmain/PostCover.vue'
 import {
   listClean,
@@ -54,7 +53,7 @@ onMounted(async () => {
           :disabled="listNowPage === 1"
           @click="listChangePage(listNowPage - 1)"
         >
-          {{ refText.prevPage }}
+          上一页
         </button>
         <button
           v-for="p in listDisplayPages"
@@ -70,10 +69,10 @@ onMounted(async () => {
           :disabled="listNowPage === listPageNum"
           @click="listChangePage(listNowPage + 1)"
         >
-          {{ refText.nextPage }}
+          下一页
         </button>
       </div>
-      <div class="pager-info">{{ refText.totalPages(listPageNum) }}</div>
+      <div class="pager-info">{{ `共 ${listPageNum} 页` }}</div>
     </div>
   </div>
 </template>

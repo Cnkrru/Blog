@@ -11,13 +11,12 @@ import { INDEX_LOGO } from '@/composables/common/config'
 <style scoped>
 .logo {
   width: fit-content;
-  min-width: 20%;
   height: 100%;
 
   margin-left: var(--space-md);
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -48,7 +47,6 @@ import { INDEX_LOGO } from '@/composables/common/config'
 @media (max-width: 480px) {
   /* [响应式-xs] 窄屏 */
   .logo {
-    min-width: auto;
     margin-left: var(--space-xs);
   }
   .logo p {

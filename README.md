@@ -17,7 +17,7 @@
   3. 安装依赖:`npm install`
   4. 运行预览:`npm run dev`
 - 注意:
-  1. 文章请放在`docs`文件夹下,如果想更改，请看`src/.build/parseArticle.ts`的路径，里面`ARTICLE_DIR`这个常量可以改文件夹名
+  1. 文章请放在`docs`文件夹下,如果想更改，请看`src/node/paths.ts`的路径，里面`ARTICLE_DIR`这个常量可以改文件夹名
      - 想改路径，最好会一些后端知识
   2. 部署这块，很多选择，cloudflare，vercel都行，GitHub page不行(不支持vue框架)
   - 作者本人用的是cloudflare，vercel的话也用过，都可以，用cf方便些
@@ -39,7 +39,7 @@
   3. Install dependencies: `npm install`
   4. Start a preview: `npm run dev`
 - Notes:
-  1. Put your articles in the `docs` folder. To change that, look at the path in `src/.build/parseArticle.ts` — the `ARTICLE_DIR` constant there controls the folder name.
+  1. Put your articles in the `docs` folder. To change that, look at the path in `src/node/paths.ts` — the `ARTICLE_DIR` constant there controls the folder name.
      - If you want to change the path, you'd better have some backend knowledge.
   2. For deployment there are many options — Cloudflare and Vercel both work, but GitHub Pages does not (it doesn't support the Vue framework).
   - I personally use Cloudflare. I've used Vercel as well; both are fine, and Cloudflare is a bit more convenient.

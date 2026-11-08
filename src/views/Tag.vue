@@ -2,7 +2,6 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/common/seo'
-import { refText } from '../composables/common/i18n'
 import {
   tagClean,
   tagCleanSync,
@@ -45,7 +44,7 @@ onMounted(() => {
     <!-- 选中标签的文章列表 -->
     <div class="timeline-area" v-if="tagItem">
       <div class="tl-bar">
-        <span class="tl-title">{{ refText.tagPosts(tagItem) }}</span>
+        <span class="tl-title">{{ `「${tagItem}」下的文章` }}</span>
       </div>
 
       <div class="tl-body">
@@ -73,6 +72,9 @@ onMounted(() => {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-md);
+  /* 顶部留白：标签 hover 会 translateY(-2px) 上移，而 .tag-list 自身 overflow-y:auto 会裁剪溢出内容，
+     没有这点 padding 第一排标签上移时顶边会被裁掉 */
+  padding-top: var(--space-sm);
   padding-bottom: var(--space-lg);
   border-bottom: var(--border-width) solid color-mix(in srgb, var(--g-color) 25%, transparent);
 }

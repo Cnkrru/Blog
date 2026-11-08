@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useSeo } from '../composables/common/seo'
-import { refText } from '../composables/common/i18n'
 
 useSeo({
   title: '页面不存在',
@@ -13,9 +12,9 @@ useSeo({
 <template>
   <div class="notfound">
     <div class="error">404</div>
-    <h1 class="title">{{ refText.notFoundTitle }}</h1>
-    <p class="text">{{ refText.notFoundText }}</p>
-    <router-link to="/" class="back-index">{{ refText.backHome }}</router-link>
+    <h1 class="title">页面不存在</h1>
+    <p class="text">你访问的页面可能已被移除或地址有误。</p>
+    <router-link to="/" class="back-index">返回首页</router-link>
   </div>
 </template>
 

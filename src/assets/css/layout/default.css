@@ -1,6 +1,11 @@
 .default .header,
 .default .sidebar,
-.default .footer,
-.default .main {
+.default .footer {
     padding: var(--space-sm);
+}
+
+/* main 加大内边距：为页面进入动画（page-rise 位移）和悬停效果（translateY）预留空间，
+   避免动画中内容贴边或元素移动时被裁剪 */
+.default .main {
+    padding: var(--space-lg) var(--space-md);
 }

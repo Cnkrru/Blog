@@ -10,8 +10,8 @@
         "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件",
         "keywords": "个人博客, Vue 3",
         "updated": "",
-        "wordCount": 1918,
-        "readingTime": 7
+        "wordCount": 1577,
+        "readingTime": 6
     },
     "post-1": {
         "order": 2,
@@ -30,6 +30,21 @@
         "keywords": "express",
         "wordCount": 1137,
         "readingTime": 4
+    },
+    "post-10": {
+        "order": 11,
+        "title": "blog-4-vue-router的使用方法",
+        "date": "2026-11-06",
+        "category": "前端",
+        "tags": [
+            "blog",
+            "vue"
+        ],
+        "description": "记录vue-router的使用方法",
+        "keywords": "vue",
+        "updated": "",
+        "wordCount": 472,
+        "readingTime": 2
     },
     "post-2": {
         "order": 3,
@@ -143,7 +158,7 @@
         "description": "记录express项目第一次接口实现",
         "keywords": "express",
         "updated": "",
-        "wordCount": 426,
+        "wordCount": 430,
         "readingTime": 2
     }
 }

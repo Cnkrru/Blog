@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { headings, active, jump, tocMount, tocUnmount } from '../../composables/pamin/post.ts'
-import { refText } from '../../composables/common/i18n.ts'
 import List from '../icon/List.vue'
 import X from '../icon/X.vue'
 
@@ -19,7 +18,7 @@ const tocDialogClose = () => tocDialog.value?.close()
   <aside class="toc-sidebar">
     <div v-if="headings.length" class="toc-box">
       <div class="toc-head">
-        <span>{{ refText.toc }}</span>
+        <span>目录</span>
       </div>
       <div class="toc-list">
         <button
@@ -43,17 +42,16 @@ const tocDialogClose = () => tocDialog.value?.close()
        浮钮的 bottom 就变成相对 .main 盒子而非视口（实测 scrollY=0 时 rect.top≈8383、视口高仅 554，整个在屏幕外，
        只有滚到页面底部附近才出现）。Teleport 出去后与 App.vue 的 BackToTop 同以视口为参照 -->
   <Teleport to="body" v-if="headings.length">
-    <button type="button" class="toc-fab" :aria-label="refText.tocOpen" @click="tocDialogOpen">
+    <button type="button" class="toc-fab" @click="tocDialogOpen">
       <List />
     </button>
 
-    <dialog ref="tocDialog" class="toc-dialog" :aria-label="refText.tocTitle">
+    <dialog ref="tocDialog" class="toc-dialog">
       <div class="dialog-head">
-        <span>{{ refText.toc }}</span>
+        <span>目录</span>
         <button
           type="button"
           class="dialog-close"
-          :aria-label="refText.tocClose"
           @click="tocDialogClose"
         >
           <X />

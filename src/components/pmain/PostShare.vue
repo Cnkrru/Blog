@@ -8,7 +8,6 @@ import {
   shareCopy,
   qrCanvas,
 } from '../../composables/pamin/post.ts'
-import { refText } from '../../composables/common/i18n.ts'
 import Share from '../icon/share/Share.vue'
 import Heart from '../icon/Heart.vue'
 import Wechat from '../icon/share/Wechat.vue'
@@ -36,7 +35,7 @@ const shareTitle = () => postCache[postKey]?.title ?? url
       <!-- 分享图标 -->
       <Share class="share-icon" />
       <!-- 分享字串 -->
-      <p class="share-text">{{ refText.shareThis }}</p>
+      <p class="share-text">分享这篇文章</p>
       <!-- 按钮列表 -->
       <div class="btn-list">
         <button class="btn weixin" @click="qrcodeOpen(url)"><Wechat /></button>
@@ -55,13 +54,13 @@ const shareTitle = () => postCache[postKey]?.title ?? url
 
       <a href="https://ifdian.net/a/Cnkrru" class="sponser-btn">
         <Heart class="sponser-icon" />
-        <p>{{ refText.sponsor }}</p>
+        <p>赞助</p>
       </a>
 
       <!-- 微信分享的弹窗 -->
       <dialog class="qrcode-dialog">
         <div class="dialog-head">
-          <p>{{ refText.wechatQr }}</p>
+          <p>微信分享二维码</p>
           <button class="dialog-close" @click="qrcodeClose"><X /></button>
         </div>
         <canvas ref="qrCanvas"></canvas>

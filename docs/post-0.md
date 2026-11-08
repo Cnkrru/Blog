@@ -93,7 +93,7 @@ const greeting = 'hello'
   - post-1.md
   - post-2.md
 - src/
-  - .build/ | 编译期
+  - node/ | 编译期
     - plugins/
   - components/ | 运行期
 - vite.config.ts | 构建配置
@@ -174,82 +174,6 @@ graph LR
 
 ---
 
-### 图表
-
-echarts 块内必须是合法 JSON，编译期只校验并产出容器，非法时降级为纯文本展示源码。
-
-```echarts
-{
-  "xAxis": { "type": "category", "data": ["编译期", "运行期"] },
-  "yAxis": { "type": "value" },
-  "series": [{ "type": "bar", "data": [100, 5] }]
-}
-```
-
----
-
-### 卡片网格
-
-语法是每行「标题 | 描述 | 链接（可省略）」，带链接时整卡可点击。
-
-```cards
-Linux服务器 | 第一次接触云服务器 | /post/post-1
-无链接卡 | 只有标题和描述
-```
-
----
-
-### 链接卡
-
-语法是每行「标题 | 描述 | 网址」，仅 http(s) 会被渲染成可点卡片，其他协议降级为静态卡。
-
-```links
-Vue | 渐进式框架 | https://vuejs.org
-Vite | 下一代构建工具 | https://vite.dev
-站内链接会降级 | 只放行 http(s) | /post/post-0
-```
-
----
-
-### 图集
-
-语法是每行「图片地址 | 说明（可省略）」，复用正文图片的灯箱。
-
-```gallery
-/og-cover.png | 站点分享封面
-/favicon.svg | 站点图标
-```
-
----
-
-### 数据卡与进度条
-
-```stat
-24 | 写作组件
-100% | 编译期渲染
-0 KB | 组件运行时代码
-```
-
-```progress
-编译期渲染 | 85
-运行时交互 | 40
-超范围的数值会被收敛 | 120
-```
-
----
-
-### 属性列表
-
-语法是每行「属性名 | 值」。
-
-```attrs
-articleDir | docs
-outDir | dist
-ogImage | /og-cover.png
-```
-
----
-
 ### 选项卡
 
 语法是用 `@tab 标签名` 分节，纯 CSS 切换，页内容整体转义、不渲染 Markdown。
@@ -276,16 +200,6 @@ npm run build
 pnpm build
 @tab ts
 export default defineConfig({ title: 'blog' })
-```
-
----
-
-### 定义列表
-
-```define
-SSG | 静态站点生成器，构建期把内容直出为 HTML 文件
-编译期 | 构建时执行，产物是静态文件
-运行期 | 浏览器里执行的少量交互逻辑
 ```
 
 ---
@@ -338,10 +252,10 @@ SEO 需额外处理
 语法是围栏代码块，语言名 `diff`，块内按 git 的标准 unified diff 写：`diff --git` / `index` / `---` / `+++` 是文件头，`@@ -l,s +l,s @@` 是块头，行首 `+` 为新增、`-` 为删除、一个空格开头为上下文。符号保留在行内，复制出来仍是可直接应用的 diff。
 
 ```diff
-diff --git a/src/.build/plugins/diff.ts b/src/.build/plugins/diff.ts
+diff --git a/src/node/plugins/diff.ts b/src/node/plugins/diff.ts
 index 4b1c9f2..8d3e5a7 100644
---- a/src/.build/plugins/diff.ts
-+++ b/src/.build/plugins/diff.ts
+--- a/src/node/plugins/diff.ts
++++ b/src/node/plugins/diff.ts
 @@ -22,7 +22,6 @@
 -// 符号列与正文列分开，主题层可把符号列钉成窄列
 -const DIFF_LINE = (cls: string, sign: string, text: string): string =>

@@ -4,7 +4,6 @@ import axios from 'axios'
 import type { Zoom } from 'medium-zoom'
 import { refTheme } from './setting'
 import { refLd } from '../pheader'
-import { refText } from '../common/i18n'
 /* ====================<postData>==================== */
 type PostMeta = {
   order: number
@@ -139,7 +138,7 @@ export const qrcodeClose = () => {
 export const shareCopy = async (text: string) => {
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(text)
-    toastOpen('success', refText.value.copied(text))
+    toastOpen('success', `已成功复制${text}`)
     console.info('[INFO]:已复制指定内容')
   } else {
     console.error('[ERR]:复制指定内容失败')
@@ -151,12 +150,12 @@ type Level = 'success' | 'info' | 'warning' | 'error'
 // toast图标map
 const levelIconMap: Record<Level, string> = {
   success:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="成功"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4 9.4 24.6 9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>',
-  info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="信息"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4 9.4 24.6 9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>',
+  info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>',
   warning:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="警告"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>',
   error:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24" role="img" aria-label="错误"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4-9.4-24.6-9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24" height="24"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4-9.4-24.6-9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>',
 }
 // 关闭图标
 const xIcon: string =
@@ -191,8 +190,7 @@ export const toastOpen = (level: Level, mes: string) => {
     const closeButton = document.createElement('button')
     closeButton.type = 'button'
     closeButton.className = 'toast-close'
-    closeButton.setAttribute('aria-label', refText.value.closeTip)
-    closeButton.title = refText.value.closeTip
+    closeButton.title = '关闭提示'
     closeButton.innerHTML = xIcon
     closeButton.addEventListener('click', () => toastClose())
 
@@ -354,8 +352,8 @@ export const postNav = async (postKey: string) => {
   nextOrder.value = orderMap[meta.order + 1] ?? ''
 
   // 根据上下篇的key拿对应title
-  preTitle.value = preOrder.value ? postCache[preOrder.value]!.title : refText.value.noPost
-  nextTitle.value = nextOrder.value ? postCache[nextOrder.value]!.title : refText.value.noPost
+  preTitle.value = preOrder.value ? postCache[preOrder.value]!.title : '暂无'
+  nextTitle.value = nextOrder.value ? postCache[nextOrder.value]!.title : '暂无'
 }
 
 /* ====================<postStatus>==================== */
@@ -591,15 +589,8 @@ export const codeToggle = (e: MouseEvent) => {
   const lines = el.dataset.lines ?? ''
   const text = el.querySelector<HTMLElement>('.code-expand-text')
   if (text)
-    text.textContent = expanded
-      ? refText.value.codeCollapse
-      : refText.value.codeExpand(lines)
-  el.setAttribute('aria-expanded', String(expanded))
-  el.setAttribute(
-    'aria-label',
-    expanded ? refText.value.codeCollapse : refText.value.codeExpandAria(lines),
-  )
-  el.title = expanded ? refText.value.codeCollapse : refText.value.codeExpandAria(lines)
+    text.textContent = expanded ? '收起' : `展开（共 ${lines} 行）`
+  el.title = expanded ? '收起' : `展开代码（共 ${lines} 行）`
 
   // 收起时若代码块顶部已滚出视口，拉回顶部，避免高度骤减导致页面跳动
   if (!expanded && wrapper.getBoundingClientRect().top < 0) {

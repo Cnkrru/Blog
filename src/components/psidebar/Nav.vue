@@ -1,16 +1,25 @@
 <script setup lang="ts">
-import { refText } from '@/composables/common/i18n'
+const nav = [
+  { elName: '文章', elTo: '/postlist' },
+  { elName: '关于', elTo: '/about' },
+  { elName: '分类', elTo: '/category' },
+  { elName: '标签', elTo: '/tag' },
+  { elName: '图集', elTo: '/photo' },
+  { elName: '链接', elTo: '/link' },
+  { elName: '设置', elTo: '/setting' },
+]
 </script>
 
 <template>
   <nav class="nav">
-    <router-link to="/postlist" class="nav-element">{{ refText.navPost }}</router-link>
-    <router-link to="/about" class="nav-element">{{ refText.navAbout }}</router-link>
-    <router-link to="/category" class="nav-element">{{ refText.navArchive }}</router-link>
-    <router-link to="/tag" class="nav-element">{{ refText.navTag }}</router-link>
-    <router-link to="/photo" class="nav-element">{{ refText.navPhoto }}</router-link>
-    <router-link to="/link" class="nav-element">{{ refText.navLink }}</router-link>
-    <router-link to="/setting" class="nav-element">{{ refText.navSetting }}</router-link>
+    <router-link
+      class="nav-elName"
+      v-for="{ elName, elTo } in nav"
+      :to="elTo"
+      :key="elName"
+    >
+      {{ elName }}
+    </router-link>
   </nav>
 </template>
 
@@ -34,7 +43,7 @@ import { refText } from '@/composables/common/i18n'
   background: transparent;
 }
 
-.nav-element {
+.nav-elName {
   width: fit-content;
   height: fit-content;
   min-width: 160px;
@@ -56,7 +65,7 @@ import { refText } from '@/composables/common/i18n'
   color: var(--g-text);
 }
 
-.nav-element:hover {
+.nav-elName:hover {
   transform: translateY(-2px);
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.5);
   border-color: color-mix(in srgb, var(--g-text) 15%, transparent);

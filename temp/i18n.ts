@@ -167,7 +167,7 @@ const zhText = {
   aboutEmail: '邮箱',
 
   /* ----- 页脚 ----- */
-  runtime: (days: number, hours: number, minutes: number, seconds: number) =>
+  webage: (days: number, hours: number, minutes: number, seconds: number) =>
     `本博客已运行: ${days} 天 ${hours} 时 ${minutes} 分 ${seconds}秒`,
 
   /* ----- 通用提示 ----- */

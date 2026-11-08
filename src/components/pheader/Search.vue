@@ -18,7 +18,6 @@ import {
   mountSearch,
   unmountSearch,
 } from '@/composables/pheader.ts'
-import { refText } from '@/composables/common/i18n.ts'
 
 const inputEl = ref<HTMLInputElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)
@@ -61,8 +60,7 @@ onUnmounted(() => {
     <input
       ref="inputEl"
       type="text"
-      :placeholder="refText.searchPlaceholder"
-      :aria-label="refText.searchAria"
+      placeholder="搜索"
       v-model="refKeyword"
       @keydown.enter="onEnter"
       @keydown.esc.prevent="closeSearch"
@@ -82,19 +80,19 @@ onUnmounted(() => {
             width: refSearchPos.width + 'px',
           }"
         >
-          <div v-if="searchLoading && !searchReady" class="search-empty" role="status">
-            {{ refText.searchIndexing }}
+          <div v-if="searchLoading && !searchReady" class="search-empty">
+            正在建立索引…
           </div>
-          <div v-else-if="searchFailed" class="search-empty" role="status">
-            {{ refText.searchFailed }}
+          <div v-else-if="searchFailed" class="search-empty">
+            索引加载失败，请刷新页面
           </div>
-          <div v-else-if="refSearchRes.length === 0" class="search-empty" role="status">
-            {{ refText.searchNoResult(refKeyword) }}
+          <div v-else-if="refSearchRes.length === 0" class="search-empty">
+            {{ `搜索 "${refKeyword}"：未找到结果` }}
           </div>
 
           <template v-else>
-            <div class="search-counter" role="status">
-              {{ refText.searchResults(refSearchRes.length) }}
+            <div class="search-counter">
+              {{ `${refSearchRes.length} 个结果` }}
             </div>
             <div
               class="search-list"
@@ -111,7 +109,7 @@ onUnmounted(() => {
               >
                 <span class="search-item-title" v-html="searchHl(r.title, refKeyword)"></span>
                 <span class="search-item-meta">
-                  {{ refText.searchCategory }} <span v-html="searchHl(r.category, refKeyword)"></span>
+                  分类: <span v-html="searchHl(r.category, refKeyword)"></span>
                   <span class="search-item-date" v-html="searchHl(r.date, refKeyword)"></span>
                 </span>
                 <span v-if="r.tags && r.tags.length" class="search-item-tags">

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { refIp, refWeather, refWeatherLoading, weather } from '@/composables/psidebar'
-import { refText } from '@/composables/common/i18n'
+import { refIp, refWeather, refIpLoading, refWeatherLoading, weather } from '@/composables/psidebar'
 import { onMounted } from 'vue'
 
 onMounted(() => {
@@ -10,14 +9,26 @@ onMounted(() => {
 
 <template>
   <div class="weather-ip">
-    <template v-if="refWeatherLoading">
-      <span class="weather-number weather-skeleton weather-skeleton-temp"></span>
-      <span class="ip weather-skeleton weather-skeleton-city"></span>
-    </template>
-    <template v-else>
-      <span class="weather-number">{{ refWeather || '--°' }}</span>
-      <span class="ip">{{ refIp || refText.unknown }}</span>
-    </template>
+    <span
+      class="weather weather-skeleton weather-skeleton-temp"
+      v-if="refWeatherLoading"
+    ></span>
+    <span
+      class="weather"
+      v-else
+    >
+      {{ refWeather || '--' }}
+    </span>
+    <span
+      class="ip weather-skeleton weather-skeleton-city"
+      v-if="refIpLoading"
+    ></span>
+    <span
+      class="ip"
+      v-else
+    >
+      {{ refIp || '未知' }}
+    </span>
   </div>
 </template>
 
@@ -39,7 +50,7 @@ onMounted(() => {
   background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), 0.3);
 }
 
-.weather-number {
+.weather {
   font-size: 14px;
   font-weight: 600;
   color: var(--g-text);
