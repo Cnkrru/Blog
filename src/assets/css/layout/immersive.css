@@ -1,6 +1,10 @@
-/* 沉浸模式：隐藏侧栏与页脚、正文占满宽度，顶栏保留 */
+/* 沉浸模式：隐藏侧栏、正文占满宽度，顶栏与页脚保留
+   注意不摘除 default/card 布局类，四块的内边距与卡片样式由布局类继续提供 */
 .immersive .main {
   width: 100% !important;
+  /* 解除桌面档 600px 高度上限与内部滚动，沉浸阅读改为整页滚动 */
+  max-height: none !important;
+  overflow-y: visible !important;
 }
 
 .immersive .sidebar {

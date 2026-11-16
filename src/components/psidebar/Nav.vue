@@ -1,13 +1,5 @@
 <script setup lang="ts">
-const nav = [
-  { elName: '文章', elTo: '/postlist' },
-  { elName: '关于', elTo: '/about' },
-  { elName: '分类', elTo: '/category' },
-  { elName: '标签', elTo: '/tag' },
-  { elName: '图集', elTo: '/photo' },
-  { elName: '链接', elTo: '/link' },
-  { elName: '设置', elTo: '/setting' },
-]
+import { nav } from '@/composables/psidebar'
 </script>
 
 <template>

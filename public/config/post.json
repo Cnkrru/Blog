@@ -10,7 +10,7 @@
         "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件",
         "keywords": "个人博客, Vue 3",
         "updated": "",
-        "wordCount": 1577,
+        "wordCount": 1653,
         "readingTime": 6
     },
     "post-1": {
@@ -28,7 +28,7 @@
         ],
         "description": "记录express初次体验",
         "keywords": "express",
-        "wordCount": 1137,
+        "wordCount": 1142,
         "readingTime": 4
     },
     "post-10": {
@@ -43,21 +43,35 @@
         "description": "记录vue-router的使用方法",
         "keywords": "vue",
         "updated": "",
-        "wordCount": 472,
+        "wordCount": 479,
         "readingTime": 2
+    },
+    "post-11": {
+        "order": 12,
+        "title": "WindowsOS-1-开发环境配置",
+        "date": "2026-11-16",
+        "category": "WindowsOS",
+        "tags": [
+            "WindowsOS"
+        ],
+        "description": "记录WindowsOS的开发环境配置",
+        "keywords": "WindowsOS",
+        "updated": "",
+        "wordCount": 0,
+        "readingTime": 1
     },
     "post-2": {
         "order": 3,
         "title": "express-2-drizzle+sqlite配置",
         "date": "2026-10-19",
+        "updated": "2026-11-08",
         "category": "后端",
         "tags": [
             "express"
         ],
         "description": "记录给ts项目配置drizzleORM和sqlite数据库",
         "keywords": "express",
-        "updated": "",
-        "wordCount": 450,
+        "wordCount": 534,
         "readingTime": 2
     },
     "post-3": {
@@ -72,7 +86,7 @@
         "description": "记录按照自己博客的样式，给hugo做一个主题",
         "keywords": "hugoTheme_hello",
         "updated": "",
-        "wordCount": 923,
+        "wordCount": 927,
         "readingTime": 4
     },
     "post-4": {
@@ -86,7 +100,7 @@
         "description": "记录blog页脚的组件——siteage的做法",
         "keywords": "blog,siteage",
         "updated": "",
-        "wordCount": 664,
+        "wordCount": 667,
         "readingTime": 3
     },
     "post-5": {
@@ -100,7 +114,7 @@
         "description": "记录blog页脚的版权组件的做法",
         "keywords": "blog,copyright",
         "updated": "",
-        "wordCount": 268,
+        "wordCount": 269,
         "readingTime": 1
     },
     "post-6": {
@@ -114,7 +128,7 @@
         "description": "记录blog侧边栏天气组件的做法",
         "keywords": "blog,weather,ip",
         "updated": "",
-        "wordCount": 709,
+        "wordCount": 711,
         "readingTime": 3
     },
     "post-7": {
@@ -128,7 +142,7 @@
         "description": "记录ts的代码规范工具的配置",
         "keywords": "typescript.代码规范工具",
         "updated": "",
-        "wordCount": 692,
+        "wordCount": 695,
         "readingTime": 3
     },
     "post-8": {
@@ -143,7 +157,7 @@
         "description": "记录express项目前后端分离，但是一个端口起前后端的配置",
         "keywords": "express",
         "updated": "",
-        "wordCount": 934,
+        "wordCount": 938,
         "readingTime": 4
     },
     "post-9": {
@@ -158,7 +172,7 @@
         "description": "记录express项目第一次接口实现",
         "keywords": "express",
         "updated": "",
-        "wordCount": 430,
+        "wordCount": 432,
         "readingTime": 2
     }
 }

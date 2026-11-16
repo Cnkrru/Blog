@@ -1,10 +1,10 @@
 /*
  * timeline 时间线组件插件
  *
- * 语法：围栏代码块，语言名 timeline，每行『时间 | 标题 | 描述（可省略）』：
- *   ```timeline
+ * 语法：::: 容器，每行『时间 | 标题 | 描述（可省略）』：
+ *   ::: timeline
  *   2025-01 | 立项 | 确定技术选型
- *   ```
+ *   :::
  * 编译期直出纯 HTML，竖线由 CSS 绘制，无运行时开销。
  */
 import type { ComponentPlugin } from './base.ts'
@@ -29,7 +29,7 @@ const TIMELINE_WRAP = (items: string): string => `
 
 export const timelineBlock: ComponentPlugin = {
   name: 'timeline',
-  fenceLangs: ['timeline'],
+  containers: ['timeline'],
   render(ctx, content) {
     const esc = ctx.escapeHtml
     const items = content

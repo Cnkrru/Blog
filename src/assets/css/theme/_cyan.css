@@ -32,9 +32,12 @@
     --shiki-foreground: #164e63;                 /* 深青褐正文 */
     --shiki-token-keyword: #0e7490;              /* 深青关键字 */
     --shiki-token-function: #7c3aed;             /* 紫函数名 */
+    --shiki-token-string: #155e75;               /* 普通字符串 */
     --shiki-token-string-expression: #155e75;    /* 墨青字符串 */
     --shiki-token-constant: #0369a1;             /* 青蓝常量 */
     --shiki-token-parameter: #9a3412;            /* 褐参数 */
+    --shiki-token-punctuation: #164e63;          /* 标点（随正文） */
+    --shiki-token-link: #0369a1;                 /* 链接青蓝 */
     --shiki-token-comment: #5d7f8e;              /* 青灰注释 */
 }
 .cyan.dark {
@@ -42,8 +45,11 @@
     --shiki-foreground: #cffafe;                 /* 冰蓝白正文 */
     --shiki-token-keyword: #22d3ee;              /* 亮青关键字 */
     --shiki-token-function: #c4b5fd;             /* 淡紫函数名 */
+    --shiki-token-string: #67e8f9;               /* 普通字符串 */
     --shiki-token-string-expression: #67e8f9;    /* 亮青字符串 */
     --shiki-token-constant: #38bdf8;             /* 亮蓝常量 */
     --shiki-token-parameter: #fbbf24;            /* 琥珀参数 */
+    --shiki-token-punctuation: #cffafe;          /* 标点（随正文） */
+    --shiki-token-link: #38bdf8;                 /* 链接亮蓝 */
     --shiki-token-comment: #6f97a0;              /* 青灰注释 */
 }

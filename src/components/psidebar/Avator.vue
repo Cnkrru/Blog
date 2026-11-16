@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { AVATOR_SRC } from '@/composables/common/config'
+import { setAvator } from '@/composables/psidebar'
+import { onMounted } from 'vue'
+onMounted(() => {
+  setAvator()
+})
 </script>
 
 <template>
   <div class="avator">
     <img
-      :src="AVATOR_SRC"
+      id="avatorImg"
       alt="Cnkrru的头像"
       loading="lazy"
       title="头像"

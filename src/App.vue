@@ -27,7 +27,6 @@ watch(
   () => route.fullPath,
   () => {
     refSidebar.value = false
-    // 客户端跳转不重载文档，需手动把正文容器滚回顶部（否则会停在上一篇的滚动位置）
     document.querySelector<HTMLElement>('.main')?.scrollTo({ top: 0 })
   },
 )

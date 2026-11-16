@@ -19,6 +19,7 @@ import {
   setupComponentPlugins,
 } from './plugins/registry.ts'
 import { toolbar, splitRow } from './plugins/base.ts'
+import type { PluginContext } from './plugins/base.ts'
 import {
   fenceLang,
   safeLang,
@@ -78,6 +79,27 @@ export const createMdInstance = (): InstanceType<typeof MarkdownIt> => {
     .use(tasklist)
     .use(katex)
 
+  // 单段代码高亮：组件内嵌代码与普通代码块共用
+  const highlight = (codeText: string, codeLang: string): string => {
+    const body = codeText.replace(/\n+$/, '')
+    const panelLang = fenceLang(codeLang)
+    try {
+      return getHighlighter().codeToHtml(body, { lang: panelLang, theme: highlightTheme })
+    } catch (e) {
+      warnFallback(panelLang, e)
+      return getHighlighter().codeToHtml(body, { lang: 'text', theme: highlightTheme })
+    }
+  }
+
+  // 组件上下文在渲染阶段取：pageKey / highlighter 均按当前文章就绪
+  const makeCtx = (): PluginContext => ({
+    escapeHtml: md.utils.escapeHtml,
+    toolbar,
+    splitRow,
+    pageKey: getPageKey(),
+    highlight,
+  })
+
   // 组件围栏优先、其余走 shiki 编译期高亮
   md.renderer.rules.fence = (tokens, idx) => {
     const token = tokens[idx]!
@@ -88,28 +110,7 @@ export const createMdInstance = (): InstanceType<typeof MarkdownIt> => {
     // shiki 会把围栏末尾换行也渲染成空行 span，高亮前先剥掉
     const code = token.content.replace(/\n+$/, '')
 
-    const componentHtml = renderComponentFence(
-      {
-        escapeHtml: md.utils.escapeHtml,
-        toolbar,
-        splitRow,
-        renderMarkdown: (s: string): string => md.render(s),
-        pageKey: getPageKey(),
-        highlight: (codeText: string, codeLang: string): string => {
-          const body = codeText.replace(/\n+$/, '')
-          const panelLang = fenceLang(codeLang)
-          try {
-            return getHighlighter().codeToHtml(body, { lang: panelLang, theme: highlightTheme })
-          } catch (e) {
-            warnFallback(panelLang, e)
-            return getHighlighter().codeToHtml(body, { lang: 'text', theme: highlightTheme })
-          }
-        },
-      },
-      lang,
-      token.content,
-      info,
-    )
+    const componentHtml = renderComponentFence(makeCtx(), lang, token.content, info)
     if (componentHtml !== null) return componentHtml
 
     let highlighted: string
@@ -122,7 +123,7 @@ export const createMdInstance = (): InstanceType<typeof MarkdownIt> => {
     return codeShell(safe, highlighted, code.split('\n').length)
   }
 
-  setupComponentPlugins(md)
+  setupComponentPlugins(md, makeCtx)
   return md
 }
 
@@ -140,15 +141,9 @@ export const configLanguage = async (files: string[]): Promise<void> => {
     for (const token of scan.parse(content, {})) {
       if (token.type !== 'fence') continue
       const lang = fenceLang(scan.utils.unescapeAll(token.info))
-      if (componentFenceLangs.has(lang)) {
-        if (lang === 'code-group') {
-          for (const i of token.content.matchAll(/^@tab[ \t]+(.+?)[ \t]*$/gm)) {
-            const label = (i[1] ?? '').trim().toLowerCase()
-            if (label && !componentFenceLangs.has(label)) langSet.add(label)
-          }
-        }
-        continue
-      }
+      // 围栏组件（mermaid / console）不是真语言，不进 shiki；
+      // code-group 内的代码块本身就是标准围栏，扫描时已按普通围栏计入
+      if (componentFenceLangs.has(lang)) continue
       langSet.add(lang)
     }
   }

@@ -1,10 +1,10 @@
 /*
  * qa 问答组件插件
  *
- * 语法：围栏代码块，语言名 qa，每行『问题 | 答案』：
- *   ```qa
+ * 语法：::: 容器，每行『问题 | 答案』：
+ *   ::: qa
  *   什么是 SSG | 构建期直出静态 HTML
- *   ```
+ *   :::
  * 答案默认折叠（原生 details），点击问题展开，适合自测复习。
  */
 import type { ComponentPlugin } from './base.ts'
@@ -22,7 +22,7 @@ const QA_WRAP = (items: string): string => `
 
 export const qaBlock: ComponentPlugin = {
   name: 'qa',
-  fenceLangs: ['qa'],
+  containers: ['qa'],
   render(ctx, content) {
     const esc = ctx.escapeHtml
     const items = content

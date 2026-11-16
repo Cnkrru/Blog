@@ -1,8 +1,9 @@
 /*
  * terminal 终端组件插件
  *
- * 语法：围栏代码块，语言名 terminal，以 `$ ` 开头的行按命令渲染，其余按输出渲染：
- *   ```terminal
+ * 语法：标准围栏代码块，语言名 console（与 GitHub / VitePress 的终端代码块一致），
+ * 以 `$ ` 开头的行按命令渲染，其余按输出渲染：
+ *   ```console
  *   $ npm i -D @hello/vdoc
  *   added 1 package
  *   ```
@@ -35,7 +36,7 @@ const TERMINAL_WINDOW = (rows: string): string => `
 
 export const terminalBlock: ComponentPlugin = {
   name: 'terminal',
-  fenceLangs: ['terminal'],
+  fenceLangs: ['console'],
   render(ctx, content) {
     const esc = ctx.escapeHtml
     const rows = content

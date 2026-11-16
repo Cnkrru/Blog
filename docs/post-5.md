@@ -52,8 +52,8 @@ keywords: blog,copyright
 </style>
 ```
 
-```info
+::: info
 `&copy`是一个字符实体，字符实体可以理解为一套符文编码
 
 相关网址:[https://html.spec.whatwg.org/multipage/named-characters.html](https://html.spec.whatwg.org/multipage/named-characters.html)
-```
+:::

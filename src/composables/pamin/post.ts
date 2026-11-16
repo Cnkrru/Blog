@@ -2,7 +2,6 @@ import { reactive, ref, nextTick, computed, watch } from 'vue'
 import QRCode from 'qrcode'
 import axios from 'axios'
 import type { Zoom } from 'medium-zoom'
-import { refTheme } from './setting'
 import { refLd } from '../pheader'
 /* ====================<postData>==================== */
 type PostMeta = {
@@ -24,7 +23,10 @@ export type PostData = Record<string, PostMeta>
 // 构建期可同步取到 post 全表（dist/.cache/post.json 由构建管线从 public/config/post.json 复制，
 //   是可 import 的同源副本），setup 期即可用 → 列表页/上下篇/字数在 SSG 产物里就有真内容；
 //   副本缺失时（异常场景）仍走 postData 的 axios 兜底
-const localPost = import.meta.glob<PostData>('/dist/.cache/post.json', { eager: true, import: 'default' })
+const localPost = import.meta.glob<PostData>('/dist/.cache/post.json', {
+  eager: true,
+  import: 'default',
+})
 export let postCache: PostData = localPost['/dist/.cache/post.json'] ?? {}
 
 // order→key 映射收敛到数据层构建一次，postClean/postNav 复用（原先各自重建一遍）
@@ -308,7 +310,7 @@ const mermaidRender = async () => {
 export const mermaid = async () => {
   // 首次调用绑定一次主题监听（全局单例，不随组件卸载销毁）
   if (!mermaidWatchBound) {
-    watch([refLd, refTheme], () => {
+    watch([refLd], () => {
       mermaidRender()
     })
     mermaidWatchBound = true
@@ -327,7 +329,9 @@ export const contentReady = () => {
 // 首帧即算出完整主题 URL：giscus-widget 创建时 theme 属性就是对的，
 // 若先用空值再回填，iframe 会先按默认主题构建，后续变更来不及生效。
 // window 只在客户端访问，组件侧用 ClientOnly 包住，SSR 阶段不会求值
-export const comment = computed(() => `${window.location.origin}/css/${refTheme.value}-${refLd.value}.css`)
+export const comment = computed(
+  () => `${window.location.origin}/css/${localStorage.getItem('theme')}-${refLd.value}.css`,
+)
 
 /* ====================<comment loading>==================== */
 // 评论加载态：脚本导入结束即收起骨架；导入失败单独标记，避免骨架一直转
@@ -588,8 +592,7 @@ export const codeToggle = (e: MouseEvent) => {
   const expanded = wrapper.classList.toggle('code-expanded')
   const lines = el.dataset.lines ?? ''
   const text = el.querySelector<HTMLElement>('.code-expand-text')
-  if (text)
-    text.textContent = expanded ? '收起' : `展开（共 ${lines} 行）`
+  if (text) text.textContent = expanded ? '收起' : `展开（共 ${lines} 行）`
   el.title = expanded ? '收起' : `展开代码（共 ${lines} 行）`
 
   // 收起时若代码块顶部已滚出视口，拉回顶部，避免高度骤减导致页面跳动

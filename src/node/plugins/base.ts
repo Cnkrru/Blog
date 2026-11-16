@@ -3,17 +3,20 @@
  *
  * 职责：定义『编译期组件插件』的统一契约与公共工具，所有写作组件插件都基于它实现。
  *
- * 行业标准分层（对齐 VitePress / Docusaurus）：
- *  - 编译期（本层）：拦截 Markdown 扩展语法，产出『语义化 HTML 结构』，class 命名约定稳定
- *  - 主题层（content.css）：按 class 约定配色与排版，组件样式可主题化
+ * 语法分层（对齐 VitePress / Docusaurus / markdown-it-container 的生态约定）：
+ *  - 围栏代码块：语言名本身就是标准语言（mermaid / console），直接复用围栏语法
+ *  - ::: 容器：官方有插件的（提示块 / 折叠块 / 选项卡）走 @mdit/plugin-*；
+ *    官方没有插件的（步骤、时间线、目录树、问答、对比、引用卡、代码组）走本模块的原文捕获规则
+ *  - 行内语法：`==标记==` 交给 @mdit/plugin-mark，其余场景直接写原生 HTML（<kbd> / <span class="badge">）
  *
- * 新增一个组件 = 在 plugins/ 下加一个文件（一个文件只放一种语法），实现 ComponentPlugin，并在 registry.ts 登记一行。
+ * 主题层（content.css）按 class 约定配色与排版，组件样式可主题化。
+ * 新增一个组件 = 先看生态有没有插件；没有才在 plugins/ 下加文件实现 ComponentPlugin，并在 registry.ts 登记一行。
  */
 
-// StateInline 从 markdown-it 主入口取：markdown-it 15 自带类型并导出该类型，
-// 深层路径 markdown-it/lib/... 会落到 @types/markdown-it 的旧声明，两套 StateInline 结构不一致，类型检查报错
+// StateBlock 从 markdown-it 主入口取：markdown-it 15 自带类型并导出，
+// 深层路径 markdown-it/lib/... 会落到 @types/markdown-it 的旧声明，两套结构不一致，类型检查报错
 import type MarkdownIt from 'markdown-it'
-import type { StateInline } from 'markdown-it'
+import type { StateBlock } from 'markdown-it'
 
 /*
  * 行内字段切分：组件块内每行是一个条目，字段用半角竖线 | 分隔。
@@ -36,46 +39,15 @@ export const toolbar = (lang: string): string => `
     </div>`
 
 /*
- * 通用行内规则工厂：成对定界符 [[...]] {{...}} ==...==
- * open/close 定界符相同或不同均可；内容不允许跨行、不允许为空。
- * html 只负责拼 HTML（收到的 inner 已转义），定界符匹配与位置推进由本工厂统一处理，
- * kbd / badge / mark 三个行内语法插件共用。
- */
-export const makeInlineRule = (
-  open: string,
-  close: string,
-  html: (esc: (s: string) => string, inner: string) => string,
-) => {
-  return (state: StateInline, silent: boolean): boolean => {
-    const start = state.pos
-    // 必须落在开启定界符上，且定界符后不能紧跟空白（避免 [[ 空格]] 这类空壳被吞）
-    if (!state.src.startsWith(open, start)) return false
-    const innerStart = start + open.length
-    if (state.src[innerStart] === ' ' || state.src[innerStart] === '\n') return false
-    const end = state.src.indexOf(close, innerStart)
-    if (end === -1 || end === innerStart) return false
-    if (!silent) {
-      const token = state.push('html_inline', '', 0)
-      token.content = html(state.md.utils.escapeHtml, state.src.slice(innerStart, end))
-    }
-    state.pos = end + close.length
-    return true
-  }
-}
-
-/*
  * 组件插件上下文：编译期提供给每个插件的最小能力集。
  *  - escapeHtml：正文/字段统一走 markdown-it 的转义，防注入
  *  - toolbar / splitRow：上述公共片段与切分
- *  - renderMarkdown：嵌套渲染一段 markdown 正文（提示块这类『块内正文仍要正常渲染』的组件用）
  * 约定：插件只依赖本上下文，不反向依赖编译主流程，保证插件可独立维护、可单测。
  */
 export interface PluginContext {
   escapeHtml: (s: string) => string
   toolbar: typeof toolbar
   splitRow: typeof splitRow
-  /* 嵌套渲染一段 markdown：组件块内需要完整 markdown 能力时调用（如提示块正文） */
-  renderMarkdown: (s: string) => string
   /* 当前页标识（文章 id，首页为 'home'）：需要『同页唯一』的组件靠它识别换页 */
   pageKey: string
   /** shiki 编译期高亮单段代码（code-group 等内嵌代码的组件用）；未提供时组件自行降级 */
@@ -85,15 +57,90 @@ export interface PluginContext {
 /*
  * 编译期组件插件契约。
  *  - name：插件名（调试用）
- *  - fenceLangs：声明本插件要拦截的围栏代码块语言名（小写）。命中时由 render 直出 HTML；
- *    未命中返回 null，交还给默认高亮流程。多个语言名可指向同一插件（如提示块的四个等级）
- *  - render：content 是围栏块内正文；info 是完整信息串（语言名 + language 之后的可选文本），
- *    只有需要读『语言名之后的参数』的组件才用得上（如提示块用它取等级与标题）
- *  - setup：需要挂 markdown-it 规则的组件在此挂载（如 kbd/badge/mark 行内规则）；纯 fence 组件可不实现
+ *  - fenceLangs：标准围栏代码块的语言名集合（小写），如 mermaid / console
+ *  - containers：::: 容器的名称集合（小写），如 steps / code-group
+ *  - render：content 是块内正文（已按容器层级去掉公共缩进）；info 是名称之后的可选参数；
+ *    container 是命中的容器名，用于区分同一插件的多个名称
+ *  - setup：需要挂 markdown-it 行内规则的组件在此挂载
  */
 export interface ComponentPlugin {
   name: string
-  fenceLangs: readonly string[]
-  render?: (ctx: PluginContext, content: string, info?: string) => string | null
+  fenceLangs?: readonly string[]
+  containers?: readonly string[]
+  render?: (
+    ctx: PluginContext,
+    content: string,
+    info?: string,
+    container?: string,
+  ) => string | null
   setup?: (md: InstanceType<typeof MarkdownIt>) => void
+}
+
+/* ====================<::: 容器块规则>==================== */
+
+// 容器开标记：三个及以上冒号 + 名称 + 可选参数（提示块标题、折叠块摘要）
+const CONTAINER_OPEN = /^(:{3,})[ \t]*([A-Za-z][\w-]*)(?:[ \t]+(.*))?$/
+// 容器收标记：三个及以上冒号独占一行；长度不得短于开标记，便于嵌套时用更多冒号区分
+const CONTAINER_CLOSE = /^(:{3,})[ \t]*$/
+// 围栏块开闭标记：容器正文里的围栏代码块内部若出现 ::: 不应被当作容器收尾
+const FENCE_OPEN = /^(`{3,}|~{3,})/
+
+/*
+ * 容器块规则：捕获 `::: 名称 参数` 到对应收标记之间的原文，压入一个自定义 token，
+ * 由 renderer 在渲染阶段交给插件直出 HTML。
+ *
+ * 之所以不用 @mdit/plugin-container：那个插件会把块内正文继续按 markdown 分词，
+ * 而 steps / timeline / filetree / qa / compare 这类组件的正文是自定义行语法（不是 markdown），
+ * 需要拿到原文自行解析；这里统一走『原文捕获 + 渲染期交给插件』一条管道。
+ */
+export const makeContainerRule = (plugins: Map<string, ComponentPlugin>) => {
+  return (state: StateBlock, startLine: number, endLine: number, silent: boolean): boolean => {
+    const start = state.bMarks[startLine]! + state.tShift[startLine]!
+    const open = CONTAINER_OPEN.exec(state.src.slice(start, state.eMarks[startLine]!))
+    if (!open) return false
+
+    const markup = open[1]!
+    const name = open[2]!.toLowerCase()
+    if (!plugins.has(name)) return false
+    if (silent) return true
+
+    // 找收标记；跳过正文中的围栏代码块，避免代码里的 ::: 提前收尾
+    let nextLine = startLine + 1
+    let closed = false
+    let fenceChar = ''
+    for (; nextLine < endLine; nextLine++) {
+      const raw = state.src
+        .slice(state.bMarks[nextLine]! + state.tShift[nextLine]!, state.eMarks[nextLine]!)
+        .trim()
+      if (fenceChar) {
+        if (raw.startsWith(fenceChar.repeat(3))) fenceChar = ''
+        continue
+      }
+      const fence = FENCE_OPEN.exec(raw)
+      if (fence) {
+        fenceChar = fence[1]![0]!
+        continue
+      }
+      const close = CONTAINER_CLOSE.exec(raw)
+      if (close && close[1]!.length >= markup.length) {
+        closed = true
+        break
+      }
+    }
+
+    // 正文保留相对缩进（目录树靠缩进判层级），只去掉容器自身的公共缩进
+    const body: string[] = []
+    for (let i = startLine + 1; i < nextLine; i++) {
+      body.push(state.src.slice(state.bMarks[i]! + state.blkIndent, state.eMarks[i]!))
+    }
+
+    const token = state.push(`component_${name}`, '', 0)
+    token.block = true
+    token.content = body.join('\n')
+    token.info = (open[3] ?? '').trim()
+    token.markup = markup
+    token.map = [startLine, nextLine + (closed ? 1 : 0)]
+    state.line = nextLine + (closed ? 1 : 0)
+    return true
+  }
 }

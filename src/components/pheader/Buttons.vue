@@ -4,7 +4,7 @@ import Dark from '../icon/Dark.vue'
 import Immersive from '../icon/Immersive.vue'
 import Music from '../icon/Music.vue'
 import Menu from '../icon/Menu.vue'
-import { refLd, setImmersive, setLd, toggleUi } from '@/composables/pheader.ts'
+import { refImmersive, refLd, setImmersive, setLd, toggleUi } from '@/composables/pheader.ts'
 import { toggleSidebar } from '@/composables/psidebar.ts'
 </script>
 
@@ -36,6 +36,8 @@ import { toggleSidebar } from '@/composables/psidebar.ts'
     <!-- 沉浸阅读 -->
     <button
       class="button immersive-btn"
+      :class="{ 'is-on': refImmersive }"
+      title="沉浸阅读"
       @click="setImmersive()"
     >
       <Immersive class="icon" />
@@ -83,6 +85,13 @@ import { toggleSidebar } from '@/composables/psidebar.ts'
 .button:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 14px color-mix(in srgb, var(--g-color) 40%, transparent);
+}
+
+/* 沉浸模式激活态：加一圈描边，避免和悬停缩放冲突 */
+.button.is-on {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--g-color) 35%, transparent),
+    0 2px 8px color-mix(in srgb, var(--g-color) 30%, transparent);
 }
 
 .icon {

@@ -1,10 +1,10 @@
 /*
- * 分节面板共享管道（不是组件插件，只被 tabs / code-group / compare 复用）
+ * 分节面板共享管道（不是组件插件，只被 compare 复用）
  *
- * 三者语法同构：围栏块内用 `@tab 标签名` 分节（VuePress Plume 的 content tabs 约定，
- * 与 tabs / code-group 那套自造 `== 标签名 ==` 相比，不与任何 Markdown 语法字形重合）。
- * 分节切分、空块告警、面板分组导航三处逻辑完全一致，收敛在这里；
- * 面板本体（HTML 模板与正文渲染方式）各有差异，仍留在各自插件文件里。
+ * compare 在 ::: 容器内用 `@tab 栏标题` 分节（与 @mdit/plugin-tab 的 tabs 同一套分节约定，
+ * 但 compare 是对照布局、不是选项卡，所以走自研渲染）。
+ * 分节切分、空块告警、面板分组导航三处逻辑收敛在这里；
+ * 面板本体（HTML 模板与正文渲染方式）仍留在 compare 插件文件里。
  */
 import type { PluginContext } from './base.ts'
 

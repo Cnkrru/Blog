@@ -2,7 +2,6 @@ import { ref } from 'vue'
 import { postCache, postData, type PostData } from './pamin/post'
 // 粒子配色跟随主题变化，需读取当前亮暗/主题
 import { refLd } from './pheader'
-import { refTheme } from './pamin/setting'
 import {
   INDEX_PARTICLE_LOAD,
   INDEX_WELCOME_SAYING,
@@ -237,7 +236,7 @@ export const particles = () => {
   // 主题色只在亮暗/主题变化时重读，避免每帧 getComputedStyle
   let themeKey = ''
   const syncThemeColor = () => {
-    const key = `${refLd.value}|${refTheme.value}`
+    const key = `${refLd.value}|${localStorage.getItem('theme')}`
     if (key === themeKey) return
     themeKey = key
     parseColor(pickThemeColor())

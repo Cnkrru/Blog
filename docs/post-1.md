@@ -16,7 +16,7 @@ keywords: express
 
 ### 1. 初始化JavaScript项目
 
-```terminal
+```console
 $ npm init
 
 package name: (server) spback
@@ -68,9 +68,9 @@ type: (commonjs) module
 npm install typescript
 ```
 
-```tip
+::: tip
 看个人情况，不喜欢写ts，不用也挺好
-```
+:::
 
 ### 3. 初始化ts配置并简单修改一下
 
@@ -151,12 +151,12 @@ npm start // 在package.json里配置了start命令
 npm install -D tsx
 ```
 
-```info
+::: info
 - node的增强,直接将node指令的`node`替换成`tsx`即可
 - 支持热重载(watch模式),自动重新运行更新的ts文件
 - 支持直接运行ts文件,而不需要编译为js再运行
 - 通过`npx`执行
-```
+:::
 
 - npx官方文档地址:[https://docs.npmjs.com/cli/v12/commands/npx](https://docs.npmjs.com/cli/v12/commands/npx)
 
@@ -171,19 +171,19 @@ npm install -D tsx
 
 ## 四、配置swaggerAPI文档
 
-```tip
+::: tip
 非必须，只是笔者自己挺喜欢这个文档
 
 - 菜鸟教程swagger文档:[https://www.runoob.com/swagger/swagger-tutorial.html](https://www.runoob.com/swagger/swagger-tutorial.html)
 
 - 笔者第一个express项目后来不用swagger文档了，改用vitepress了，暂时不想学OpenAPI的语法
-```
+:::
 
 ### 1. 安装依赖
 
-```tip
+::: tip
 如果不想yaml注释写到代码内部，请看后续步骤，不要现在跟着操作
-```
+:::
 
 ```sh
 npm install swagger-jsdoc swagger-ui-express
@@ -259,7 +259,7 @@ app.get('/', (req: Request, res: Response) => {
 
 - 访问地址
 
-```terminal
+```console
 http://localhost:3000/api-docs/
 ```
 
@@ -272,7 +272,7 @@ http://localhost:3000/api-docs/
 
 #### 1. 更新依赖
 
-```terminal
+```console
 npm install yaml
 npm uninstall swagger-jsdoc
 ```
@@ -334,6 +334,6 @@ npm uninstall swagger-jsdoc
 +);
 ```
 
-```info
+::: info
 这两步直接把原本doc.ts的配置去掉，在中间件挂载时配置swagger
-```
+:::

@@ -1,11 +1,11 @@
 /*
  * quote 引用卡组件插件
  *
- * 语法：围栏代码块，语言名 quote，第一行为内容，之后『作者 | 出处』一行可省略：
- *   ```quote
+ * 语法：::: 容器，第一行为内容，之后『作者 | 出处』一行可省略：
+ *   ::: quote
  *   任何可以用编译期解决的问题，都不应该留给运行时。
  *   设计原则
- *   ```
+ *   :::
  * 左侧竖线 + 大号引号的名言卡片。
  */
 import type { ComponentPlugin } from './base.ts'
@@ -29,7 +29,7 @@ const QUOTE_BLOCK = (
 
 export const quoteBlock: ComponentPlugin = {
   name: 'quote',
-  fenceLangs: ['quote'],
+  containers: ['quote'],
   render(ctx, content) {
     const esc = ctx.escapeHtml
     const lines = content

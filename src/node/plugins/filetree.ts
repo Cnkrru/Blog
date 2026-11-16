@@ -1,11 +1,11 @@
 /*
  * filetree 目录树组件插件
  *
- * 语法：围栏代码块，语言名 filetree，块内复用 Markdown 无序列表写法（- / * / +）：
- *   ```filetree
+ * 语法：::: 容器，块内复用 Markdown 无序列表写法（- / * / +）：
+ *   ::: filetree
  *   - docs | 内容目录
  *     - index.md | 索引页
- *   ```
+ *   :::
  * 层级由列表缩进表达，行尾 / 表示目录；产物为嵌套 ul/li，树线由 CSS 绘制。
  */
 import type { ComponentPlugin } from './base.ts'
@@ -42,7 +42,7 @@ const FILES_TREE_BOX = (html: string): string => `\n<div class="filetree-box" v-
 
 export const filetreeBlock: ComponentPlugin = {
   name: 'filetree',
-  fenceLangs: ['filetree'],
+  containers: ['filetree'],
   render(ctx, content) {
     const esc = ctx.escapeHtml
     const lines = content.split('\n').filter((l) => l.trim().length > 0)

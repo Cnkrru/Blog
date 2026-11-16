@@ -1,15 +1,31 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useSeo } from '../composables/common/seo'
 import {
-  refTheme,
-  refLayout,
-  refBg,
-  refOpacity,
-  setTheme,
-  setLayout,
-  setBg,
+  setBlueTheme,
+  setCyanTheme,
+  setInkTheme,
+  setPurpleTheme,
+  setSakuraTheme,
+  setDefaultLayout,
+  setCardLayout,
+  setImgBg,
+  setVideoBg,
   setOpacity,
 } from '../composables/pamin/setting'
+
+onMounted(() => {
+  setBlueTheme()
+  setCyanTheme()
+  setInkTheme()
+  setPurpleTheme()
+  setSakuraTheme()
+  setDefaultLayout()
+  setCardLayout()
+  setImgBg()
+  setVideoBg()
+  setOpacity()
+})
 
 useSeo({
   title: '设置',
@@ -24,37 +40,32 @@ useSeo({
       <span>主题风格</span>
       <div class="btn-list">
         <button
+          id="blue"
           class="btn btn-theme"
-          :class="refTheme === 'blue' ? 'btn-on' : null"
-          @click="setTheme('blue')"
         >
           天蓝色
         </button>
         <button
+          id="ink"
           class="btn btn-theme"
-          :class="refTheme === 'ink' ? 'btn-on' : null"
-          @click="setTheme('ink')"
         >
           水墨风
         </button>
         <button
+          id="sakura"
           class="btn btn-theme"
-          :class="refTheme === 'sakura' ? 'btn-on' : null"
-          @click="setTheme('sakura')"
         >
           樱花粉
         </button>
         <button
+          id="purple"
           class="btn btn-theme"
-          :class="refTheme === 'purple' ? 'btn-on' : null"
-          @click="setTheme('purple')"
         >
           紫罗兰
         </button>
         <button
+          id="cyan"
           class="btn btn-theme"
-          :class="refTheme === 'cyan' ? 'btn-on' : null"
-          @click="setTheme('cyan')"
         >
           天青色
         </button>
@@ -65,16 +76,14 @@ useSeo({
       <span>布局风格</span>
       <div class="btn-list">
         <button
+          id="default"
           class="btn btn-layout"
-          :class="refLayout === 'default' ? 'btn-on' : null"
-          @click="setLayout('default')"
         >
           默认
         </button>
         <button
+          id="card"
           class="btn btn-layout"
-          :class="refLayout === 'card' ? 'btn-on' : null"
-          @click="setLayout('card')"
         >
           卡片式
         </button>
@@ -88,9 +97,8 @@ useSeo({
         min="0"
         max="1"
         step="0.01"
+        value="opacityValue"
         class="opacity-input"
-        v-model.number="refOpacity"
-        @input="setOpacity()"
       />
     </div>
 
@@ -98,13 +106,15 @@ useSeo({
       <span>背景</span>
       <div class="btn-list">
         <button
+          id="video"
           class="btn btn-bg"
-          :class="refBg === 'video' ? 'btn-on' : null"
-          @click="setBg('video')"
         >
           视频
         </button>
-        <button class="btn btn-bg" :class="refBg === 'img' ? 'btn-on' : null" @click="setBg('img')">
+        <button
+          id="img"
+          class="btn btn-bg"
+        >
           图片
         </button>
       </div>
@@ -215,80 +225,9 @@ useSeo({
   color: var(--g-text);
 }
 
-/* ====================<滑块控件>==================== */
 .opacity-input {
   width: 100%;
   height: 16px;
-  /* ==========<滑块控件跨平台CSS>========== */
-  -webkit-appearance: none; /* WebKit：去原生外观 */
-  appearance: none; /* 标准语法 */
-  background: transparent; /* 轨道背景让给伪元素画 */
-  outline: none;
   cursor: pointer;
 }
-
-/* ===== 2) WebKit：轨道（Chrome/Edge/Safari） ===== */
-.opacity-input::-webkit-slider-runnable-track {
-  height: 6px; /* 轨道粗细 */
-  border-radius: 3px;
-  background: linear-gradient(
-    /* 用两段色块模拟"进度填充"：左侧主题色，右侧底色 */ to right,
-    var(--g-color) 0%,
-    var(--g-color) var(--glass-progress, 0%),
-    color-mix(in srgb, var(--g-text) 25%, transparent) var(--glass-progress, 0%),
-    color-mix(in srgb, var(--g-text) 25%, transparent) 100%
-  );
-}
-
-/* ===== 3) WebKit：滑钮 ===== */
-.opacity-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  margin-top: -6px; /* 垂直居中：(6-18)/2 = -6 */
-  border: 2px solid var(--g-color);
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
-  transition:
-    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.2s ease; /* 拖动/hover滑钮放大+阴影加深 */
-}
-
-.opacity-input:hover::-webkit-slider-thumb,
-.opacity-input:active::-webkit-slider-thumb {
-  transform: scale(1.15);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-}
-
-/* ===== 4) Firefox：轨道 ===== */
-.opacity-input::-moz-range-track {
-  height: 6px;
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--g-text) 25%, transparent);
-}
-
-/* ===== 5) Firefox：进度（FF 有原生伪元素，可直接上色） ===== */
-.opacity-input::-moz-range-progress {
-  height: 6px;
-  border-radius: 3px;
-  background: var(--g-color);
-}
-
-/* ===== 6) Firefox：滑钮 ===== */
-.opacity-input::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--g-color);
-  border-radius: 50%;
-  background: #fff;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* 同WebKit滑钮放大 */
-}
-
-.opacity-input:hover::-moz-range-thumb,
-.opacity-input:active::-moz-range-thumb {
-  transform: scale(1.15);
-}
-
 </style>

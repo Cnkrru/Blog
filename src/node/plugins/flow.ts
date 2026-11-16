@@ -1,11 +1,11 @@
 /*
  * flow 简易流程组件插件
  *
- * 语法：围栏代码块，语言名 flow，每行『节点 | 可选说明』，节点间自动画向下箭头：
- *   ```flow
+ * 语法：::: 容器，每行『节点 | 可选说明』，节点间自动画向下箭头：
+ *   ::: flow
  *   读取配置 | config.ts
  *   编译文章
- *   ```
+ *   :::
  */
 import type { ComponentPlugin } from './base.ts'
 
@@ -26,7 +26,7 @@ const FLOW_WRAP = (items: string): string => `\n<div class="flow" v-pre>${items}
 
 export const flowBlock: ComponentPlugin = {
   name: 'flow',
-  fenceLangs: ['flow'],
+  containers: ['flow'],
   render(ctx, content) {
     const esc = ctx.escapeHtml
     const lines = content

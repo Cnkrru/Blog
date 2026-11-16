@@ -15,10 +15,10 @@ keywords: express
 - `express.static(path)`这个方法可以实现后端服务起前端页面，但是只能是纯HTML+CSS+JS
 - 笔者准备前端部分用vue，将构建产物挂载到`express.static()`方法上
 
-```info
+::: info
 这里笔者直接初始化vue+express，各自一个文件夹，互不干扰
 - 这里也算是正式开始做第一个前后端的个人项目了(serverPanel),给服务器做一个面板，试过宝塔面板，但是一堆广告，不想用，准备自己做一个轻量版本的
-```
+:::
 
 ## 步骤
 
@@ -33,7 +33,7 @@ keywords: express
 
 - 这里是在项目的子文件夹`client`初始化vue项目
 
-```terminal
+```console
 $ npm create vue@latest client
 
 > express@1.0.0 npx
@@ -59,7 +59,7 @@ o  跳过所有示例代码，创建一个空白的 Vue 项目？
 
 - 代码规范工具和项目框架都初始好了
 
-```filetree
+::: filetree
 - .vscode/ | 编辑器配置
   - extensions.json
   - settings.json
@@ -102,15 +102,15 @@ o  跳过所有示例代码，创建一个空白的 Vue 项目？
 - tsconfig.json
 - tsconfig.node.json | 构建侧 TS 配置
 - vite.config.ts | vite 配置
-```
+:::
 
 ### 3. 修改后端配置文件
 
-```tip
+::: tip
 这里主要是需要检查一下`eslint.config.mjs`,`tsconfig.json`,`package.json`,不能直接把原来的照搬过来，需要把原本挂载纯HTML，CSS，JS前端的部分去掉
 - 由于每个人的配置可能不相同，这里不细说,只给出笔者的配置
 - 主要是这些配置需要查文档，学习之后，配置起来才比较明白，笔者一般是用到什么查什么，有时候是项目初始化直接配置好的，有时候是AI帮忙配置的，笔者也只了解配置过的选项，没配置过的笔者不会主动去学，在笔者看来，用到什么再去学对应东西，更有效
-```
+:::
 
 #### 1. package.json的prettier的配置
 
@@ -156,10 +156,10 @@ npm run dev
 npm run dev
 ```
 
-```tip
+::: tip
 这里后端部分启动服务后进入3000端口会看到vue项目初始化的页面，因为前端配置了端口转发，把页面转发到了3000
 如果想看后端部分
 - localhost:3000/<后端路径>
 - localhost:3000/api-docs
     - swagger文档
-```
+:::

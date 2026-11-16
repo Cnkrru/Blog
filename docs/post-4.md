@@ -18,9 +18,9 @@ keywords: blog,siteage
     - `set` -> 设置时间
     - `to` -> 转换时间
 
-```tip
+::: tip
 get类函数获取到的年月日时分秒，是从UNIX时间戳起始时间(1970.0.0 00:00:00)开始算的,得到的不是从起始时间开始的计时，而是1970年的，所以不能直接用get类函数,如果想要年月的话，可以用别的库,不过对于建站时长这个组件来说，年月没必要，10年也不过3650+-2(3)而已，100年也才上万，谁能活那么久呢
-```
+:::
 
 ### 建站时长代码
 
@@ -125,13 +125,13 @@ export const webageStart = () => {
 }
 ```
 
-```tip
+::: tip
 这里`new Date()`函数获取到的是UNIX时间戳,不是直接算出来两者之间差的年月日，时分秒,difftime获取的是毫秒
 
 这里的refWebage接收的字符串应该用反引号包裹,这里因为md->html的限制，用了单引号
-```
+:::
 
-```info
+::: info
 1. Math.floor(number),在这里是向下取整(floor:地板，地面，数学含义:向下取整)
 2. setInterval(handleFunction,timeNum),timeNum(1 -> 1ms)
-```
+:::

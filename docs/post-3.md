@@ -25,9 +25,9 @@ keywords: hugoTheme_hello
   - CLI(命令行工具):hugo.exe是一个CLI(命令行工具)，Windows的设置里可以配置环境变量，环境变量是专门给Windows自带的shell解释器cmd/ps挂载子CLI的地方
   - shell解释器:shell是一种解释性语言，用于与系统交互，常用于服务器运维，这里Windows的cmd和ps并不是标准的shell解释器，对应代码也与标准的shell语言有所不同，但是挺像的
 
-```tip
+::: tip
 这个站主以后可能会出一个视频来教一下如何配置
-```
+:::
 
 ---
 
@@ -52,9 +52,9 @@ hugo new theme <theme_name>
 echo "theme = '<theme_name>'" >> hugo.toml
 ```
 
-```tip
+::: tip
 这里其实你自己去hugo.toml里手改一下对应配置就行，都一样
-```
+:::
 
 ### 4. 启动预览服务
 
@@ -67,7 +67,7 @@ hugo server
 
 ### 5. 文件夹结构
 
-```filetree
+::: filetree
 - archetypes/ | 原型模板
   - default.md
 - assets/ | 待编译资源
@@ -152,19 +152,19 @@ hugo server
   - index.xml
   - sitemap.xml
 - .hugo_build.lock
-```
+:::
 
 ---
 
 ## hugo与该blog项目的联系
 
-```info
+::: info
 hugo-theme-hello本身基于站主这个blog，可能会做一些取舍，站主的blog是基于vue+一些第三方库
 
 vue和hugo有一些相似之处，在下文会介绍
 
 该blog的部分功能hugo内置，可以等效替换，在下文会介绍
-```
+:::
 
 ### hugo自带功能(部分等效blog的功能)
 

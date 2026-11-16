@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import Clock from '../icon/Clock.vue'
 import { onMounted } from 'vue'
-import { refWebage, webageInit } from '@/composables/pfooter.ts'
+import { webageInit } from '@/composables/pfooter.ts'
 onMounted(() => {
   webageInit()
 })
 </script>
 
 <template>
-  <div class="webage"><Clock class="icon" />{{ refWebage }}</div>
+  <div class="webage">
+    <Clock class="icon" />
+    <span id="webageText"></span>
+  </div>
 </template>
 
 <style scoped>

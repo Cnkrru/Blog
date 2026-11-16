@@ -1,15 +1,15 @@
 /*
  * compare 对比组件插件
  *
- * 语法：围栏代码块，语言名 compare，用 `@tab 栏标题` 分节，栏内每行一个条目：
- *   ```compare
+ * 语法：::: 容器，用 `@tab 栏标题` 分节，栏内每行一个条目：
+ *   ::: compare
  *   @tab 优点
  *   构建期渲染
  *   @tab 缺点
  *   需要重新编译
- *   ```
+ *   :::
  * 适合优点/缺点、方案A/方案B 对照。
- * 分节走 panel.ts 共享管道（与 tabs / code-group 同构）。
+ * 分节走 panel.ts 共享管道（与 tabs 同构）。
  *
  * 结构约定：HTML 片段一律抽成模块级 const 模板，render 只留解析与编排的 TS 逻辑。
  */
@@ -37,7 +37,7 @@ const COMPARE_WRAP = (html: string): string => `
 
 export const compareBlock: ComponentPlugin = {
   name: 'compare',
-  fenceLangs: ['compare'],
+  containers: ['compare'],
   render(ctx, content) {
     const esc = ctx.escapeHtml
     const panels = splitPanels(content, 'compare')

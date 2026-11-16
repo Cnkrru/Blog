@@ -20,9 +20,9 @@ keywords: typescript.代码规范工具
 npm i -D typescript@~6.0.3
 ```
 
-```tip
+::: tip
 这一步是因为笔者原本安装的是7.0+的版本，需要的代码规范工具不支持7.0以上的版本
-```
+:::
 
 ### 2. 安装代码规范工具
 
@@ -90,7 +90,7 @@ export default tseslint.config(
 )
 ```
 
-```tip
+::: tip
 这个不要照搬，最好看一下笔者的配置
 1. 忽视构建产物(不检查构建产物的代码规范问题)
 2. 使用JavaScript默认的规则
@@ -100,7 +100,7 @@ export default tseslint.config(
   - 如果是前后端分离，前端项目自己管自己的eslint配置文件，不需要在后端配置文件里配置
 6. 测试部分的配置
   - 这三部分，主要改一下files对应的路径，按照你的项目的实际情况改，然后就是languageOptions的环境配置也按照你实际的情况改
-```
+:::
 
 #### 2. prettier配置文件
 
@@ -186,6 +186,6 @@ max_line_length = 100
 }
 ```
 
-```tip
+::: tip
 如果配置完之后发现有问题，比如`console.log() is not defined`，先跑一下，看看是代码问题还是配置问题
-```
+:::

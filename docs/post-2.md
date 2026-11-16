@@ -2,6 +2,7 @@
 order: 3
 title: express-2-drizzle+sqlite配置
 date: 2026-10-19
+updated: 2026-11-08
 category: 后端
 tags: [express]
 description: 记录给ts项目配置drizzleORM和sqlite数据库
@@ -17,11 +18,11 @@ npm install drizzle-orm better-sqlite3
 npm install -D drizzle-kit @types/better-sqlite3
 ```
 
-```tip
+::: tip
 这里笔者用的数据库是SQLite，其他的暂时没用过
 
 sqlite驱动用的是better-sqlite3，而不是node官方库node:sqlite(截止到这篇文章发布那天,node:sqlite还是处于测试阶段)
-```
+:::
 
 ### 2. 定义表结构
 
@@ -84,7 +85,7 @@ export default defineConfig({
 
 - 运行`npx drizzle-kit generate`
 
-```terminal
+```console
 $ npx drizzle-kit generate
 No config path provided, using default 'drizzle.config.ts'
 Reading config file 'D:\__projects\express\drizzle.config.ts'
@@ -100,10 +101,34 @@ users 4 columns 1 indexes 0 fks
 
 - 运行`npx drizzle-kit migrate`
 
-```terminal
+```console
 $ npx drizzle-kit migrate
 No config path provided, using default 'drizzle.config.ts'
 Reading config file 'D:\__projects\express\drizzle.config.ts'
 ```
 
 - 这里说没配置路径，用了配置文件默认的路径的位置，直接在根目录生成了一个`app.db`
+
+## SQLite
+
+> 这里用的数据库是SQLite,所以在这里记录一些相关的内容
+
+- 官网地址:[https://sqlite.org/index.html](https://sqlite.org/index.html)
+
+### VSCODE插件
+
+`sqlite viewer`这个插件能点击`.db`文件直接查看内容
+
+### drizzle内置sqlite操作工具
+
+- 一个网页端调试工具
+
+```sh
+npx drizzle-kit studio
+```
+
+会提示访问:
+
+```console
+https://local.drizzle.studio/
+```

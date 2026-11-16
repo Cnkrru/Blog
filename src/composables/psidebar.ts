@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ref } from 'vue'
+import { AVATOR_SRC } from '@/composables/common/config'
 
 /* ====================<sidebar>==================== */
 export const refSidebar = ref(false)
@@ -9,6 +10,14 @@ export const refSidebar = ref(false)
  */
 export const toggleSidebar = () => {
   refSidebar.value = !refSidebar.value
+}
+
+/* ====================<avator>==================== */
+export const setAvator = () => {
+  const avator = document.querySelector<HTMLImageElement>('#avatorImg')
+  if (avator) {
+    avator.src = AVATOR_SRC
+  }
 }
 
 /* ====================<weather>==================== */
@@ -73,6 +82,17 @@ export const weather = async () => {
     console.error('[ERR]:天气数据获取失败')
   }
 }
+
+/* ====================<nav>==================== */
+export const nav = [
+  { elName: '文章', elTo: '/postlist' },
+  { elName: '关于', elTo: '/about' },
+  { elName: '分类', elTo: '/category' },
+  { elName: '标签', elTo: '/tag' },
+  { elName: '图集', elTo: '/photo' },
+  { elName: '链接', elTo: '/link' },
+  { elName: '设置', elTo: '/setting' },
+]
 /* ====================<busuanzi>==================== */
 export const buSuanZi = () => {
   if (document.querySelector('.bsz-script')) return

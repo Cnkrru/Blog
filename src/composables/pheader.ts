@@ -5,7 +5,6 @@ import { Howl } from 'howler'
 import { START_LOCATION, type Router } from 'vue-router'
 import { getRouter } from '../router'
 import { postClean, postCleanCache } from './pamin/post'
-import { refLayout, setLayout } from './pamin/setting'
 import { DEFAULT_LD } from './common/config'
 
 /* ====================<ld>==================== */
@@ -13,17 +12,23 @@ type LD = 'light' | 'dark'
 const lds: LD[] = ['light', 'dark']
 
 export const refLd = ref<LD>(DEFAULT_LD as LD)
-// 设置亮暗
+/*
+ * id:设置亮暗状态
+ * fn:切换类来实现，localstore持久化存储
+ */
 export const setLd = (ld: LD) => {
   const body = document.body
-  lds.forEach((name) => body.classList.remove(name)) // 清理旧类，避免硬编码
+  lds.forEach((name) => body.classList.remove(name))
   body.classList.add(ld)
   refLd.value = ld
 
   localStorage.setItem('ld', ld)
   console.info(`亮暗设置成功,当前布局为${ld}`)
 }
-// 初始化亮暗
+/*
+ * id:初始化亮暗
+ * fn:onMounted挂载，首次进入网页根据localstore里的字段配置亮暗，如果是第一次，默认暗色(DEFAULT_LD)
+ */
 export const initLD = () => {
   const store = localStorage.getItem('ld')
   const l: LD = lds.includes(store as LD) ? (store as LD) : (DEFAULT_LD as LD)
@@ -32,25 +37,27 @@ export const initLD = () => {
 }
 
 /* ====================<immersive>==================== */
-let immersive = false
-let layoutBeforeImmersive: 'default' | 'card' = 'default'
+export const refImmersive = ref(false)
+/*
+ * id:沉浸阅读模式切换
+ * fn:通过增删类来实现页面布局改变,页面布局改变依靠display:none/flex
+ */
 export const setImmersive = () => {
-  const body = document.body
-  if (immersive) {
-    // 退出沉浸：去掉沉浸类，恢复进入前的布局
-    body.classList.remove('immersive')
-    setLayout(layoutBeforeImmersive)
-  } else {
-    // 进入沉浸：先记住当前布局，再切到 immersive
-    layoutBeforeImmersive = refLayout.value
-    body.classList.remove('default', 'card')
-    body.classList.add('immersive')
-  }
-  immersive = !immersive
-  console.info(`[INFO]:沉浸模式${immersive ? '开启' : '关闭'}`)
+  refImmersive.value = !refImmersive.value
+  document.body.classList.toggle('immersive', refImmersive.value)
+  console.info(`[INFO]:沉浸模式${refImmersive.value ? '开启' : '关闭'}`)
 }
 
 /* ====================<music>==================== */
+/*
+ * 歌曲类型
+ * id:用于排序
+ * title:歌曲名
+ * artist:艺术家
+ * cover:封面地址
+ * audio:歌曲地址
+ * backupAudio:备用路径
+ */
 type Song = {
   id: number
   title: string
@@ -69,59 +76,73 @@ let timer: ReturnType<typeof setInterval> | null = null
 // 连续加载失败计数。所有歌曲源都不通时用它止损，避免 onloaderror 无限切歌
 let loadFailCount = 0
 
-export const musicList = ref<Song[]>([])
-export const musicIndex = ref(0)
-export const volume = ref(1)
-export const musicTime = ref(0)
-export const duration = ref(0)
-export const isPlaying = ref(false)
-export const isMuted = ref(false)
-export const openControl = ref(false)
-export const openList = ref(false)
-export const isLoading = ref(false)
-// 音乐源全部加载失败时置位，供 UI 提示（原先加载态与失败态都无处可见）
-export const isLoadFailed = ref(false)
+export const musicList = ref<Song[]>([]) //歌曲列表
+export const musicIndex = ref(0) // 歌曲索引
+export const volume = ref(1) // 歌曲音量
+export const musicTime = ref(0) // 已经播放了多久
+export const duration = ref(0) // 歌曲总长
+export const isPlaying = ref(false) // 是否播放
+export const isMuted = ref(false) // 是否静音
+export const openControl = ref(false) // 是否打开面板
+export const openList = ref(false) // 是否打开歌曲列表
+export const isLoading = ref(false) // 是否加载
+export const isLoadFailed = ref(false) // 是否加载失败
 
-/* ====================<派生数据>==================== */
-export const currentMusic = computed(() => musicList.value[musicIndex.value])
-export const progress = computed(() => (duration.value ? musicTime.value / duration.value : 0))
+export const currentMusic = computed(() => musicList.value[musicIndex.value]) // 当前歌曲
+export const progress = computed(() => (duration.value ? musicTime.value / duration.value : 0)) // 播放进度
 
+/*
+ * id:时间规范化函数
+ * fn:规范显示时间
+ */
 export const formatTime = (time: number) => {
   const min = Math.floor(time / 60)
   const s = Math.floor(time % 60)
   return `${min}:${s < 10 ? '0' : ''}${s}`
 }
 
-/* ====================<工人：进度轮询>==================== */
-// 导出名按域加 music 前缀，避免与 post.ts 的 mount/unmount 等同名导出撞车
-export const musicStop = () => {
+/*
+ * id:停止进度轮询
+ * fn:清除进度轮询定时器
+ */
+export const stopProgressLoop = () => {
   if (timer) {
     clearInterval(timer)
     timer = null
   }
 }
 
-export const musicStart = () => {
+/*
+ * id:开启进度轮询
+ * fn:每0.5s更新一下进度条
+ */
+export const startProgressLoop = () => {
   if (!howler) return
-  musicStop()
+  stopProgressLoop()
   timer = setInterval(() => {
     musicTime.value = howler?.seek() ?? 0
   }, 500)
 }
 
-/* ====================<工人：构建/销毁 Howl>==================== */
+/*
+ * id:销毁Howler实例
+ * fn:先停止进度轮询，然后取消howler挂载
+ */
 export const musicUnmount = () => {
-  musicStop()
+  stopProgressLoop()
   if (howler) {
     howler.unload()
     howler = null
   }
 }
 
+/*
+ * id:创建Howler实例
+ * fn:清理可能遗留的实例，配置并初始化新实例
+ */
 export const musicMount = (song: Song, autoplay: boolean) => {
   musicUnmount()
   if (!song.audio) return
-  // 换歌时重置播放进度与时长，避免进度条停留在上一首的位置
   musicTime.value = 0
   duration.value = 0
   isLoading.value = true
@@ -130,30 +151,36 @@ export const musicMount = (song: Song, autoplay: boolean) => {
   howler = new Howl({
     src: [song.audio, ...(song.backupAudio || [])],
     html5: true,
-    autoplay,
+    autoplay: false,
     volume: isMuted.value ? 0 : volume.value,
+    // 开始播放
     onplay: () => {
       isPlaying.value = true
-      musicStart()
+      startProgressLoop()
     },
+    // 暂停播放
     onpause: () => {
       isPlaying.value = false
-      musicStop()
+      stopProgressLoop()
     },
+    // 停止播放
     onstop: () => {
       isPlaying.value = false
-      musicStop()
+      stopProgressLoop()
     },
+    // 结束播放
     onend: () => {
       isPlaying.value = false
-      musicStop()
+      stopProgressLoop()
       nextMusic()
     },
+    // 挂载
     onload: () => {
       duration.value = howler?.duration() ?? 0
       isLoading.value = false
       loadFailCount = 0 // 加载成功即清零失败计数
     },
+    // 挂载失败兜底
     onloaderror: () => {
       isLoading.value = false
       // 每首歌都试过一轮仍失败则停下来，避免在坏源之间无限轮换
@@ -182,6 +209,10 @@ export const musicMount = (song: Song, autoplay: boolean) => {
   )
 }
 
+/*
+ * id:播放歌曲
+ * fn:挂载实例，播放索引对应的歌曲
+ */
 export const loadMusic = (index: number, autoplay: boolean) => {
   const target = musicList.value[index]
   if (!target) return
@@ -189,7 +220,10 @@ export const loadMusic = (index: number, autoplay: boolean) => {
   musicMount(target, autoplay)
 }
 
-/* ====================<外层动作>==================== */
+/*
+ * id:加载音乐配置文件
+ * fn:用axios把public的music.json的数据拿来
+ */
 export const loadConfig = async () => {
   if (!isBrowser) return
   try {
@@ -203,6 +237,10 @@ export const loadConfig = async () => {
   }
 }
 
+/*
+ * id:播放指定音乐
+ * fn:
+ */
 export const toggleMusic = () => {
   if (howler && howler.playing()) {
     howler.pause()
@@ -215,18 +253,6 @@ export const toggleMusic = () => {
   if (musicList.value.length) {
     loadMusic(musicIndex.value, true)
   }
-}
-
-export const play = () => {
-  if (howler) {
-    howler.play()
-  } else if (musicList.value.length) {
-    loadMusic(musicIndex.value, true)
-  }
-}
-
-export const pause = () => {
-  if (howler) howler.pause()
 }
 
 export const preMusic = () => {

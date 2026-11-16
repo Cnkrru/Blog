@@ -26,7 +26,7 @@ app.get('/hello', (_req, res) => {
 
 然后访问:
 
-```terminal
+```console
 http://localhost:3000/hello
 ```
 
@@ -61,9 +61,9 @@ export const getCpuInfo = async () => {
 }
 ```
 
-```tip
+::: tip
 这里只展示笔者写的其中一个函数,函数写法大家不管是具名函数还是我这种箭头函数都差不多，笔者用箭头函数只是个人习惯，这个文件都是功能实现函数，export一个个导出来
-```
+:::
 
 ### 2. 挂路由
 
@@ -105,14 +105,14 @@ export default router
 + app.use('/api', router)
 ```
 
-```tip
+::: tip
 这里`sysinfo.ts`所有需要接口的函数,自己`router.<方法>('router',handleFn)`挂载到`router`,然后统一挂载到`system`上,然后在`index.ts`挂载到`/api`
 - /api/system/cpu
-```
+:::
 
 - 这里最终挂载的路径是:
 
-```terminal
+```console
 localhost:3000/api/system/cpu
 ```
 

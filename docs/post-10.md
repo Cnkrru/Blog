@@ -14,9 +14,9 @@ keywords: vue
 
 - 官网地址:[https://router.vuejs.org/zh/](https://router.vuejs.org/zh/)
 
-```tip
+::: tip
 笔者这里记录的使用方法并不全面，笔者用到了哪些，就会在这篇文章记录哪些，多余的笔者不学，也不记录
-```
+:::
 
 ## 使用方法
 
@@ -26,21 +26,21 @@ keywords: vue
 npm install vue-router
 ```
 
-```info
+::: info
 一般在初始化vue项目时会询问是否添加这个组件，一般都会添加，还会顺带生成对应的配置文件
-```
+:::
 
 ### 2. 创建配置文件
 
-```filetree
+::: filetree
 - src/ | 源码文件夹
     - router/ | 路由配置文件夹
         - index.ts | 路由配置文件
-```
+:::
 
-```info
+::: info
 用vue官方初始化指令初始化时也是这个结构
-```
+:::
 
 ### 3. 修改配置文件
 
@@ -80,9 +80,9 @@ export default router
      - component对应页面类vue组件
 3. 最后导出配置
 
-```info
+::: info
 当前版本，vue项目默认将页面类vue组件放在`src/views`处
-```
+:::
 
 ### 4. 挂载插件
 
@@ -100,10 +100,10 @@ export default router
 
 ### 5. vue组件内使用
 
-```info
+::: info
 vue组件内需要用vue-router内置组件router-link配合使用
 router-link需要配置to属性使用
-```
+:::
 
 #### 代码示例
 
@@ -117,6 +117,6 @@ router-link需要配置to属性使用
 <router-link to="/setting" class="nav-element">{{ refText.navSetting }}</router-link>
 ```
 
-```info
+::: info
 该实例是笔者博客的导航栏，`{{}}`在这里是用来做多语言了
-```
+:::

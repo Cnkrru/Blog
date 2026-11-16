@@ -428,6 +428,16 @@
   --admo-color: #f85149;
 }
 
+/* diff 增删行颜色：shiki 的 css-variables 主题输出 --shiki-token-inserted / --shiki-token-deleted */
+.light {
+  --shiki-token-inserted: #116329;
+  --shiki-token-deleted: #cf222e;
+}
+.dark {
+  --shiki-token-inserted: #7ee787;
+  --shiki-token-deleted: #ff7b72;
+}
+
 /* 行号（CSS计数器，shiki每行一个span.line，mermaid无shiki类不受影响） */
 .content div[class*='language-'] pre.shiki code {
   counter-reset: code-line;
@@ -680,13 +690,19 @@
   display: none;
   width: 100%;
   padding: 16px;
-  white-space: pre-wrap;
   font-size: 0.95em;
   border-top: 1px solid color-mix(in srgb, var(--g-color) 20%, transparent);
 }
 /* 面板显隐：每块 label 紧跟自己的面板，相邻兄弟选择器即可，不再按序号枚举 */
 .content .tabs-tab:has(> input[type='radio']:checked) + .tabs-panel {
   display: block;
+}
+/* 面板内是渲染后的 markdown，首尾段落的默认外边距会撑出多余留白 */
+.content .tabs-panel > :first-child {
+  margin-top: 0;
+}
+.content .tabs-panel > :last-child {
+  margin-bottom: 0;
 }
 
 /* ===== 写作组件响应式：窄屏收紧 ===== */
@@ -1043,7 +1059,7 @@
   font-style: normal;
 }
 
-/* ===== 行内语法：按键 kbd / 徽章 badge / 高亮 mark ===== */
+/* ===== 行内语法：按键 kbd / 徽章 badge ===== */
 .content kbd {
   display: inline-block;
   padding: 2px 7px;
@@ -1067,16 +1083,6 @@
   line-height: 1.6;
   vertical-align: 0.08em;
 }
-.content mark {
-  padding: 0 3px;
-  border-radius: 3px;
-  background: color-mix(in srgb, #ffd43b 55%, transparent);
-  color: inherit;
-}
-/* 暗色下高亮底变橄榄黄，继承浅色文字会低于 AA，固定为深色文字 */
-.dark .content mark {
-  color: #1f2328;
-}
 
 /* ===== 第二批组件响应式 ===== */
 @media (max-width: 480px) {
@@ -1098,65 +1104,5 @@
   margin: 0;
   border-radius: 0 0 8px 8px;
   border-top: none;
-}
-
-/* ===== diff 代码块（GitHub 统一 diff 约定：符号留在行内，按行铺背景色） ===== */
-.content pre.diff {
-  padding: 0;
-  background: var(--shiki-background);
-}
-.content pre.diff code {
-  display: block;
-  counter-reset: diff-line;
-}
-/* 行宽至少铺满整行，背景色才能从左边界延到右边界；空行靠 min-height 撑出行高 */
-.content pre.diff .diff-line {
-  display: block;
-  width: max-content;
-  min-width: 100%;
-  min-height: 1.6em;
-  padding: 0 16px;
-  box-sizing: border-box;
-  white-space: pre;
-  counter-increment: diff-line;
-}
-/* 行号：与普通代码块同一套 CSS 计数器，不写进 HTML */
-.content pre.diff .diff-line::before {
-  content: counter(diff-line);
-  display: inline-block;
-  width: 2em;
-  margin-right: 1em;
-  text-align: right;
-  color: color-mix(in srgb, var(--g-text) 40%, transparent);
-  user-select: none;
-}
-/* 配色取 GitHub Primer 的 diff 基线色，暗色单独覆盖 */
-.content pre.diff .diff-add {
-  background: #e6ffec;
-}
-.content pre.diff .diff-del {
-  background: #ffebe9;
-}
-.content pre.diff .diff-hunk {
-  background: #f1f8ff;
-  color: #57606a;
-}
-.content pre.diff .diff-file,
-.content pre.diff .diff-meta {
-  color: #57606a;
-}
-.dark .content pre.diff .diff-add {
-  background: rgba(46, 160, 67, 0.15);
-}
-.dark .content pre.diff .diff-del {
-  background: rgba(248, 81, 73, 0.1);
-}
-.dark .content pre.diff .diff-hunk {
-  background: rgba(56, 139, 253, 0.1);
-  color: #8b949e;
-}
-.dark .content pre.diff .diff-file,
-.dark .content pre.diff .diff-meta {
-  color: #8b949e;
 }
 

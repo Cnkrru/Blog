@@ -14,9 +14,9 @@ keywords: blog,weather,ip
   - `https://ipinfo.io/json`
   - `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`
 
-```tip
+::: tip
 weather API需要地理位置，需要IPAPI的数据
-```
+:::
 
 ### IPAPI返回的数据
 
@@ -36,7 +36,7 @@ weather API需要地理位置，需要IPAPI的数据
 
 ### 天气API返回的数据
 
-```terminal
+```console
 https://api.open-meteo.com/v1/forecast?latitude=22.3163&longitude=114.1647&current=temperature_2m,weather_code&timezone=auto
 ```
 
@@ -205,9 +205,9 @@ export const weather = async () => {
 }
 ```
 
-```info
+::: info
 1. 这里笔者用了`axios`这个库，笔者没学`Fetch API`，直接学封装好的库了，这个库也确实好用
     - axios文档:[https://axios.rest/zh/](https://axios.rest/zh/)
 2. 这个组件也没什么复杂的，就是两个`axios.get()`，把数据拿出来，交给ref变量渲染就行，另外有加两个加载标志位做一下加载态的骨架屏
 3. 这里给加载态做了骨架屏，ref变量+v-if+几个css即可
-```
+:::
