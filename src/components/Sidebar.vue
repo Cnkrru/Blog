@@ -1,28 +1,25 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import SidebarAvator from './psidebar/Avator.vue'
 import SidebarWelcome from './psidebar/Welcome.vue'
 import SidebarWeather from './psidebar/Weather.vue'
 import SidebarNav from './psidebar/Nav.vue'
 import SidebarBuSuanZi from './psidebar/BuSuanZi.vue'
-import { refSidebar, toggleSidebar } from '../composables/psidebar.ts'
+import { setSidebar } from '../composables/psidebar.ts'
+onMounted(() => {
+  setSidebar()
+})
 </script>
 
 <template>
-  <aside
-    class="sidebar"
-    :class="{ 'sidebar-open': refSidebar }"
-  >
+  <aside class="sidebar">
     <SidebarAvator />
     <SidebarWelcome />
     <SidebarWeather />
     <SidebarNav />
     <SidebarBuSuanZi />
   </aside>
-  <div
-    class="sidebar-overlay"
-    v-show="refSidebar"
-    @click="toggleSidebar"
-  ></div>
+  <div class="sidebar-overlay"></div>
 </template>
 
 <style scoped>
@@ -65,11 +62,15 @@ import { refSidebar, toggleSidebar } from '../composables/psidebar.ts'
     transform: translateX(0);
   }
   .sidebar-overlay {
-    display: block;
+    display: none;
     position: fixed;
     inset: 0;
     z-index: 9998;
     background: rgba(0, 0, 0, 0.45);
+  }
+  /* 抽屉打开时才显示遮罩；关闭状态下不可见也不拦截点击 */
+  .sidebar.sidebar-open + .sidebar-overlay {
+    display: block;
   }
 }
 </style>

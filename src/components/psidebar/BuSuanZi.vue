@@ -1,26 +1,19 @@
 <script setup lang="ts">
 import X from '../icon/X.vue'
 import { onMounted } from 'vue'
-import { bszOpen, bszClose, buSuanZi } from '@/composables/psidebar'
-
-const busuanziList = [
-  { item: '今日访问', id: 'busuanzi_today_pv' },
-  { item: '今日访客', id: 'busuanzi_today_uv' },
-  { item: '站点访问', id: 'busuanzi_site_pv' },
-  { item: '站点访客', id: 'busuanzi_site_uv' },
-  { item: '本页浏览', id: 'busuanzi_page_pv' },
-  { item: '本页访客', id: 'busuanzi_page_uv' },
-]
+import { bszOpen, bszClose, buSuanZi, busuanziList } from '@/composables/psidebar'
 
 onMounted(() => {
   buSuanZi()
+  bszOpen()
+  bszClose()
 })
 </script>
 
 <template>
   <button
     class="bsz-btn"
-    @click="bszOpen()"
+    id="bszOpen"
   >
     统计
   </button>
@@ -28,7 +21,7 @@ onMounted(() => {
   <dialog class="bsz-box">
     <div class="bsz-header">
       <p>站点统计</p>
-      <button @click="bszClose()"><X /></button>
+      <button id="bszClose"><X /></button>
     </div>
 
     <div class="bsz-body">

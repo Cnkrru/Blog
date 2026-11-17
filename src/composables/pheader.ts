@@ -37,15 +37,39 @@ export const initLD = () => {
 }
 
 /* ====================<immersive>==================== */
-export const refImmersive = ref(false)
+let isImmersive = false
 /*
- * id:沉浸阅读模式切换
- * fn:通过增删类来实现页面布局改变,页面布局改变依靠display:none/flex
+ * fn:沉浸阅读模式切换
+ * des:开启时移除 body 上的 default/card 布局类并加上 immersive，关闭时移除 immersive 并回填本地存储的布局类
+ * type:private
+ * param:无
+ * return：无
+ */
+const immersive = () => {
+  const body = document.body
+  isImmersive = !isImmersive
+  if (isImmersive) {
+    body.classList.remove('default', 'card')
+    body.classList.add('immersive')
+  } else {
+    body.classList.remove('immersive')
+    const store = localStorage.getItem('layout')
+    body.classList.add(String(store))
+  }
+}
+
+/*
+ * fn:绑定沉浸阅读按钮
+ * des:给 #immersive 按钮绑定点击事件，点击后切换沉浸阅读模式
+ * type:public
+ * param:无
+ * return：无
  */
 export const setImmersive = () => {
-  refImmersive.value = !refImmersive.value
-  document.body.classList.toggle('immersive', refImmersive.value)
-  console.info(`[INFO]:沉浸模式${refImmersive.value ? '开启' : '关闭'}`)
+  const immersiveBtn = document.querySelector('#immersive')!
+  immersiveBtn.addEventListener('click', () => {
+    immersive()
+  })
 }
 
 /* ====================<music>==================== */

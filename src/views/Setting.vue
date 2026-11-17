@@ -203,7 +203,16 @@ useSeo({
   width: 50%;
 }
 
-.btn-on {
+/* 激活态：由 body 上的状态类派生，无需 JS 同步按钮 */
+body.blue #blue,
+body.ink #ink,
+body.sakura #sakura,
+body.purple #purple,
+body.cyan #cyan,
+body.default #default,
+body.card #card,
+body.bg-img #img,
+body:has(.bg-video) #video {
   background-color: var(--g-color);
   border-color: var(--g-color);
   color: #fff;

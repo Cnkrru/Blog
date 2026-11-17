@@ -3,8 +3,8 @@ import { SITE_START_TIME } from './common/config'
 /* ====================<webage>==================== */
 let timer: ReturnType<typeof setInterval> | null = null
 /*
- * fn:设置布局
- * des:
+ * fn:刷新运行时长
+ * des:计算建站时间到当前时间的差值，写入 #webageText 元素
  * type:private
  * param:无
  * return：无
@@ -27,8 +27,8 @@ const webageTick = () => {
 }
 
 /*
- * fn:将布局改为默认
- * des:
+ * fn:初始化运行时长
+ * des:立即刷新一次运行时长，并启动每秒更新一次的定时器，重复调用不会重复启动
  * type:public
  * param:无
  * return：无

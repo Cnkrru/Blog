@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { refIp, refWeather, refIpLoading, refWeatherLoading, weather } from '@/composables/psidebar'
+import { weather } from '@/composables/psidebar'
 import { onMounted } from 'vue'
 
 onMounted(() => {
@@ -11,24 +11,12 @@ onMounted(() => {
   <div class="weather-ip">
     <span
       class="weather weather-skeleton weather-skeleton-temp"
-      v-if="refWeatherLoading"
+      id="weather"
     ></span>
-    <span
-      class="weather"
-      v-else
-    >
-      {{ refWeather || '--' }}
-    </span>
     <span
       class="ip weather-skeleton weather-skeleton-city"
-      v-if="refIpLoading"
+      id="ip"
     ></span>
-    <span
-      class="ip"
-      v-else
-    >
-      {{ refIp || '未知' }}
-    </span>
   </div>
 </template>
 

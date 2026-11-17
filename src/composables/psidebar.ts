@@ -1,18 +1,44 @@
 import axios from 'axios'
-import { ref } from 'vue'
 import { AVATOR_SRC } from '@/composables/common/config'
 
 /* ====================<sidebar>==================== */
-export const refSidebar = ref(false)
+// 侧边栏是否展开：true 展开，false 收起
+export let isSidebar = false
+
 /*
- * id:侧边栏显隐
- * fn:header的按钮呼出侧边栏，移动端侧边栏遮盖层点击隐藏侧边栏
+ * fn:侧边栏显隐
+ * des:切换 isSidebar 并同步 .sidebar-open 类，抽屉位移与遮罩显隐交给 CSS
+ * type:private
+ * param:无
+ * return：无
  */
-export const toggleSidebar = () => {
-  refSidebar.value = !refSidebar.value
+const sidebar = () => {
+  const sidebarEl = document.querySelector<HTMLElement>('.sidebar')!
+  isSidebar = !isSidebar
+  if (isSidebar) sidebarEl.classList.add('sidebar-open')
+  if (!isSidebar) sidebarEl.classList.remove('sidebar-open')
+}
+
+/*
+ * fn:绑定侧边栏开关
+ * des:onMounted 之后给 header 的汉堡键和移动端遮罩绑定点击事件，点击一次切换一次
+ * type:public
+ * param:无
+ * return：无
+ */
+export const setSidebar = () => {
+  document.querySelector('#sidebar-btn')?.addEventListener('click', sidebar)
+  document.querySelector('.sidebar-overlay')?.addEventListener('click', sidebar)
 }
 
 /* ====================<avator>==================== */
+/*
+ * fn:设置头像
+ * des:把配置中的头像地址写入 #avatorImg 的 src
+ * type:public
+ * param:无
+ * return：无
+ */
 export const setAvator = () => {
   const avator = document.querySelector<HTMLImageElement>('#avatorImg')
   if (avator) {
@@ -21,69 +47,36 @@ export const setAvator = () => {
 }
 
 /* ====================<weather>==================== */
-type IpInfo = {
-  city: string
-  loc: string
-}
-type WeatherResponse = {
-  current: { temperature_2m: number }
-}
-// IP
-export const refIp = ref('')
-// 天气
-export const refWeather = ref('')
-// 加载态
-export const refIpLoading = ref(true)
-export const refWeatherLoading = ref(true)
-// ip和天气的缓存
-let ipCache: IpInfo | null = null
-let weatherCache: number | null = null
-
 /*
- * id:IP获取函数
- * fn:用ipinfo获取IP
- */
-export const ip = async (): Promise<IpInfo | null> => {
-  if (ipCache) return ipCache
-  try {
-    const { data } = await axios.get<IpInfo>('https://ipinfo.io/json')
-    ipCache = data
-    refIp.value = data.city
-    refIpLoading.value = false
-    console.log('[INFO]:IP数据获取成功')
-    return data
-  } catch {
-    console.error('[ERR]:IP数据获取失败')
-    return null
-  }
-}
-
-/*
- * id:天气获取函数
- * fn:给open-meteo从ipAPI获取到的经纬度，获取对应的温度
+ * fn:获取天气
+ * des:先用 ipinfo.io 按访问者 IP 取得经纬度，再向 open-meteo 请求当前温度，写入侧边栏并移除骨架屏
+ * type:public
+ * param:无
+ * return：无
  */
 export const weather = async () => {
-  if (weatherCache) return
-  const _ipData = await ip()
-  if (!_ipData?.loc) return
+  let _weatherLoading = true
+  const ipEl = document.querySelector('#ip')!
+  const weatherEl = document.querySelector('#weather')!
 
-  const lat = _ipData.loc.split(',')[0]!
-  const lon = _ipData.loc.split(',')[1]!
+  const ipData = (await axios.get('https://ipinfo.io/json')).data
+  if (!ipData?.loc) return
+  const lat = ipData.loc.split(',')[0]!
+  const lon = ipData.loc.split(',')[1]!
 
-  try {
-    const { data } = await axios.get<WeatherResponse>(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
-    )
-    weatherCache = data.current.temperature_2m
-    refWeatherLoading.value = false
-    refWeather.value = `${String(data.current.temperature_2m)}°`
-    console.info('[INFO]:天气数据获取成功')
-  } catch {
-    console.error('[ERR]:天气数据获取失败')
-  }
+  const { data } = await axios.get(
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
+  )
+  _weatherLoading = false
+  ipEl.classList.remove('weather-skeleton', 'weather-skeleton-city')
+  weatherEl.classList.remove('weather-skeleton', 'weather-skeleton-temp')
+  ipEl.textContent = ipData.city
+  weatherEl.textContent = data.current.temperature_2m
+  console.info('[INFO]:天气数据获取成功')
 }
 
 /* ====================<nav>==================== */
+// 侧边栏导航数据，供 Nav.vue 用 v-for 渲染；elName 为显示名，elTo 为路由地址
 export const nav = [
   { elName: '文章', elTo: '/postlist' },
   { elName: '关于', elTo: '/about' },
@@ -94,6 +87,22 @@ export const nav = [
   { elName: '设置', elTo: '/setting' },
 ]
 /* ====================<busuanzi>==================== */
+// 不蒜子选择器列表
+export const busuanziList = [
+  { item: '今日访问', id: 'busuanzi_today_pv' },
+  { item: '今日访客', id: 'busuanzi_today_uv' },
+  { item: '站点访问', id: 'busuanzi_site_pv' },
+  { item: '站点访客', id: 'busuanzi_site_uv' },
+  { item: '本页浏览', id: 'busuanzi_page_pv' },
+  { item: '本页访客', id: 'busuanzi_page_uv' },
+]
+/*
+ * fn:创建不蒜子script
+ * des:向 body 注入不蒜子统计脚本；已存在则直接返回，避免重复加载
+ * type:public
+ * param:无
+ * return：无
+ */
 export const buSuanZi = () => {
   if (document.querySelector('.bsz-script')) return
   const s = document.createElement('script')
@@ -104,10 +113,30 @@ export const buSuanZi = () => {
   document.body.appendChild(s)
 }
 
+/*
+ * fn:打开不蒜子弹窗
+ * des:取页面上的 .bsz-box 弹窗并调用 showModal 以模态方式打开
+ * type:public
+ * param:无
+ * return：无
+ */
 export const bszOpen = () => {
-  document.querySelector<HTMLDialogElement>('.bsz-box')?.showModal()
+  const bszOpenBtn = document.querySelector('#bszOpen')!
+  bszOpenBtn.addEventListener('click', () => {
+    document.querySelector<HTMLDialogElement>('.bsz-box')!.showModal()
+  })
 }
 
+/*
+ * fn:关闭不蒜子弹窗
+ * des:取页面上的 .bsz-box 弹窗并调用 close 关闭
+ * type:public
+ * param:无
+ * return：无
+ */
 export const bszClose = () => {
-  document.querySelector<HTMLDialogElement>('.bsz-box')?.close()
+  const bszCloseBtn = document.querySelector('#bszClose')!
+  bszCloseBtn.addEventListener('click', () => {
+    document.querySelector<HTMLDialogElement>('.bsz-box')!.close()
+  })
 }

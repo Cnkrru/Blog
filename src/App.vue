@@ -16,7 +16,7 @@ import LoadingBar from './components/pheader/LoadingBar.vue'
 // ts
 import { initTheme, initLayout, initBg, initOpacity } from './composables/pamin/setting.ts'
 import { initLD } from './composables/pheader.ts'
-import { refSidebar } from './composables/psidebar.ts'
+import { isSidebar, setSidebar } from './composables/psidebar.ts'
 
 const route = useRoute()
 const isIndex = computed(() => route.path === '/')
@@ -26,7 +26,8 @@ const isPost = computed(() => route.name === 'post')
 watch(
   () => route.fullPath,
   () => {
-    refSidebar.value = false
+    // 路由切换时若抽屉还开着，再切一次收起
+    if (isSidebar) setSidebar()
     document.querySelector<HTMLElement>('.main')?.scrollTo({ top: 0 })
   },
 )

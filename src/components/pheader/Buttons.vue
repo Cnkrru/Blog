@@ -4,17 +4,16 @@ import Dark from '../icon/Dark.vue'
 import Immersive from '../icon/Immersive.vue'
 import Music from '../icon/Music.vue'
 import Menu from '../icon/Menu.vue'
-import { refImmersive, refLd, setImmersive, setLd, toggleUi } from '@/composables/pheader.ts'
-import { toggleSidebar } from '@/composables/psidebar.ts'
+import { refLd, setLd, toggleUi } from '@/composables/pheader.ts'
 </script>
 
 <template>
   <div class="button-list">
     <!-- 侧边栏 -->
     <button
+      id="sidebar-btn"
       class="button sidebar-btn"
       title="菜单"
-      @click="toggleSidebar"
     >
       <Menu class="icon" />
     </button>
@@ -35,10 +34,9 @@ import { toggleSidebar } from '@/composables/psidebar.ts'
     </button>
     <!-- 沉浸阅读 -->
     <button
+      id="immersive"
       class="button immersive-btn"
-      :class="{ 'is-on': refImmersive }"
       title="沉浸阅读"
-      @click="setImmersive()"
     >
       <Immersive class="icon" />
     </button>
