@@ -1,23 +1,10 @@
 import { computed, ref } from 'vue'
-import axios from 'axios'
-import { windowPages } from './pager'
+import { windowPages } from '../common/utils'
+import { LINK_LIST } from '../config/link.config'
+import type { LinkData, LinkGroup } from '../common/type'
 
-type LinkData = {
-  id: string
-  name: string
-  category: string
-  description: string
-  url: string
-}
-type LinkGroup = {
-  name: string
-  links: LinkData[]
-}
-
-// 构建期可同步取到 links 全表（dist/.cache/links.json 由构建管线从 public/config/links.json 复制），
-//   setup 期即可用 → Link 页在 SSG 产物里就有真内容；副本缺失时仍走 axios 兜底
-const localLink = import.meta.glob<LinkData[]>('/dist/.cache/links.json', { eager: true, import: 'default' })
-export let linkCache: LinkData[] = localLink['/dist/.cache/links.json'] ?? []
+// 链接数据由 config 在编译期内联，运行时不再发请求
+const linkCache: LinkData[] = LINK_LIST
 let links: LinkGroup[] = []
 export const linkCategories = ref<string[]>([])
 export const linkCategory = ref(1)
@@ -48,17 +35,8 @@ const linkGroupBuild = () => {
   linkCategoryNum.value = linkCategories.value.length
 }
 
-// setup 期同步可用 → SSG 产物带真内容；未就绪返回 false 交异步兜底
-export const linkCleanSync = (): boolean => {
-  if (links.length > 0) return true
-  if (linkCache.length === 0) return false
-  linkGroupBuild()
-  return true
-}
-
-export const linkClean = async () => {
-  if (linkCleanSync()) return
-  linkCache = (await axios.get<LinkData[]>('/config/links.json')).data
+// setup 期同步构建分组 → SSG 产物直接带链接内容
+export const linkInit = () => {
   linkGroupBuild()
 }
 

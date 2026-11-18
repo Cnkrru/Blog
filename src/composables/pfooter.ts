@@ -1,4 +1,4 @@
-import { SITE_START_TIME } from './common/config'
+import { SITE_START_TIME } from './config/config'
 
 /* ====================<webage>==================== */
 let timer: ReturnType<typeof setInterval> | null = null

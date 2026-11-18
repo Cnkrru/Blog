@@ -141,7 +141,7 @@ export const configLanguage = async (files: string[]): Promise<void> => {
     for (const token of scan.parse(content, {})) {
       if (token.type !== 'fence') continue
       const lang = fenceLang(scan.utils.unescapeAll(token.info))
-      // 围栏组件（mermaid / console）不是真语言，不进 shiki；
+      // 围栏组件（console 等）不是真语言，不进 shiki；
       // code-group 内的代码块本身就是标准围栏，扫描时已按普通围栏计入
       if (componentFenceLangs.has(lang)) continue
       langSet.add(lang)

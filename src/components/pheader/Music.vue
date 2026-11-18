@@ -22,7 +22,7 @@ import {
   toggleMuted,
   onSeek,
   onVolume,
-  loadConfig,
+  loadMusic,
   musicUnmount,
 } from '@/composables/pheader.ts'
 import MusicIcon from '../icon/Music.vue'
@@ -36,7 +36,8 @@ import VolumeX from '../icon/VolumeX.vue'
 import X from '../icon/X.vue'
 
 onMounted(() => {
-  loadConfig()
+  // 配置已内置在 config.ts，挂载时直接预载当前歌曲的元数据（不自动播放）
+  loadMusic(musicIndex.value, false)
 })
 onUnmounted(() => {
   musicUnmount()

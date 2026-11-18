@@ -12,7 +12,7 @@ import {
   listPageNum,
   listNowPage,
   listItems,
-} from '../composables/pamin/postlist.ts'
+} from '../composables/pmain/postlist.ts'
 
 useSeo({
   title: '文章列表',

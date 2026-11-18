@@ -27,8 +27,8 @@ export const SITE_START_TIME = '2026-10-04'
 export const SITE_COPYRIGHT = '© Cnkrru,power by Vue,All rights reserved'
 
 // 主题配置
-export const DEFAULT_THEME = 'sakura'
+export const DEFAULT_THEME = 'blue'
 export const DEFAULT_LD = 'dark'
 export const DEFAULT_LAYOUT = 'default'
-export const DEFAULT_OPACITY = '0.6'
+export const DEFAULT_OPACITY = '1'
 export const DEFAULT_BG = 'img'

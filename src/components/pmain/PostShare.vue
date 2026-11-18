@@ -7,7 +7,7 @@ import {
   qrcodeClose,
   shareCopy,
   qrCanvas,
-} from '../../composables/pamin/post.ts'
+} from '../../composables/pmain/post.ts'
 import Share from '../icon/share/Share.vue'
 import Heart from '../icon/Heart.vue'
 import Wechat from '../icon/share/Wechat.vue'

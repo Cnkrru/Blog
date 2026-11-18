@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import { postCleanCache, postClean, postCleanSync, type CleanData } from './post'
+import { postCleanCache, postClean, postCleanSync } from './post'
+import type { CleanData } from '../common/type'
 
 export const tagItem = ref('')
 export const tagSet = ref(new Set<string>())

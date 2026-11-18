@@ -8,10 +8,6 @@ import {
   CACHE_PATH,
   JSON_PATH,
   POST_META_PATH,
-  LINK_JSON_PATH,
-  LINK_META_PATH,
-  PHOTO_JSON_PATH,
-  PHOTO_META_PATH,
 } from './paths.ts'
 
 /*
@@ -86,17 +82,11 @@ export const jsonPathChecker = (): void => {
 
 /*
  * public/ 下的静态资源不进 Vite 模块图，无法 import；
- * 把 post.json / links.json / photos.json 原样复制到 dist/.cache/，
+ * 把 post.json 原样复制到 dist/.cache/，
  * 得到可 import 的同源副本，供各页面 SSR/客户端同步取数据
  */
 export const syncStaticMeta = (): void => {
   if (fs.existsSync(JSON_PATH)) {
     fs.copyFileSync(JSON_PATH, POST_META_PATH)
-  }
-  if (fs.existsSync(LINK_JSON_PATH)) {
-    fs.copyFileSync(LINK_JSON_PATH, LINK_META_PATH)
-  }
-  if (fs.existsSync(PHOTO_JSON_PATH)) {
-    fs.copyFileSync(PHOTO_JSON_PATH, PHOTO_META_PATH)
   }
 }

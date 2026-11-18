@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
-import { postCleanCache, postClean, postCleanSync, type CleanData } from './post'
-import { windowPages } from './pager'
+import { postCleanCache, postClean, postCleanSync } from './post'
+import type { CleanData } from '../common/type'
+import { windowPages } from '../common/utils'
 
 const POST_NUM = 6 // 每页文章条数
 

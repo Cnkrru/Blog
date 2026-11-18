@@ -12,7 +12,7 @@ import {
   setImgBg,
   setVideoBg,
   setOpacity,
-} from '../composables/pamin/setting'
+} from '../composables/pmain/setting'
 
 onMounted(() => {
   setBlueTheme()
@@ -97,7 +97,6 @@ useSeo({
         min="0"
         max="1"
         step="0.01"
-        value="opacityValue"
         class="opacity-input"
       />
     </div>

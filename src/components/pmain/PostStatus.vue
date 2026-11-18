@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { postStatus, word, time } from '../../composables/pamin/post.ts'
+import { postStatus, word, time } from '../../composables/pmain/post.ts'
 import FileText from '../icon/FileText.vue'
 import Clock from '../icon/Clock.vue'
 

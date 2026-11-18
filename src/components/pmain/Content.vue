@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { root, contentClick } from '../../composables/pamin/post.ts'
+import { root } from '../../composables/pmain/post.ts'
 </script>
 
 <template>
-  <div ref="root" class="content" @click="contentClick">
+  <div ref="root" class="content">
     <slot />
   </div>
 </template>

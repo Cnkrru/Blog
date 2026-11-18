@@ -1,14 +1,13 @@
 import { computed, ref, watch } from 'vue'
-import axios from 'axios'
 import MiniSearch from 'minisearch'
-import { Howl } from 'howler'
 import { START_LOCATION, type Router } from 'vue-router'
 import { getRouter } from '../router'
-import { postClean, postCleanCache } from './pamin/post'
-import { DEFAULT_LD } from './common/config'
+import { postClean, postCleanCache } from './pmain/post'
+import { DEFAULT_LD } from './config/config'
+import { MUSIC_LIST } from './config/music.config'
+import type { LD, SearchDoc, Song } from './common/type'
 
 /* ====================<ld>==================== */
-type LD = 'light' | 'dark'
 const lds: LD[] = ['light', 'dark']
 
 export const refLd = ref<LD>(DEFAULT_LD as LD)
@@ -73,34 +72,13 @@ export const setImmersive = () => {
 }
 
 /* ====================<music>==================== */
-/*
- * 歌曲类型
- * id:用于排序
- * title:歌曲名
- * artist:艺术家
- * cover:封面地址
- * audio:歌曲地址
- * backupAudio:备用路径
- */
-type Song = {
-  id: number
-  title: string
-  artist: string
-  cover: string
-  audio: string
-  backupAudio?: string[]
-}
-type MusicConfig = { songs: Song[] }
-
-// SSR 守卫：构建期(SSG)无 window，loadConfig 直接跳过，避免 ReferenceError
-const isBrowser = typeof window !== 'undefined'
-
-let howler: Howl | null = null
+// 阅读顺序：状态 → 时间工具 → 进度轮询 → 实例销毁/创建 → 切歌入口 → 播放参数 → 面板与事件适配
+let player: HTMLAudioElement | null = null
 let timer: ReturnType<typeof setInterval> | null = null
-// 连续加载失败计数。所有歌曲源都不通时用它止损，避免 onloaderror 无限切歌
+// 连续加载失败计数。所有歌曲都加载不通时用它止损，避免 error 事件无限切歌
 let loadFailCount = 0
 
-export const musicList = ref<Song[]>([]) //歌曲列表
+export const musicList = ref<Song[]>(MUSIC_LIST) //歌曲列表
 export const musicIndex = ref(0) // 歌曲索引
 export const volume = ref(1) // 歌曲音量
 export const musicTime = ref(0) // 已经播放了多久
@@ -126,8 +104,11 @@ export const formatTime = (time: number) => {
 }
 
 /*
- * id:停止进度轮询
- * fn:清除进度轮询定时器
+ * fn:停止进度轮询
+ * des:清除进度轮询定时器
+ * type:public
+ * param:无
+ * return：无
  */
 export const stopProgressLoop = () => {
   if (timer) {
@@ -137,32 +118,44 @@ export const stopProgressLoop = () => {
 }
 
 /*
- * id:开启进度轮询
- * fn:每0.5s更新一下进度条
+ * fn:开启进度轮询
+ * des:每 0.5s 读取一次 audio.currentTime，同步播放进度
+ * type:public
+ * param:无
+ * return：无
  */
 export const startProgressLoop = () => {
-  if (!howler) return
+  if (!player) return
   stopProgressLoop()
   timer = setInterval(() => {
-    musicTime.value = howler?.seek() ?? 0
+    musicTime.value = player?.currentTime ?? 0
   }, 500)
 }
 
 /*
- * id:销毁Howler实例
- * fn:先停止进度轮询，然后取消howler挂载
+ * fn:销毁音频实例
+ * des:先停止进度轮询，再暂停并释放当前 audio 元素
+ * type:public
+ * param:无
+ * return：无
  */
 export const musicUnmount = () => {
   stopProgressLoop()
-  if (howler) {
-    howler.unload()
-    howler = null
+  if (player) {
+    player.pause()
+    player.removeAttribute('src')
+    player.load()
+    player = null
   }
+  isPlaying.value = false
 }
 
 /*
- * id:创建Howler实例
- * fn:清理可能遗留的实例，配置并初始化新实例
+ * fn:创建音频实例
+ * des:清理可能遗留的实例，新建 Audio 并挂载事件，按 autoplay 决定是否立即播放
+ * type:public
+ * param:song 歌曲配置，autoplay 是否立即播放
+ * return：无
  */
 export const musicMount = (song: Song, autoplay: boolean) => {
   musicUnmount()
@@ -172,70 +165,62 @@ export const musicMount = (song: Song, autoplay: boolean) => {
   isLoading.value = true
   isLoadFailed.value = false
 
-  howler = new Howl({
-    src: [song.audio, ...(song.backupAudio || [])],
-    html5: true,
-    autoplay: false,
-    volume: isMuted.value ? 0 : volume.value,
-    // 开始播放
-    onplay: () => {
-      isPlaying.value = true
-      startProgressLoop()
-    },
-    // 暂停播放
-    onpause: () => {
-      isPlaying.value = false
-      stopProgressLoop()
-    },
-    // 停止播放
-    onstop: () => {
-      isPlaying.value = false
-      stopProgressLoop()
-    },
-    // 结束播放
-    onend: () => {
-      isPlaying.value = false
-      stopProgressLoop()
-      nextMusic()
-    },
-    // 挂载
-    onload: () => {
-      duration.value = howler?.duration() ?? 0
-      isLoading.value = false
-      loadFailCount = 0 // 加载成功即清零失败计数
-    },
-    // 挂载失败兜底
-    onloaderror: () => {
-      isLoading.value = false
-      // 每首歌都试过一轮仍失败则停下来，避免在坏源之间无限轮换
-      loadFailCount += 1
-      if (loadFailCount >= musicList.value.length) {
-        isLoadFailed.value = true
-        console.error('[ERR]:音乐源全部加载失败，已停止自动切歌')
-        return
-      }
-      nextMusic()
-    },
+  const audio = new Audio()
+  player = audio
+  audio.preload = 'metadata'
+  audio.volume = isMuted.value ? 0 : volume.value
+  audio.muted = isMuted.value
+
+  // 元数据就绪即可拿到时长，不必等 canplaythrough
+  audio.addEventListener('loadedmetadata', () => {
+    duration.value = Math.ceil(audio.duration * 10) / 10
+    isLoading.value = false
+    loadFailCount = 0 // 加载成功即清零失败计数
+  })
+  // 开始播放
+  audio.addEventListener('play', () => {
+    isPlaying.value = true
+    startProgressLoop()
+  })
+  // 暂停播放
+  audio.addEventListener('pause', () => {
+    isPlaying.value = false
+    stopProgressLoop()
+  })
+  // 播放结束
+  audio.addEventListener('ended', () => {
+    isPlaying.value = false
+    stopProgressLoop()
+    nextMusic()
+  })
+  // 加载失败兜底
+  audio.addEventListener('error', () => {
+    isLoading.value = false
+    // 每首歌都试过一轮仍失败则停下来，避免在坏源之间无限轮换
+    loadFailCount += 1
+    if (loadFailCount >= musicList.value.length) {
+      isLoadFailed.value = true
+      console.error('[ERR]:音乐源全部加载失败，已停止自动切歌')
+      return
+    }
+    nextMusic()
   })
 
-  // html5 模式下 Howler 只在 canplaythrough 才写内部 _duration，而该事件对远程大文件
-  //   常常迟迟不触发甚至不触发，于是 howler.duration() 恒为 0：右侧总长一直 0:00，
-  //   而 onSeek 又以 duration 作守卫，进度条就拖不动。这里直接听底层 audio 元素的
-  //   loadedmetadata（远早于 canplaythrough）取时长。
-  const audioNode = (howler as unknown as { _sounds: { _node?: HTMLAudioElement }[] })._sounds[0]
-    ?._node
-  audioNode?.addEventListener(
-    'loadedmetadata',
-    () => {
-      duration.value = Math.ceil(audioNode.duration * 10) / 10
-    },
-    { once: true },
-  )
+  audio.src = song.audio
+  if (autoplay) {
+    audio.play().catch(() => {
+      isPlaying.value = false
+      console.error('[ERR]:音乐播放失败')
+    })
+  }
 }
 
 /*
- * id:播放歌曲
- * fn:挂载实例，播放索引对应的歌曲
+ * fn:播放歌曲
+ * des:切换索引并挂载对应歌曲的音频实例
+ * type:public
+ * param:index 歌曲索引，autoplay 是否立即播放
+ * return：无
  */
 export const loadMusic = (index: number, autoplay: boolean) => {
   const target = musicList.value[index]
@@ -245,33 +230,22 @@ export const loadMusic = (index: number, autoplay: boolean) => {
 }
 
 /*
- * id:加载音乐配置文件
- * fn:用axios把public的music.json的数据拿来
- */
-export const loadConfig = async () => {
-  if (!isBrowser) return
-  try {
-    const { data } = await axios.get<MusicConfig>('/config/music.json')
-    musicList.value = data.songs
-    if (musicList.value.length) {
-      loadMusic(musicIndex.value, false)
-    }
-  } catch {
-    console.error('[ERR]:加载音乐配置失败')
-  }
-}
-
-/*
- * id:播放指定音乐
- * fn:
+ * fn:播放/暂停当前音乐
+ * des:已有实例时按暂停态切换播放与暂停，没有实例时先加载当前歌曲再播放
+ * type:public
+ * param:无
+ * return：无
  */
 export const toggleMusic = () => {
-  if (howler && howler.playing()) {
-    howler.pause()
-    return
-  }
-  if (howler) {
-    howler.play()
+  if (player) {
+    if (player.paused) {
+      player.play().catch(() => {
+        isPlaying.value = false
+        console.error('[ERR]:音乐播放失败')
+      })
+    } else {
+      player.pause()
+    }
     return
   }
   if (musicList.value.length) {
@@ -300,26 +274,31 @@ export const selectMusic = (index: number) => {
 }
 
 export const seek = (percent: number) => {
-  if (howler && duration.value) howler.seek(percent * duration.value)
+  if (player && duration.value) player.currentTime = percent * duration.value
 }
 
 export const setVolume = (vol: number) => {
   volume.value = vol
-  if (howler) {
-    howler.volume(isMuted.value ? 0 : volume.value)
+  if (player) {
+    player.volume = isMuted.value ? 0 : volume.value
   }
 }
 
 export const toggleMuted = () => {
   isMuted.value = !isMuted.value
-  if (howler) {
-    howler.mute(isMuted.value)
+  if (player) {
+    player.muted = isMuted.value
   }
 }
 
-/* ====================<UI 交互>==================== */
+/*
+ * fn:切换音乐面板
+ * des:翻转面板开关，关闭时一并收起歌曲列表，避免残留展开态
+ * type:public
+ * param:无
+ * return：无
+ */
 export const toggleUi = () => {
-  // 翻转主面板开关；关闭时列表一起收起，避免残留展开态
   const next = !openControl.value
   openControl.value = next
   if (!next) openList.value = false
@@ -334,8 +313,6 @@ export const onVolume = (e: Event) => {
 }
 
 /* ====================<search>==================== */
-type SearchDoc = { id: string; title: string; category: string; tags: string[]; date: string }
-
 export const refKeyword = ref('')
 export const refSearchRes = ref<SearchDoc[]>([])
 export const searchReady = ref(false)

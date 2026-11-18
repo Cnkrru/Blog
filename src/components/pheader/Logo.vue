@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SITE_LOGO } from '@/composables/common/config'
+import { SITE_LOGO } from '@/composables/config/config'
 </script>
 
 <template>

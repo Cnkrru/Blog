@@ -14,7 +14,7 @@ import Footer from './components/Footer.vue'
 import BackToTop from './components/pmain/BackToTop.vue'
 import LoadingBar from './components/pheader/LoadingBar.vue'
 // ts
-import { initTheme, initLayout, initBg, initOpacity } from './composables/pamin/setting.ts'
+import { initTheme, initLayout, initBg, initOpacity } from './composables/pmain/setting.ts'
 import { initLD } from './composables/pheader.ts'
 import { isSidebar, setSidebar } from './composables/psidebar.ts'
 
@@ -45,7 +45,7 @@ onMounted(() => {
   <!-- 全局路由加载进度条：所有页面共用，放在 isIndex 分支外 -->
   <LoadingBar />
 
-  <!-- 音乐播放器移出 header 常驻渲染，否则进首页(不渲染 header)会卸载 Music 触发 howler.unload 中断播放 -->
+  <!-- 音乐播放器移出 header 常驻渲染，否则进首页(不渲染 header)会卸载 Music 中断播放 -->
   <HeaderMusic />
 
   <template v-if="isIndex">

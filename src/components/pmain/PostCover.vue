@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CleanData } from '../../composables/pamin/post.ts'
+import type { CleanData } from '../../composables/common/type.ts'
 
 const props = defineProps<{ article: CleanData }>()
 </script>

@@ -10,7 +10,7 @@ import {
   tagSet,
   tagList,
   tags,
-} from '../composables/pamin/tags.ts'
+} from '../composables/pmain/tags.ts'
 
 useSeo({
   title: '标签',

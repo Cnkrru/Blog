@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import { postCache, postData, type PostData } from './pamin/post'
+import { postCache, postData } from './pmain/post'
+import type { DateCounter, DayData, MonthData, MousePoint, Particle, PostData, Ripple } from './common/type'
 // 粒子配色跟随主题变化，需读取当前亮暗/主题
 import { refLd } from './pheader'
 import {
@@ -9,26 +10,10 @@ import {
   INCREASE_SPEED,
   DECREASE_SPEED,
   LOOP_SPEED,
-} from './common/config'
+} from './config/config'
 
 /* ====================<hitmap>==================== */
 export const hitmap = (() => {
-  type DayData = {
-    date: string
-    activity: number
-    publish: number
-  }
-  type MonthData = {
-    year: number
-    month: number
-    days: DayData[]
-  }
-  type DateCounter = {
-    publish: number
-    updated: number
-    history: number
-  }
-
   const years = ref<number[]>([])
   const monthsData = ref<MonthData[]>([])
   const selectedMonth = ref<number>(1)
@@ -180,23 +165,6 @@ export const hitmap = (() => {
 })()
 /* ====================<particle>==================== */
 export const particles = () => {
-  type Particle = {
-    x: number
-    y: number
-    vX: number
-    vY: number
-    radius: number
-  }
-  type MousePoint = {
-    x: number
-    y: number
-  }
-  type Ripple = {
-    x: number
-    y: number
-    radius: number
-  }
-
   const PARTICLE_COUNT = 80 // 桌面端粒子数
   const PARTICLE_COUNT_SM = 32 // 移动端（≤768px）粒子数，避免小屏拥挤与算力浪费
   const DPR_CAP = 2
@@ -238,8 +206,11 @@ export const particles = () => {
   const syncThemeColor = () => {
     const key = `${refLd.value}|${localStorage.getItem('theme')}`
     if (key === themeKey) return
+    // 主题类由 App 的 initTheme/initLD 挂载后才生效，取不到值就先不缓存，下一帧重试
+    const hex = pickThemeColor()
+    if (!hex) return
     themeKey = key
-    parseColor(pickThemeColor())
+    parseColor(hex)
   }
 
   // 粒子配置：随机位置/速度/半径

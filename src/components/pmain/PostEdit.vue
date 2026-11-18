@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { postEdit, publish, update, history } from '../../composables/pamin/post.ts'
+import { postEdit, publish, update, history } from '../../composables/pmain/post.ts'
 import Calendar from '../icon/Calendar.vue'
 import RefreshCw from '../icon/RefreshCw.vue'
 import Clock from '../icon/Clock.vue'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
 import BackToTop from '../icon/BackToTop.vue'
-import { backToTop, scrollProgress } from '@/composables/pamin/post.ts'
+import { backToTop, scrollProgress } from '@/composables/pmain/post.ts'
 
 // 保存解绑函数，卸载时清理 scroll 监听，避免反复挂载累积
 let clearScroll: (() => void) | null = null

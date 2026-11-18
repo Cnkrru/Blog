@@ -1,10 +1,6 @@
 import { ref } from 'vue'
-import { postCleanCache, postClean, postCleanSync, type CleanData } from './post'
-
-export type CategoryGroup = {
-  name: string
-  items: CleanData[]
-}
+import { postCleanCache, postClean, postCleanSync } from './post'
+import type { CategoryGroup, CleanData } from '../common/type'
 
 export const categoryViewMode = ref(0)
 export const categoryModeGroups = ref<CategoryGroup[]>([])

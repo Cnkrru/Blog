@@ -1,0 +1,40 @@
+import type { Song } from '../common/type'
+
+// 音乐配置
+export const MUSIC_LIST: Song[] = [
+  {
+    id: 0,
+    title: 'MY ALL',
+    artist: '滨崎步',
+    cover: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music-img/my-all.jpg',
+    audio: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music/MY ALL.mp3',
+  },
+  {
+    id: 1,
+    title: 'Stay With Me',
+    artist: 'Charlie Puth',
+    cover: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music-img/stay-with-me.jpg',
+    audio: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music/Stay With Me.mp3',
+  },
+  {
+    id: 2,
+    title: '半点心',
+    artist: '草蜢',
+    cover: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music-img/ban-dian-xin.jpg',
+    audio: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music/半点心.mp3',
+  },
+  {
+    id: 3,
+    title: '打上花火',
+    artist: 'DAOKO & 米津玄師',
+    cover: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music-img/da-shang-hua-huo.jpg',
+    audio: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music/打上花火.mp3',
+  },
+  {
+    id: 4,
+    title: '生生世世爱',
+    artist: '吴雨霏',
+    cover: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music-img/sheng-sheng-shi-shi-ai.jpg',
+    audio: 'https://cdn.jsdelivr.net/gh/cnkrru/static/music/生生世世爱.mp3',
+  },
+]

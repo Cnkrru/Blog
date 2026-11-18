@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useSeo } from '../composables/common/seo'
 import {
-  linkClean,
-  linkCleanSync,
+  linkInit,
   linkChangePage,
   linkDisplayPages,
   setDropdown,
@@ -12,7 +10,7 @@ import {
   linkItems,
   linkCategoryNum,
   linkDropdown,
-} from '../composables/pamin/link.ts'
+} from '../composables/pmain/link.ts'
 
 useSeo({
   title: '友情链接',
@@ -20,12 +18,8 @@ useSeo({
   path: '/link',
 })
 
-// setup 期同步加载，让 SSG 产物就带链接内容；数据未就绪再走异步兜底
-const linkLoaded = linkCleanSync()
-
-onMounted(() => {
-  if (!linkLoaded) linkClean()
-})
+// setup 期同步构建分组，让 SSG 产物就带链接内容
+linkInit()
 </script>
 
 <template>

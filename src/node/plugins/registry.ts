@@ -6,7 +6,7 @@
  *     写法就是 VitePress / Docusaurus / @mdit 系列的通用语法，这里只提供外壳与配色。
  *  2. 自研层（官方没有对应插件）：目录树、步骤、时间线、流程图、问答、对比栏、引用卡、代码组。
  *     它们没有生态插件，语法统一为 ::: 容器，由 base.ts 的原文捕获规则解析。
- * 标准围栏组件（mermaid / console）不占容器名，直接按语言拦截。
+ * 标准围栏组件（console 等）不占容器名，直接按语言拦截。
  *
  * 新增组件的标准流程：
  *  - 生态里有插件 → 优先用插件，这里不要再造轮子
@@ -20,7 +20,6 @@ import { makeContainerRule } from './base.ts'
 import { getPageKey } from '../tools.ts'
 
 // 基础
-import { mermaidBlock } from './mermaid.ts'
 import { timelineBlock } from './timeline.ts'
 import { stepsBlock } from './steps.ts'
 // 结构
@@ -84,7 +83,6 @@ const TABS_GROUP = Symbol('tabsGroup')
 
 // 自研组件插件：新增组件在这里登记（官方插件不在此列）
 const selfPlugins: readonly ComponentPlugin[] = [
-  mermaidBlock,
   timelineBlock,
   stepsBlock,
   filetreeBlock,

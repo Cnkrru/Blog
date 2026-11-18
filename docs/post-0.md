@@ -20,13 +20,12 @@ keywords: 个人博客, Vue 3
   1. md->html:依赖于markdown-it
   2. ssg:依赖于vite-ssg以及vue-router
   3. 语法高亮:依赖于shiki
-  4. mermaid:依赖于mermaid.js
-  5. katex:依赖于md-it的katex插件
-  6. 提示块:依赖于 @mdit/plugin-container
-  7. 评论区:依赖于giscus
-  8. 搜索:依赖于minisearch
-  9. 音乐:依赖于howler
-  10. 灯箱:依赖于medium-zoom
+  4. katex:依赖于md-it的katex插件
+  5. 提示块:依赖于 @mdit/plugin-container
+  6. 评论区:依赖于giscus
+  7. 搜索:依赖于minisearch
+  8. 音乐:原生HTMLAudioElement
+  9. 灯箱:原生dialog实现
 
 ---
 
@@ -157,19 +156,6 @@ $ npm run build
 跑构建 | npm run build
 看效果 | 打开对应的文章页
 :::
-
----
-
-### 流程图
-
-mermaid 走标准围栏代码块，编译期只拦截并产出容器，图表由运行时按需渲染。
-
-```mermaid
-graph LR
-  A[Markdown] --> B[编译期插件]
-  B --> C[静态 HTML]
-  C --> D[浏览器交互]
-```
 
 ---
 

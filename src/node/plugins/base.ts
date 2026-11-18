@@ -4,7 +4,7 @@
  * 职责：定义『编译期组件插件』的统一契约与公共工具，所有写作组件插件都基于它实现。
  *
  * 语法分层（对齐 VitePress / Docusaurus / markdown-it-container 的生态约定）：
- *  - 围栏代码块：语言名本身就是标准语言（mermaid / console），直接复用围栏语法
+ *  - 围栏代码块：语言名本身就是标准语言（console 等），直接复用围栏语法
  *  - ::: 容器：官方有插件的（提示块 / 折叠块 / 选项卡）走 @mdit/plugin-*；
  *    官方没有插件的（步骤、时间线、目录树、问答、对比、引用卡、代码组）走本模块的原文捕获规则
  *  - 行内语法：`==标记==` 交给 @mdit/plugin-mark，其余场景直接写原生 HTML（<kbd> / <span class="badge">）
@@ -28,7 +28,7 @@ export const splitRow = (line: string): string[] =>
 
 /*
  * 代码块顶栏：语言徽章（圆点+文本）。
- * 普通高亮代码块与 mermaid 共用同一顶栏结构，保证视觉一致。
+ * 普通高亮代码块与围栏组件共用同一顶栏结构，保证视觉一致。
  */
 export const toolbar = (lang: string): string => `
     <div class="code-toolbar">
@@ -57,7 +57,7 @@ export interface PluginContext {
 /*
  * 编译期组件插件契约。
  *  - name：插件名（调试用）
- *  - fenceLangs：标准围栏代码块的语言名集合（小写），如 mermaid / console
+ *  - fenceLangs：标准围栏代码块的语言名集合（小写），如 console
  *  - containers：::: 容器的名称集合（小写），如 steps / code-group
  *  - render：content 是块内正文（已按容器层级去掉公共缩进）；info 是名称之后的可选参数；
  *    container 是命中的容器名，用于区分同一插件的多个名称

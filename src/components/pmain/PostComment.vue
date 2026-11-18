@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted } from 'vue'
-import { comment, refCommentFailed, refCommentLoading } from '../../composables/pamin/post.ts'
+import { comment, refCommentFailed, refCommentLoading } from '../../composables/pmain/post.ts'
 
 // 每次进入文章页重新走一次加载态：脚本虽已缓存，iframe 仍需重新构建
 refCommentLoading.value = true

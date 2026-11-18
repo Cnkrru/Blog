@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { INDEX_LOGO } from '@/composables/common/config'
+import { INDEX_LOGO } from '@/composables/config/config'
 </script>
 
 <template>

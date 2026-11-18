@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WELCOME_SAYINGS } from '@/composables/common/config'
+import { WELCOME_SAYINGS } from '@/composables/config/config'
 </script>
 
 <template>

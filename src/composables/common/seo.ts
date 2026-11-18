@@ -6,22 +6,8 @@ import {
   SITE_KEYWORDS,
   SITE_OG_IMAGE,
   SITE_OG_IMAGE_ALT,
-} from './config'
-
-type SeoOptions = {
-  title?: string
-  description?: string
-  keywords?: string
-  path?: string
-  type?: 'website' | 'article'
-  publishedTime?: string
-  updatedTime?: string
-  tags?: string[]
-  noindex?: boolean
-  // 分享封面：文章可在 frontmatter 用 cover 覆盖；不传则用站点默认图
-  image?: string
-  imageAlt?: string
-}
+} from '../config/config'
+import type { SeoOptions } from './type'
 
 /** 站内相对路径补齐为绝对地址（社交平台抓取 og:image 要求绝对 URL） */
 const toAbsolute = (url: string) => {

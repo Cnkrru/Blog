@@ -6,7 +6,7 @@ import { defineConfig, normalizePath } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import generateSitemap from 'vite-ssg-sitemap'
 import compileArticles from './src/node/main.ts'
-import { SITE_URL } from './src/composables/common/config.ts'
+import { SITE_URL } from './src/composables/config/config.ts'
 import 'vite-ssg'
 
 // katex 公式产物里的 MathML 标签，告知 Vue 模板编译器按原生元素处理（不解析为组件）

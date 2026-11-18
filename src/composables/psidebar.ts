@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { AVATOR_SRC } from '@/composables/common/config'
+import { AVATOR_SRC } from '@/composables/config/config'
 
 /* ====================<sidebar>==================== */
 // 侧边栏是否展开：true 展开，false 收起
@@ -59,14 +58,16 @@ export const weather = async () => {
   const ipEl = document.querySelector('#ip')!
   const weatherEl = document.querySelector('#weather')!
 
-  const ipData = (await axios.get('https://ipinfo.io/json')).data
+  const ipData = await (await fetch('https://ipinfo.io/json')).json()
   if (!ipData?.loc) return
   const lat = ipData.loc.split(',')[0]!
   const lon = ipData.loc.split(',')[1]!
 
-  const { data } = await axios.get(
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
-  )
+  const data = await (
+    await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`,
+    )
+  ).json()
   _weatherLoading = false
   ipEl.classList.remove('weather-skeleton', 'weather-skeleton-city')
   weatherEl.classList.remove('weather-skeleton', 'weather-skeleton-temp')

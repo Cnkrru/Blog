@@ -1,8 +1,8 @@
 import bgVideoSrc from '@/assets/media/bg.mp4'
-import { DEFAULT_THEME, DEFAULT_LAYOUT, DEFAULT_BG, DEFAULT_OPACITY } from '../common/config'
+import { DEFAULT_THEME, DEFAULT_LAYOUT, DEFAULT_BG, DEFAULT_OPACITY } from '../config/config'
+import type { Bg, Layout, Theme } from '../common/type'
 
 /* ====================<theme>==================== */
-type Theme = 'ink' | 'blue' | 'cyan' | 'sakura' | 'purple'
 /*
  * fn:设置主题
  * des:移除 body 上的旧主题类，写入新主题类并持久化到本地存储
@@ -113,7 +113,6 @@ export const initTheme = () => {
 }
 
 /* ====================<layout>==================== */
-type Layout = 'default' | 'card'
 /*
  * fn:设置布局
  * des:移除 body 上已有的布局类，写入新布局并持久化到本地存储
@@ -175,7 +174,6 @@ export const initLayout = () => {
 }
 
 /* ====================<bg>==================== */
-type Bg = 'img' | 'video'
 /*
  * fn:设置背景
  * des:图片背景移除视频元素并给 body 加 bg-img 类；视频背景创建静音循环视频并挂载到 body
@@ -258,44 +256,40 @@ export const initBg = () => {
 /* ====================<opacity>==================== */
 /*
  * fn:应用透明度
- * des:读取滑块当前值，写入 CSS 变量 --glass-opacity 并持久化到本地存储
+ * des:把传入值写入 CSS 变量 --glass-opacity 并持久化到本地存储
  * type:private
- * param:无
+ * param:value-透明度字符串（0~1）
  * return：无
  */
-const opacity = () => {
-  const opacityInput = document.querySelector<HTMLInputElement>('.opacity-input')!
-  document.documentElement.style.setProperty('--glass-opacity', String(opacityInput.value))
-  localStorage.setItem('opacity', String(opacityInput.value))
+const opacity = (value: string) => {
+  document.documentElement.style.setProperty('--glass-opacity', value)
+  localStorage.setItem('opacity', value)
   console.info('[INFO]:透明度修改成功')
 }
 /*
  * fn:绑定透明度滑块
- * des:给 .opacity-input 滑块绑定 input 事件，拖动时实时应用透明度
+ * des:回填滑块当前值并绑定 input 事件，拖动时实时应用透明度
  * type:public
  * param:无
  * return：无
  */
 export const setOpacity = () => {
-  const opacityInput = document.querySelector<HTMLInputElement>('.opacity-input')
-  if (opacityInput) {
-    opacityInput.addEventListener('input', () => {
-      opacity()
-    })
-  }
+  const opacityInput = document.querySelector<HTMLInputElement>('.opacity-input')!
+  opacityInput.addEventListener('input', () => {
+    opacity(opacityInput.value)
+  })
 }
 
 /*
  * fn:初始化透明度
- * des:读取本地存储的透明度回填滑块，并应用到 CSS 变量
+ * des:不依赖设置页 DOM，启动即把本地存储或默认值写入 CSS 变量
  * type:public
  * param:无
  * return：无
  */
 export const initOpacity = () => {
   const opacityInput = document.querySelector<HTMLInputElement>('.opacity-input')
-  if (opacityInput) {
-    opacityInput.value = localStorage.getItem('opacity') ?? DEFAULT_OPACITY
-    opacity()
-  }
+  const value = localStorage.getItem('opacity') ?? DEFAULT_OPACITY
+  opacity(value)
+  if (opacityInput) opacityInput.value = value
 }

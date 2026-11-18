@@ -1,6 +1,9 @@
-/**
- * 分页窗口：当前页±2、最多 5 个页码（不足 5 项时向末尾补齐，无省略号）
- * postlist 与 link 两处同算法重复，收敛为单一实现
+/*
+ * fn:分页窗口
+ * des:取当前页前后各 2 页、最多 5 个页码，总数不足时向末尾补齐
+ * type:public
+ * param:current 当前页，total 总页数
+ * return：页码数组
  */
 export const windowPages = (current: number, total: number): number[] => {
   const pages: number[] = []

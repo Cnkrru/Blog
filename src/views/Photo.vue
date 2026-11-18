@@ -5,8 +5,7 @@ import {
   photoAlbum,
   photoAlbumCover,
   photoAlbums,
-  photoClean,
-  photoCleanSync,
+  photoInit,
   photoCloseAlbum,
   photoCloseViewer,
   photoImageThumb,
@@ -14,8 +13,8 @@ import {
   photoOpenViewer,
   photoViewer,
   photoViewerMove,
-  type PhotoImage,
-} from '../composables/pamin/photo.ts'
+} from '../composables/pmain/photo.ts'
+import type { PhotoImage } from '../composables/common/type.ts'
 
 useSeo({
   title: '图集',
@@ -23,8 +22,8 @@ useSeo({
   path: '/photo',
 })
 
-// setup 期同步加载，让 SSG 产物就带相册内容；数据未就绪再走异步兜底
-const photoLoaded = photoCleanSync()
+// setup 期同步构建相册列表，让 SSG 产物就带图集内容
+photoInit()
 
 // 灯箱快捷键：ESC 关闭，左右方向键切换
 const photoKeydown = (event: KeyboardEvent): void => {
@@ -69,7 +68,6 @@ const viewerImage = computed<PhotoImage | null>(
 )
 
 onMounted(() => {
-  if (!photoLoaded) photoClean()
   window.addEventListener('keydown', photoKeydown)
 })
 

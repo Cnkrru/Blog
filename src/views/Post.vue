@@ -3,7 +3,8 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Component } from 'vue'
 import { useSeo } from '../composables/common/seo'
-import { contentReady } from '../composables/pamin/post.ts'
+import type { PostSeo } from '../composables/common/type'
+import { contentReady } from '../composables/pmain/post.ts'
 import PostStatus from '../components/pmain/PostStatus.vue'
 import PostEdit from '../components/pmain/PostEdit.vue'
 import Content from '../components/pmain/Content.vue'
@@ -22,16 +23,6 @@ const content = computed(() => {
 })
 
 // SEO 元数据：dist/.cache/post.json 是构建期从 public/config/post.json 复制的可 import 同源副本
-type PostSeo = {
-  title?: string
-  description?: string
-  keywords?: string
-  date?: string
-  updated?: string
-  category?: string
-  tags?: string[]
-  cover?: string
-}
 const metaMap = import.meta.glob<Record<string, PostSeo>>('/dist/.cache/post.json', {
   eager: true,
   import: 'default',
@@ -60,7 +51,7 @@ useSeo({
       <PostEdit />
       <!-- 正文容器：编译期 md 产物经 slot 注入 -->
       <Content v-if="content">
-        <!-- Suspense 让 SSR/hydration 等正文就绪；@resolve 后再做图片放大与 mermaid 渲染 -->
+        <!-- Suspense 让 SSR/hydration 等正文就绪；@resolve 后再做图片放大 -->
         <Suspense @resolve="contentReady">
           <component :is="content" />
           <template #fallback>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SITE_COPYRIGHT } from '@/composables/common/config'
+import { SITE_COPYRIGHT } from '@/composables/config/config'
 </script>
 
 <template>

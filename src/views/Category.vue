@@ -9,7 +9,7 @@ import {
   categoryViewMode,
   categoryModeGroups,
   categoryExpandGroup,
-} from '../composables/pamin/category.ts'
+} from '../composables/pmain/category.ts'
 
 useSeo({
   title: '分类归档',

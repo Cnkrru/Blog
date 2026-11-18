@@ -1,28 +1,19 @@
-import { reactive, ref, nextTick, computed, watch } from 'vue'
+import { reactive, ref, nextTick, computed } from 'vue'
 import QRCode from 'qrcode'
-import axios from 'axios'
-import type { Zoom } from 'medium-zoom'
 import { refLd } from '../pheader'
+import type {
+  CleanData,
+  HeadingItem,
+  HistoryItem,
+  Level,
+  Platform,
+  PostData,
+  PostMeta,
+} from '../common/type'
 /* ====================<postData>==================== */
-type PostMeta = {
-  order: number
-  title: string
-  date: string
-  updated: string
-  category: string
-  tags: string[]
-  history: string[]
-  description: string
-  keywords: string
-  wordCount: number
-  readingTime: number
-}
-// 导出 PostData：index.ts 的 hitmap 单例复用此全表契约类型
-export type PostData = Record<string, PostMeta>
-
 // 构建期可同步取到 post 全表（dist/.cache/post.json 由构建管线从 public/config/post.json 复制，
 //   是可 import 的同源副本），setup 期即可用 → 列表页/上下篇/字数在 SSG 产物里就有真内容；
-//   副本缺失时（异常场景）仍走 postData 的 axios 兜底
+//   数据全量来自该副本，运行时不再发请求
 const localPost = import.meta.glob<PostData>('/dist/.cache/post.json', {
   eager: true,
   import: 'default',
@@ -41,34 +32,14 @@ const orderMapGet = () => {
   return map
 }
 
-// in-flight Promise 复用，避免同一 tick 内 PostStatus/postEdit/PostNav 并发重复拉取整表
-let postDataPromise: Promise<void> | null = null
+// 数据已在构建期内联，运行时不再发请求；副本异常缺失时只记录错误
 export const postData = async () => {
-  if (Object.keys(postCache).length > 0) return // 有缓存直接读缓存
-  if (!postDataPromise) {
-    postDataPromise = axios
-      .get<PostData>('/config/post.json')
-      .then((meta) => {
-        orderMapCache = null // 新数据落地，作废旧映射
-        postCache = meta.data
-        console.info('[INFO]:已经获取到post.json的数据')
-      })
-      .catch(() => {
-        console.error('[ERR]:未获取到post.json全表')
-        postDataPromise = null // 失败后释放，允许下次重试
-      })
+  if (Object.keys(postCache).length === 0) {
+    console.error('[ERR]:未获取到post.json全表')
   }
-  await postDataPromise
 }
 
-// 导出 CleanData：tagClean 等 pamin 域内模块共享此类型
-export type CleanData = {
-  key: string
-  title: string
-  date: string
-  category: string
-  tags: string[]
-}
+// tagClean 等 pmain 域内模块共享此类型
 export let postCleanCache: CleanData[] = []
 
 // 清洗核心可同步执行（SSG 期 dist/.cache 副本已在内存）；数据未就绪返回 false 交异步兜底
@@ -100,7 +71,6 @@ export const postClean = async () => {
 }
 
 /* ====================<share>==================== */
-type Platform = 'weibo' | 'qq' | 'facebook' | 'x' | 'tg'
 export const qrCanvas = ref<HTMLCanvasElement>()
 
 export const shareLink = (platform: Platform, url: string, title: string) => {
@@ -148,7 +118,6 @@ export const shareCopy = async (text: string) => {
 }
 
 /* ====================<toast>==================== */
-type Level = 'success' | 'info' | 'warning' | 'error'
 // toast图标map
 const levelIconMap: Record<Level, string> = {
   success:
@@ -278,53 +247,6 @@ export const scrollProgress = (): (() => void) => {
   }
 }
 
-/* ====================<mermaid>==================== */
-// mermaid 按当前亮暗初始化主题，并在主题变更时重渲染
-let mermaidWatchBound = false
-
-const mermaidRender = async () => {
-  const mermaidCode = document.querySelectorAll<HTMLElement>('pre[data-lang="mermaid"] code')
-  if (!mermaidCode.length) return
-  mermaidCode.forEach((el) => {
-    // run 会用 svg 替换 code 内容：首次存源码，重渲染前还原源码并清掉 processed 标记
-    const src = el.dataset.mermaidSrc ?? el.textContent ?? ''
-    el.dataset.mermaidSrc = src
-    el.textContent = src
-    el.removeAttribute('data-processed')
-  })
-
-  //   库变量改名 mermaidLib，避免与导出函数同名遮蔽
-  const { default: mermaidLib } = await import('mermaid')
-  // 配置mermaid.js：主题跟随站点亮暗
-  mermaidLib.initialize({
-    startOnLoad: false,
-    theme: refLd.value === 'dark' ? 'dark' : 'default',
-  })
-  try {
-    await mermaidLib.run({ nodes: Array.from(mermaidCode) })
-  } catch {
-    console.error('[ERR]:mermaid渲染错误')
-  }
-}
-
-export const mermaid = async () => {
-  // 首次调用绑定一次主题监听（全局单例，不随组件卸载销毁）
-  if (!mermaidWatchBound) {
-    watch([refLd], () => {
-      mermaidRender()
-    })
-    mermaidWatchBound = true
-  }
-  await mermaidRender()
-}
-
-// 正文改为异步组件后晚于 Content 挂载，图片放大与 mermaid 初始化改由此处触发
-//   （来源：Post.vue 的 Suspense @resolve），避免初始化时正文还没进 DOM
-export const contentReady = () => {
-  imgBox()
-  mermaid()
-}
-
 /* ====================<comment>==================== */
 // 首帧即算出完整主题 URL：giscus-widget 创建时 theme 属性就是对的，
 // 若先用空值再回填，iframe 会先按默认主题构建，后续变更来不及生效。
@@ -373,10 +295,6 @@ export const postStatus = async (postKey: string) => {
 }
 
 /* ====================<postEdit>==================== */
-type HistoryItem = {
-  date: string
-  text: string
-}
 export const publish = ref('')
 export const update = ref('')
 export const history = reactive<HistoryItem[]>([])
@@ -411,11 +329,6 @@ export const postEdit = async (postKey: string) => {
 // toc 单例（PostToc 挂载/卸载驱动）：headings/active 为全文唯一响应式源状态，
 //   scrollspy 用 IntersectionObserver 观察标题越过视口顶部条带（rootMargin 收缩底部 80%），
 //   触底高亮末章由轻量 scroll 监听兜底（仅数值比较，不触发布局）
-type HeadingItem = {
-  id: string
-  text: string
-  level: number
-}
 // 模块级单例（ES 模块只求值一次，无需 IIFE 壳）：headings/active 为全文唯一响应式源状态
 export const headings = ref<HeadingItem[]>([])
 export const active = ref('')
@@ -564,12 +477,15 @@ export const tocUnmount = () => {
   active.value = ''
 }
 
-/* ====================<content>==================== */
-// 正文根元素：Content.vue 的 .content 容器经模板 ref 绑定，供代码复制委托与图片灯箱复用
+/* ====================<code>==================== */
+// 正文根元素：Content.vue 的 .content 容器经模板 ref 绑定，供代码复制委托复用
 export const root = ref<HTMLElement>()
-let zoom: Zoom | null = null
 
-export const codeCopy = (e: MouseEvent) => {
+/*
+ * id:复制代码
+ * fn:命中复制按钮后读取对应代码块源码写入剪贴板，并给出两秒 copied 反馈
+ */
+const onCodeCopy = (e: MouseEvent) => {
   const el = (e.target as HTMLElement).closest<HTMLButtonElement>('button.copy')
   if (!el || !root.value?.contains(el)) return
   const wrapper = el.closest('div[class*="language-"]')
@@ -583,7 +499,12 @@ export const codeCopy = (e: MouseEvent) => {
     }, 2000)
   })
 }
-export const codeToggle = (e: MouseEvent) => {
+
+/*
+ * id:展开收起代码
+ * fn:命中展开按钮后切换代码块高度，并同步按钮文案与标题
+ */
+const onCodeToggle = (e: MouseEvent) => {
   const el = (e.target as HTMLElement).closest<HTMLButtonElement>('button.code-expand')
   if (!el || !root.value?.contains(el)) return
   const wrapper = el.closest<HTMLElement>('.code-collapse')
@@ -600,17 +521,70 @@ export const codeToggle = (e: MouseEvent) => {
     wrapper.scrollIntoView({ block: 'start' })
   }
 }
-// 正文点击统一入口：复制与折叠各自判断目标，互不干扰
-export const contentClick = (e: MouseEvent) => {
-  codeCopy(e)
-  codeToggle(e)
+
+/*
+ * id:绑定正文点击
+ * fn:首次调用时在 document 上分别绑定复制与展开事件，正文换页后无需重新绑定
+ */
+let codeReady = false
+const codeBind = () => {
+  if (codeReady) return
+  codeReady = true
+  document.addEventListener('click', onCodeCopy)
+  document.addEventListener('click', onCodeToggle)
 }
-export const imgBox = async () => {
-  if (!root.value) return
-  const { default: mediumZoom } = await import('medium-zoom')
-  if (!zoom) {
-    zoom = mediumZoom('.content img', { background: 'var(--g-bg)' })
-  } else {
-    zoom.attach('.content img')
-  }
+
+/* ====================<lightbox>==================== */
+let lightbox: HTMLDialogElement | null = null
+
+/*
+ * id:打开灯箱
+ * fn:命中正文图片后把图片地址填入大图并打开，带链接的图片保持原跳转
+ */
+const onLightboxOpen = (e: MouseEvent) => {
+  const img = (e.target as HTMLElement).closest<HTMLImageElement>('.content img')
+  if (!img || img.closest('a') || !lightbox) return
+  const image = lightbox.querySelector<HTMLImageElement>('.lightbox-img')
+  if (!image) return
+  image.src = img.src
+  image.alt = img.alt
+  lightbox.showModal()
+}
+
+/*
+ * id:关闭灯箱
+ * fn:点击大图或遮罩时关闭，Esc 由 dialog 原生处理
+ */
+const onLightboxClose = () => {
+  lightbox?.close()
+}
+
+/*
+ * id:绑定灯箱
+ * fn:首次调用时创建 dialog 挂到 body，并给 document 与 dialog 分别绑定打开、关闭事件
+ */
+let lightboxReady = false
+const lightboxBind = () => {
+  if (lightboxReady) return
+  lightboxReady = true
+
+  lightbox = document.createElement('dialog')
+  lightbox.className = 'lightbox'
+  lightbox.setAttribute('aria-label', '图片预览')
+  const image = document.createElement('img')
+  image.className = 'lightbox-img'
+  lightbox.appendChild(image)
+  document.body.appendChild(lightbox)
+
+  document.addEventListener('click', onLightboxOpen)
+  lightbox.addEventListener('click', onLightboxClose)
+}
+
+/*
+ * id:正文就绪
+ * fn:由 Post.vue 的 Suspense @resolve 调用，依次绑定代码块与灯箱事件
+ */
+export const contentReady = () => {
+  codeBind()
+  lightboxBind()
 }
