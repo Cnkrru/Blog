@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/common/seo'
 import {
   turnView,
-  turnViewSync,
   turnGroup,
   categoryViewMode,
   categoryModeGroups,
@@ -17,12 +15,8 @@ useSeo({
   path: '/category',
 })
 
-// setup 期同步加载，让 SSG 产物就带归档内容；数据未就绪再走异步兜底
-const viewLoaded = turnViewSync(0)
-
-onMounted(() => {
-  if (!viewLoaded) turnView(0)
-})
+// setup 期分桶，SSG 产物直接带归档内容
+turnView(0)
 </script>
 
 <template>

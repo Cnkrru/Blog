@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { postCleanCache, postClean, postCleanSync } from './post'
+import { postData } from '../config/post.config'
 import type { CategoryGroup, CleanData } from '../common/type'
 
 export const categoryViewMode = ref(0)
@@ -7,12 +7,12 @@ export const categoryModeGroups = ref<CategoryGroup[]>([])
 export const categoryExpandGroup = ref('')
 export const categories: CleanData[] = []
 
-// 分桶核心（同步）：数据已在内存即可算（SSG 期 dist/.cache 副本已在）
+// 分桶核心：编译期数据已就绪，直接取用
 const categoryBuild = (fn: (v: CleanData) => string, sortMode: boolean): CategoryGroup[] => {
-  categories.splice(0, categories.length, ...postCleanCache) // 就地填充，保持管线引用
+  categories.splice(0, categories.length, ...postData) // 就地填充，保持管线引用
 
   const map = new Map<string, CleanData[]>()
-  postCleanCache.forEach((post) => {
+  postData.forEach((post) => {
     // 遍历清洗后的数据
     const _ = fn(post) // 按照指定的fn算桶的key
     if (!map.has(_)) {
@@ -29,25 +29,6 @@ const categoryBuild = (fn: (v: CleanData) => string, sortMode: boolean): Categor
   return items.map((k) => ({ name: k, items: map.get(k)! }))
 }
 
-// setup 期同步可用 → SSG 产物带真内容；未就绪返回 null 交异步兜底
-export const categoryCleanSync = (
-  fn: (v: CleanData) => string,
-  sortMode: boolean,
-): CategoryGroup[] | null => {
-  if (!postCleanSync()) return null
-  return categoryBuild(fn, sortMode)
-}
-
-export const categoryClean = async (
-  fn: (v: CleanData) => string,
-  sortMode: boolean,
-): Promise<CategoryGroup[]> => {
-  const groups = categoryCleanSync(fn, sortMode)
-  if (groups) return groups
-  await postClean()
-  return categoryBuild(fn, sortMode)
-}
-
 // 视图模式对应的分桶规则：0 按分类升序；1 按年、2 按月，均为新到旧
 const viewRule = (mode: 0 | 1 | 2): { key: (v: CleanData) => string; sortMode: boolean } => {
   if (mode === 0) return { key: (v) => v.category, sortMode: false }
@@ -55,21 +36,11 @@ const viewRule = (mode: 0 | 1 | 2): { key: (v: CleanData) => string; sortMode: b
   return { key: (v) => v.date.slice(0, 7), sortMode: true }
 }
 
-// setup 期同步切换视图；未就绪返回 false 交异步兜底
-export const turnViewSync = (mode: 0 | 1 | 2): boolean => {
-  const { key, sortMode } = viewRule(mode)
-  const groups = categoryCleanSync(key, sortMode)
-  if (!groups) return false
-  categoryViewMode.value = mode
-  categoryModeGroups.value = groups
-  return true
-}
-
-export const turnView = async (mode: 0 | 1 | 2) => {
-  if (turnViewSync(mode)) return
+// 切换视图：同步完成分桶
+export const turnView = (mode: 0 | 1 | 2) => {
   const { key, sortMode } = viewRule(mode)
   categoryViewMode.value = mode
-  categoryModeGroups.value = await categoryClean(key, sortMode)
+  categoryModeGroups.value = categoryBuild(key, sortMode)
 }
 
 export const turnGroup = (group: string) => {

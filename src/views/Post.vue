@@ -3,8 +3,9 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Component } from 'vue'
 import { useSeo } from '../composables/common/seo'
-import type { PostSeo } from '../composables/common/type'
-import { contentReady } from '../composables/pmain/post.ts'
+import { rawPostData } from '../composables/config/post.config'
+import { codeBind } from '../composables/pmain/post/postCodeCopy'
+import { lightboxBind } from '../composables/pmain/post/postLightBox'
 import PostStatus from '../components/pmain/PostStatus.vue'
 import PostEdit from '../components/pmain/PostEdit.vue'
 import Content from '../components/pmain/Content.vue'
@@ -12,6 +13,12 @@ import PostShare from '../components/pmain/PostShare.vue'
 import PostNav from '../components/pmain/PostNav.vue'
 import PostComment from '../components/pmain/PostComment.vue'
 import PostToc from '../components/pmain/PostToc.vue'
+
+// 正文就绪：Suspense @resolve 时分别绑定代码复制与灯箱
+const contentReady = () => {
+  codeBind()
+  lightboxBind()
+}
 
 const route = useRoute()
 // 正文改为非 eager + 异步组件按需加载（原先 eager 会把全部文章的编译产物打进同一分包）
@@ -22,12 +29,8 @@ const content = computed(() => {
   return loader ? defineAsyncComponent(loader) : null
 })
 
-// SEO 元数据：dist/.cache/post.json 是构建期从 public/config/post.json 复制的可 import 同源副本
-const metaMap = import.meta.glob<Record<string, PostSeo>>('/dist/.cache/post.json', {
-  eager: true,
-  import: 'default',
-})
-const postMeta = computed(() => metaMap['/dist/.cache/post.json']?.[postKey.value])
+// SEO 元数据：直接读编译期生成的模块，无需 glob / 请求
+const postMeta = computed(() => rawPostData[postKey.value])
 
 useSeo({
   title: postMeta.value?.title,

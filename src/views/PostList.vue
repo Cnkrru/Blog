@@ -4,8 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/common/seo'
 import PostCover from '../components/pmain/PostCover.vue'
 import {
-  listClean,
-  listCleanSync,
+  listInit,
   listChangePage,
   listInitPage,
   listDisplayPages,
@@ -20,12 +19,11 @@ useSeo({
   path: '/postlist',
 })
 
-// setup 期同步加载，让 SSG 产物就带文章内容；数据未就绪再走异步兜底
-const listLoaded = listCleanSync()
-if (listLoaded) listChangePage(listInitPage())
+// setup 期填充，让 SSG 产物就带文章内容
+listInit()
+listChangePage(listInitPage())
 
-onMounted(async () => {
-  if (!listLoaded) await listClean() // 数据加载 + 算总页数
+onMounted(() => {
   listChangePage(listInitPage()) // 从 URL ?page= 读初始页渲染，无/非法回退第 1 页
 })
 </script>

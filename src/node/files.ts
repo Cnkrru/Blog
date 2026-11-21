@@ -1,14 +1,9 @@
 /*
- * 文件系统检查与清理：目录创建、过时产物清除、静态资源同步
+ * 文件系统检查与清理：目录创建与过时产物清除
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import {
-  ARTICLE_PATH,
-  CACHE_PATH,
-  JSON_PATH,
-  POST_META_PATH,
-} from './paths.ts'
+import { ARTICLE_PATH, CACHE_PATH } from './paths.ts'
 
 /*
  * 文章目录检查：不存在报错，存在则返回 .md 文件列表
@@ -57,36 +52,5 @@ export const vuePathChecker = (ids: Set<string>): void => {
     }
   } catch (e) {
     console.error('[ERR]:vue文件夹操作失败', e)
-  }
-}
-
-/*
- * post.json 存在性检查：不存在则创建空对象占位
- */
-export const jsonPathChecker = (): void => {
-  try {
-    if (fs.existsSync(JSON_PATH)) {
-      console.log('[INFO]:post.json存在')
-    } else {
-      fs.writeFileSync(JSON_PATH, '{}', 'utf8')
-      if (fs.existsSync(JSON_PATH)) {
-        console.log('[INFO]:原路径无post.json,创建文件成功')
-      } else {
-        console.error('[ERR]:原路径无post.json,创建文件失败')
-      }
-    }
-  } catch (e) {
-    console.error('[ERR]:post.json操作失败', e)
-  }
-}
-
-/*
- * public/ 下的静态资源不进 Vite 模块图，无法 import；
- * 把 post.json 原样复制到 dist/.cache/，
- * 得到可 import 的同源副本，供各页面 SSR/客户端同步取数据
- */
-export const syncStaticMeta = (): void => {
-  if (fs.existsSync(JSON_PATH)) {
-    fs.copyFileSync(JSON_PATH, POST_META_PATH)
   }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { root } from '../../composables/pmain/post.ts'
+import { root } from '../../composables/pmain/post/postCodeCopy.ts'
 </script>
 
 <template>

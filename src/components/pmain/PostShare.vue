@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { postData } from '../../composables/config/post.config.ts'
 import {
   linkOpen,
-  postCache,
   qrcodeOpen,
   qrcodeClose,
   shareCopy,
   qrCanvas,
-} from '../../composables/pmain/post.ts'
+} from '../../composables/pmain/post/postShare.ts'
 import Share from '../icon/share/Share.vue'
 import Heart from '../icon/Heart.vue'
 import Wechat from '../icon/share/Wechat.vue'
@@ -25,7 +25,7 @@ const url = `${origin}${route.path}`
 
 // 分享文案取文章标题（原先误赋成 URL）；postData 已由同页组件拉取，点击时缓存已就绪
 const postKey = String(route.params.id)
-const shareTitle = () => postCache[postKey]?.title ?? url
+const shareTitle = () => postData.find((item) => item.key === postKey)?.title ?? url
 </script>
 
 <template>

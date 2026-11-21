@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { postStatus, word, time } from '../../composables/pmain/post.ts'
+import { postStatus } from '../../composables/pmain/post/PostStatus.ts'
 import FileText from '../icon/FileText.vue'
 import Clock from '../icon/Clock.vue'
 
@@ -17,7 +17,7 @@ onMounted(() => postStatus(postKey))
     <div class="word-count">
       <FileText class="file-icon" />
       <div class="word-info">
-        <span>{{ word }}</span>
+        <span id="word"></span>
         <span>总字数</span>
       </div>
     </div>
@@ -25,7 +25,7 @@ onMounted(() => postStatus(postKey))
     <div class="reading-time">
       <Clock class="clock-icon" />
       <div class="reading-info">
-        <span>{{ `${time}分钟` }}</span>
+        <span id="time"></span>
         <span>预计时间</span>
       </div>
     </div>

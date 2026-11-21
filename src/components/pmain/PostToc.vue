@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { headings, active, jump, tocMount, tocUnmount } from '../../composables/pmain/post.ts'
+import {
+  headings,
+  active,
+  jump,
+  tocMount,
+  tocUnmount,
+} from '../../composables/pmain/post/postToc.ts'
 import List from '../icon/List.vue'
 import X from '../icon/X.vue'
 

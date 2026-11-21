@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { postEdit, publish, update, history } from '../../composables/pmain/post.ts'
+import { postEdit, publish, update, history } from '../../composables/pmain/post/PostEdit.ts'
 import Calendar from '../icon/Calendar.vue'
 import RefreshCw from '../icon/RefreshCw.vue'
 import Clock from '../icon/Clock.vue'
@@ -19,7 +19,7 @@ onMounted(() => postEdit(postKey))
       <Calendar class="calendar-icon" />
       <div class="pulish-info">
         <span>发布</span>
-        <!-- 模板原绑定 date（未导入），发布日数据在 post.ts 的 publish 上 -->
+        <!-- 模板原绑定 date（未导入），发布日数据在 PostEdit.ts 的 publish 上 -->
         <span>{{ publish }}</span>
       </div>
     </div>

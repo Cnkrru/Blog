@@ -1,0 +1,338 @@
+// 该文件由编译管线自动生成，请勿手动修改
+import type { CleanData, PostData } from '../common/type'
+
+// 原始数据：frontmatter 全字段 + 编译期派生，仅文章页 SEO 使用
+export const rawPostData: PostData = {
+  "post-0": {
+    "order": 1,
+    "title": "Hello world",
+    "date": "2026-10-04",
+    "category": "随笔",
+    "tags": [
+      "blog"
+    ],
+    "description": "一个使用 Vue 3、Vite 等现代前端技术栈构建的个人博客项目，包含 Markdown 渲染、代码高亮、数学公式支持等功能，也支持一些自定义组件",
+    "keywords": "个人博客, Vue 3",
+    "updated": "",
+    "wordCount": 1591,
+    "readingTime": 6
+  },
+  "post-1": {
+    "order": 2,
+    "title": "express-1-初次体验",
+    "date": "2026-10-18",
+    "updated": "2026-10-31",
+    "history": [
+      "2026-10-27 更新swagger文档配置到代码外侧的方法",
+      "2026-10-31 重新初始化项目(前后端分离),补充express初始化的部分"
+    ],
+    "category": "后端",
+    "tags": [
+      "express"
+    ],
+    "description": "记录express初次体验",
+    "keywords": "express",
+    "wordCount": 1142,
+    "readingTime": 4
+  },
+  "post-10": {
+    "order": 11,
+    "title": "blog-4-vue-router的使用方法",
+    "date": "2026-11-06",
+    "category": "前端",
+    "tags": [
+      "blog",
+      "vue"
+    ],
+    "description": "记录vue-router的使用方法",
+    "keywords": "vue",
+    "updated": "",
+    "wordCount": 479,
+    "readingTime": 2
+  },
+  "post-11": {
+    "order": 12,
+    "title": "WindowsOS-1-开发环境配置",
+    "date": "2026-11-16",
+    "category": "WindowsOS",
+    "tags": [
+      "WindowsOS"
+    ],
+    "description": "记录WindowsOS的开发环境配置",
+    "keywords": "WindowsOS",
+    "updated": "",
+    "wordCount": 338,
+    "readingTime": 2
+  },
+  "post-2": {
+    "order": 3,
+    "title": "express-2-drizzle+sqlite配置",
+    "date": "2026-10-19",
+    "updated": "2026-11-08",
+    "category": "后端",
+    "tags": [
+      "express"
+    ],
+    "description": "记录给ts项目配置drizzleORM和sqlite数据库",
+    "keywords": "express",
+    "wordCount": 534,
+    "readingTime": 2
+  },
+  "post-3": {
+    "order": 4,
+    "title": "hugoTheme-hello-开发记录",
+    "date": "2026-10-20",
+    "category": "前端",
+    "tags": [
+      "hugo",
+      "blog"
+    ],
+    "description": "记录按照自己博客的样式，给hugo做一个主题",
+    "keywords": "hugoTheme_hello",
+    "updated": "",
+    "wordCount": 927,
+    "readingTime": 4
+  },
+  "post-4": {
+    "order": 5,
+    "title": "blog-1-站内年龄组件",
+    "date": "2026-10-24",
+    "category": "前端",
+    "tags": [
+      "blog"
+    ],
+    "description": "记录blog页脚的组件——siteage的做法",
+    "keywords": "blog,siteage",
+    "updated": "",
+    "wordCount": 667,
+    "readingTime": 3
+  },
+  "post-5": {
+    "order": 6,
+    "title": "blog-2-版权组件",
+    "date": "2026-10-25",
+    "category": "前端",
+    "tags": [
+      "blog"
+    ],
+    "description": "记录blog页脚的版权组件的做法",
+    "keywords": "blog,copyright",
+    "updated": "",
+    "wordCount": 269,
+    "readingTime": 1
+  },
+  "post-6": {
+    "order": 7,
+    "title": "blog-3-天气IP组件",
+    "date": "2026-10-26",
+    "category": "前端",
+    "tags": [
+      "blog"
+    ],
+    "description": "记录blog侧边栏天气组件的做法",
+    "keywords": "blog,weather,ip",
+    "updated": "",
+    "wordCount": 711,
+    "readingTime": 3
+  },
+  "post-7": {
+    "order": 8,
+    "title": "typescript-代码规范工具配置",
+    "date": "2026-10-30",
+    "category": "typescript",
+    "tags": [
+      "typescript"
+    ],
+    "description": "记录ts的代码规范工具的配置",
+    "keywords": "typescript.代码规范工具",
+    "updated": "",
+    "wordCount": 695,
+    "readingTime": 3
+  },
+  "post-8": {
+    "order": 9,
+    "title": "express-3-前后端分离，单端口服务配置",
+    "date": "2026-10-31",
+    "category": "后端",
+    "tags": [
+      "express",
+      "serverPanel"
+    ],
+    "description": "记录express项目前后端分离，但是一个端口起前后端的配置",
+    "keywords": "express",
+    "updated": "",
+    "wordCount": 938,
+    "readingTime": 4
+  },
+  "post-9": {
+    "order": 10,
+    "title": "express-4-后端接口初次尝试",
+    "date": "2026-11-04",
+    "category": "后端",
+    "tags": [
+      "express",
+      "serverPanel"
+    ],
+    "description": "记录express项目第一次接口实现",
+    "keywords": "express",
+    "updated": "",
+    "wordCount": 432,
+    "readingTime": 2
+  }
+}
+
+// 清洗数据：只保留组件需要的字段，数组顺序 = order 升序
+export const postData: CleanData[] = [
+  {
+    "key": "post-0",
+    "title": "Hello world",
+    "date": "2026-10-04",
+    "updated": "",
+    "category": "随笔",
+    "tags": [
+      "blog"
+    ],
+    "wordCount": 1591,
+    "readingTime": 6
+  },
+  {
+    "key": "post-1",
+    "title": "express-1-初次体验",
+    "date": "2026-10-18",
+    "updated": "2026-10-31",
+    "category": "后端",
+    "tags": [
+      "express"
+    ],
+    "history": [
+      "2026-10-27 更新swagger文档配置到代码外侧的方法",
+      "2026-10-31 重新初始化项目(前后端分离),补充express初始化的部分"
+    ],
+    "wordCount": 1142,
+    "readingTime": 4
+  },
+  {
+    "key": "post-2",
+    "title": "express-2-drizzle+sqlite配置",
+    "date": "2026-10-19",
+    "updated": "2026-11-08",
+    "category": "后端",
+    "tags": [
+      "express"
+    ],
+    "wordCount": 534,
+    "readingTime": 2
+  },
+  {
+    "key": "post-3",
+    "title": "hugoTheme-hello-开发记录",
+    "date": "2026-10-20",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "hugo",
+      "blog"
+    ],
+    "wordCount": 927,
+    "readingTime": 4
+  },
+  {
+    "key": "post-4",
+    "title": "blog-1-站内年龄组件",
+    "date": "2026-10-24",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "blog"
+    ],
+    "wordCount": 667,
+    "readingTime": 3
+  },
+  {
+    "key": "post-5",
+    "title": "blog-2-版权组件",
+    "date": "2026-10-25",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "blog"
+    ],
+    "wordCount": 269,
+    "readingTime": 1
+  },
+  {
+    "key": "post-6",
+    "title": "blog-3-天气IP组件",
+    "date": "2026-10-26",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "blog"
+    ],
+    "wordCount": 711,
+    "readingTime": 3
+  },
+  {
+    "key": "post-7",
+    "title": "typescript-代码规范工具配置",
+    "date": "2026-10-30",
+    "updated": "",
+    "category": "typescript",
+    "tags": [
+      "typescript"
+    ],
+    "wordCount": 695,
+    "readingTime": 3
+  },
+  {
+    "key": "post-8",
+    "title": "express-3-前后端分离，单端口服务配置",
+    "date": "2026-10-31",
+    "updated": "",
+    "category": "后端",
+    "tags": [
+      "express",
+      "serverPanel"
+    ],
+    "wordCount": 938,
+    "readingTime": 4
+  },
+  {
+    "key": "post-9",
+    "title": "express-4-后端接口初次尝试",
+    "date": "2026-11-04",
+    "updated": "",
+    "category": "后端",
+    "tags": [
+      "express",
+      "serverPanel"
+    ],
+    "wordCount": 432,
+    "readingTime": 2
+  },
+  {
+    "key": "post-10",
+    "title": "blog-4-vue-router的使用方法",
+    "date": "2026-11-06",
+    "updated": "",
+    "category": "前端",
+    "tags": [
+      "blog",
+      "vue"
+    ],
+    "wordCount": 479,
+    "readingTime": 2
+  },
+  {
+    "key": "post-11",
+    "title": "WindowsOS-1-开发环境配置",
+    "date": "2026-11-16",
+    "updated": "",
+    "category": "WindowsOS",
+    "tags": [
+      "WindowsOS"
+    ],
+    "wordCount": 338,
+    "readingTime": 2
+  }
+]

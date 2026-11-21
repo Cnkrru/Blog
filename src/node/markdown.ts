@@ -32,39 +32,25 @@ import {
 // 高亮主题（CSS 变量驱动，随主题切换变色）
 const highlightTheme = createCssVariablesTheme()
 
-// 超过该行数才折叠：阈值编译期决定，运行期只负责展开/收起
-const CODE_COLLAPSE_LINES = 50
-
 /* ====================<代码块外壳模板>==================== */
 
-// 普通代码块外壳：shiki 高亮结果塞进顶栏 + 内容区；超 50 行带折叠标记
-const codeShell = (lang: string, highlighted: string, lineCount: number): string => {
-  const collapsible = lineCount > CODE_COLLAPSE_LINES
+// 普通代码块外壳：shiki 高亮结果塞进顶栏 + 内容区
+const codeShell = (lang: string, highlighted: string): string => {
   const copyButton = `
         <button class="copy" type="button" title="Copy code">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         </button>`
-  const expandButton = collapsible
-    ? `<button class="code-expand" type="button" data-lines="${lineCount}" title="Expand code">
-            <span class="code-expand-text">Expand (${lineCount} lines)</span>
-            <svg class="code-expand-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </button>`
-    : ''
-  const toolbarActions = collapsible
-    ? `<div class="code-actions">${expandButton}${copyButton}</div>`
-    : copyButton
-  const body = collapsible ? `<div class="code-body">${highlighted}</div>` : highlighted
 
   return `
-<div class="language-${lang}${collapsible ? ' code-collapse' : ''}" v-pre>
+<div class="language-${lang}" v-pre>
     <div class="code-toolbar">
         <span class="lang lang-${lang}">
             <span class="lang-dot"></span>
             <span class="lang-text">${lang}</span>
         </span>
-        ${toolbarActions}
+        ${copyButton}
     </div>
-    ${body}
+    ${highlighted}
 </div>
 `
 }
@@ -120,7 +106,7 @@ export const createMdInstance = (): InstanceType<typeof MarkdownIt> => {
       warnFallback(lang, e)
       highlighted = getHighlighter().codeToHtml(code, { lang: 'text', theme: highlightTheme })
     }
-    return codeShell(safe, highlighted, code.split('\n').length)
+    return codeShell(safe, highlighted)
   }
 
   setupComponentPlugins(md, makeCtx)

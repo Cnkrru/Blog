@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { postCleanCache, postClean, postCleanSync } from './post'
+import { postData } from '../config/post.config'
 import type { CleanData } from '../common/type'
 import { windowPages } from '../common/utils'
 
@@ -13,22 +13,14 @@ export const list: CleanData[] = []
 // 分页窗口：当前页±2、最多 5 个页码（不足 5 项时向末尾补齐，无省略号）
 export const listDisplayPages = computed(() => windowPages(listNowPage.value, listPageNum.value))
 
-// 填充列表与总页数
+// 填充列表与总页数（编译期数据已就绪，直接取用）
 const listFill = () => {
-  list.splice(0, list.length, ...postCleanCache) // 就地填充，保持管线引用
+  list.splice(0, list.length, ...postData) // 就地填充，保持管线引用
   listPageNum.value = Math.max(1, Math.ceil(list.length / POST_NUM))
 }
 
-// setup 期同步加载，让 SSG 产物就有文章内容；数据未就绪返回 false 交异步兜底
-export const listCleanSync = (): boolean => {
-  if (!postCleanSync()) return false
-  listFill()
-  return true
-}
-
-export const listClean = async () => {
-  if (listCleanSync()) return
-  await postClean()
+// setup 期填充，让 SSG 产物直接带文章内容
+export const listInit = () => {
   listFill()
 }
 

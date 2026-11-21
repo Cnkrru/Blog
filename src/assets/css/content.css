@@ -287,79 +287,6 @@
     center/contain no-repeat;
 }
 
-/* 长代码折叠：默认露出约 20 行（14px × 1.6 + 上下内边距），展开后解除限制 */
-.content div[class*='language-'].code-collapse .code-body {
-  position: relative;
-  max-height: 480px;
-  overflow: hidden;
-}
-/* 底部渐变提示还有内容：颜色取代码块背景，随主题切换 */
-.content div[class*='language-'].code-collapse .code-body::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 72px;
-  background: linear-gradient(to bottom, transparent, var(--shiki-background));
-  pointer-events: none;
-}
-.content div[class*='language-'].code-collapse.code-expanded .code-body {
-  max-height: none;
-}
-.content div[class*='language-'].code-collapse.code-expanded .code-body::after {
-  display: none;
-}
-
-/* 折叠按钮：与复制按钮同高、同悬停反馈 */
-.content div[class*='language-'] .code-toolbar .code-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.content div[class*='language-'] .code-toolbar button.code-expand {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 24px;
-  padding: 0 6px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: color-mix(in srgb, var(--g-text) 55%, transparent);
-  font-size: 12px;
-  cursor: pointer;
-  transition:
-    color 0.2s,
-    background 0.2s;
-}
-.content div[class*='language-'] .code-toolbar button.code-expand:hover,
-.content div[class*='language-'] .code-toolbar button.code-expand:focus-visible {
-  color: var(--g-color);
-  background: color-mix(in srgb, var(--g-color) 10%, transparent);
-}
-.content div[class*='language-'] .code-toolbar button.code-expand:focus-visible {
-  outline: 2px solid var(--g-color);
-  outline-offset: 1px;
-}
-.content div[class*='language-'] .code-toolbar .code-expand-icon {
-  transition: transform 0.2s;
-}
-.content div[class*='language-'].code-collapse.code-expanded .code-expand-icon {
-  transform: rotate(180deg);
-}
-@media print {
-  .content div[class*='language-'].code-collapse .code-body {
-    max-height: none;
-  }
-  .content div[class*='language-'].code-collapse .code-body::after {
-    display: none;
-  }
-  .content div[class*='language-'] .code-toolbar button.code-expand {
-    display: none;
-  }
-}
-
 /* ===== 提示块 admonition（编译期生成；对齐 GitHub Alerts / VitePress Callout 规范） ===== */
 .content .admonition {
   position: relative;
@@ -1142,4 +1069,3 @@
     transform: scale(0.96);
   }
 }
-

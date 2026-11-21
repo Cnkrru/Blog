@@ -1,39 +1,49 @@
+/* 右下角轻提示：中性面板 + 状态色图标，贴合主流设计系统（Ant/Arco/Sonner）的规范 */
 .toast-box {
+  --toast-color: var(--g-color);
+
   width: fit-content;
-  height: fit-content;
-  min-width: 100px;
-  min-height: 64px;
-  max-width: min(480px, calc(100vw - 40px));
+  min-width: 220px;
+  max-width: min(380px, calc(100vw - 32px));
 
-  padding: 10px 14px;
+  padding: 12px 14px;
 
-  border: var(--border-width) solid var(--toast-bg, var(--g-color));
-  border-radius: var(--radius-md);
-  background: var(--toast-bg, var(--g-color));
+  border: var(--border-width) solid color-mix(in srgb, var(--g-text) 12%, transparent);
+  border-radius: var(--radius-lg);
+  background: rgb(var(--glass-r), var(--glass-g), var(--glass-b));
   box-shadow: var(--shadow-lg);
-  /* level 背景是固定高饱和色，文字固定用深色，避免暗色主题下浅字落在黄底上不可读 */
-  color: #111827;
+  color: var(--g-text);
 
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-sm);
+  align-items: flex-start;
+  gap: 10px;
 
   position: fixed;
-  right: 20px;
-  top: 20px;
+  right: 24px;
+  bottom: 24px;
   z-index: 9999;
 
-  animation: toast-in 0.24s ease-out;
+  animation: toast-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .toast-icon {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--toast-color);
+}
+
+/* 图标统一 20px，和 14px 正文的首行视觉对齐 */
+.toast-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .toast-mes {
+  flex: 1;
+  min-width: 0;
+
   font-size: 14px;
   line-height: 1.5;
   color: inherit;
@@ -42,9 +52,10 @@
 }
 
 .toast-close {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   padding: 0;
+  margin-top: 1px;
 
   display: flex;
   justify-content: center;
@@ -55,52 +66,80 @@
   border-radius: var(--radius-sm);
   background: transparent;
   color: inherit;
+  opacity: 0.55;
   cursor: pointer;
+
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.toast-close:hover {
+  opacity: 0.9;
+  background: color-mix(in srgb, var(--g-text) 8%, transparent);
 }
 
 .toast-close:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--toast-color);
   outline-offset: 2px;
 }
 
+/* 图标缩小后，关闭按钮里的 svg 也跟着缩 */
+.toast-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* 状态色只作用于图标，面板保持中性，避免大色块影响可读性 */
 .toast-success {
-  --toast-bg: #22c55e;
+  --toast-color: var(--color-success);
 }
 
 .toast-info {
-  --toast-bg: #3b82f6;
+  --toast-color: var(--color-info);
 }
 
 .toast-warning {
-  --toast-bg: #eab308;
+  --toast-color: var(--color-warning);
 }
 
 .toast-error {
-  --toast-bg: #ef4444;
+  --toast-color: var(--color-error);
 }
 
 .toast-box.is-hide {
-  animation: toast-out 0.2s ease forwards;
+  animation: toast-out 0.2s ease-in forwards;
 }
 
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(16px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0) scale(1);
   }
 }
 
 @keyframes toast-out {
   from {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
   to {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(16px);
+  }
+}
+
+/* 窄屏铺满两侧，保留安全边距 */
+@media (max-width: 480px) {
+  .toast-box {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    width: auto;
+    max-width: none;
   }
 }

@@ -2,7 +2,7 @@ import { computed, ref, watch } from 'vue'
 import MiniSearch from 'minisearch'
 import { START_LOCATION, type Router } from 'vue-router'
 import { getRouter } from '../router'
-import { postClean, postCleanCache } from './pmain/post'
+import { postData } from './config/post.config'
 import { DEFAULT_LD } from './config/config'
 import { MUSIC_LIST } from './config/music.config'
 import type { LD, SearchDoc, Song } from './common/type'
@@ -347,7 +347,6 @@ export const buildIndex = async () => {
   searchFailed.value = false
 
   try {
-    await postClean()
     miniSearch = new MiniSearch<SearchDoc>({
       fields: ['title', 'category', 'tags', 'date'], // 参与检索的字段
       storeFields: ['id', 'title', 'category', 'tags', 'date'], // 检索结果里返回的字段
@@ -359,9 +358,9 @@ export const buildIndex = async () => {
         combineWith: 'OR', // 多个 token 命中任一即可，提升召回
       },
     })
-    // postCleanCache 的 key 字段映射为 minisearch 文档 id 字段
+    // postData 的 key 字段映射为 minisearch 文档 id 字段
     miniSearch.addAll(
-      postCleanCache.map((item) => ({
+      postData.map((item) => ({
         id: item.key,
         title: item.title,
         category: item.category,

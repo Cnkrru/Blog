@@ -10,9 +10,12 @@ export type PostMeta = {
   updated: string
   category: string
   tags: string[]
-  history: string[]
+  // 修改历史：frontmatter 可选，未写时不生成该字段
+  history?: string[]
   description: string
   keywords: string
+  // 分享封面：frontmatter 可选，未写时由 useSeo 回退站点默认图
+  cover?: string
   wordCount: number
   readingTime: number
 }
@@ -20,12 +23,18 @@ export type PostMeta = {
 // key 为文章 slug，value 为文章元信息
 export type PostData = Record<string, PostMeta>
 
+// 清洗后的数据：仅保留组件实际用到的字段；数组顺序即 order 升序
 export type CleanData = {
   key: string
   title: string
   date: string
+  updated: string
   category: string
   tags: string[]
+  // 修改历史：frontmatter 可选
+  history?: string[]
+  wordCount: number
+  readingTime: number
 }
 
 /* ====================<category>==================== */
@@ -100,7 +109,7 @@ export type SeoOptions = {
   imageAlt?: string
 }
 
-// 文章页 SEO 数据：来自构建期 post.json 元信息
+// 文章页 SEO 数据：来自编译期生成的文章元数据
 export type PostSeo = {
   title?: string
   description?: string

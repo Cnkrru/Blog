@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useSeo } from '../composables/common/seo'
 import {
-  tagClean,
-  tagCleanSync,
+  tagInit,
   tagToggle,
   tagItem,
   tagSet,
@@ -18,12 +16,8 @@ useSeo({
   path: '/tag',
 })
 
-// setup 期同步加载，让 SSG 产物就带标签云；数据未就绪再走异步兜底
-const tagLoaded = tagCleanSync()
-
-onMounted(() => {
-  if (!tagLoaded) tagClean()
-})
+// setup 期填充，SSG 产物直接带标签云
+tagInit()
 </script>
 
 <template>

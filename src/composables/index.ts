@@ -1,6 +1,14 @@
 import { ref } from 'vue'
-import { postCache, postData } from './pmain/post'
-import type { DateCounter, DayData, MonthData, MousePoint, Particle, PostData, Ripple } from './common/type'
+import { postData } from './config/post.config'
+import type {
+  CleanData,
+  DateCounter,
+  DayData,
+  MonthData,
+  MousePoint,
+  Particle,
+  Ripple,
+} from './common/type'
 // 粒子配色跟随主题变化，需读取当前亮暗/主题
 import { refLd } from './pheader'
 import {
@@ -25,12 +33,12 @@ export const hitmap = (() => {
 
   const dateMap = new Map<string, DateCounter>()
   const yearSet = new Set<number>()
-  let cacheRaw: PostData | null = null
+  let cacheRaw: CleanData[] | null = null
   const yearsDone = new Set<number>()
 
   /* ====================<数据清洗与统计>==================== */
   // 清洗数据
-  const cleaner = (raw: PostData) => {
+  const cleaner = (raw: CleanData[]) => {
     // 日期检查者
     const checker = (rawData: string): string | null => {
       const date = String(rawData).trim().slice(0, 10)
@@ -55,7 +63,7 @@ export const hitmap = (() => {
     monthsData.value = []
     years.value = []
     cacheRaw = raw
-    Object.values(raw).forEach((meta) => {
+    raw.forEach((meta) => {
       category(meta.date, 'publish')
       category(meta.updated, 'updated')
       ;(meta.history ?? []).forEach((item) => category(item, 'history'))
@@ -129,19 +137,18 @@ export const hitmap = (() => {
     )
   }
 
-  const init = (data: PostData) => {
+  const init = (data: CleanData[]) => {
     cleaner(data)
     year()
     const first = years.value[0]
     if (first !== undefined) setYear(first)
   }
 
-  // 数据加载：确保 post 全表已拉取后初始化（接当前项目 postData 数据层）
+  // 数据加载：编译期数据已就绪，初始化统计
   const load = async () => {
     if (isLoading.value) return
     isLoading.value = true
-    await postData()
-    init(postCache)
+    init(postData)
     isLoading.value = false
   }
 

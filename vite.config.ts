@@ -6,6 +6,7 @@ import { defineConfig, normalizePath } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import generateSitemap from 'vite-ssg-sitemap'
 import compileArticles from './src/node/main.ts'
+import { POST_META_PATH } from './src/node/paths.ts'
 import { SITE_URL } from './src/composables/config/config.ts'
 import 'vite-ssg'
 
@@ -120,7 +121,7 @@ export default defineConfig({
       // sitemap 分级：首页最高、文章次之（并用真实更新时间做 lastmod）、归档/工具页最低
       // 插件默认把全部页面写成 priority 1.0 + lastmod=构建时间，搜索引擎会忽略无区分度的权重
       const posts: Record<string, { date?: string; updated?: string }> = JSON.parse(
-        readFileSync(resolve('public/config/post.json'), 'utf8'),
+        readFileSync(resolve(POST_META_PATH), 'utf8'),
       )
       const priority: Record<string, number> = { '/': 1.0 }
       const changefreq: Record<string, string> = { '/': 'daily' }

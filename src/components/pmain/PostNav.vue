@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { postNav, preOrder, nextOrder, preTitle, nextTitle } from '../../composables/pmain/post.ts'
+import {
+  postNav,
+  preOrder,
+  nextOrder,
+  preTitle,
+  nextTitle,
+} from '../../composables/pmain/post/PostNav.ts'
 
 const route = useRoute()
 const postKey = String(route.params.id)
